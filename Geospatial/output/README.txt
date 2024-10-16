@@ -1,0 +1,1 @@
+NOTE: The output file sizes are also too large to host. See an example here. If you run the code, it will output a map for every letter.
