@@ -10,7 +10,9 @@
 # Last Updated: 						
 #   
 # Audited: No
+# To run from cmd: python "C:\Users\tbhatt\Documents\Templates\Geospatial\code\HighlightingCounties.py"
 ################################################################################
+
 # %% Imports and setup
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -23,7 +25,6 @@ import random
 # Define a list of flat colors for highlighting
 flat_colors = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50',
                '#f1c40f', '#e67e22', '#e74c3c', '#ecf0f1', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d']
-
 
 # %%
 # Function Definition
@@ -98,7 +99,6 @@ def load_data_and_create_maps(letters_to_map='A'):
     else:
         print("Invalid input. Use a single letter or 'all' to generate maps for all letters.")
 
-# Example usage
 # %%
 # Run the full code
 load_data_and_create_maps('all')
