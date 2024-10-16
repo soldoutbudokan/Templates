@@ -10,9 +10,8 @@
 # Last Updated: 						
 #   
 # Audited: No
+# To run from cmd: python "C:\Users\tbhatt\Documents\Templates\Timeline\code\InteractiveTimeline.py"
 ################################################################################
-
-
 
 # %%
 # Importing Packages and setting WD
@@ -25,7 +24,6 @@ from datetime import timedelta
 script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 
-# Python command is: python "C:\Users\tbhatt\OneDrive - Charles River Associates International\Documents\Example Templates\InteractiveTimeline.py"
 # %%
 # Reading and cleaning files
 # Read the events from the Excel file
@@ -160,7 +158,7 @@ fig.update_layout(
 fig.update_yaxes(range=[-1, len(df) * 1.5 + 2])
 # %%
 # Save the figure as an interactive HTML file
-output_file = os.path.join(output_dir, 'july_crisis_timeline.html')
+output_file = os.path.join('output', 'july_crisis_timeline.html')
 fig.write_html(output_file, include_plotlyjs=True, full_html=True)
 
 print(f"The interactive timeline has been saved as '{output_file}'")
