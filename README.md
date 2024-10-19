@@ -1,1 +1,1 @@
-contains tables/functions/macros i use a lot. also a couple of other projects.
+tables/functions/macros i use a lot. also a couple of other larger, self-contained projects.
