@@ -1,1 +1,1 @@
-While completing different projects, I noticed I was using very similar functions/tables/code across different tasks. The templates in this repository have saved me many hours collectively. Other parts of this repository are entire, self-contained projects that require no alteration to the code.
+contains tables/functions/macros i use a lot.
