@@ -10,7 +10,7 @@ from torch.utils.tensorboard import SummaryWriter
 import os
 
 # Set the working directory
-os.chdir(r"C:\Users\tlc-c\Documents\_inprogress\TeachingTransformersToAdd")
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # %%
 # 2. Data Processing and Loading
@@ -211,8 +211,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.b
 print(f"Using device: {device}")
 
 # File paths for existing data
-train_file = r"SyntheticData\addition_train.bin"
-test_file = r"SyntheticData\addition_test.bin"
+train_file = r"SyntheticData/addition_train.bin"
+test_file = r"SyntheticData/addition_test.bin"
 
 # Create datasets and dataloaders
 train_dataset = AdditionDataset(train_file, max_input_length, max_target_length)
