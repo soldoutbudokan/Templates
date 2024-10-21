@@ -165,6 +165,9 @@ Sub MajorWorkbookInitial()
         ' Title and subtitle
         .Cells(4, "D").Value = "Title"
         .Cells(5, "D").Value = "Subtitle"
+
+        ' Tab color to none
+        .Tab.Color = xlColorIndexNone
         
     End With
 
