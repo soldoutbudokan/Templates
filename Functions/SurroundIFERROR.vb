@@ -1,6 +1,6 @@
-Public Sub IFERROR0() 
-
 ' The following macro surrounds every selected sell with =IFERROR(,"")
+
+Public Sub IFERROR0() 
 
 Dim row As Long
 Dim Col As Long
