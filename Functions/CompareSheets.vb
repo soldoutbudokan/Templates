@@ -142,4 +142,3 @@ Function ColumnToNumber(col As String) As Long
         ColumnToNumber = ColumnToNumber * 26 + Asc(UCase(Mid(col, i, 1))) - 64
     Next i
 End Function
-

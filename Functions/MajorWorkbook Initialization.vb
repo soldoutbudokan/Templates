@@ -9,30 +9,32 @@ Sub MajorWorkbookInitial()
     Dim wsPlaceholder As Worksheet
     Dim ws As Worksheet
     Dim i As Long
+    Dim wb As Workbook
 
+    Set wb = ActiveWorkbook
     Application.ScreenUpdating = False
 
     ' Delete all existing sheets except the last one
     Application.DisplayAlerts = False
-    Do While ThisWorkbook.Worksheets.Count > 1
-        ThisWorkbook.Worksheets(1).Delete
+    Do While wb.Worksheets.Count > 1
+        wb.Worksheets(1).Delete
     Loop
     Application.DisplayAlerts = True
 
     ' Rename the last remaining sheet to "RAW ->"
-    Set wsRaw = ThisWorkbook.Worksheets(1)
+    Set wsRaw = wb.Worksheets(1)
     wsRaw.Name = "RAW ->"
 
     ' Add the "INTERMEDIATE ->" sheet
-    Set wsIntermediate = Sheets.Add(After:=wsRaw)
+    Set wsIntermediate = wb.Worksheets.Add(After:=wsRaw)
     wsIntermediate.Name = "INTERMEDIATE ->"
 
     ' Add the "TABLES ->" sheet
-    Set wsTables = Sheets.Add(After:=wsIntermediate)
+    Set wsTables = wb.Worksheets.Add(After:=wsIntermediate)
     wsTables.Name = "TABLES ->"
 
     ' Rearrange the sheets: "TABLES ->", "INTERMEDIATE ->", "RAW ->"
-    wsTables.Move Before:=Sheets(1)
+    wsTables.Move Before:=wb.Worksheets(1)
     wsIntermediate.Move Before:=wsRaw
 
     ' Set properties for the three sheets
@@ -52,7 +54,7 @@ Sub MajorWorkbookInitial()
     Next i
 
     ' Add the "Placeholder Table" sheet to the right of "TABLES ->" tab
-    Set wsPlaceholder = Sheets.Add(After:=wsTables)
+    Set wsPlaceholder = wb.Worksheets.Add(After:=wsTables)
     wsPlaceholder.Name = "Placeholder Table"
 
     ' Configure the "Placeholder Table" sheet
@@ -87,7 +89,7 @@ Sub MajorWorkbookInitial()
         .Range("A2").Value = 0
         .Range("A2").Interior.ColorIndex = xlNone ' No background color
         .Range("A2").Font.Color = RGB(105, 105, 105) ' Dark gray text
-        
+
         ' Set first two columns and first two rows to lighter gray
         .Range("A:A,B:B").Interior.Color = mediumDarkGrey
         .Range("1:1,2:2").Interior.Color = mediumDarkGrey
@@ -134,7 +136,7 @@ Sub MajorWorkbookInitial()
         .Range("D16:K16").Borders(xlEdgeTop).LineStyle = xlContinuous
         .Range("D21:K21").Borders(xlEdgeTop).LineStyle = xlContinuous
 
-        ' Set headers in cells D8 to J8
+        ' Set headers in cells D8 to K8
         .Cells(8, "D").Value = "Product Type"
         .Cells(8, "E").Value = "Row"
         .Cells(8, "G").Value = "Year"
@@ -161,15 +163,18 @@ Sub MajorWorkbookInitial()
         ' Adjust alignments
         .Range("D:E").HorizontalAlignment = xlLeft ' Product Type and Row aligned left
         .Range("F:K").HorizontalAlignment = xlRight ' Year to Observations aligned right
-        
+
         ' Title and subtitle
         .Cells(4, "D").Value = "Title"
         .Cells(5, "D").Value = "Subtitle"
-        
+
+        ' Tab color to none
+        .Tab.Color = xlColorIndexNone
+
     End With
 
     ' Set Calibri font across the workbook
-    For Each ws In ThisWorkbook.Worksheets
+    For Each ws In wb.Worksheets
         ws.Cells.Font.Name = "Calibri"
     Next ws
 
