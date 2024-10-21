@@ -1,1 +1,1 @@
-This is blank in the repository, because the file size would be too big. Simply run "GeneratingSyntheticData.py" to generate the data which will be saved here.
+This is a fairly small version of the train/test data. Originally thought of making the dataset an OOM larger.
