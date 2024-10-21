@@ -195,15 +195,15 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
 # %%
 # 5. Hyperparameters and setup
 vocab_size = 14  # 10 digits, '+', '=', ' ', and padding
-d_model = 128
+d_model = 64
 nhead = 8
 num_encoder_layers = 3
 num_decoder_layers = 3
-dim_feedforward = 512
+dim_feedforward = 256
 dropout = 0.1
-batch_size = 128
+batch_size = 256
 num_epochs = 3
-learning_rate = 0.0001
+learning_rate = 0.001
 max_input_length = 13  # Adjusted based on max possible input length
 max_target_length = 6   # Adjusted based on max possible target length
 
