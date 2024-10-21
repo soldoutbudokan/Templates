@@ -22,12 +22,12 @@ if not os.path.exists(synthetic_data_folder):
     os.makedirs(synthetic_data_folder)
 
 # Generate training data
-num_train_examples = 9000000  # 9 million examples for training
+num_train_examples = 8000000  # 9 million examples for training
 train_file = os.path.join(synthetic_data_folder, 'addition_train.bin')
 generate_addition_data(train_file, num_train_examples)
 
 # Generate test data with numbers outside the range used for training
-num_test_examples = 1000000  # 1 million examples for testing
+num_test_examples = 2000000  # 1 million examples for testing
 test_file = os.path.join(synthetic_data_folder, 'addition_test.bin')
 generate_addition_data(test_file, num_test_examples, min_num=100000, max_num=199999)
 
