@@ -8,9 +8,14 @@ import numpy as np
 import math
 from torch.utils.tensorboard import SummaryWriter
 import os
+import matplotlib.pyplot as plt
 
-# Set the working directory
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+# Set the working directory (optional, depending on your setup)
+# os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# Set the output directory for plots
+output_dir = 'output_plots'
+os.makedirs(output_dir, exist_ok=True)
 
 # %%
 # 2. Data Processing and Loading
@@ -118,6 +123,7 @@ class TransformerModel(nn.Module):
 def train(model, dataloader, optimizer, criterion, device, epoch, writer):
     model.train()
     total_loss = 0
+    running_loss = 0
     for batch_idx, (inputs, targets) in enumerate(dataloader):
         inputs = inputs.to(device).transpose(0, 1)  # Shape: [seq_len, batch_size]
         targets = targets.to(device).transpose(0, 1)  # Shape: [seq_len, batch_size]
@@ -134,12 +140,16 @@ def train(model, dataloader, optimizer, criterion, device, epoch, writer):
         optimizer.step()
 
         total_loss += loss.item()
+        running_loss += loss.item()
 
         if batch_idx % 100 == 0 and batch_idx > 0:
-            avg_loss = total_loss / 100
+            avg_loss = running_loss / 100
             print(f'Epoch {epoch+1}, Batch {batch_idx}, Loss: {avg_loss:.4f}')
             writer.add_scalar('Training Loss', avg_loss, epoch * len(dataloader) + batch_idx)
-            total_loss = 0
+            running_loss = 0
+
+    avg_loss = total_loss / len(dataloader)
+    return avg_loss
 
 def evaluate(model, dataloader, criterion, device):
     model.eval()
@@ -161,6 +171,7 @@ def evaluate(model, dataloader, criterion, device):
             total_loss += loss.item()
 
             predictions = output.argmax(dim=-1)
+            # Check if the entire sequence matches
             correct = (predictions == tgt_output).all(dim=0).sum().item()
             total_correct += correct
             total_count += inputs.size(1)  # batch_size
@@ -195,15 +206,15 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
 # %%
 # 5. Hyperparameters and setup
 vocab_size = 14  # 10 digits, '+', '=', ' ', and padding
-d_model = 64
+d_model = 256
 nhead = 8
-num_encoder_layers = 3
+num_encoder_layers = 4
 num_decoder_layers = 3
-dim_feedforward = 256
-dropout = 0.1
+dim_feedforward = 1024
+dropout = 0.0
 batch_size = 256
-num_epochs = 3
-learning_rate = 0.001
+num_epochs = 30
+learning_rate = 1e-4
 max_input_length = 13  # Adjusted based on max possible input length
 max_target_length = 6   # Adjusted based on max possible target length
 
@@ -238,10 +249,19 @@ writer = SummaryWriter('runs/addition_transformer')
 
 # %%
 # 9. Training loop and tests
+training_losses = []
+validation_losses = []
+validation_accuracies = []
+
 best_accuracy = 0
 for epoch in range(num_epochs):
-    train(model, train_loader, optimizer, criterion, device, epoch, writer)
+    avg_train_loss = train(model, train_loader, optimizer, criterion, device, epoch, writer)
+    training_losses.append(avg_train_loss)
+
     val_loss, val_accuracy = evaluate(model, test_loader, criterion, device)
+    validation_losses.append(val_loss)
+    validation_accuracies.append(val_accuracy)
+
     print(f'Epoch {epoch+1}, Validation Loss: {val_loss:.4f}, Accuracy: {val_accuracy:.4f}')
     writer.add_scalar('Validation Loss', val_loss, epoch)
     writer.add_scalar('Validation Accuracy', val_accuracy, epoch)
@@ -253,6 +273,27 @@ for epoch in range(num_epochs):
 
 print(f'Best Validation Accuracy: {best_accuracy:.4f}')
 writer.close()
+
+# Plot training and validation loss
+plt.figure()
+plt.plot(range(1, num_epochs+1), training_losses, label='Training Loss')
+plt.plot(range(1, num_epochs+1), validation_losses, label='Validation Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.title('Training and Validation Loss')
+plt.savefig(os.path.join(output_dir, 'loss_plot.png'))
+plt.close()
+
+# Plot validation accuracy
+plt.figure()
+plt.plot(range(1, num_epochs+1), validation_accuracies, label='Validation Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.title('Validation Accuracy')
+plt.savefig(os.path.join(output_dir, 'accuracy_plot.png'))
+plt.close()
 
 # Load the best model and make a prediction
 model.load_state_dict(torch.load('best_model.pth', map_location=device))
