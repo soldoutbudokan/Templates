@@ -11,7 +11,7 @@ import os
 import matplotlib.pyplot as plt
 
 # Set the working directory (optional, depending on your setup)
-# os.chdir(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Set the output directory for plots
 output_dir = 'output_plots'
