@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-def generate_addition_data(filename, num_examples, min_num=0, max_num=9999,):
+def generate_addition_data(filename, num_examples, min_num=0, max_num=999,):
     data = np.random.randint(min_num, max_num + 1, (num_examples, 3), dtype=np.int32)
     data[:, 2] = data[:, 0] + data[:, 1]  # Calculate sum
     
@@ -22,14 +22,14 @@ if not os.path.exists(synthetic_data_folder):
     os.makedirs(synthetic_data_folder)
 
 # Generate training data
-num_train_examples = 8000000  # 9 million examples for training
+num_train_examples = 80000  # 9 million examples for training
 train_file = os.path.join(synthetic_data_folder, 'addition_train.bin')
 generate_addition_data(train_file, num_train_examples)
 
 # Generate test data with numbers outside the range used for training
-num_test_examples = 2000000  # 1 million examples for testing
+num_test_examples = 20000  # 1 million examples for testing
 test_file = os.path.join(synthetic_data_folder, 'addition_test.bin')
-generate_addition_data(test_file, num_test_examples, min_num=0, max_num=9999)
+generate_addition_data(test_file, num_test_examples, min_num=0, max_num=999)
 
 # Create memory-mapped arrays
 train_data = create_memmap(train_file, num_train_examples)
