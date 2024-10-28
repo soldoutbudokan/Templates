@@ -1,3 +1,4 @@
+# %%
 # Required Libraries
 import torch
 import torch.nn as nn
@@ -8,7 +9,6 @@ import math
 from torch.utils.tensorboard import SummaryWriter
 import os
 import matplotlib.pyplot as plt
-import random
 
 # Set the working directory (optional, depending on your setup)
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +17,8 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 output_dir = 'output_plots'
 os.makedirs(output_dir, exist_ok=True)
 
-# Data Processing and Loading
+# %%
+# 2. Data Processing and Loading
 class AdditionDataset(Dataset):
     def __init__(self, filename, max_input_length, max_target_length):
         self.data = np.memmap(filename, dtype=np.int32, mode='r').reshape(-1, 3)
@@ -26,7 +27,7 @@ class AdditionDataset(Dataset):
 
         # Build the character to index mapping
         self.char2idx = {str(i): i+1 for i in range(10)}  # '0'-'9' -> 1-10
-        self.char2idx.update({'+': 11, '=': 12})
+        self.char2idx.update({'+': 11, '=': 12, ' ': 13})
         self.pad_idx = 0
 
         # Build index to character mapping for decoding
@@ -58,9 +59,10 @@ class AdditionDataset(Dataset):
         tokens = tokens + [self.pad_idx] * (max_length - len(tokens))
         return tokens[:max_length]  # Ensure the sequence is not longer than max_length
 
-# Model Architecture
+# %%
+# 3. Model Architecture
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, dropout=0.3, max_len=5000):
+    def __init__(self, d_model, dropout=0.1, max_len=5000):
         super(PositionalEncoding, self).__init__()
         self.dropout = nn.Dropout(dropout)
         pe = torch.zeros(max_len, d_model).float()
@@ -112,13 +114,13 @@ class TransformerModel(nn.Module):
         src_emb = self.pos_encoder(src_emb)
         tgt_emb = self.pos_encoder(tgt_emb)
 
-        output = self.transformer(src_emb, tgt_emb, src_key_padding_mask=src_pad_mask,
-                                  tgt_key_padding_mask=tgt_pad_mask, tgt_mask=tgt_mask)
+        output = self.transformer(src_emb, tgt_emb, src_key_padding_mask=src_pad_mask, tgt_key_padding_mask=tgt_pad_mask, tgt_mask=tgt_mask)
         output = self.fc_out(output)
         return output
 
-# Training and Evaluation Functions
-def train(model, dataloader, optimizer, scheduler, criterion, device, epoch, writer, teacher_forcing_ratio=0.5):
+# %%
+# 4. Training and Evaluation Functions
+def train(model, dataloader, optimizer, criterion, device, epoch, writer):
     model.train()
     total_loss = 0
     running_loss = 0
@@ -126,31 +128,16 @@ def train(model, dataloader, optimizer, scheduler, criterion, device, epoch, wri
         inputs = inputs.to(device).transpose(0, 1)  # Shape: [seq_len, batch_size]
         targets = targets.to(device).transpose(0, 1)  # Shape: [seq_len, batch_size]
 
-        optimizer.zero_grad()
-
-        # Prepare decoder input and output
         tgt_input = targets[:-1, :]
         tgt_output = targets[1:, :]
 
-        # Decide whether to use teacher forcing
-        if random.random() < teacher_forcing_ratio:
-            decoder_input = tgt_input
-        else:
-            # Use the model's own predictions as input
-            decoder_input = torch.zeros_like(tgt_input)
-            decoder_input[0, :] = tgt_input[0, :]  # Start token
-            for t in range(1, tgt_input.size(0)):
-                output = model(inputs, decoder_input[:t, :])
-                top1 = output.argmax(-1)
-                decoder_input[t, :] = top1[-1, :]
-
-        output = model(inputs, decoder_input)
+        optimizer.zero_grad()
+        output = model(inputs, tgt_input)
 
         loss = criterion(output.view(-1, output.size(-1)), tgt_output.contiguous().view(-1))
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
         optimizer.step()
-        scheduler.step()
 
         total_loss += loss.item()
         running_loss += loss.item()
@@ -200,7 +187,7 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
     tokens = tokens + [0] * (max_input_length - len(tokens))
     input_tensor = torch.tensor(tokens, dtype=torch.long).unsqueeze(1).to(device)  # Shape: [seq_len, 1]
 
-    decoder_input = torch.tensor([char2idx.get('', 0)], dtype=torch.long).unsqueeze(1).to(device)  # Start with padding index
+    decoder_input = torch.tensor([[char2idx.get('', 0)]], dtype=torch.long).to(device)  # Start with padding index
 
     result = ''
     with torch.no_grad():
@@ -216,21 +203,20 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
 
     return result
 
-# Hyperparameters and Setup
-vocab_size = 13  # 10 digits, '+', '=', and padding
-d_model = 256
-nhead = 4
-num_encoder_layers = 3
-num_decoder_layers = 3
-dim_feedforward = 512
+# %%
+# 5. Hyperparameters and setup
+vocab_size = 14  # 10 digits, '+', '=', ' ', and padding
+d_model = 512
+nhead = 8
+num_encoder_layers = 6
+num_decoder_layers = 6
+dim_feedforward = 2048
 dropout = 0.1
-batch_size = 256
-num_epochs = 50
+batch_size = 128
+num_epochs = 500
 learning_rate = 1e-4
-max_input_length = 10  # Adjusted based on max possible input length
+max_input_length = 13  # Adjusted based on max possible input length
 max_target_length = 6   # Adjusted based on max possible target length
-teacher_forcing_ratio = 0.5
-warmup_steps = 4000
 
 device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
 print(f"Using device: {device}")
@@ -246,27 +232,35 @@ test_dataset = AdditionDataset(test_file, max_input_length, max_target_length)
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, drop_last=True)
 
-# Initialize the Model
+# %%
+# 6. Initialize the model
 pad_idx = 0
 model = TransformerModel(vocab_size=vocab_size, d_model=d_model, nhead=nhead, num_encoder_layers=num_encoder_layers,
                          num_decoder_layers=num_decoder_layers, dim_feedforward=dim_feedforward, dropout=dropout, pad_idx=pad_idx).to(device)
 
-# Loss Function and Optimizer
+# %%
+# 7. Loss function and optimizer
 criterion = nn.CrossEntropyLoss(ignore_index=pad_idx)
-optimizer = optim.Adam(model.parameters(), lr=learning_rate, betas=(0.9, 0.98), eps=1e-9)
-scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda step: min((step+1)**-0.5, (step+1)*warmup_steps**-1.5))
-
-# TensorBoard Setup
+optimizer = optim.AdamW(
+    model.parameters(),
+    lr=learning_rate,
+    betas=(0.9, 0.98),
+    eps=1e-9,
+    weight_decay=1e-4  # Added weight decay for regularization
+)
+# %%
+# 8. TensorBoard setup
 writer = SummaryWriter('runs/addition_transformer')
 
-# Training Loop and Tests
+# %%
+# 9. Training loop and tests
 training_losses = []
 validation_losses = []
 validation_accuracies = []
 
 best_accuracy = 0
 for epoch in range(num_epochs):
-    avg_train_loss = train(model, train_loader, optimizer, scheduler, criterion, device, epoch, writer, teacher_forcing_ratio)
+    avg_train_loss = train(model, train_loader, optimizer, criterion, device, epoch, writer)
     training_losses.append(avg_train_loss)
 
     val_loss, val_accuracy = evaluate(model, test_loader, criterion, device)
@@ -310,7 +304,7 @@ plt.close()
 model.load_state_dict(torch.load('best_model.pth', map_location=device))
 
 # Test the model with an example
-num1 = 12345
-num2 = 67890
+num1 = 123
+num2 = 678
 predicted_sum = predict_sum(model, num1, num2, device, max_input_length, max_target_length, train_dataset.char2idx, train_dataset.idx2char)
 print(f"Prediction: {num1} + {num2} = {predicted_sum}")
