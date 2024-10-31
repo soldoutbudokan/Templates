@@ -21,7 +21,7 @@ os.makedirs(output_dir, exist_ok=True)
 # 2. Data Processing and Loading
 class AdditionDataset(Dataset):
     def __init__(self, filename, max_input_length, max_target_length):
-        self.data = np.memmap(filename, dtype=np.int32, mode='r').reshape(-1, 3)
+        self.data = np.load(filename, mmap_mode='r')
         self.max_input_length = max_input_length
         self.max_target_length = max_target_length
 
@@ -29,8 +29,8 @@ class AdditionDataset(Dataset):
         self.char2idx = {str(i): i+1 for i in range(10)}  # '0'-'9' -> 1-10
         self.char2idx.update({'+': 11, '=': 12, ' ': 13})
         self.pad_idx = 0
-
-        # Build index to character mapping for decoding
+        self.sos_idx = max(self.char2idx.values()) + 1
+        self.char2idx['<s>'] = self.sos_idx
         self.idx2char = {v: k for k, v in self.char2idx.items()}
         self.idx2char[self.pad_idx] = ''
 
@@ -46,7 +46,17 @@ class AdditionDataset(Dataset):
 
         # Tokenize and pad sequences
         input_tokens = self.tokenize_and_pad(input_str, self.max_input_length)
-        target_tokens = self.tokenize_and_pad(target_str, self.max_target_length)
+        target_tokens = [self.sos_idx] + self.tokenize_and_pad(target_str, self.max_target_length - 1)
+
+        # Ensure target_tokens has the correct length
+        target_tokens = target_tokens + [self.pad_idx] * (self.max_target_length - len(target_tokens))
+        target_tokens = target_tokens[:self.max_target_length]
+
+        # Assertions to check indices
+        assert max(input_tokens) < vocab_size, f"Input contains invalid index {max(input_tokens)}"
+        assert min(input_tokens) >= 0, f"Input contains negative index {min(input_tokens)}"
+        assert max(target_tokens) < vocab_size, f"Target contains invalid index {max(target_tokens)}"
+        assert min(target_tokens) >= 0, f"Target contains negative index {min(target_tokens)}"
 
         # Convert to tensors
         input_tensor = torch.tensor(input_tokens, dtype=torch.long)
@@ -94,6 +104,13 @@ class TransformerModel(nn.Module):
         self.fc_out = nn.Linear(d_model, vocab_size)
         self.pad_idx = pad_idx
 
+        self._reset_parameters()
+
+    def _reset_parameters(self):
+        for p in self.parameters():
+            if p.dim() > 1:
+                nn.init.xavier_uniform_(p)
+
     def create_src_mask(self, src):
         src_mask = (src == self.pad_idx).transpose(0, 1)
         return src_mask
@@ -134,9 +151,27 @@ def train(model, dataloader, optimizer, criterion, device, epoch, writer):
         optimizer.zero_grad()
         output = model(inputs, tgt_input)
 
+        # Check for NaNs in model output
+        if torch.isnan(output).any():
+            print('NaN detected in model output')
+            break
+
         loss = criterion(output.view(-1, output.size(-1)), tgt_output.contiguous().view(-1))
+
+        # Check for NaNs in loss
+        if torch.isnan(loss):
+            print('NaN detected in loss')
+            break
+
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
+
+        # Check for NaNs in gradients
+        for name, param in model.named_parameters():
+            if param.grad is not None and torch.isnan(param.grad).any():
+                print(f'NaN detected in gradients of {name}')
+                break
+
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=0.5)
         optimizer.step()
 
         total_loss += loss.item()
@@ -187,7 +222,7 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
     tokens = tokens + [0] * (max_input_length - len(tokens))
     input_tensor = torch.tensor(tokens, dtype=torch.long).unsqueeze(1).to(device)  # Shape: [seq_len, 1]
 
-    decoder_input = torch.tensor([[char2idx.get('', 0)]], dtype=torch.long).to(device)  # Start with padding index
+    decoder_input = torch.tensor([[char2idx['<s>']]], dtype=torch.long).to(device)  # Start with SOS token
 
     result = ''
     with torch.no_grad():
@@ -205,36 +240,39 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
 
 # %%
 # 5. Hyperparameters and setup
-vocab_size = 14  # 10 digits, '+', '=', ' ', and padding
-d_model = 512
-nhead = 8
-num_encoder_layers = 6
-num_decoder_layers = 6
-dim_feedforward = 2048
-dropout = 0.1
-batch_size = 128
-num_epochs = 500
-learning_rate = 1e-4
-max_input_length = 13  # Adjusted based on max possible input length
-max_target_length = 6   # Adjusted based on max possible target length
-
-device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
-print(f"Using device: {device}")
-
 # File paths for existing data
-train_file = r"SyntheticData/addition_train.bin"
-test_file = r"SyntheticData/addition_test.bin"
+train_file = r"SyntheticData/addition_train.npy"
+test_file = r"SyntheticData/addition_test.npy"
 
 # Create datasets and dataloaders
+max_input_length = 13  # Adjusted based on max possible input length
+max_target_length = 7   # Adjusted based on max possible target length (+1 for SOS token)
+
 train_dataset = AdditionDataset(train_file, max_input_length, max_target_length)
 test_dataset = AdditionDataset(test_file, max_input_length, max_target_length)
+
+vocab_size = max(train_dataset.char2idx.values()) + 1  # Include padding index
+pad_idx = train_dataset.pad_idx
+
+batch_size = 128
+num_epochs = 500
+learning_rate = 1e-5  # Reduced learning rate
+d_model = 256
+nhead = 4
+num_encoder_layers = 3
+num_decoder_layers = 3
+dim_feedforward = 1024
+dropout = 0.1
+
+# Force device to CPU for testing
+device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
+print(f"Using device: {device}")
 
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, drop_last=True)
 
 # %%
 # 6. Initialize the model
-pad_idx = 0
 model = TransformerModel(vocab_size=vocab_size, d_model=d_model, nhead=nhead, num_encoder_layers=num_encoder_layers,
                          num_decoder_layers=num_decoder_layers, dim_feedforward=dim_feedforward, dropout=dropout, pad_idx=pad_idx).to(device)
 
@@ -246,8 +284,9 @@ optimizer = optim.AdamW(
     lr=learning_rate,
     betas=(0.9, 0.98),
     eps=1e-9,
-    weight_decay=1e-4  # Added weight decay for regularization
+    weight_decay=0  # Set to zero for now
 )
+
 # %%
 # 8. TensorBoard setup
 writer = SummaryWriter('runs/addition_transformer')
