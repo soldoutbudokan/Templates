@@ -31,8 +31,13 @@ class AdditionDataset(Dataset):
         self.pad_idx = 0
         self.sos_idx = max(self.char2idx.values()) + 1
         self.char2idx['<s>'] = self.sos_idx
+        self.eos_idx = self.sos_idx + 1
+        self.char2idx['<eos>'] = self.eos_idx
         self.idx2char = {v: k for k, v in self.char2idx.items()}
         self.idx2char[self.pad_idx] = ''
+
+        # Ensure pad_idx is not equal to eos_idx
+        assert self.pad_idx != self.eos_idx, "pad_idx should not be equal to eos_idx"
 
     def __len__(self):
         return len(self.data)
@@ -42,7 +47,7 @@ class AdditionDataset(Dataset):
 
         # Convert numbers to strings
         input_str = f"{num1}+{num2}="
-        target_str = str(sum_result)
+        target_str = str(sum_result) + '<eos>'
 
         # Tokenize and pad sequences
         input_tokens = self.tokenize_and_pad(input_str, self.max_input_length)
@@ -51,12 +56,6 @@ class AdditionDataset(Dataset):
         # Ensure target_tokens has the correct length
         target_tokens = target_tokens + [self.pad_idx] * (self.max_target_length - len(target_tokens))
         target_tokens = target_tokens[:self.max_target_length]
-
-        # Assertions to check indices
-        assert max(input_tokens) < vocab_size, f"Input contains invalid index {max(input_tokens)}"
-        assert min(input_tokens) >= 0, f"Input contains negative index {min(input_tokens)}"
-        assert max(target_tokens) < vocab_size, f"Target contains invalid index {max(target_tokens)}"
-        assert min(target_tokens) >= 0, f"Target contains negative index {min(target_tokens)}"
 
         # Convert to tensors
         input_tensor = torch.tensor(input_tokens, dtype=torch.long)
@@ -141,6 +140,8 @@ def train(model, dataloader, optimizer, criterion, device, epoch, writer):
     model.train()
     total_loss = 0
     running_loss = 0
+    teacher_forcing_ratio = max(0.5 * (0.99 ** epoch), 0.1)  # Example schedule
+
     for batch_idx, (inputs, targets) in enumerate(dataloader):
         inputs = inputs.to(device).transpose(0, 1)  # Shape: [seq_len, batch_size]
         targets = targets.to(device).transpose(0, 1)  # Shape: [seq_len, batch_size]
@@ -149,27 +150,25 @@ def train(model, dataloader, optimizer, criterion, device, epoch, writer):
         tgt_output = targets[1:, :]
 
         optimizer.zero_grad()
-        output = model(inputs, tgt_input)
 
-        # Check for NaNs in model output
-        if torch.isnan(output).any():
-            print('NaN detected in model output')
-            break
+        use_teacher_forcing = True if np.random.rand() < teacher_forcing_ratio else False
+
+        if use_teacher_forcing:
+            output = model(inputs, tgt_input)
+        else:
+            # Without teacher forcing
+            decoder_input = tgt_input[:1, :]
+            outputs = []
+            for t in range(tgt_input.size(0)):
+                out = model(inputs, decoder_input)
+                top1 = out.argmax(2)[-1, :].unsqueeze(0)
+                decoder_input = torch.cat([decoder_input, top1], dim=0)
+                outputs.append(out[-1, :, :].unsqueeze(0))
+            output = torch.cat(outputs, dim=0)
 
         loss = criterion(output.view(-1, output.size(-1)), tgt_output.contiguous().view(-1))
 
-        # Check for NaNs in loss
-        if torch.isnan(loss):
-            print('NaN detected in loss')
-            break
-
         loss.backward()
-
-        # Check for NaNs in gradients
-        for name, param in model.named_parameters():
-            if param.grad is not None and torch.isnan(param.grad).any():
-                print(f'NaN detected in gradients of {name}')
-                break
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=0.5)
         optimizer.step()
@@ -186,58 +185,6 @@ def train(model, dataloader, optimizer, criterion, device, epoch, writer):
     avg_loss = total_loss / len(dataloader)
     return avg_loss
 
-def evaluate(model, dataloader, criterion, device):
-    model.eval()
-    total_loss = 0
-    total_correct = 0
-    total_count = 0
-
-    with torch.no_grad():
-        for inputs, targets in dataloader:
-            inputs = inputs.to(device).transpose(0, 1)
-            targets = targets.to(device).transpose(0, 1)
-
-            tgt_input = targets[:-1, :]
-            tgt_output = targets[1:, :]
-
-            output = model(inputs, tgt_input)
-
-            loss = criterion(output.view(-1, output.size(-1)), tgt_output.contiguous().view(-1))
-            total_loss += loss.item()
-
-            predictions = output.argmax(dim=-1)
-            # Check if the entire sequence matches
-            correct = (predictions == tgt_output).all(dim=0).sum().item()
-            total_correct += correct
-            total_count += inputs.size(1)  # batch_size
-
-    avg_loss = total_loss / len(dataloader)
-    accuracy = total_correct / total_count
-    return avg_loss, accuracy
-
-def predict_sum(model, num1, num2, device, max_input_length, max_target_length, char2idx, idx2char):
-    model.eval()
-    input_str = f"{num1}+{num2}="
-    tokens = [char2idx.get(c, 0) for c in input_str]
-    tokens = tokens + [0] * (max_input_length - len(tokens))
-    input_tensor = torch.tensor(tokens, dtype=torch.long).unsqueeze(1).to(device)  # Shape: [seq_len, 1]
-
-    decoder_input = torch.tensor([[char2idx['<s>']]], dtype=torch.long).to(device)  # Start with SOS token
-
-    result = ''
-    with torch.no_grad():
-        for i in range(max_target_length):
-            output = model(input_tensor, decoder_input)
-            prediction = output.argmax(dim=-1)[-1, :]
-            predicted_token = prediction.item()
-            if predicted_token == 0:
-                break
-            predicted_char = idx2char.get(predicted_token, '')
-            result += predicted_char
-            decoder_input = torch.cat([decoder_input, prediction.unsqueeze(0)], dim=0)
-
-    return result
-
 # %%
 # 5. Hyperparameters and setup
 # File paths for existing data
@@ -246,7 +193,7 @@ test_file = r"SyntheticData/addition_test.npy"
 
 # Create datasets and dataloaders
 max_input_length = 13  # Adjusted based on max possible input length
-max_target_length = 7   # Adjusted based on max possible target length (+1 for SOS token)
+max_target_length = 7   # Adjusted based on max possible target length (+1 for SOS token, +1 for EOS token)
 
 train_dataset = AdditionDataset(train_file, max_input_length, max_target_length)
 test_dataset = AdditionDataset(test_file, max_input_length, max_target_length)
@@ -255,8 +202,8 @@ vocab_size = max(train_dataset.char2idx.values()) + 1  # Include padding index
 pad_idx = train_dataset.pad_idx
 
 batch_size = 128
-num_epochs = 500
-learning_rate = 1e-5  # Reduced learning rate
+num_epochs = 20
+learning_rate = 1e-4
 d_model = 256
 nhead = 4
 num_encoder_layers = 3
@@ -264,7 +211,6 @@ num_decoder_layers = 3
 dim_feedforward = 1024
 dropout = 0.1
 
-# Force device to CPU for testing
 device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
 print(f"Using device: {device}")
 
@@ -279,6 +225,7 @@ model = TransformerModel(vocab_size=vocab_size, d_model=d_model, nhead=nhead, nu
 # %%
 # 7. Loss function and optimizer
 criterion = nn.CrossEntropyLoss(ignore_index=pad_idx)
+
 optimizer = optim.AdamW(
     model.parameters(),
     lr=learning_rate,
@@ -286,6 +233,7 @@ optimizer = optim.AdamW(
     eps=1e-9,
     weight_decay=0  # Set to zero for now
 )
+
 
 # %%
 # 8. TensorBoard setup
@@ -295,27 +243,36 @@ writer = SummaryWriter('runs/addition_transformer')
 # 9. Training loop and tests
 training_losses = []
 validation_losses = []
-validation_accuracies = []
+validation_seq_accuracies = []
+validation_token_accuracies = []
 
-best_accuracy = 0
+best_seq_accuracy = 0
 for epoch in range(num_epochs):
     avg_train_loss = train(model, train_loader, optimizer, criterion, device, epoch, writer)
     training_losses.append(avg_train_loss)
 
-    val_loss, val_accuracy = evaluate(model, test_loader, criterion, device)
+    val_loss, val_seq_accuracy, val_token_accuracy = evaluate(model, test_loader, criterion, device, train_dataset.idx2char)
     validation_losses.append(val_loss)
-    validation_accuracies.append(val_accuracy)
+    validation_seq_accuracies.append(val_seq_accuracy)
+    validation_token_accuracies.append(val_token_accuracy)
 
-    print(f'Epoch {epoch+1}, Validation Loss: {val_loss:.4f}, Accuracy: {val_accuracy:.4f}')
+    print(f'Epoch {epoch+1}, Validation Loss: {val_loss:.4f}, Seq Accuracy: {val_seq_accuracy:.4f}, Token Accuracy: {val_token_accuracy:.4f}')
     writer.add_scalar('Validation Loss', val_loss, epoch)
-    writer.add_scalar('Validation Accuracy', val_accuracy, epoch)
+    writer.add_scalar('Validation Sequence Accuracy', val_seq_accuracy, epoch)
+    writer.add_scalar('Validation Token Accuracy', val_token_accuracy, epoch)
 
-    # Save the best model
-    if val_accuracy > best_accuracy:
-        best_accuracy = val_accuracy
+    # Save the best model based on sequence accuracy
+    if val_seq_accuracy > best_seq_accuracy:
+        best_seq_accuracy = val_seq_accuracy
         torch.save(model.state_dict(), 'best_model.pth')
 
-print(f'Best Validation Accuracy: {best_accuracy:.4f}')
+    # Print an example prediction
+    example_num1 = np.random.randint(0, 1000)
+    example_num2 = np.random.randint(0, 1000)
+    predicted_sum = predict_sum(model, example_num1, example_num2, device, max_input_length, max_target_length, train_dataset.char2idx, train_dataset.idx2char)
+    print(f"Example Prediction: {example_num1} + {example_num2} = {predicted_sum}")
+
+print(f'Best Validation Sequence Accuracy: {best_seq_accuracy:.4f}')
 writer.close()
 
 # Plot training and validation loss
@@ -329,13 +286,14 @@ plt.title('Training and Validation Loss')
 plt.savefig(os.path.join(output_dir, 'loss_plot.png'))
 plt.close()
 
-# Plot validation accuracy
+# Plot validation accuracies
 plt.figure()
-plt.plot(range(1, num_epochs+1), validation_accuracies, label='Validation Accuracy')
+plt.plot(range(1, num_epochs+1), validation_seq_accuracies, label='Sequence Accuracy')
+plt.plot(range(1, num_epochs+1), validation_token_accuracies, label='Token Accuracy')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
-plt.title('Validation Accuracy')
+plt.title('Validation Accuracies')
 plt.savefig(os.path.join(output_dir, 'accuracy_plot.png'))
 plt.close()
 
@@ -346,4 +304,4 @@ model.load_state_dict(torch.load('best_model.pth', map_location=device))
 num1 = 123
 num2 = 678
 predicted_sum = predict_sum(model, num1, num2, device, max_input_length, max_target_length, train_dataset.char2idx, train_dataset.idx2char)
-print(f"Prediction: {num1} + {num2} = {predicted_sum}")
+print(f"Final Prediction: {num1} + {num2} = {predicted_sum}")
