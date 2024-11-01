@@ -1,17 +1,29 @@
 import numpy as np
 import os
 
-def generate_addition_data(filename, num_examples, min_num=0, max_num=999):
-    # Generate random numbers for 'a' and 'b'
-    a = np.random.randint(min_num, max_num + 1, num_examples, dtype=np.int32)
-    b = np.random.randint(min_num, max_num + 1, num_examples, dtype=np.int32)
-    c = a + b  # Calculate sum
-    data = np.stack((a, b, c), axis=1)
+def generate_and_split_data(train_filename, test_filename, min_num=0, max_num=999, train_ratio=0.8):
+    # Generate all possible combinations of 'a' and 'b'
+    a = np.arange(min_num, max_num + 1)
+    b = np.arange(min_num, max_num + 1)
+    A, B = np.meshgrid(a, b)
+    a_flat = A.flatten()
+    b_flat = B.flatten()
+    c_flat = a_flat + b_flat
+    data = np.stack((a_flat, b_flat, c_flat), axis=1)
     
-    # Save data to a binary file in .npy format
-    np.save(filename, data)
+    # Shuffle data
+    np.random.shuffle(data)
     
-    return filename
+    # Split data
+    num_examples = data.shape[0]
+    num_train_examples = int(num_examples * train_ratio)
+    train_data = data[:num_train_examples]
+    test_data = data[num_train_examples:]
+    
+    # Save data to binary files in .npy format
+    np.save(train_filename, train_data)
+    np.save(test_filename, test_data)
+    return train_filename, test_filename
 
 def load_data(filename, mmap_mode=None):
     return np.load(filename, mmap_mode=mmap_mode)
@@ -24,15 +36,10 @@ synthetic_data_folder = os.path.join(current_dir, "SyntheticData")
 if not os.path.exists(synthetic_data_folder):
     os.makedirs(synthetic_data_folder)
 
-# Generate training data
-num_train_examples = 800000  # 800,000 examples for training
+# Generate and split data
 train_file = os.path.join(synthetic_data_folder, 'addition_train.npy')
-generate_addition_data(train_file, num_train_examples)
-
-# Generate test data
-num_test_examples = 200000  # 200,000 examples for testing
 test_file = os.path.join(synthetic_data_folder, 'addition_test.npy')
-generate_addition_data(test_file, num_test_examples, min_num=0, max_num=999)
+generate_and_split_data(train_file, test_file)
 
 # Load data
 train_data = load_data(train_file, mmap_mode='r')
