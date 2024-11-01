@@ -36,9 +36,6 @@ class AdditionDataset(Dataset):
         self.idx2char = {v: k for k, v in self.char2idx.items()}
         self.idx2char[self.pad_idx] = ''
 
-        # Ensure pad_idx is not equal to eos_idx
-        assert self.pad_idx != self.eos_idx, "pad_idx should not be equal to eos_idx"
-
     def __len__(self):
         return len(self.data)
 
@@ -47,15 +44,23 @@ class AdditionDataset(Dataset):
 
         # Convert numbers to strings
         input_str = f"{num1}+{num2}="
-        target_str = str(sum_result) + '<eos>'
+        target_str = str(sum_result)
 
         # Tokenize and pad sequences
         input_tokens = self.tokenize_and_pad(input_str, self.max_input_length)
-        target_tokens = [self.sos_idx] + self.tokenize_and_pad(target_str, self.max_target_length - 1)
 
-        # Ensure target_tokens has the correct length
+        # Create target tokens with <sos> and <eos>
+        target_tokens = [self.sos_idx] + [self.char2idx.get(c, self.pad_idx) for c in target_str] + [self.eos_idx]
+
+        # Pad target tokens
         target_tokens = target_tokens + [self.pad_idx] * (self.max_target_length - len(target_tokens))
         target_tokens = target_tokens[:self.max_target_length]
+
+        # Assertions to check indices
+        assert max(input_tokens) < vocab_size, f"Input contains invalid index {max(input_tokens)}"
+        assert min(input_tokens) >= 0, f"Input contains negative index {min(input_tokens)}"
+        assert max(target_tokens) < vocab_size, f"Target contains invalid index {max(target_tokens)}"
+        assert min(target_tokens) >= 0, f"Target contains negative index {min(target_tokens)}"
 
         # Convert to tensors
         input_tensor = torch.tensor(input_tokens, dtype=torch.long)
@@ -140,8 +145,6 @@ def train(model, dataloader, optimizer, criterion, device, epoch, writer):
     model.train()
     total_loss = 0
     running_loss = 0
-    teacher_forcing_ratio = max(0.5 * (0.99 ** epoch), 0.1)  # Example schedule
-
     for batch_idx, (inputs, targets) in enumerate(dataloader):
         inputs = inputs.to(device).transpose(0, 1)  # Shape: [seq_len, batch_size]
         targets = targets.to(device).transpose(0, 1)  # Shape: [seq_len, batch_size]
@@ -150,21 +153,7 @@ def train(model, dataloader, optimizer, criterion, device, epoch, writer):
         tgt_output = targets[1:, :]
 
         optimizer.zero_grad()
-
-        use_teacher_forcing = True if np.random.rand() < teacher_forcing_ratio else False
-
-        if use_teacher_forcing:
-            output = model(inputs, tgt_input)
-        else:
-            # Without teacher forcing
-            decoder_input = tgt_input[:1, :]
-            outputs = []
-            for t in range(tgt_input.size(0)):
-                out = model(inputs, decoder_input)
-                top1 = out.argmax(2)[-1, :].unsqueeze(0)
-                decoder_input = torch.cat([decoder_input, top1], dim=0)
-                outputs.append(out[-1, :, :].unsqueeze(0))
-            output = torch.cat(outputs, dim=0)
+        output = model(inputs, tgt_input)
 
         loss = criterion(output.view(-1, output.size(-1)), tgt_output.contiguous().view(-1))
 
@@ -185,6 +174,122 @@ def train(model, dataloader, optimizer, criterion, device, epoch, writer):
     avg_loss = total_loss / len(dataloader)
     return avg_loss
 
+def evaluate(model, dataloader, criterion, device, idx2char):
+    model.eval()
+    total_loss = 0
+    total_seq_correct = 0
+    total_token_correct = 0
+    total_token_count = 0
+    total_count = 0
+    incorrect_examples = []
+
+    with torch.no_grad():
+        for inputs, targets in dataloader:
+            inputs = inputs.to(device).transpose(0, 1)
+            targets = targets.to(device).transpose(0, 1)
+
+            batch_size = inputs.size(1)
+            max_target_len = targets.size(0) - 1  # Exclude the initial SOS token
+
+            # Initialize decoder input with SOS token
+            decoder_input = torch.full((1, batch_size), train_dataset.sos_idx, dtype=torch.long, device=device)
+
+            outputs = []
+            batch_finished = torch.zeros(batch_size, dtype=torch.bool, device=device)
+
+            for t in range(max_target_len):
+                output = model(inputs, decoder_input)
+                next_token = output.argmax(dim=-1)[-1, :]  # Shape: [batch_size]
+                next_token[batch_finished] = train_dataset.pad_idx  # Ignore predictions for finished sequences
+                outputs.append(next_token.unsqueeze(0))  # Shape: [1, batch_size]
+                decoder_input = torch.cat([decoder_input, next_token.unsqueeze(0)], dim=0)
+                batch_finished |= (next_token == train_dataset.eos_idx)
+                if batch_finished.all():
+                    break
+
+            outputs = torch.cat(outputs, dim=0)  # Shape: [seq_len, batch_size]
+            tgt_output = targets[1:, :]  # Exclude SOS token in target
+
+            # Pad outputs to match tgt_output length
+            if outputs.size(0) < tgt_output.size(0):
+                pad_size = tgt_output.size(0) - outputs.size(0)
+                outputs = torch.cat([outputs, torch.full((pad_size, batch_size), train_dataset.pad_idx, dtype=torch.long, device=device)], dim=0)
+            else:
+                outputs = outputs[:tgt_output.size(0), :]
+
+            # Compute loss using teacher forcing for fair comparison
+            tgt_input = targets[:-1, :]
+            output_tf = model(inputs, tgt_input)
+            loss = criterion(output_tf.view(-1, output_tf.size(-1)), tgt_output.contiguous().view(-1))
+            total_loss += loss.item()
+
+            # Create mask to ignore positions after eos in both outputs and targets
+            tgt_masks = []
+            for i in range(batch_size):
+                eos_positions = (tgt_output[:, i] == train_dataset.eos_idx).nonzero(as_tuple=False)
+                if len(eos_positions) > 0:
+                    eos_position = eos_positions[0].item()
+                    mask = torch.zeros_like(tgt_output[:, i], dtype=torch.bool)
+                    mask[:eos_position + 1] = True  # Include eos_idx
+                else:
+                    mask = torch.ones_like(tgt_output[:, i], dtype=torch.bool)
+                tgt_masks.append(mask.unsqueeze(1))
+            tgt_mask = torch.cat(tgt_masks, dim=1)  # Shape: [seq_len, batch_size]
+
+            # Sequence-level accuracy
+            seq_correct = (((outputs == tgt_output) | ~tgt_mask).all(dim=0)).sum().item()
+            total_seq_correct += seq_correct
+
+            # Token-level accuracy
+            token_correct = ((outputs == tgt_output) & tgt_mask).sum().item()
+            total_token_correct += token_correct
+            total_token_count += tgt_mask.sum().item()
+
+            total_count += batch_size
+
+            # Collect incorrect examples
+            for i in range(batch_size):
+                predicted_seq = ''.join([idx2char.get(tok.item(), '') for tok in outputs[:, i] if tok.item() != train_dataset.pad_idx])
+                target_seq = ''.join([idx2char.get(tok.item(), '') for tok in tgt_output[:, i] if tok.item() != train_dataset.pad_idx])
+                if predicted_seq != target_seq and len(incorrect_examples) < 5:
+                    incorrect_examples.append((predicted_seq, target_seq))
+
+    avg_loss = total_loss / len(dataloader)
+    seq_accuracy = total_seq_correct / total_count
+    token_accuracy = total_token_correct / total_token_count
+
+    # Print some incorrect examples
+    if incorrect_examples:
+        print("\nSample Incorrect Predictions:")
+        for pred, tgt in incorrect_examples:
+            print(f"Predicted: '{pred}', Target: '{tgt}'")
+        print()
+
+    return avg_loss, seq_accuracy, token_accuracy
+
+def predict_sum(model, num1, num2, device, max_input_length, max_target_length, char2idx, idx2char):
+    model.eval()
+    input_str = f"{num1}+{num2}="
+    tokens = [char2idx.get(c, 0) for c in input_str]
+    tokens = tokens + [0] * (max_input_length - len(tokens))
+    input_tensor = torch.tensor(tokens, dtype=torch.long).unsqueeze(1).to(device)  # Shape: [seq_len, 1]
+
+    decoder_input = torch.tensor([[char2idx['<s>']]], dtype=torch.long).to(device)  # Start with SOS token
+
+    result = ''
+    with torch.no_grad():
+        for i in range(max_target_length):
+            output = model(input_tensor, decoder_input)
+            prediction = output.argmax(dim=-1)[-1, :]
+            predicted_token = prediction.item()
+            if predicted_token == char2idx['<eos>']:
+                break
+            predicted_char = idx2char.get(predicted_token, '')
+            result += predicted_char
+            decoder_input = torch.cat([decoder_input, prediction.unsqueeze(0)], dim=0)
+
+    return result
+
 # %%
 # 5. Hyperparameters and setup
 # File paths for existing data
@@ -193,7 +298,7 @@ test_file = r"SyntheticData/addition_test.npy"
 
 # Create datasets and dataloaders
 max_input_length = 13  # Adjusted based on max possible input length
-max_target_length = 7   # Adjusted based on max possible target length (+1 for SOS token, +1 for EOS token)
+max_target_length = 6   # Adjusted based on max possible target length (4 digits + SOS + EOS)
 
 train_dataset = AdditionDataset(train_file, max_input_length, max_target_length)
 test_dataset = AdditionDataset(test_file, max_input_length, max_target_length)
@@ -202,8 +307,8 @@ vocab_size = max(train_dataset.char2idx.values()) + 1  # Include padding index
 pad_idx = train_dataset.pad_idx
 
 batch_size = 128
-num_epochs = 20
-learning_rate = 1e-4
+num_epochs = 20  # Adjusted for testing
+learning_rate = 1e-4  # Increased learning rate
 d_model = 256
 nhead = 4
 num_encoder_layers = 3
@@ -225,7 +330,6 @@ model = TransformerModel(vocab_size=vocab_size, d_model=d_model, nhead=nhead, nu
 # %%
 # 7. Loss function and optimizer
 criterion = nn.CrossEntropyLoss(ignore_index=pad_idx)
-
 optimizer = optim.AdamW(
     model.parameters(),
     lr=learning_rate,
@@ -233,7 +337,6 @@ optimizer = optim.AdamW(
     eps=1e-9,
     weight_decay=0  # Set to zero for now
 )
-
 
 # %%
 # 8. TensorBoard setup
