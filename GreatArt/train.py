@@ -1,18 +1,36 @@
+import os
+import zipfile
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import zipfile
-import os
 import numpy as np
-import kagglehub
+import kaggle
 
-# Download the dataset
-path = kagglehub.dataset_download("ikarus777/best-artworks-of-all-time")
-print("Path to dataset files:", path)
+# Define the Kaggle dataset
+dataset = 'ikarus777/best-artworks-of-all-time'
 
-# Extract the resized images
-resized_zip_path = os.path.join(path, 'resized.zip')
+# Set the download path
+download_path = './kaggle_dataset'
+
+# Create the directory if it doesn't exist
+os.makedirs(download_path, exist_ok=True)
+
+# Authenticate with Kaggle API
+kaggle.api.authenticate()
+
+# Download 'resized.zip' from the dataset
+kaggle.api.dataset_download_file(
+    dataset,
+    file_name='resized.zip',
+    path=download_path,
+    force=True
+)
+
+# Path to the downloaded zip file
+resized_zip_path = os.path.join(download_path, 'resized.zip')
+
+# Extract the zip file
 with zipfile.ZipFile(resized_zip_path, 'r') as zip_ref:
     zip_ref.extractall('./resized_images')
 
@@ -56,9 +74,9 @@ class Patches(layers.Layer):
         batch_size = tf.shape(images)[0]
         patches = tf.image.extract_patches(
             images=images,
-            sizes=[1, self.patch_size, self.patch_size,1],
-            strides=[1, self.patch_size, self.patch_size,1],
-            rates=[1,1,1,1],
+            sizes=[1, self.patch_size, self.patch_size, 1],
+            strides=[1, self.patch_size, self.patch_size, 1],
+            rates=[1, 1, 1, 1],
             padding='VALID'
         )
         patch_dims = patches.shape[-1]
