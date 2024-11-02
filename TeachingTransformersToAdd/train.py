@@ -308,12 +308,12 @@ pad_idx = train_dataset.pad_idx
 
 batch_size = 128
 num_epochs = 20  # Adjusted for testing
-learning_rate = 1e-4  # Increased learning rate
-d_model = 256
+learning_rate = 5e-5  # Increased learning rate
+d_model = 64
 nhead = 4
 num_encoder_layers = 3
 num_decoder_layers = 3
-dim_feedforward = 1024
+dim_feedforward = 256
 dropout = 0.1
 
 device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
