@@ -84,11 +84,11 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
 
 # Model parameters (must match training parameters)
 vocab_size = 16  # Adjusted to match training (0-15 indices)
-d_model = 256
+d_model = 64     # Adjusted to match training (was 256)
 nhead = 4
 num_encoder_layers = 3
 num_decoder_layers = 3
-dim_feedforward = 1024
+dim_feedforward = 256  # Adjusted to match training (was 1024)
 dropout = 0.1
 pad_idx = 0
 max_input_length = 13
