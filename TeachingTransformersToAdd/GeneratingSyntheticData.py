@@ -28,6 +28,14 @@ def generate_and_split_data(train_filename, test_filename, min_num=0, max_num=99
 def load_data(filename, mmap_mode=None):
     return np.load(filename, mmap_mode=mmap_mode)
 
+def generate_wild_ood_test_data(filename, num_samples=10000, min_num=1000, max_num=9999):
+    # Generate random four-digit addition problems
+    a = np.random.randint(min_num, max_num + 1, size=num_samples)
+    b = np.random.randint(min_num, max_num + 1, size=num_samples)
+    c = a + b
+    data = np.stack((a, b, c), axis=1)
+    np.save(filename, data)
+
 # Get the directory of the current script
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -41,12 +49,18 @@ train_file = os.path.join(synthetic_data_folder, 'addition_train.npy')
 test_file = os.path.join(synthetic_data_folder, 'addition_test.npy')
 generate_and_split_data(train_file, test_file)
 
+# Generate WildOODtest data
+wild_ood_test_file = os.path.join(synthetic_data_folder, 'addition_wild_ood_test.npy')
+generate_wild_ood_test_data(wild_ood_test_file)
+
 # Load data
 train_data = load_data(train_file, mmap_mode='r')
 test_data = load_data(test_file, mmap_mode='r')
+wild_ood_test_data = load_data(wild_ood_test_file, mmap_mode='r')
 
 print(f"Training set size: {len(train_data)}")
 print(f"Test set size: {len(test_data)}")
+print(f"Wild OOD Test set size: {len(wild_ood_test_data)}")
 
 print(f"\nData saved in: {os.path.abspath(synthetic_data_folder)}")
 
@@ -58,6 +72,11 @@ for i in range(5):
 print("\nSample of test data:")
 for i in range(5):
     a, b, sum_ = test_data[i]
+    print(f"{a} + {b} = {sum_}")
+
+print("\nSample of Wild OOD Test data:")
+for i in range(5):
+    a, b, sum_ = wild_ood_test_data[i]
     print(f"{a} + {b} = {sum_}")
 
 # Function to convert numbers to string representation (for tokenization)

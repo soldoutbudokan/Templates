@@ -84,15 +84,15 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
 
 # Model parameters (must match training parameters)
 vocab_size = 16  # Adjusted to match training (0-15 indices)
-d_model = 64     # Adjusted to match training (was 256)
+d_model = 64     # Adjusted to match training
 nhead = 4
 num_encoder_layers = 3
 num_decoder_layers = 3
-dim_feedforward = 256  # Adjusted to match training (was 1024)
+dim_feedforward = 256
 dropout = 0.1
 pad_idx = 0
 max_input_length = 13
-max_target_length = 6
+max_target_length = 7  # Updated to match training
 
 # Character to index mapping (must match training)
 char2idx = {str(i): i+1 for i in range(10)}  # '0'-'9' -> 1-10
@@ -123,15 +123,15 @@ model.eval()
 
 # Example usage
 def calculate_sum(num1, num2):
-    if not (0 <= num1 <= 999 and 0 <= num2 <= 999):
-        return "Numbers must be between 0 and 999"
+    if not (0 <= num1 <= 9999 and 0 <= num2 <= 9999):
+        return "Numbers must be between 0 and 9999"
     result = predict_sum(model, num1, num2, device, max_input_length, max_target_length, char2idx, idx2char)
     return result
 
 # Interactive loop
 if __name__ == "__main__":
     print("Addition Calculator (enter 'q' to quit)")
-    print("Numbers should be between 0 and 999")
+    print("Numbers should be between 0 and 9999")
     
     while True:
         try:
