@@ -295,13 +295,15 @@ def predict_sum(model, num1, num2, device, max_input_length, max_target_length, 
 # File paths for existing data
 train_file = r"SyntheticData/addition_train.npy"
 test_file = r"SyntheticData/addition_test.npy"
+wild_ood_test_file = r"SyntheticData/addition_wild_ood_test.npy"
 
 # Create datasets and dataloaders
 max_input_length = 13  # Adjusted based on max possible input length
-max_target_length = 6   # Adjusted based on max possible target length (4 digits + SOS + EOS)
+max_target_length = 7   # Adjusted based on max possible target length (5 digits + SOS + EOS)
 
 train_dataset = AdditionDataset(train_file, max_input_length, max_target_length)
 test_dataset = AdditionDataset(test_file, max_input_length, max_target_length)
+wild_ood_test_dataset = AdditionDataset(wild_ood_test_file, max_input_length, max_target_length)
 
 vocab_size = max(train_dataset.char2idx.values()) + 1  # Include padding index
 pad_idx = train_dataset.pad_idx
@@ -321,6 +323,7 @@ print(f"Using device: {device}")
 
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, drop_last=True)
+wild_ood_test_loader = DataLoader(wild_ood_test_dataset, batch_size=batch_size, drop_last=True)
 
 # %%
 # 6. Initialize the model
@@ -348,6 +351,9 @@ training_losses = []
 validation_losses = []
 validation_seq_accuracies = []
 validation_token_accuracies = []
+wild_ood_losses = []
+wild_ood_seq_accuracies = []
+wild_ood_token_accuracies = []
 
 best_seq_accuracy = 0
 for epoch in range(num_epochs):
@@ -359,44 +365,58 @@ for epoch in range(num_epochs):
     validation_seq_accuracies.append(val_seq_accuracy)
     validation_token_accuracies.append(val_token_accuracy)
 
+    wild_ood_loss, wild_ood_seq_accuracy, wild_ood_token_accuracy = evaluate(model, wild_ood_test_loader, criterion, device, train_dataset.idx2char)
+    wild_ood_losses.append(wild_ood_loss)
+    wild_ood_seq_accuracies.append(wild_ood_seq_accuracy)
+    wild_ood_token_accuracies.append(wild_ood_token_accuracy)
+
     print(f'Epoch {epoch+1}, Validation Loss: {val_loss:.4f}, Seq Accuracy: {val_seq_accuracy:.4f}, Token Accuracy: {val_token_accuracy:.4f}')
+    print(f'Epoch {epoch+1}, Wild OOD Loss: {wild_ood_loss:.4f}, Seq Accuracy: {wild_ood_seq_accuracy:.4f}, Token Accuracy: {wild_ood_token_accuracy:.4f}')
+
+    writer.add_scalar('Training Loss', avg_train_loss, epoch)
     writer.add_scalar('Validation Loss', val_loss, epoch)
     writer.add_scalar('Validation Sequence Accuracy', val_seq_accuracy, epoch)
     writer.add_scalar('Validation Token Accuracy', val_token_accuracy, epoch)
+    writer.add_scalar('Wild OOD Loss', wild_ood_loss, epoch)
+    writer.add_scalar('Wild OOD Sequence Accuracy', wild_ood_seq_accuracy, epoch)
+    writer.add_scalar('Wild OOD Token Accuracy', wild_ood_token_accuracy, epoch)
 
-    # Save the best model based on sequence accuracy
+    # Save the best model based on sequence accuracy on validation set
     if val_seq_accuracy > best_seq_accuracy:
         best_seq_accuracy = val_seq_accuracy
         torch.save(model.state_dict(), 'best_model.pth')
 
     # Print an example prediction
-    example_num1 = np.random.randint(0, 1000)
-    example_num2 = np.random.randint(0, 1000)
+    example_num1 = np.random.randint(0, 10000)
+    example_num2 = np.random.randint(0, 10000)
     predicted_sum = predict_sum(model, example_num1, example_num2, device, max_input_length, max_target_length, train_dataset.char2idx, train_dataset.idx2char)
     print(f"Example Prediction: {example_num1} + {example_num2} = {predicted_sum}")
 
 print(f'Best Validation Sequence Accuracy: {best_seq_accuracy:.4f}')
 writer.close()
 
-# Plot training and validation loss
+# Plot training, validation, and Wild OOD losses
 plt.figure()
 plt.plot(range(1, num_epochs+1), training_losses, label='Training Loss')
 plt.plot(range(1, num_epochs+1), validation_losses, label='Validation Loss')
+plt.plot(range(1, num_epochs+1), wild_ood_losses, label='Wild OOD Loss', color='purple')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()
-plt.title('Training and Validation Loss')
+plt.title('Losses')
 plt.savefig(os.path.join(output_dir, 'loss_plot.png'))
 plt.close()
 
-# Plot validation accuracies
+# Plot validation and Wild OOD accuracies
 plt.figure()
-plt.plot(range(1, num_epochs+1), validation_seq_accuracies, label='Sequence Accuracy')
-plt.plot(range(1, num_epochs+1), validation_token_accuracies, label='Token Accuracy')
+plt.plot(range(1, num_epochs+1), validation_seq_accuracies, label='Validation Sequence Accuracy')
+plt.plot(range(1, num_epochs+1), validation_token_accuracies, label='Validation Token Accuracy')
+plt.plot(range(1, num_epochs+1), wild_ood_seq_accuracies, label='Wild OOD Sequence Accuracy', color='purple')
+plt.plot(range(1, num_epochs+1), wild_ood_token_accuracies, label='Wild OOD Token Accuracy', color='pink')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
-plt.title('Validation Accuracies')
+plt.title('Validation and Wild OOD Accuracies')
 plt.savefig(os.path.join(output_dir, 'accuracy_plot.png'))
 plt.close()
 
@@ -404,7 +424,7 @@ plt.close()
 model.load_state_dict(torch.load('best_model.pth', map_location=device))
 
 # Test the model with an example
-num1 = 123
-num2 = 678
+num1 = 1234
+num2 = 5678
 predicted_sum = predict_sum(model, num1, num2, device, max_input_length, max_target_length, train_dataset.char2idx, train_dataset.idx2char)
 print(f"Final Prediction: {num1} + {num2} = {predicted_sum}")
