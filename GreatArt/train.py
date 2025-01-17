@@ -14,7 +14,7 @@ os.makedirs(kaggle_dir, exist_ok=True)
 
 credentials = {
     "username": "soldoutbudokan",
-    "key": "d9ee0aab5179b72286b3360eab0a69e0"
+    "key": "c7611eb705a967e377ce5416ac014472"
 }
 with open(os.path.join(kaggle_dir, 'kaggle.json'), 'w') as f:
     json.dump(credentials, f)
