@@ -18,8 +18,12 @@ if (!require("pacman")) install.packages("pacman")
 
 # Load (and install if necessary) required packages
 pacman::p_load(
-  tidyverse, haven, fixest, modelsummary,
-  ggplot2, here
+  tidyverse,
+  ggplot2,
+  lubridate,     # Date handling
+  janitor,       # Clean column names
+  readxl,
+  tidytext
 )
 
 # Set core project paths
