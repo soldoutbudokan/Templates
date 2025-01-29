@@ -1,220 +1,161 @@
-import os
-import json
-import shutil
-import pandas as pd
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import numpy as np
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader
+from torchvision import transforms
+from PIL import Image
+from pathlib import Path
 
-# Set up Kaggle credentials
-kaggle_dir = os.path.expanduser('~/.kaggle')
-os.makedirs(kaggle_dir, exist_ok=True)
+# ------------------------------------------------
+# Dataset (same as before)
+# ------------------------------------------------
+class ArtworkDataset(torch.utils.data.Dataset):
+    def __init__(self, root_dir, transform=None):
+        self.root_dir = Path(root_dir)
+        self.transform = transform
+        self.classes = sorted([d.name for d in self.root_dir.iterdir() if d.is_dir()])
+        self.class_to_idx = {cls_name: i for i, cls_name in enumerate(self.classes)}
+        self.images = []
+        for class_dir in self.root_dir.iterdir():
+            if class_dir.is_dir():
+                for img_path in class_dir.glob('*.*'):
+                    self.images.append((str(img_path), self.class_to_idx[class_dir.name]))
 
-credentials = {
-    "username": "soldoutbudokan",
-    "key": "c7611eb705a967e377ce5416ac014472"
-}
-with open(os.path.join(kaggle_dir, 'kaggle.json'), 'w') as f:
-    json.dump(credentials, f)
+    def __len__(self):
+        return len(self.images)
 
-os.chmod(os.path.join(kaggle_dir, 'kaggle.json'), 0o600)
+    def __getitem__(self, idx):
+        img_path, label = self.images[idx]
+        image = Image.open(img_path).convert('RGB')
+        if self.transform:
+            image = self.transform(image)
+        return image, label
 
-import kaggle
-kaggle.api.authenticate()
+# ------------------------------------------------
+# Simple CNN
+# ------------------------------------------------
+class SimpleCNN(nn.Module):
+    def __init__(self, num_classes):
+        super(SimpleCNN, self).__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 32, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(2),  # 32 x 112 x 112
 
-# Download dataset with correct format
-print("Downloading dataset...")
-owner_slug = "ikarus777"
-dataset_slug = "best-artworks-of-all-time"
-download_path = './kaggle_dataset'
-os.makedirs(download_path, exist_ok=True)
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(2),  # 64 x 56 x 56
 
-kaggle.api.dataset_download_files(
-    dataset=f"{owner_slug}/{dataset_slug}",
-    path=download_path,
-    unzip=True
-)
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(2),  # 128 x 28 x 28
+        )
+        # Compute the flattened size:
+        # After 3 pooling layers, each dimension is 224/(2^3) = 28
+        # So feature map size is 128 * 28 * 28 = 128 * 784 = 100352
+        self.classifier = nn.Sequential(
+            nn.Linear(128 * 28 * 28, 256),
+            nn.ReLU(inplace=True),
+            nn.Dropout(0.5),
+            nn.Linear(256, num_classes)
+        )
 
-# Update training directory path
-train_dir = os.path.join(download_path, 'resized')
+    def forward(self, x):
+        x = self.features(x)
+        x = x.view(x.size(0), -1)  # Flatten
+        x = self.classifier(x)
+        return x
 
-# ------------------------------------------------------
-# 1. Read artist data from CSV to get counts per artist
-# ------------------------------------------------------
-artists_csv = "kaggle_dataset/artists.csv"  # relative path
-df_artists = pd.read_csv(artists_csv)
+# ------------------------------------------------
+# Training function (same as before)
+# ------------------------------------------------
+def train_model(model, train_loader, val_loader, criterion, optimizer,
+                num_epochs, device):
+    print(f"Starting training on {device}")
+    model.to(device)
+    if isinstance(criterion, nn.Module):
+        criterion.to(device)
+    
+    for epoch in range(num_epochs):
+        model.train()
+        running_loss = 0.0
+        correct = 0
+        total = 0
+        
+        for inputs, labels in train_loader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            optimizer.zero_grad()
+            
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            
+            running_loss += loss.item()
+            _, predicted = outputs.max(dim=1)
+            total += labels.size(0)
+            correct += predicted.eq(labels).sum().item()
+        
+        # Validation
+        model.eval()
+        val_loss = 0.0
+        val_correct = 0
+        val_total = 0
+        
+        with torch.no_grad():
+            for inputs, labels in val_loader:
+                inputs, labels = inputs.to(device), labels.to(device)
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                val_loss += loss.item()
+                
+                _, predicted = outputs.max(dim=1)
+                val_total += labels.size(0)
+                val_correct += predicted.eq(labels).sum().item()
+        
+        print(f"Epoch {epoch+1}/{num_epochs}:")
+        print(f"  Train Loss: {running_loss/len(train_loader):.3f} | "
+              f"Train Acc: {100.*correct/total:.2f}%")
+        print(f"  Val   Loss: {val_loss/len(val_loader):.3f} | "
+              f"Val   Acc: {100.*val_correct/val_total:.2f}%")
 
-# We assume the CSV has columns: ['name', 'paintings']
-# Construct a dict of {artist_name: count_of_paintings}
-artist_counts = dict(zip(df_artists['name'], df_artists['paintings']))
+# ------------------------------------------------
+# Main
+# ------------------------------------------------
+if __name__ == "__main__":
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
+    ])
+    
+    data_dir = "kaggle_dataset/images/images"
+    full_dataset = ArtworkDataset(data_dir, transform=transform)
+    
+    # Train/validation split
+    train_size = int(0.8 * len(full_dataset))
+    val_size = len(full_dataset) - train_size
+    train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
+    
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
+    
+    num_classes = len(full_dataset.classes)
 
-# ------------------------------------------------------
-# 2. Prepare directory for images
-#    Images are under "kaggle_dataset/resized/resized"
-# ------------------------------------------------------
-data_dir = "kaggle_dataset/images/images"  # adapt if needed
+    # Replace VisionTransformer with the SimpleCNN
+    model = SimpleCNN(num_classes=num_classes)
+    
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-# ------------------------------------------------------
-# 3. Build class_weight for all classes
-#    We'll do this AFTER the generators are created,
-#    because we need to map class_index -> class_name
-# ------------------------------------------------------
-batch_size = 16
-img_height = 224
-img_width = 224
-
-train_datagen = ImageDataGenerator(
-    rescale=1./255,
-    validation_split=0.2  # 20% of data for validation
-)
-
-train_generator = train_datagen.flow_from_directory(
-    data_dir,
-    target_size=(img_height, img_width),
-    batch_size=batch_size,
-    subset='training',
-    class_mode='categorical'
-)
-
-validation_generator = train_datagen.flow_from_directory(
-    data_dir,
-    target_size=(img_height, img_width),
-    batch_size=batch_size,
-    subset='validation',
-    class_mode='categorical'
-)
-
-# Check discovered classes
-print("Class indices:", train_generator.class_indices)
-num_classes = train_generator.num_classes
-print("Total classes:", num_classes)
-
-# Construct class_weight based on inverse frequency (or another formula)
-# sum(counts) / (num_classes * class_count)
-total_images = sum(artist_counts.values())
-class_weight = {}
-
-for artist_name, class_idx in train_generator.class_indices.items():
-    # Some folders might not match CSV exactly; ensure they match
-    # If your folder name is "Albrecht_Dürer" but CSV says "Albrecht_Dürer",
-    # fix them or do a matching step. We'll assume they match for now.
-    if artist_name in artist_counts:
-        count = artist_counts[artist_name]
-        weight = total_images / (num_classes * count)
-        class_weight[class_idx] = weight
+    # Select device
+    if torch.backends.mps.is_available():
+        device = torch.device("mps")
+    elif torch.cuda.is_available():
+        device = torch.device("cuda")
     else:
-        # If an artist folder doesn't appear in CSV, assign weight 1
-        class_weight[class_idx] = 1.0
-
-print("Class Weights:", class_weight)
-
-# ------------------------------------------------------
-# 4. Define Patches and PatchEncoder Layers (unchanged)
-# ------------------------------------------------------
-class Patches(layers.Layer):
-    def __init__(self, patch_size):
-        super(Patches, self).__init__()
-        self.patch_size = patch_size
-        
-    def call(self, images):
-        batch_size = tf.shape(images)[0]
-        patches = tf.image.extract_patches(
-            images=images,
-            sizes=[1, self.patch_size, self.patch_size, 1],
-            strides=[1, self.patch_size, self.patch_size, 1],
-            rates=[1, 1, 1, 1],
-            padding='VALID'
-        )
-        patch_dims = patches.shape[-1]
-        patches = tf.reshape(patches, [batch_size, -1, patch_dims])
-        return patches
-
-class PatchEncoder(layers.Layer):
-    def __init__(self, num_patches, projection_dim):
-        super(PatchEncoder, self).__init__()
-        self.num_patches = num_patches
-        self.projection = layers.Dense(units=projection_dim)
-        self.position_embedding = layers.Embedding(
-            input_dim=num_patches, output_dim=projection_dim
-        )
-        
-    def call(self, patch):
-        positions = tf.range(start=0, limit=self.num_patches, delta=1)
-        encoded = self.projection(patch) + self.position_embedding(positions)
-        return encoded
-
-# ------------------------------------------------------
-# 5. Create a Vision Transformer model
-# ------------------------------------------------------
-input_shape = (img_height, img_width, 3)
-patch_size = 16
-num_patches = (img_height // patch_size) * (img_width // patch_size)
-projection_dim = 64
-num_heads = 4
-transformer_units = [projection_dim * 2, projection_dim]
-transformer_layers = 4  # fewer layers for quicker training
-mlp_head_units = [512, 256]
-
-def create_vit_classifier():
-    inputs = layers.Input(shape=input_shape)
-    # Create patches
-    patches = Patches(patch_size)(inputs)
-    # Encode patches
-    encoded_patches = PatchEncoder(num_patches, projection_dim)(patches)
+        device = torch.device("cpu")
     
-    # Transformer blocks
-    for _ in range(transformer_layers):
-        x1 = layers.LayerNormalization(epsilon=1e-6)(encoded_patches)
-        attention_output = layers.MultiHeadAttention(
-            num_heads=num_heads, key_dim=projection_dim, dropout=0.1
-        )(x1, x1)
-        x2 = layers.Add()([attention_output, encoded_patches])
-        x3 = layers.LayerNormalization(epsilon=1e-6)(x2)
-        x3 = layers.Dense(transformer_units[0], activation='gelu')(x3)
-        x3 = layers.Dense(transformer_units[1], activation='gelu')(x3)
-        encoded_patches = layers.Add()([x3, x2])
-
-    # Final layers
-    representation = layers.LayerNormalization(epsilon=1e-6)(encoded_patches)
-    representation = layers.Flatten()(representation)
-    representation = layers.Dropout(0.5)(representation)
-
-    for units in mlp_head_units:
-        representation = layers.Dense(units, activation='gelu')(representation)
-        representation = layers.Dropout(0.5)(representation)
-    
-    # Output
-    logits = layers.Dense(num_classes)(representation)
-    model = keras.Model(inputs=inputs, outputs=logits)
-    return model
-
-model = create_vit_classifier()
-learning_rate = 1e-3
-
-model.compile(
-    optimizer=keras.optimizers.Adam(learning_rate),
-    loss=keras.losses.CategoricalCrossentropy(from_logits=True),
-    metrics=['accuracy']
-)
-
-model.summary()
-
-# ------------------------------------------------------
-# 6. Train the model using class weights
-# ------------------------------------------------------
-epochs = 10
-history = model.fit(
-    train_generator,
-    validation_data=validation_generator,
-    epochs=epochs,
-    class_weight=class_weight
-)
-
-# ------------------------------------------------------
-# 7. Evaluate the model on validation
-# ------------------------------------------------------
-val_loss, val_accuracy = model.evaluate(validation_generator)
-print(f"Validation Loss: {val_loss:.4f}")
-print(f"Validation Accuracy: {val_accuracy:.4f}")
+    train_model(model, train_loader, val_loader, criterion, optimizer,
+                num_epochs=10, device=device)
