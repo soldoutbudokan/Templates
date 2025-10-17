@@ -1,3 +1,8 @@
+# Run with the following lines in the Powershell terminal
+# cd "C:\Users.... -> THIS SHOULD BE THE PATH THAT CONTAINS THIS FILE"
+# PS 'NAMEOFFILE.ps1' -Recurse
+
+
 param(
   [string]$Path = 'C:\Users\tbhatt\Documents\Templates\',
   [switch]$Recurse
