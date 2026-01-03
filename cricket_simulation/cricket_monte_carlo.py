@@ -613,7 +613,8 @@ class BallSimulator:
 
         # Base probability from bowler skill (reduced for more realistic test match scores)
         # In real tests, ~1 wicket per 55-60 balls on average (wicket every ~10 overs)
-        base_prob = bowler.bowling_stats.wicket_probability_base * 0.45
+        # Using 0.35 multiplier to make innings last longer and increase draw probability
+        base_prob = bowler.bowling_stats.wicket_probability_base * 0.35
 
         # Bowler skill modifier (0.7 to 1.3 - narrower range)
         skill_mod = 0.7 + (bowler.bowling_stats.skill_rating / 166)
@@ -714,42 +715,50 @@ class BallSimulator:
         """Calculate runs scored off the bat"""
 
         # Base run distribution for test cricket
-        # Realistic distribution: ~50% dots, ~28% singles, boundaries ~12%
-        base_probs = np.array([0.50, 0.28, 0.07, 0.02, 0.11, 0.005, 0.015])
+        # Target: ~3.0-3.5 runs per over (0.5-0.58 runs per ball)
+        # Realistic test distribution: ~63% dots, ~23% singles, ~5% twos, ~1% threes, ~6.5% fours, ~1.5% sixes
+        base_probs = np.array([0.63, 0.23, 0.05, 0.01, 0.055, 0.003, 0.012])
         # Corresponds to: 0, 1, 2, 3, 4, 5, 6
 
-        # Modify based on batsman skill and strike rate
+        # Modify based on batsman strike rate
         sr_factor = batsman.batting_stats.strike_rate / 50  # Normalize around 50 SR for tests
 
-        # Shift probability towards runs
         if sr_factor > 1:
-            # Higher strike rate = more boundaries
-            base_probs[0] *= (1 / (sr_factor ** 0.5))
-            base_probs[4] *= (sr_factor ** 0.6)
-            base_probs[6] *= (sr_factor ** 0.6)
+            # Higher strike rate = slightly fewer dots, more boundaries
+            adjustment = (sr_factor - 1) * 0.3  # Dampen the effect
+            base_probs[0] -= adjustment * 0.1
+            base_probs[4] += adjustment * 0.03
+            base_probs[6] += adjustment * 0.02
         else:
             # Lower strike rate = more dots
-            base_probs[0] *= (1 / (sr_factor ** 0.5))
+            adjustment = (1 - sr_factor) * 0.3
+            base_probs[0] += adjustment * 0.1
+            base_probs[4] -= adjustment * 0.02
 
-        # Settling affects run scoring
+        # Settling affects run scoring (well-set batsmen score faster)
         settling = batsman.get_settling_factor()
-        base_probs[1] *= (0.9 + settling * 0.15)  # More singles when settled
-        base_probs[4] *= (0.85 + settling * 0.2)  # More boundaries when settled
+        if settling > 1:
+            settling_boost = (settling - 1) * 0.3
+            base_probs[0] -= settling_boost * 0.05
+            base_probs[1] += settling_boost * 0.03
+            base_probs[4] += settling_boost * 0.02
 
-        # Attacking ability
+        # Attacking ability affects boundary probability
         attack = batsman.batting_stats.attacking_ability
-        base_probs[4] *= (0.8 + attack * 0.4)
-        base_probs[6] *= (0.7 + attack * 0.6)
+        base_probs[4] *= (0.85 + attack * 0.3)
+        base_probs[6] *= (0.75 + attack * 0.5)
 
         # Bowler quality reduces scoring
         bowler_skill = bowler.bowling_stats.skill_rating
-        bowler_mod = (120 - bowler_skill) / 100
-        base_probs[1:] *= (0.7 + bowler_mod * 0.35)
+        if bowler_skill > 70:
+            skill_penalty = (bowler_skill - 70) / 100
+            base_probs[0] += skill_penalty * 0.05
+            base_probs[4] -= skill_penalty * 0.02
 
         # Pitch conditions affect scoring
         difficulty = pitch.get_batting_difficulty()
-        base_probs[0] *= (0.9 + difficulty * 0.2)
-        base_probs[4:] *= (1.1 - difficulty * 0.2)
+        base_probs[0] += difficulty * 0.05
+        base_probs[4] *= (1.05 - difficulty * 0.1)
 
         # Normalize
         base_probs = np.clip(base_probs, 0.001, None)
@@ -858,6 +867,7 @@ class DeclarationEngine:
         Determine if the batting team should declare.
 
         Only applicable for 1st, 2nd, or 3rd innings.
+        More conservative declarations to allow for realistic match pacing.
         """
         if match.current_innings == 4:
             # Never declare in 4th innings when chasing
@@ -869,46 +879,52 @@ class DeclarationEngine:
 
         captain_aggression = innings.batting_team.declaration_aggression
 
-        # First innings: rarely declare unless huge score
+        # First innings: rarely declare unless massive score or late in the day
         if match.current_innings == 1:
-            if innings.runs >= 600 and wickets_in_hand <= 4:
+            # Only declare with very high scores
+            if innings.runs >= 650 and wickets_in_hand <= 3:
                 return True
-            if innings.runs >= 500 and match.overs_remaining_today <= 20:
-                return self.rng.random() < captain_aggression
+            if innings.runs >= 550 and match.overs_remaining_today <= 10:
+                return self.rng.random() < captain_aggression * 0.5
             return False
 
-        # Second innings: declare to set target or avoid follow-on
+        # Second innings: typically bat out the innings, only declare if building big lead
         if match.current_innings == 2:
             if lead > 0:
                 # Already ahead, consider declaring to bowl
-                if lead >= 150 and overs_remaining >= 120:
-                    return self.rng.random() < captain_aggression
+                if lead >= 200 and overs_remaining >= 150:
+                    return self.rng.random() < captain_aggression * 0.6
+                if lead >= 250 and overs_remaining >= 120:
+                    return self.rng.random() < captain_aggression * 0.8
             return False
 
-        # Third innings: set target for opponents
+        # Third innings: set target for opponents (more conservative thresholds)
         if match.current_innings == 3:
             target = lead  # Opponent needs to chase this + 1
 
-            # Consider: overs remaining, lead, and risk
-            if overs_remaining <= 30:
-                # Not much time left, may draw anyway
-                if target >= 100:
+            # Conservative declaration logic based on overs remaining
+            if overs_remaining <= 40:
+                # Limited time, need to bowl them out quickly
+                if target >= 150:
                     return True
-            elif overs_remaining <= 60:
-                if target >= 200:
-                    return True
-                elif target >= 150:
+                elif target >= 100:
                     return self.rng.random() < captain_aggression
-            elif overs_remaining <= 90:
-                if target >= 300:
+            elif overs_remaining <= 70:
+                if target >= 275:
                     return True
-                elif target >= 250:
+                elif target >= 225:
                     return self.rng.random() < captain_aggression
+            elif overs_remaining <= 100:
+                if target >= 350:
+                    return True
+                elif target >= 300:
+                    return self.rng.random() < captain_aggression * 0.7
             else:
-                if target >= 400:
+                # Plenty of time - need big lead
+                if target >= 450:
                     return True
-                elif target >= 350:
-                    return self.rng.random() < captain_aggression
+                elif target >= 400:
+                    return self.rng.random() < captain_aggression * 0.5
 
         return False
 
