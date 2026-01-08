@@ -141,9 +141,9 @@ def create_lords_venue() -> VenueProfile:
         typical_first_innings_score=380,
         altitude=40,  # London elevation
         humidity=0.65,  # English summer humidity
-        home_advantage_factor=1.12,  # Strong home advantage at Lord's
-        rain_probability=0.18,  # English weather!
-        bad_light_probability=0.08
+        home_advantage_factor=1.1,  # Home advantage at Lord's
+        rain_probability=0.15,  # June weather in England
+        bad_light_probability=0.05
     )
 
 
@@ -262,7 +262,7 @@ def run_prediction():
     print("""
 • Home advantage: England benefit from familiar conditions at Lord's
 • English conditions: Seam-friendly pitch suits England's pace attack
-• Weather factor: 18% rain probability could lead to draws
+• Weather factor: 15% rain probability per session at Lord's
 • Star quality: Root vs Williamson - two of the best batsmen
 • Bazball factor: England's aggressive approach (0.7 aggression)
 • NZ experience: Williamson's team has history of success in England
