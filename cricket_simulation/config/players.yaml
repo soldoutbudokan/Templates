@@ -1,0 +1,969 @@
+# =============================================================================
+# CRICKET TEST MATCH SIMULATION - PLAYER CONFIGURATION
+# =============================================================================
+#
+# This file contains all player ratings and attributes for the simulation.
+# Edit values here to update player skills for predictions.
+#
+# -----------------------------------------------------------------------------
+# FIELD DOCUMENTATION
+# -----------------------------------------------------------------------------
+#
+# BATTING STATS:
+#   skill_rating: 0-100, overall batting ability
+#                 90+ = All-time great (Bradman, Tendulkar, Smith)
+#                 80-89 = Elite (current top 5 batsmen)
+#                 70-79 = Very good international
+#                 60-69 = Solid international
+#                 50-59 = Average international
+#                 <50 = Tailender
+#
+#   average: Career/recent batting average (realistic range: 15-60)
+#
+#   strike_rate: Runs per 100 balls (test cricket range: 35-70)
+#                40 = Very defensive (Pujara)
+#                50 = Normal test tempo
+#                60+ = Aggressive (Warner, Stokes)
+#
+#   style: "right_hand" or "left_hand"
+#
+#   vs_pace: 0.0-1.0, ability against pace bowling
+#            0.7+ = Excellent against pace
+#            0.5 = Average
+#            <0.4 = Struggles against pace
+#
+#   vs_spin: 0.0-1.0, ability against spin bowling
+#            0.7+ = Excellent against spin
+#            0.5 = Average
+#            <0.4 = Struggles against spin
+#
+# BOWLING STATS (only for bowlers/all-rounders):
+#   style: "fast", "fast_medium", "medium", "off_spin", "leg_spin",
+#          "left_arm_spin", "left_arm_fast"
+#
+#   skill_rating: 0-100, overall bowling ability
+#                 90+ = All-time great (McGrath, Warne, Anderson)
+#                 80-89 = Elite (current top bowlers)
+#                 70-79 = Very good international
+#                 60-69 = Solid support bowler
+#                 <60 = Part-time bowler
+#
+#   economy: Expected runs per over (test range: 2.0-4.0)
+#            2.5 = Excellent economy
+#            3.0 = Good
+#            3.5+ = Expensive
+#
+#   wicket_prob: Base wicket probability per ball (range: 0.015-0.030)
+#                0.025+ = Elite wicket-taker
+#                0.020 = Good
+#                0.015 = Average
+#
+#   stamina: Overs before significant fatigue (range: 60-150)
+#            Fast bowlers: 60-90
+#            Medium pace: 90-120
+#            Spinners: 120-150
+#
+# TEAM SETTINGS:
+#   captain_index: Position in batting order (0-indexed) of captain
+#   declaration_aggression: 0.0-1.0, how aggressive in declarations
+#                           0.7+ = "Bazball" style, aggressive
+#                           0.5 = Normal
+#                           0.3 = Conservative
+#
+# =============================================================================
+
+teams:
+
+  # ===========================================================================
+  # ENGLAND
+  # ===========================================================================
+  England:
+    captain_index: 6  # Ben Stokes
+    declaration_aggression: 0.7  # "Bazball" aggressive approach
+
+    players:
+      - name: "Zak Crawley"
+        role: "batsman"
+        batting:
+          skill_rating: 68
+          average: 32.0
+          strike_rate: 62
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.45
+
+      - name: "Ben Duckett"
+        role: "batsman"
+        batting:
+          skill_rating: 72
+          average: 38.0
+          strike_rate: 70
+          style: "left_hand"
+          vs_pace: 0.50
+          vs_spin: 0.55
+
+      - name: "Ollie Pope"
+        role: "batsman"
+        batting:
+          skill_rating: 75
+          average: 40.0
+          strike_rate: 58
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.50
+
+      - name: "Joe Root"
+        role: "batsman"
+        batting:
+          skill_rating: 92  # Elite - one of the best current batsmen
+          average: 51.0
+          strike_rate: 56
+          style: "right_hand"
+          vs_pace: 0.70
+          vs_spin: 0.75
+
+      - name: "Harry Brook"
+        role: "batsman"
+        batting:
+          skill_rating: 82
+          average: 55.0
+          strike_rate: 72
+          style: "right_hand"
+          vs_pace: 0.65
+          vs_spin: 0.55
+
+      - name: "Jamie Smith"
+        role: "wicketkeeper"
+        batting:
+          skill_rating: 70
+          average: 38.0
+          strike_rate: 68
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.50
+
+      - name: "Ben Stokes"
+        role: "all_rounder"
+        batting:
+          skill_rating: 78
+          average: 36.0
+          strike_rate: 65
+          style: "left_hand"
+          vs_pace: 0.60
+          vs_spin: 0.55
+        bowling:
+          style: "fast_medium"
+          skill_rating: 72
+          economy: 3.4
+          wicket_prob: 0.018
+          stamina: 80
+
+      - name: "Chris Woakes"
+        role: "all_rounder"
+        batting:
+          skill_rating: 55
+          average: 22.0
+          strike_rate: 45
+          style: "right_hand"
+          vs_pace: 0.45
+          vs_spin: 0.40
+        bowling:
+          style: "fast_medium"
+          skill_rating: 78
+          economy: 2.8
+          wicket_prob: 0.020
+          stamina: 95
+
+      - name: "Gus Atkinson"
+        role: "bowler"
+        batting:
+          skill_rating: 35
+          average: 12.0
+          strike_rate: 45
+          style: "right_hand"
+          vs_pace: 0.35
+          vs_spin: 0.30
+        bowling:
+          style: "fast"
+          skill_rating: 80
+          economy: 2.9
+          wicket_prob: 0.022
+          stamina: 90
+
+      - name: "Mark Wood"
+        role: "bowler"
+        batting:
+          skill_rating: 25
+          average: 8.0
+          strike_rate: 55
+          style: "right_hand"
+          vs_pace: 0.25
+          vs_spin: 0.25
+        bowling:
+          style: "fast"
+          skill_rating: 78
+          economy: 3.2
+          wicket_prob: 0.021
+          stamina: 70  # Injury-prone, tires quickly
+
+      - name: "Shoaib Bashir"
+        role: "bowler"
+        batting:
+          skill_rating: 30
+          average: 10.0
+          strike_rate: 40
+          style: "right_hand"
+          vs_pace: 0.30
+          vs_spin: 0.25
+        bowling:
+          style: "off_spin"
+          skill_rating: 72
+          economy: 3.0
+          wicket_prob: 0.018
+          stamina: 120
+
+  # ===========================================================================
+  # NEW ZEALAND
+  # ===========================================================================
+  New Zealand:
+    captain_index: 0  # Tom Latham
+    declaration_aggression: 0.5  # Conservative approach
+
+    players:
+      - name: "Tom Latham"
+        role: "batsman"
+        batting:
+          skill_rating: 80
+          average: 42.0
+          strike_rate: 48
+          style: "left_hand"
+          vs_pace: 0.60
+          vs_spin: 0.55
+
+      - name: "Devon Conway"
+        role: "batsman"
+        batting:
+          skill_rating: 78
+          average: 45.0
+          strike_rate: 52
+          style: "left_hand"
+          vs_pace: 0.60
+          vs_spin: 0.60
+
+      - name: "Kane Williamson"
+        role: "batsman"
+        batting:
+          skill_rating: 90  # Elite - one of Fab Four
+          average: 54.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.70
+          vs_spin: 0.70
+
+      - name: "Rachin Ravindra"
+        role: "all_rounder"
+        batting:
+          skill_rating: 75
+          average: 40.0
+          strike_rate: 58
+          style: "left_hand"
+          vs_pace: 0.55
+          vs_spin: 0.50
+        bowling:
+          style: "left_arm_spin"
+          skill_rating: 55
+          economy: 3.5
+          wicket_prob: 0.012
+          stamina: 100
+
+      - name: "Daryl Mitchell"
+        role: "batsman"
+        batting:
+          skill_rating: 76
+          average: 42.0
+          strike_rate: 60
+          style: "right_hand"
+          vs_pace: 0.60
+          vs_spin: 0.55
+
+      - name: "Tom Blundell"
+        role: "wicketkeeper"
+        batting:
+          skill_rating: 72
+          average: 40.0
+          strike_rate: 55
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.55
+
+      - name: "Glenn Phillips"
+        role: "all_rounder"
+        batting:
+          skill_rating: 65
+          average: 32.0
+          strike_rate: 62
+          style: "right_hand"
+          vs_pace: 0.50
+          vs_spin: 0.50
+        bowling:
+          style: "off_spin"
+          skill_rating: 60
+          economy: 3.5
+          wicket_prob: 0.014
+          stamina: 100
+
+      - name: "Tim Southee"
+        role: "bowler"
+        batting:
+          skill_rating: 40
+          average: 18.0
+          strike_rate: 65
+          style: "right_hand"
+          vs_pace: 0.35
+          vs_spin: 0.35
+        bowling:
+          style: "fast_medium"
+          skill_rating: 82
+          economy: 3.0
+          wicket_prob: 0.022
+          stamina: 100
+
+      - name: "Matt Henry"
+        role: "bowler"
+        batting:
+          skill_rating: 30
+          average: 12.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.30
+          vs_spin: 0.30
+        bowling:
+          style: "fast_medium"
+          skill_rating: 80
+          economy: 2.8
+          wicket_prob: 0.021
+          stamina: 95
+
+      - name: "William O'Rourke"
+        role: "bowler"
+        batting:
+          skill_rating: 25
+          average: 8.0
+          strike_rate: 40
+          style: "right_hand"
+          vs_pace: 0.25
+          vs_spin: 0.25
+        bowling:
+          style: "fast"
+          skill_rating: 76
+          economy: 3.1
+          wicket_prob: 0.020
+          stamina: 85
+
+      - name: "Mitchell Santner"
+        role: "bowler"
+        batting:
+          skill_rating: 45
+          average: 20.0
+          strike_rate: 50
+          style: "left_hand"
+          vs_pace: 0.40
+          vs_spin: 0.40
+        bowling:
+          style: "left_arm_spin"
+          skill_rating: 74
+          economy: 2.6
+          wicket_prob: 0.018
+          stamina: 130
+
+  # ===========================================================================
+  # AUSTRALIA
+  # ===========================================================================
+  Australia:
+    captain_index: 7  # Pat Cummins
+    declaration_aggression: 0.55
+
+    players:
+      - name: "Usman Khawaja"
+        role: "batsman"
+        batting:
+          skill_rating: 78
+          average: 44.0
+          strike_rate: 48
+          style: "left_hand"
+          vs_pace: 0.60
+          vs_spin: 0.55
+
+      - name: "Sam Konstas"
+        role: "batsman"
+        batting:
+          skill_rating: 68
+          average: 35.0
+          strike_rate: 65
+          style: "right_hand"
+          vs_pace: 0.50
+          vs_spin: 0.45
+
+      - name: "Marnus Labuschagne"
+        role: "batsman"
+        batting:
+          skill_rating: 85
+          average: 48.5
+          strike_rate: 52
+          style: "right_hand"
+          vs_pace: 0.65
+          vs_spin: 0.60
+
+      - name: "Steve Smith"
+        role: "batsman"
+        batting:
+          skill_rating: 92  # Elite - one of the best
+          average: 58.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.75
+          vs_spin: 0.70
+
+      - name: "Travis Head"
+        role: "batsman"
+        batting:
+          skill_rating: 78
+          average: 45.0
+          strike_rate: 70
+          style: "left_hand"
+          vs_pace: 0.60
+          vs_spin: 0.50
+
+      - name: "Alex Carey"
+        role: "wicketkeeper"
+        batting:
+          skill_rating: 65
+          average: 32.0
+          strike_rate: 55
+          style: "left_hand"
+          vs_pace: 0.50
+          vs_spin: 0.50
+
+      - name: "Cameron Green"
+        role: "all_rounder"
+        batting:
+          skill_rating: 68
+          average: 35.0
+          strike_rate: 52
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.50
+        bowling:
+          style: "fast_medium"
+          skill_rating: 70
+          economy: 3.2
+          wicket_prob: 0.016
+          stamina: 80
+
+      - name: "Pat Cummins"
+        role: "bowler"
+        batting:
+          skill_rating: 45
+          average: 18.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.40
+          vs_spin: 0.35
+        bowling:
+          style: "fast"
+          skill_rating: 90  # Elite - #1 ranked bowler
+          economy: 2.6
+          wicket_prob: 0.026
+          stamina: 90
+
+      - name: "Mitchell Starc"
+        role: "bowler"
+        batting:
+          skill_rating: 40
+          average: 20.0
+          strike_rate: 70
+          style: "left_hand"
+          vs_pace: 0.35
+          vs_spin: 0.35
+        bowling:
+          style: "left_arm_fast"
+          skill_rating: 85
+          economy: 3.0
+          wicket_prob: 0.024
+          stamina: 85
+
+      - name: "Josh Hazlewood"
+        role: "bowler"
+        batting:
+          skill_rating: 30
+          average: 12.0
+          strike_rate: 40
+          style: "right_hand"
+          vs_pace: 0.25
+          vs_spin: 0.25
+        bowling:
+          style: "fast_medium"
+          skill_rating: 84
+          economy: 2.5
+          wicket_prob: 0.022
+          stamina: 95
+
+      - name: "Nathan Lyon"
+        role: "bowler"
+        batting:
+          skill_rating: 35
+          average: 14.0
+          strike_rate: 45
+          style: "right_hand"
+          vs_pace: 0.30
+          vs_spin: 0.30
+        bowling:
+          style: "off_spin"
+          skill_rating: 82
+          economy: 2.8
+          wicket_prob: 0.020
+          stamina: 140
+
+  # ===========================================================================
+  # INDIA
+  # ===========================================================================
+  India:
+    captain_index: 3  # Rohit Sharma
+    declaration_aggression: 0.55
+
+    players:
+      - name: "Rohit Sharma"
+        role: "batsman"
+        batting:
+          skill_rating: 82
+          average: 45.0
+          strike_rate: 58
+          style: "right_hand"
+          vs_pace: 0.60
+          vs_spin: 0.70
+
+      - name: "Yashasvi Jaiswal"
+        role: "batsman"
+        batting:
+          skill_rating: 78
+          average: 55.0
+          strike_rate: 70
+          style: "left_hand"
+          vs_pace: 0.60
+          vs_spin: 0.55
+
+      - name: "Shubman Gill"
+        role: "batsman"
+        batting:
+          skill_rating: 76
+          average: 42.0
+          strike_rate: 60
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.60
+
+      - name: "Virat Kohli"
+        role: "batsman"
+        batting:
+          skill_rating: 88  # Elite but slightly declined from peak
+          average: 48.0
+          strike_rate: 55
+          style: "right_hand"
+          vs_pace: 0.70
+          vs_spin: 0.65
+
+      - name: "KL Rahul"
+        role: "batsman"
+        batting:
+          skill_rating: 74
+          average: 38.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.55
+
+      - name: "Rishabh Pant"
+        role: "wicketkeeper"
+        batting:
+          skill_rating: 78
+          average: 44.0
+          strike_rate: 72
+          style: "left_hand"
+          vs_pace: 0.60
+          vs_spin: 0.55
+
+      - name: "Ravindra Jadeja"
+        role: "all_rounder"
+        batting:
+          skill_rating: 72
+          average: 38.0
+          strike_rate: 62
+          style: "left_hand"
+          vs_pace: 0.50
+          vs_spin: 0.60
+        bowling:
+          style: "left_arm_spin"
+          skill_rating: 82
+          economy: 2.4
+          wicket_prob: 0.022
+          stamina: 150
+
+      - name: "Ravichandran Ashwin"
+        role: "all_rounder"
+        batting:
+          skill_rating: 55
+          average: 28.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.40
+          vs_spin: 0.50
+        bowling:
+          style: "off_spin"
+          skill_rating: 88  # Elite spinner
+          economy: 2.6
+          wicket_prob: 0.025
+          stamina: 140
+
+      - name: "Mohammed Shami"
+        role: "bowler"
+        batting:
+          skill_rating: 35
+          average: 12.0
+          strike_rate: 65
+          style: "right_hand"
+          vs_pace: 0.30
+          vs_spin: 0.30
+        bowling:
+          style: "fast_medium"
+          skill_rating: 82
+          economy: 3.0
+          wicket_prob: 0.022
+          stamina: 85
+
+      - name: "Jasprit Bumrah"
+        role: "bowler"
+        batting:
+          skill_rating: 20
+          average: 6.0
+          strike_rate: 30
+          style: "right_hand"
+          vs_pace: 0.20
+          vs_spin: 0.20
+        bowling:
+          style: "fast"
+          skill_rating: 92  # Elite - best in world
+          economy: 2.5
+          wicket_prob: 0.028
+          stamina: 75  # Workload managed
+
+      - name: "Mohammed Siraj"
+        role: "bowler"
+        batting:
+          skill_rating: 25
+          average: 8.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.25
+          vs_spin: 0.25
+        bowling:
+          style: "fast"
+          skill_rating: 78
+          economy: 3.2
+          wicket_prob: 0.020
+          stamina: 90
+
+  # ===========================================================================
+  # SOUTH AFRICA
+  # ===========================================================================
+  South Africa:
+    captain_index: 2  # Temba Bavuma
+    declaration_aggression: 0.6
+
+    players:
+      - name: "Tony de Zorzi"
+        role: "batsman"
+        batting:
+          skill_rating: 74
+          average: 45.0
+          strike_rate: 65
+          style: "left_hand"
+          vs_pace: 0.55
+          vs_spin: 0.55
+
+      - name: "Aiden Markram"
+        role: "batsman"
+        batting:
+          skill_rating: 72
+          average: 38.0
+          strike_rate: 55
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.50
+
+      - name: "Temba Bavuma"
+        role: "batsman"
+        batting:
+          skill_rating: 70
+          average: 35.0
+          strike_rate: 45
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.50
+
+      - name: "Tristan Stubbs"
+        role: "batsman"
+        batting:
+          skill_rating: 70
+          average: 38.0
+          strike_rate: 70
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.50
+
+      - name: "David Bedingham"
+        role: "batsman"
+        batting:
+          skill_rating: 72
+          average: 42.0
+          strike_rate: 55
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.55
+
+      - name: "Kyle Verreynne"
+        role: "wicketkeeper"
+        batting:
+          skill_rating: 68
+          average: 35.0
+          strike_rate: 52
+          style: "right_hand"
+          vs_pace: 0.50
+          vs_spin: 0.50
+
+      - name: "Marco Jansen"
+        role: "all_rounder"
+        batting:
+          skill_rating: 55
+          average: 25.0
+          strike_rate: 50
+          style: "left_hand"
+          vs_pace: 0.45
+          vs_spin: 0.40
+        bowling:
+          style: "left_arm_fast"
+          skill_rating: 78
+          economy: 3.0
+          wicket_prob: 0.020
+          stamina: 90
+
+      - name: "Keshav Maharaj"
+        role: "bowler"
+        batting:
+          skill_rating: 40
+          average: 15.0
+          strike_rate: 45
+          style: "left_hand"
+          vs_pace: 0.35
+          vs_spin: 0.35
+        bowling:
+          style: "left_arm_spin"
+          skill_rating: 78
+          economy: 2.8
+          wicket_prob: 0.019
+          stamina: 140
+
+      - name: "Kagiso Rabada"
+        role: "bowler"
+        batting:
+          skill_rating: 35
+          average: 14.0
+          strike_rate: 60
+          style: "right_hand"
+          vs_pace: 0.30
+          vs_spin: 0.30
+        bowling:
+          style: "fast"
+          skill_rating: 86
+          economy: 2.9
+          wicket_prob: 0.024
+          stamina: 85
+
+      - name: "Dane Paterson"
+        role: "bowler"
+        batting:
+          skill_rating: 25
+          average: 8.0
+          strike_rate: 40
+          style: "right_hand"
+          vs_pace: 0.25
+          vs_spin: 0.25
+        bowling:
+          style: "fast_medium"
+          skill_rating: 74
+          economy: 3.0
+          wicket_prob: 0.018
+          stamina: 95
+
+      - name: "Corbin Bosch"
+        role: "bowler"
+        batting:
+          skill_rating: 30
+          average: 12.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.30
+          vs_spin: 0.30
+        bowling:
+          style: "fast_medium"
+          skill_rating: 72
+          economy: 3.2
+          wicket_prob: 0.017
+          stamina: 90
+
+  # ===========================================================================
+  # PAKISTAN
+  # ===========================================================================
+  Pakistan:
+    captain_index: 3  # Shan Masood
+    declaration_aggression: 0.5
+
+    players:
+      - name: "Abdullah Shafique"
+        role: "batsman"
+        batting:
+          skill_rating: 72
+          average: 40.0
+          strike_rate: 48
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.55
+
+      - name: "Saim Ayub"
+        role: "batsman"
+        batting:
+          skill_rating: 68
+          average: 35.0
+          strike_rate: 60
+          style: "left_hand"
+          vs_pace: 0.50
+          vs_spin: 0.50
+
+      - name: "Babar Azam"
+        role: "batsman"
+        batting:
+          skill_rating: 84
+          average: 46.0
+          strike_rate: 52
+          style: "right_hand"
+          vs_pace: 0.65
+          vs_spin: 0.60
+
+      - name: "Shan Masood"
+        role: "batsman"
+        batting:
+          skill_rating: 70
+          average: 32.0
+          strike_rate: 50
+          style: "left_hand"
+          vs_pace: 0.55
+          vs_spin: 0.50
+
+      - name: "Saud Shakeel"
+        role: "batsman"
+        batting:
+          skill_rating: 74
+          average: 50.0
+          strike_rate: 48
+          style: "left_hand"
+          vs_pace: 0.55
+          vs_spin: 0.60
+
+      - name: "Mohammad Rizwan"
+        role: "wicketkeeper"
+        batting:
+          skill_rating: 72
+          average: 38.0
+          strike_rate: 52
+          style: "right_hand"
+          vs_pace: 0.55
+          vs_spin: 0.55
+
+      - name: "Salman Ali Agha"
+        role: "all_rounder"
+        batting:
+          skill_rating: 60
+          average: 30.0
+          strike_rate: 50
+          style: "right_hand"
+          vs_pace: 0.45
+          vs_spin: 0.50
+        bowling:
+          style: "leg_spin"
+          skill_rating: 60
+          economy: 3.5
+          wicket_prob: 0.014
+          stamina: 100
+
+      - name: "Aamer Jamal"
+        role: "all_rounder"
+        batting:
+          skill_rating: 50
+          average: 25.0
+          strike_rate: 55
+          style: "right_hand"
+          vs_pace: 0.40
+          vs_spin: 0.40
+        bowling:
+          style: "fast_medium"
+          skill_rating: 70
+          economy: 3.2
+          wicket_prob: 0.017
+          stamina: 85
+
+      - name: "Shaheen Afridi"
+        role: "bowler"
+        batting:
+          skill_rating: 30
+          average: 10.0
+          strike_rate: 50
+          style: "left_hand"
+          vs_pace: 0.25
+          vs_spin: 0.25
+        bowling:
+          style: "left_arm_fast"
+          skill_rating: 84
+          economy: 2.9
+          wicket_prob: 0.023
+          stamina: 85
+
+      - name: "Naseem Shah"
+        role: "bowler"
+        batting:
+          skill_rating: 25
+          average: 8.0
+          strike_rate: 40
+          style: "right_hand"
+          vs_pace: 0.25
+          vs_spin: 0.25
+        bowling:
+          style: "fast"
+          skill_rating: 78
+          economy: 3.1
+          wicket_prob: 0.020
+          stamina: 80
+
+      - name: "Abrar Ahmed"
+        role: "bowler"
+        batting:
+          skill_rating: 20
+          average: 6.0
+          strike_rate: 35
+          style: "right_hand"
+          vs_pace: 0.20
+          vs_spin: 0.20
+        bowling:
+          style: "leg_spin"
+          skill_rating: 75
+          economy: 3.0
+          wicket_prob: 0.020
+          stamina: 120

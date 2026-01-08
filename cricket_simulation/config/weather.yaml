@@ -1,0 +1,355 @@
+# =============================================================================
+# CRICKET TEST MATCH SIMULATION - WEATHER CONFIGURATION
+# =============================================================================
+#
+# This file contains historical weather averages by city and month.
+# Used when live weather forecast is not available.
+#
+# -----------------------------------------------------------------------------
+# FIELD DOCUMENTATION
+# -----------------------------------------------------------------------------
+#
+# rain_probability: 0.0-1.0, chance of rain interrupting play PER SESSION
+#                   0.25+ = High rain risk (English summer, monsoon)
+#                   0.15-0.20 = Moderate risk
+#                   0.10 = Low risk
+#                   <0.05 = Very dry (Australian summer, Middle East)
+#
+# bad_light_probability: 0.0-1.0, chance of bad light stopping play PER SESSION
+#                        0.10+ = High risk (English evenings, overcast climates)
+#                        0.05 = Moderate risk
+#                        <0.03 = Low risk (Australian summer, clear skies)
+#
+# overcast_probability: 0.0-1.0, chance of overcast conditions
+#                       Overcast = more swing for pace bowlers
+#                       0.50+ = Often overcast (England, New Zealand)
+#                       0.30 = Sometimes overcast
+#                       <0.15 = Usually sunny
+#
+# humidity: 0.0-1.0, average humidity level
+#           Affects swing bowling (higher humidity = more swing)
+#           0.70+ = Very humid (Colombo, Mumbai monsoon)
+#           0.50-0.60 = Moderate (England summer)
+#           <0.40 = Dry (Australian summer, South Africa)
+#
+# =============================================================================
+
+# Month numbers: 1=January, 2=February, ..., 12=December
+
+weather_by_city:
+
+  # ===========================================================================
+  # ENGLAND
+  # ===========================================================================
+
+  London:  # Lord's, The Oval
+    1:  { rain_prob: 0.20, bad_light_prob: 0.15, overcast_prob: 0.60, humidity: 0.80 }
+    2:  { rain_prob: 0.18, bad_light_prob: 0.12, overcast_prob: 0.55, humidity: 0.75 }
+    3:  { rain_prob: 0.15, bad_light_prob: 0.10, overcast_prob: 0.50, humidity: 0.70 }
+    4:  { rain_prob: 0.15, bad_light_prob: 0.08, overcast_prob: 0.45, humidity: 0.65 }
+    5:  { rain_prob: 0.15, bad_light_prob: 0.06, overcast_prob: 0.40, humidity: 0.60 }
+    6:  { rain_prob: 0.15, bad_light_prob: 0.05, overcast_prob: 0.40, humidity: 0.60 }
+    7:  { rain_prob: 0.14, bad_light_prob: 0.04, overcast_prob: 0.35, humidity: 0.60 }
+    8:  { rain_prob: 0.15, bad_light_prob: 0.05, overcast_prob: 0.40, humidity: 0.62 }
+    9:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.45, humidity: 0.68 }
+    10: { rain_prob: 0.18, bad_light_prob: 0.12, overcast_prob: 0.55, humidity: 0.75 }
+    11: { rain_prob: 0.20, bad_light_prob: 0.15, overcast_prob: 0.60, humidity: 0.80 }
+    12: { rain_prob: 0.22, bad_light_prob: 0.18, overcast_prob: 0.65, humidity: 0.82 }
+
+  Birmingham:  # Edgbaston
+    1:  { rain_prob: 0.22, bad_light_prob: 0.15, overcast_prob: 0.65, humidity: 0.82 }
+    2:  { rain_prob: 0.20, bad_light_prob: 0.12, overcast_prob: 0.60, humidity: 0.78 }
+    3:  { rain_prob: 0.18, bad_light_prob: 0.10, overcast_prob: 0.55, humidity: 0.72 }
+    4:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.50, humidity: 0.68 }
+    5:  { rain_prob: 0.16, bad_light_prob: 0.06, overcast_prob: 0.45, humidity: 0.62 }
+    6:  { rain_prob: 0.16, bad_light_prob: 0.05, overcast_prob: 0.42, humidity: 0.62 }
+    7:  { rain_prob: 0.15, bad_light_prob: 0.04, overcast_prob: 0.38, humidity: 0.62 }
+    8:  { rain_prob: 0.16, bad_light_prob: 0.05, overcast_prob: 0.42, humidity: 0.65 }
+    9:  { rain_prob: 0.18, bad_light_prob: 0.08, overcast_prob: 0.50, humidity: 0.70 }
+    10: { rain_prob: 0.20, bad_light_prob: 0.12, overcast_prob: 0.58, humidity: 0.78 }
+    11: { rain_prob: 0.22, bad_light_prob: 0.15, overcast_prob: 0.62, humidity: 0.82 }
+    12: { rain_prob: 0.24, bad_light_prob: 0.18, overcast_prob: 0.68, humidity: 0.85 }
+
+  Leeds:  # Headingley
+    1:  { rain_prob: 0.25, bad_light_prob: 0.15, overcast_prob: 0.70, humidity: 0.85 }
+    2:  { rain_prob: 0.22, bad_light_prob: 0.12, overcast_prob: 0.65, humidity: 0.80 }
+    3:  { rain_prob: 0.20, bad_light_prob: 0.10, overcast_prob: 0.60, humidity: 0.75 }
+    4:  { rain_prob: 0.18, bad_light_prob: 0.08, overcast_prob: 0.55, humidity: 0.70 }
+    5:  { rain_prob: 0.17, bad_light_prob: 0.06, overcast_prob: 0.50, humidity: 0.65 }
+    6:  { rain_prob: 0.17, bad_light_prob: 0.05, overcast_prob: 0.48, humidity: 0.65 }
+    7:  { rain_prob: 0.16, bad_light_prob: 0.05, overcast_prob: 0.45, humidity: 0.65 }
+    8:  { rain_prob: 0.18, bad_light_prob: 0.06, overcast_prob: 0.50, humidity: 0.68 }
+    9:  { rain_prob: 0.20, bad_light_prob: 0.10, overcast_prob: 0.55, humidity: 0.75 }
+    10: { rain_prob: 0.22, bad_light_prob: 0.12, overcast_prob: 0.62, humidity: 0.80 }
+    11: { rain_prob: 0.25, bad_light_prob: 0.15, overcast_prob: 0.68, humidity: 0.85 }
+    12: { rain_prob: 0.26, bad_light_prob: 0.18, overcast_prob: 0.72, humidity: 0.88 }
+
+  Nottingham:  # Trent Bridge
+    1:  { rain_prob: 0.20, bad_light_prob: 0.14, overcast_prob: 0.62, humidity: 0.80 }
+    2:  { rain_prob: 0.18, bad_light_prob: 0.12, overcast_prob: 0.58, humidity: 0.76 }
+    3:  { rain_prob: 0.16, bad_light_prob: 0.10, overcast_prob: 0.52, humidity: 0.70 }
+    4:  { rain_prob: 0.15, bad_light_prob: 0.08, overcast_prob: 0.48, humidity: 0.65 }
+    5:  { rain_prob: 0.15, bad_light_prob: 0.06, overcast_prob: 0.42, humidity: 0.60 }
+    6:  { rain_prob: 0.14, bad_light_prob: 0.05, overcast_prob: 0.40, humidity: 0.60 }
+    7:  { rain_prob: 0.14, bad_light_prob: 0.04, overcast_prob: 0.38, humidity: 0.60 }
+    8:  { rain_prob: 0.15, bad_light_prob: 0.05, overcast_prob: 0.42, humidity: 0.62 }
+    9:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.48, humidity: 0.68 }
+    10: { rain_prob: 0.18, bad_light_prob: 0.12, overcast_prob: 0.55, humidity: 0.75 }
+    11: { rain_prob: 0.20, bad_light_prob: 0.14, overcast_prob: 0.60, humidity: 0.80 }
+    12: { rain_prob: 0.22, bad_light_prob: 0.16, overcast_prob: 0.65, humidity: 0.82 }
+
+  Manchester:  # Old Trafford
+    1:  { rain_prob: 0.28, bad_light_prob: 0.15, overcast_prob: 0.72, humidity: 0.85 }
+    2:  { rain_prob: 0.25, bad_light_prob: 0.12, overcast_prob: 0.68, humidity: 0.82 }
+    3:  { rain_prob: 0.22, bad_light_prob: 0.10, overcast_prob: 0.62, humidity: 0.78 }
+    4:  { rain_prob: 0.20, bad_light_prob: 0.08, overcast_prob: 0.58, humidity: 0.72 }
+    5:  { rain_prob: 0.18, bad_light_prob: 0.06, overcast_prob: 0.52, humidity: 0.68 }
+    6:  { rain_prob: 0.18, bad_light_prob: 0.05, overcast_prob: 0.50, humidity: 0.68 }
+    7:  { rain_prob: 0.18, bad_light_prob: 0.05, overcast_prob: 0.48, humidity: 0.68 }
+    8:  { rain_prob: 0.20, bad_light_prob: 0.06, overcast_prob: 0.52, humidity: 0.70 }
+    9:  { rain_prob: 0.22, bad_light_prob: 0.10, overcast_prob: 0.58, humidity: 0.75 }
+    10: { rain_prob: 0.25, bad_light_prob: 0.12, overcast_prob: 0.65, humidity: 0.82 }
+    11: { rain_prob: 0.28, bad_light_prob: 0.15, overcast_prob: 0.70, humidity: 0.85 }
+    12: { rain_prob: 0.30, bad_light_prob: 0.18, overcast_prob: 0.75, humidity: 0.88 }
+
+  # ===========================================================================
+  # AUSTRALIA
+  # ===========================================================================
+
+  Melbourne:  # MCG
+    1:  { rain_prob: 0.10, bad_light_prob: 0.03, overcast_prob: 0.25, humidity: 0.50 }
+    2:  { rain_prob: 0.10, bad_light_prob: 0.03, overcast_prob: 0.25, humidity: 0.52 }
+    3:  { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.30, humidity: 0.55 }
+    4:  { rain_prob: 0.14, bad_light_prob: 0.05, overcast_prob: 0.35, humidity: 0.58 }
+    5:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.42, humidity: 0.62 }
+    6:  { rain_prob: 0.18, bad_light_prob: 0.10, overcast_prob: 0.48, humidity: 0.68 }
+    7:  { rain_prob: 0.18, bad_light_prob: 0.10, overcast_prob: 0.50, humidity: 0.70 }
+    8:  { rain_prob: 0.18, bad_light_prob: 0.08, overcast_prob: 0.48, humidity: 0.68 }
+    9:  { rain_prob: 0.16, bad_light_prob: 0.06, overcast_prob: 0.42, humidity: 0.60 }
+    10: { rain_prob: 0.14, bad_light_prob: 0.05, overcast_prob: 0.35, humidity: 0.55 }
+    11: { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.30, humidity: 0.52 }
+    12: { rain_prob: 0.10, bad_light_prob: 0.03, overcast_prob: 0.25, humidity: 0.48 }
+
+  Sydney:  # SCG
+    1:  { rain_prob: 0.14, bad_light_prob: 0.03, overcast_prob: 0.28, humidity: 0.60 }
+    2:  { rain_prob: 0.15, bad_light_prob: 0.03, overcast_prob: 0.30, humidity: 0.62 }
+    3:  { rain_prob: 0.16, bad_light_prob: 0.04, overcast_prob: 0.32, humidity: 0.60 }
+    4:  { rain_prob: 0.14, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.58 }
+    5:  { rain_prob: 0.14, bad_light_prob: 0.06, overcast_prob: 0.35, humidity: 0.58 }
+    6:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.40, humidity: 0.62 }
+    7:  { rain_prob: 0.14, bad_light_prob: 0.08, overcast_prob: 0.38, humidity: 0.60 }
+    8:  { rain_prob: 0.12, bad_light_prob: 0.06, overcast_prob: 0.35, humidity: 0.55 }
+    9:  { rain_prob: 0.12, bad_light_prob: 0.05, overcast_prob: 0.32, humidity: 0.52 }
+    10: { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.30, humidity: 0.55 }
+    11: { rain_prob: 0.12, bad_light_prob: 0.03, overcast_prob: 0.28, humidity: 0.58 }
+    12: { rain_prob: 0.13, bad_light_prob: 0.03, overcast_prob: 0.28, humidity: 0.58 }
+
+  Brisbane:  # Gabba
+    1:  { rain_prob: 0.20, bad_light_prob: 0.04, overcast_prob: 0.35, humidity: 0.70 }
+    2:  { rain_prob: 0.22, bad_light_prob: 0.04, overcast_prob: 0.38, humidity: 0.72 }
+    3:  { rain_prob: 0.18, bad_light_prob: 0.04, overcast_prob: 0.32, humidity: 0.68 }
+    4:  { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.28, humidity: 0.60 }
+    5:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.25, humidity: 0.55 }
+    6:  { rain_prob: 0.08, bad_light_prob: 0.06, overcast_prob: 0.22, humidity: 0.50 }
+    7:  { rain_prob: 0.06, bad_light_prob: 0.05, overcast_prob: 0.20, humidity: 0.48 }
+    8:  { rain_prob: 0.05, bad_light_prob: 0.04, overcast_prob: 0.18, humidity: 0.45 }
+    9:  { rain_prob: 0.06, bad_light_prob: 0.04, overcast_prob: 0.20, humidity: 0.48 }
+    10: { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.25, humidity: 0.55 }
+    11: { rain_prob: 0.15, bad_light_prob: 0.04, overcast_prob: 0.30, humidity: 0.62 }
+    12: { rain_prob: 0.18, bad_light_prob: 0.04, overcast_prob: 0.32, humidity: 0.68 }
+
+  Adelaide:  # Adelaide Oval
+    1:  { rain_prob: 0.05, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.38 }
+    2:  { rain_prob: 0.05, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.40 }
+    3:  { rain_prob: 0.06, bad_light_prob: 0.03, overcast_prob: 0.18, humidity: 0.45 }
+    4:  { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.25, humidity: 0.52 }
+    5:  { rain_prob: 0.14, bad_light_prob: 0.06, overcast_prob: 0.35, humidity: 0.60 }
+    6:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.42, humidity: 0.65 }
+    7:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.42, humidity: 0.65 }
+    8:  { rain_prob: 0.14, bad_light_prob: 0.06, overcast_prob: 0.38, humidity: 0.60 }
+    9:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.52 }
+    10: { rain_prob: 0.08, bad_light_prob: 0.04, overcast_prob: 0.22, humidity: 0.45 }
+    11: { rain_prob: 0.06, bad_light_prob: 0.03, overcast_prob: 0.18, humidity: 0.40 }
+    12: { rain_prob: 0.05, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.38 }
+
+  Perth:  # Perth Stadium, WACA
+    1:  { rain_prob: 0.02, bad_light_prob: 0.01, overcast_prob: 0.10, humidity: 0.35 }
+    2:  { rain_prob: 0.02, bad_light_prob: 0.01, overcast_prob: 0.10, humidity: 0.38 }
+    3:  { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.12, humidity: 0.42 }
+    4:  { rain_prob: 0.08, bad_light_prob: 0.03, overcast_prob: 0.22, humidity: 0.52 }
+    5:  { rain_prob: 0.14, bad_light_prob: 0.05, overcast_prob: 0.35, humidity: 0.62 }
+    6:  { rain_prob: 0.18, bad_light_prob: 0.08, overcast_prob: 0.45, humidity: 0.70 }
+    7:  { rain_prob: 0.18, bad_light_prob: 0.08, overcast_prob: 0.48, humidity: 0.72 }
+    8:  { rain_prob: 0.16, bad_light_prob: 0.06, overcast_prob: 0.42, humidity: 0.68 }
+    9:  { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.28, humidity: 0.55 }
+    10: { rain_prob: 0.06, bad_light_prob: 0.03, overcast_prob: 0.18, humidity: 0.45 }
+    11: { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.12, humidity: 0.38 }
+    12: { rain_prob: 0.02, bad_light_prob: 0.01, overcast_prob: 0.10, humidity: 0.35 }
+
+  # ===========================================================================
+  # INDIA
+  # ===========================================================================
+
+  Mumbai:  # Wankhede
+    1:  { rain_prob: 0.01, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.55 }
+    2:  { rain_prob: 0.01, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.55 }
+    3:  { rain_prob: 0.01, bad_light_prob: 0.02, overcast_prob: 0.18, humidity: 0.60 }
+    4:  { rain_prob: 0.02, bad_light_prob: 0.02, overcast_prob: 0.20, humidity: 0.65 }
+    5:  { rain_prob: 0.05, bad_light_prob: 0.03, overcast_prob: 0.30, humidity: 0.70 }
+    6:  { rain_prob: 0.30, bad_light_prob: 0.08, overcast_prob: 0.65, humidity: 0.85 }  # Monsoon
+    7:  { rain_prob: 0.40, bad_light_prob: 0.10, overcast_prob: 0.75, humidity: 0.90 }  # Monsoon
+    8:  { rain_prob: 0.35, bad_light_prob: 0.08, overcast_prob: 0.70, humidity: 0.88 }  # Monsoon
+    9:  { rain_prob: 0.25, bad_light_prob: 0.06, overcast_prob: 0.55, humidity: 0.82 }
+    10: { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.35, humidity: 0.72 }
+    11: { rain_prob: 0.02, bad_light_prob: 0.03, overcast_prob: 0.20, humidity: 0.62 }
+    12: { rain_prob: 0.01, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.58 }
+
+  Chennai:  # M.A. Chidambaram
+    1:  { rain_prob: 0.05, bad_light_prob: 0.02, overcast_prob: 0.20, humidity: 0.70 }
+    2:  { rain_prob: 0.02, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.65 }
+    3:  { rain_prob: 0.02, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.65 }
+    4:  { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.18, humidity: 0.68 }
+    5:  { rain_prob: 0.05, bad_light_prob: 0.03, overcast_prob: 0.25, humidity: 0.70 }
+    6:  { rain_prob: 0.08, bad_light_prob: 0.04, overcast_prob: 0.30, humidity: 0.68 }
+    7:  { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.35, humidity: 0.65 }
+    8:  { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.38, humidity: 0.68 }
+    9:  { rain_prob: 0.15, bad_light_prob: 0.05, overcast_prob: 0.42, humidity: 0.72 }
+    10: { rain_prob: 0.25, bad_light_prob: 0.06, overcast_prob: 0.55, humidity: 0.78 }  # NE Monsoon
+    11: { rain_prob: 0.30, bad_light_prob: 0.08, overcast_prob: 0.60, humidity: 0.82 }  # NE Monsoon
+    12: { rain_prob: 0.15, bad_light_prob: 0.04, overcast_prob: 0.40, humidity: 0.75 }
+
+  Delhi:  # Arun Jaitley
+    1:  { rain_prob: 0.03, bad_light_prob: 0.08, overcast_prob: 0.35, humidity: 0.70 }  # Winter fog
+    2:  { rain_prob: 0.03, bad_light_prob: 0.05, overcast_prob: 0.28, humidity: 0.60 }
+    3:  { rain_prob: 0.03, bad_light_prob: 0.03, overcast_prob: 0.22, humidity: 0.50 }
+    4:  { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.18, humidity: 0.40 }
+    5:  { rain_prob: 0.05, bad_light_prob: 0.02, overcast_prob: 0.20, humidity: 0.38 }
+    6:  { rain_prob: 0.12, bad_light_prob: 0.03, overcast_prob: 0.35, humidity: 0.55 }
+    7:  { rain_prob: 0.28, bad_light_prob: 0.06, overcast_prob: 0.60, humidity: 0.80 }  # Monsoon
+    8:  { rain_prob: 0.25, bad_light_prob: 0.05, overcast_prob: 0.55, humidity: 0.78 }  # Monsoon
+    9:  { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.38, humidity: 0.68 }
+    10: { rain_prob: 0.03, bad_light_prob: 0.04, overcast_prob: 0.25, humidity: 0.55 }
+    11: { rain_prob: 0.02, bad_light_prob: 0.06, overcast_prob: 0.30, humidity: 0.60 }  # Winter haze
+    12: { rain_prob: 0.02, bad_light_prob: 0.10, overcast_prob: 0.40, humidity: 0.72 }  # Winter fog
+
+  Kolkata:  # Eden Gardens
+    1:  { rain_prob: 0.02, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.65 }
+    2:  { rain_prob: 0.03, bad_light_prob: 0.04, overcast_prob: 0.25, humidity: 0.58 }
+    3:  { rain_prob: 0.05, bad_light_prob: 0.03, overcast_prob: 0.22, humidity: 0.55 }
+    4:  { rain_prob: 0.10, bad_light_prob: 0.03, overcast_prob: 0.30, humidity: 0.62 }
+    5:  { rain_prob: 0.15, bad_light_prob: 0.04, overcast_prob: 0.40, humidity: 0.70 }
+    6:  { rain_prob: 0.30, bad_light_prob: 0.06, overcast_prob: 0.60, humidity: 0.82 }  # Monsoon
+    7:  { rain_prob: 0.35, bad_light_prob: 0.08, overcast_prob: 0.70, humidity: 0.88 }  # Monsoon
+    8:  { rain_prob: 0.32, bad_light_prob: 0.06, overcast_prob: 0.65, humidity: 0.85 }  # Monsoon
+    9:  { rain_prob: 0.22, bad_light_prob: 0.05, overcast_prob: 0.50, humidity: 0.80 }
+    10: { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.35, humidity: 0.72 }
+    11: { rain_prob: 0.03, bad_light_prob: 0.04, overcast_prob: 0.28, humidity: 0.65 }
+    12: { rain_prob: 0.02, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.68 }
+
+  Bengaluru:  # M. Chinnaswamy
+    1:  { rain_prob: 0.02, bad_light_prob: 0.02, overcast_prob: 0.18, humidity: 0.55 }
+    2:  { rain_prob: 0.02, bad_light_prob: 0.02, overcast_prob: 0.18, humidity: 0.50 }
+    3:  { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.20, humidity: 0.48 }
+    4:  { rain_prob: 0.10, bad_light_prob: 0.03, overcast_prob: 0.32, humidity: 0.55 }
+    5:  { rain_prob: 0.18, bad_light_prob: 0.04, overcast_prob: 0.45, humidity: 0.65 }
+    6:  { rain_prob: 0.15, bad_light_prob: 0.04, overcast_prob: 0.42, humidity: 0.70 }
+    7:  { rain_prob: 0.14, bad_light_prob: 0.04, overcast_prob: 0.40, humidity: 0.72 }
+    8:  { rain_prob: 0.15, bad_light_prob: 0.04, overcast_prob: 0.42, humidity: 0.72 }
+    9:  { rain_prob: 0.18, bad_light_prob: 0.04, overcast_prob: 0.45, humidity: 0.75 }
+    10: { rain_prob: 0.20, bad_light_prob: 0.05, overcast_prob: 0.48, humidity: 0.75 }
+    11: { rain_prob: 0.10, bad_light_prob: 0.03, overcast_prob: 0.32, humidity: 0.68 }
+    12: { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.22, humidity: 0.60 }
+
+  # ===========================================================================
+  # NEW ZEALAND
+  # ===========================================================================
+
+  Wellington:  # Basin Reserve
+    1:  { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.45, humidity: 0.70 }
+    2:  { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.45, humidity: 0.70 }
+    3:  { rain_prob: 0.14, bad_light_prob: 0.05, overcast_prob: 0.48, humidity: 0.72 }
+    4:  { rain_prob: 0.16, bad_light_prob: 0.06, overcast_prob: 0.52, humidity: 0.75 }
+    5:  { rain_prob: 0.18, bad_light_prob: 0.08, overcast_prob: 0.58, humidity: 0.78 }
+    6:  { rain_prob: 0.20, bad_light_prob: 0.10, overcast_prob: 0.62, humidity: 0.80 }
+    7:  { rain_prob: 0.22, bad_light_prob: 0.10, overcast_prob: 0.65, humidity: 0.82 }
+    8:  { rain_prob: 0.20, bad_light_prob: 0.08, overcast_prob: 0.60, humidity: 0.80 }
+    9:  { rain_prob: 0.16, bad_light_prob: 0.06, overcast_prob: 0.52, humidity: 0.75 }
+    10: { rain_prob: 0.14, bad_light_prob: 0.05, overcast_prob: 0.48, humidity: 0.72 }
+    11: { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.45, humidity: 0.70 }
+    12: { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.45, humidity: 0.70 }
+
+  Christchurch:  # Hagley Oval
+    1:  { rain_prob: 0.10, bad_light_prob: 0.03, overcast_prob: 0.40, humidity: 0.65 }
+    2:  { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.42, humidity: 0.68 }
+    3:  { rain_prob: 0.12, bad_light_prob: 0.05, overcast_prob: 0.45, humidity: 0.70 }
+    4:  { rain_prob: 0.14, bad_light_prob: 0.06, overcast_prob: 0.50, humidity: 0.72 }
+    5:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.55, humidity: 0.75 }
+    6:  { rain_prob: 0.18, bad_light_prob: 0.10, overcast_prob: 0.60, humidity: 0.78 }
+    7:  { rain_prob: 0.18, bad_light_prob: 0.10, overcast_prob: 0.60, humidity: 0.78 }
+    8:  { rain_prob: 0.16, bad_light_prob: 0.08, overcast_prob: 0.55, humidity: 0.75 }
+    9:  { rain_prob: 0.14, bad_light_prob: 0.06, overcast_prob: 0.50, humidity: 0.72 }
+    10: { rain_prob: 0.12, bad_light_prob: 0.05, overcast_prob: 0.45, humidity: 0.68 }
+    11: { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.42, humidity: 0.65 }
+    12: { rain_prob: 0.10, bad_light_prob: 0.03, overcast_prob: 0.40, humidity: 0.65 }
+
+  # ===========================================================================
+  # SOUTH AFRICA
+  # ===========================================================================
+
+  Johannesburg:  # Wanderers
+    1:  { rain_prob: 0.22, bad_light_prob: 0.05, overcast_prob: 0.40, humidity: 0.55 }
+    2:  { rain_prob: 0.20, bad_light_prob: 0.05, overcast_prob: 0.38, humidity: 0.55 }
+    3:  { rain_prob: 0.15, bad_light_prob: 0.04, overcast_prob: 0.32, humidity: 0.50 }
+    4:  { rain_prob: 0.08, bad_light_prob: 0.03, overcast_prob: 0.22, humidity: 0.42 }
+    5:  { rain_prob: 0.03, bad_light_prob: 0.03, overcast_prob: 0.15, humidity: 0.35 }
+    6:  { rain_prob: 0.02, bad_light_prob: 0.03, overcast_prob: 0.12, humidity: 0.30 }
+    7:  { rain_prob: 0.02, bad_light_prob: 0.03, overcast_prob: 0.10, humidity: 0.28 }
+    8:  { rain_prob: 0.02, bad_light_prob: 0.03, overcast_prob: 0.12, humidity: 0.30 }
+    9:  { rain_prob: 0.05, bad_light_prob: 0.03, overcast_prob: 0.18, humidity: 0.35 }
+    10: { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.28, humidity: 0.45 }
+    11: { rain_prob: 0.18, bad_light_prob: 0.05, overcast_prob: 0.35, humidity: 0.52 }
+    12: { rain_prob: 0.22, bad_light_prob: 0.05, overcast_prob: 0.40, humidity: 0.55 }
+
+  "Cape Town":  # Newlands
+    1:  { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.55 }
+    2:  { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.55 }
+    3:  { rain_prob: 0.05, bad_light_prob: 0.03, overcast_prob: 0.20, humidity: 0.58 }
+    4:  { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.30, humidity: 0.62 }
+    5:  { rain_prob: 0.18, bad_light_prob: 0.06, overcast_prob: 0.45, humidity: 0.70 }
+    6:  { rain_prob: 0.22, bad_light_prob: 0.08, overcast_prob: 0.55, humidity: 0.75 }
+    7:  { rain_prob: 0.24, bad_light_prob: 0.08, overcast_prob: 0.58, humidity: 0.78 }
+    8:  { rain_prob: 0.20, bad_light_prob: 0.06, overcast_prob: 0.50, humidity: 0.72 }
+    9:  { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.35, humidity: 0.65 }
+    10: { rain_prob: 0.06, bad_light_prob: 0.03, overcast_prob: 0.22, humidity: 0.58 }
+    11: { rain_prob: 0.04, bad_light_prob: 0.02, overcast_prob: 0.18, humidity: 0.55 }
+    12: { rain_prob: 0.03, bad_light_prob: 0.02, overcast_prob: 0.15, humidity: 0.55 }
+
+  Centurion:  # SuperSport Park
+    1:  { rain_prob: 0.20, bad_light_prob: 0.04, overcast_prob: 0.38, humidity: 0.55 }
+    2:  { rain_prob: 0.18, bad_light_prob: 0.04, overcast_prob: 0.35, humidity: 0.55 }
+    3:  { rain_prob: 0.12, bad_light_prob: 0.04, overcast_prob: 0.28, humidity: 0.50 }
+    4:  { rain_prob: 0.06, bad_light_prob: 0.03, overcast_prob: 0.20, humidity: 0.42 }
+    5:  { rain_prob: 0.03, bad_light_prob: 0.03, overcast_prob: 0.12, humidity: 0.35 }
+    6:  { rain_prob: 0.02, bad_light_prob: 0.03, overcast_prob: 0.10, humidity: 0.30 }
+    7:  { rain_prob: 0.02, bad_light_prob: 0.03, overcast_prob: 0.10, humidity: 0.28 }
+    8:  { rain_prob: 0.02, bad_light_prob: 0.03, overcast_prob: 0.10, humidity: 0.30 }
+    9:  { rain_prob: 0.04, bad_light_prob: 0.03, overcast_prob: 0.15, humidity: 0.35 }
+    10: { rain_prob: 0.10, bad_light_prob: 0.04, overcast_prob: 0.25, humidity: 0.45 }
+    11: { rain_prob: 0.16, bad_light_prob: 0.04, overcast_prob: 0.32, humidity: 0.52 }
+    12: { rain_prob: 0.20, bad_light_prob: 0.04, overcast_prob: 0.38, humidity: 0.55 }
+
+  # Add more cities as needed...
+  # Default values for unlisted cities
+  _default:
+    1:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    2:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    3:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    4:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    5:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    6:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    7:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    8:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    9:  { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    10: { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    11: { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
+    12: { rain_prob: 0.10, bad_light_prob: 0.05, overcast_prob: 0.30, humidity: 0.55 }
