@@ -1,0 +1,559 @@
+# =============================================================================
+# CRICKET TEST MATCH SIMULATION - VENUE CONFIGURATION
+# =============================================================================
+#
+# This file contains all venue profiles for the simulation.
+# Each venue has unique characteristics affecting match outcomes.
+#
+# -----------------------------------------------------------------------------
+# FIELD DOCUMENTATION
+# -----------------------------------------------------------------------------
+#
+# pace_friendly: 0.0-1.0, how much the pitch helps pace bowlers
+#                0.7+ = Green seamer (Hobart, Wellington)
+#                0.5-0.6 = Balanced with pace assistance (Lord's, MCG)
+#                0.4 = Neutral
+#                <0.4 = Flat, pace-unfriendly (Indian subcontinent)
+#
+# spin_friendly: 0.0-1.0, how much the pitch helps spin bowlers
+#                0.7+ = Rank turner (Chennai, Nagpur, Galle)
+#                0.5-0.6 = Good spin assistance (Delhi, Kandy)
+#                0.4 = Balanced
+#                <0.4 = Pace-dominated, little spin
+#
+# bounce: 0.0-1.0, consistency of bounce
+#         0.9+ = True bounce (WACA, Perth Stadium)
+#         0.7-0.8 = Good bounce (MCG, SCG)
+#         0.5-0.6 = Variable (Subcontinent on day 4-5)
+#         <0.5 = Very variable/low bounce
+#
+# typical_first_innings: Expected first innings score (range: 250-450)
+#                        400+ = Very batting-friendly
+#                        350-400 = Good batting surface
+#                        300-350 = Balanced
+#                        <300 = Bowler-friendly
+#
+# altitude: Meters above sea level
+#           0-100 = Sea level (most venues)
+#           1000+ = High altitude (Johannesburg)
+#           Effect: Higher altitude = more carry, ball travels faster
+#
+# home_country: Which team gets home advantage at this venue
+#
+# home_advantage: 1.0-1.2, multiplier for home team performance
+#                 1.15+ = Strong home advantage (Subcontinent)
+#                 1.10 = Normal home advantage
+#                 1.05 = Neutral venue
+#
+# deterioration_rate: 0.05-0.15, how quickly pitch breaks up
+#                     0.12+ = Quick deterioration (Subcontinent)
+#                     0.08-0.10 = Normal
+#                     <0.07 = Slow deterioration (Australian roads)
+#
+# =============================================================================
+
+venues:
+
+  # ===========================================================================
+  # ENGLAND
+  # ===========================================================================
+
+  "Lord's":
+    country: "England"
+    city: "London"
+    pace_friendly: 0.55
+    spin_friendly: 0.30
+    bounce: 0.75
+    typical_first_innings: 380
+    altitude: 40
+    home_country: "England"
+    home_advantage: 1.10
+    deterioration_rate: 0.08
+
+  "The Oval":
+    country: "England"
+    city: "London"
+    pace_friendly: 0.50
+    spin_friendly: 0.40
+    bounce: 0.70
+    typical_first_innings: 400
+    altitude: 10
+    home_country: "England"
+    home_advantage: 1.10
+    deterioration_rate: 0.09
+
+  "Edgbaston":
+    country: "England"
+    city: "Birmingham"
+    pace_friendly: 0.55
+    spin_friendly: 0.30
+    bounce: 0.75
+    typical_first_innings: 370
+    altitude: 100
+    home_country: "England"
+    home_advantage: 1.12  # Fortress Edgbaston
+    deterioration_rate: 0.08
+
+  "Headingley":
+    country: "England"
+    city: "Leeds"
+    pace_friendly: 0.65
+    spin_friendly: 0.25
+    bounce: 0.70
+    typical_first_innings: 320
+    altitude: 60
+    home_country: "England"
+    home_advantage: 1.10
+    deterioration_rate: 0.10
+
+  "Trent Bridge":
+    country: "England"
+    city: "Nottingham"
+    pace_friendly: 0.60
+    spin_friendly: 0.30
+    bounce: 0.72
+    typical_first_innings: 350
+    altitude: 30
+    home_country: "England"
+    home_advantage: 1.10
+    deterioration_rate: 0.08
+
+  "Old Trafford":
+    country: "England"
+    city: "Manchester"
+    pace_friendly: 0.55
+    spin_friendly: 0.35
+    bounce: 0.70
+    typical_first_innings: 360
+    altitude: 40
+    home_country: "England"
+    home_advantage: 1.10
+    deterioration_rate: 0.09
+
+  # ===========================================================================
+  # AUSTRALIA
+  # ===========================================================================
+
+  "MCG":
+    country: "Australia"
+    city: "Melbourne"
+    pace_friendly: 0.55
+    spin_friendly: 0.35
+    bounce: 0.78
+    typical_first_innings: 380
+    altitude: 30
+    home_country: "Australia"
+    home_advantage: 1.12
+    deterioration_rate: 0.07
+
+  "SCG":
+    country: "Australia"
+    city: "Sydney"
+    pace_friendly: 0.45
+    spin_friendly: 0.50
+    bounce: 0.70
+    typical_first_innings: 360
+    altitude: 20
+    home_country: "Australia"
+    home_advantage: 1.10
+    deterioration_rate: 0.10
+
+  "Gabba":
+    country: "Australia"
+    city: "Brisbane"
+    pace_friendly: 0.65
+    spin_friendly: 0.30
+    bounce: 0.85
+    typical_first_innings: 360
+    altitude: 25
+    home_country: "Australia"
+    home_advantage: 1.15  # Fortress Gabba
+    deterioration_rate: 0.07
+
+  "Adelaide Oval":
+    country: "Australia"
+    city: "Adelaide"
+    pace_friendly: 0.50
+    spin_friendly: 0.40
+    bounce: 0.75
+    typical_first_innings: 400
+    altitude: 50
+    home_country: "Australia"
+    home_advantage: 1.10
+    deterioration_rate: 0.08
+
+  "Perth Stadium":
+    country: "Australia"
+    city: "Perth"
+    pace_friendly: 0.70
+    spin_friendly: 0.25
+    bounce: 0.90
+    typical_first_innings: 340
+    altitude: 15
+    home_country: "Australia"
+    home_advantage: 1.12
+    deterioration_rate: 0.06
+
+  "WACA":
+    country: "Australia"
+    city: "Perth"
+    pace_friendly: 0.75
+    spin_friendly: 0.20
+    bounce: 0.92
+    typical_first_innings: 320
+    altitude: 15
+    home_country: "Australia"
+    home_advantage: 1.12
+    deterioration_rate: 0.06
+
+  # ===========================================================================
+  # INDIA
+  # ===========================================================================
+
+  "Wankhede Stadium":
+    country: "India"
+    city: "Mumbai"
+    pace_friendly: 0.40
+    spin_friendly: 0.55
+    bounce: 0.65
+    typical_first_innings: 350
+    altitude: 10
+    home_country: "India"
+    home_advantage: 1.15
+    deterioration_rate: 0.12
+
+  "M.A. Chidambaram Stadium":
+    country: "India"
+    city: "Chennai"
+    pace_friendly: 0.30
+    spin_friendly: 0.70
+    bounce: 0.55
+    typical_first_innings: 320
+    altitude: 5
+    home_country: "India"
+    home_advantage: 1.15
+    deterioration_rate: 0.14  # Quick deterioration
+
+  "Arun Jaitley Stadium":
+    country: "India"
+    city: "Delhi"
+    pace_friendly: 0.40
+    spin_friendly: 0.55
+    bounce: 0.60
+    typical_first_innings: 340
+    altitude: 220
+    home_country: "India"
+    home_advantage: 1.15
+    deterioration_rate: 0.12
+
+  "Eden Gardens":
+    country: "India"
+    city: "Kolkata"
+    pace_friendly: 0.45
+    spin_friendly: 0.50
+    bounce: 0.65
+    typical_first_innings: 360
+    altitude: 10
+    home_country: "India"
+    home_advantage: 1.15
+    deterioration_rate: 0.11
+
+  "M. Chinnaswamy Stadium":
+    country: "India"
+    city: "Bengaluru"
+    pace_friendly: 0.50
+    spin_friendly: 0.45
+    bounce: 0.70
+    typical_first_innings: 380
+    altitude: 920
+    home_country: "India"
+    home_advantage: 1.12
+    deterioration_rate: 0.10
+
+  "Narendra Modi Stadium":
+    country: "India"
+    city: "Ahmedabad"
+    pace_friendly: 0.35
+    spin_friendly: 0.65
+    bounce: 0.55
+    typical_first_innings: 300
+    altitude: 50
+    home_country: "India"
+    home_advantage: 1.15
+    deterioration_rate: 0.13
+
+  "VCA Stadium":
+    country: "India"
+    city: "Nagpur"
+    pace_friendly: 0.30
+    spin_friendly: 0.70
+    bounce: 0.50
+    typical_first_innings: 280
+    altitude: 310
+    home_country: "India"
+    home_advantage: 1.18  # Extreme spin advantage
+    deterioration_rate: 0.15
+
+  "HPCA Stadium":
+    country: "India"
+    city: "Dharamsala"
+    pace_friendly: 0.55
+    spin_friendly: 0.40
+    bounce: 0.75
+    typical_first_innings: 350
+    altitude: 1457  # High altitude
+    home_country: "India"
+    home_advantage: 1.12
+    deterioration_rate: 0.09
+
+  # ===========================================================================
+  # NEW ZEALAND
+  # ===========================================================================
+
+  "Basin Reserve":
+    country: "New Zealand"
+    city: "Wellington"
+    pace_friendly: 0.70
+    spin_friendly: 0.25
+    bounce: 0.75
+    typical_first_innings: 320
+    altitude: 5
+    home_country: "New Zealand"
+    home_advantage: 1.12
+    deterioration_rate: 0.08
+
+  "Hagley Oval":
+    country: "New Zealand"
+    city: "Christchurch"
+    pace_friendly: 0.65
+    spin_friendly: 0.30
+    bounce: 0.78
+    typical_first_innings: 340
+    altitude: 20
+    home_country: "New Zealand"
+    home_advantage: 1.10
+    deterioration_rate: 0.08
+
+  "Seddon Park":
+    country: "New Zealand"
+    city: "Hamilton"
+    pace_friendly: 0.55
+    spin_friendly: 0.35
+    bounce: 0.72
+    typical_first_innings: 360
+    altitude: 40
+    home_country: "New Zealand"
+    home_advantage: 1.10
+    deterioration_rate: 0.09
+
+  # ===========================================================================
+  # SOUTH AFRICA
+  # ===========================================================================
+
+  "Wanderers Stadium":
+    country: "South Africa"
+    city: "Johannesburg"
+    pace_friendly: 0.70
+    spin_friendly: 0.30
+    bounce: 0.85
+    typical_first_innings: 350
+    altitude: 1753  # Very high altitude
+    home_country: "South Africa"
+    home_advantage: 1.15
+    deterioration_rate: 0.07
+
+  "Newlands":
+    country: "South Africa"
+    city: "Cape Town"
+    pace_friendly: 0.65
+    spin_friendly: 0.30
+    bounce: 0.80
+    typical_first_innings: 340
+    altitude: 5
+    home_country: "South Africa"
+    home_advantage: 1.12
+    deterioration_rate: 0.08
+
+  "SuperSport Park":
+    country: "South Africa"
+    city: "Centurion"
+    pace_friendly: 0.70
+    spin_friendly: 0.25
+    bounce: 0.85
+    typical_first_innings: 330
+    altitude: 1420
+    home_country: "South Africa"
+    home_advantage: 1.15
+    deterioration_rate: 0.07
+
+  "Kingsmead":
+    country: "South Africa"
+    city: "Durban"
+    pace_friendly: 0.60
+    spin_friendly: 0.35
+    bounce: 0.75
+    typical_first_innings: 350
+    altitude: 10
+    home_country: "South Africa"
+    home_advantage: 1.10
+    deterioration_rate: 0.09
+
+  # ===========================================================================
+  # PAKISTAN / UAE
+  # ===========================================================================
+
+  "Rawalpindi Cricket Stadium":
+    country: "Pakistan"
+    city: "Rawalpindi"
+    pace_friendly: 0.40
+    spin_friendly: 0.45
+    bounce: 0.65
+    typical_first_innings: 400
+    altitude: 500
+    home_country: "Pakistan"
+    home_advantage: 1.15
+    deterioration_rate: 0.10
+
+  "National Stadium":
+    country: "Pakistan"
+    city: "Karachi"
+    pace_friendly: 0.35
+    spin_friendly: 0.55
+    bounce: 0.60
+    typical_first_innings: 350
+    altitude: 10
+    home_country: "Pakistan"
+    home_advantage: 1.15
+    deterioration_rate: 0.12
+
+  "Gaddafi Stadium":
+    country: "Pakistan"
+    city: "Lahore"
+    pace_friendly: 0.40
+    spin_friendly: 0.50
+    bounce: 0.65
+    typical_first_innings: 360
+    altitude: 215
+    home_country: "Pakistan"
+    home_advantage: 1.15
+    deterioration_rate: 0.11
+
+  "Multan Cricket Stadium":
+    country: "Pakistan"
+    city: "Multan"
+    pace_friendly: 0.30
+    spin_friendly: 0.65
+    bounce: 0.55
+    typical_first_innings: 400  # Road
+    altitude: 125
+    home_country: "Pakistan"
+    home_advantage: 1.15
+    deterioration_rate: 0.12
+
+  # ===========================================================================
+  # SRI LANKA
+  # ===========================================================================
+
+  "Galle International Stadium":
+    country: "Sri Lanka"
+    city: "Galle"
+    pace_friendly: 0.30
+    spin_friendly: 0.75
+    bounce: 0.55
+    typical_first_innings: 300
+    altitude: 5
+    home_country: "Sri Lanka"
+    home_advantage: 1.18  # Extreme spin advantage
+    deterioration_rate: 0.14
+
+  "R.Premadasa Stadium":
+    country: "Sri Lanka"
+    city: "Colombo"
+    pace_friendly: 0.35
+    spin_friendly: 0.60
+    bounce: 0.60
+    typical_first_innings: 320
+    altitude: 5
+    home_country: "Sri Lanka"
+    home_advantage: 1.15
+    deterioration_rate: 0.13
+
+  "Pallekele International Stadium":
+    country: "Sri Lanka"
+    city: "Kandy"
+    pace_friendly: 0.45
+    spin_friendly: 0.50
+    bounce: 0.65
+    typical_first_innings: 340
+    altitude: 500
+    home_country: "Sri Lanka"
+    home_advantage: 1.12
+    deterioration_rate: 0.11
+
+  # ===========================================================================
+  # WEST INDIES
+  # ===========================================================================
+
+  "Kensington Oval":
+    country: "West Indies"
+    city: "Bridgetown"
+    pace_friendly: 0.55
+    spin_friendly: 0.40
+    bounce: 0.75
+    typical_first_innings: 360
+    altitude: 5
+    home_country: "West Indies"
+    home_advantage: 1.10
+    deterioration_rate: 0.09
+
+  "Queen's Park Oval":
+    country: "West Indies"
+    city: "Port of Spain"
+    pace_friendly: 0.50
+    spin_friendly: 0.50
+    bounce: 0.70
+    typical_first_innings: 350
+    altitude: 30
+    home_country: "West Indies"
+    home_advantage: 1.10
+    deterioration_rate: 0.10
+
+  "Sabina Park":
+    country: "West Indies"
+    city: "Kingston"
+    pace_friendly: 0.60
+    spin_friendly: 0.35
+    bounce: 0.80
+    typical_first_innings: 340
+    altitude: 5
+    home_country: "West Indies"
+    home_advantage: 1.12
+    deterioration_rate: 0.08
+
+  # ===========================================================================
+  # BANGLADESH
+  # ===========================================================================
+
+  "Sher-e-Bangla Stadium":
+    country: "Bangladesh"
+    city: "Mirpur"
+    pace_friendly: 0.30
+    spin_friendly: 0.70
+    bounce: 0.50
+    typical_first_innings: 300
+    altitude: 5
+    home_country: "Bangladesh"
+    home_advantage: 1.15
+    deterioration_rate: 0.14
+
+  "Zahur Ahmed Chowdhury Stadium":
+    country: "Bangladesh"
+    city: "Chittagong"
+    pace_friendly: 0.35
+    spin_friendly: 0.60
+    bounce: 0.55
+    typical_first_innings: 320
+    altitude: 5
+    home_country: "Bangladesh"
+    home_advantage: 1.12
+    deterioration_rate: 0.13
