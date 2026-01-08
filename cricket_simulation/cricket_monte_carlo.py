@@ -351,17 +351,19 @@ class PitchConditions:
         """
         # Day 1: Pace helps bowlers
         # Day 2-3: Best for batting
-        # Day 4-5: Deterioration helps spinners
+        # Day 4-5: Significant deterioration helps bowlers
         if self.current_day <= 1:
             base = 0.55
         elif self.current_day <= 3:
             base = 0.45
-        else:
-            base = 0.5 + (self.current_day - 3) * 0.08
+        elif self.current_day == 4:
+            base = 0.58
+        else:  # Day 5
+            base = 0.68  # Much harder to bat on day 5
 
-        # Add effect of variable bounce
+        # Add effect of variable bounce (more significant on worn pitches)
         bounce_var = 1 - self.get_bounce_consistency()
-        return base + bounce_var * 0.15
+        return base + bounce_var * 0.2
 
     def advance_overs(self, overs: int = 1):
         """Advance the pitch state by number of overs"""
@@ -611,10 +613,11 @@ class BallSimulator:
     ) -> float:
         """Calculate probability of wicket on this ball"""
 
-        # Base probability from bowler skill (reduced for more realistic test match scores)
-        # In real tests, ~1 wicket per 55-60 balls on average (wicket every ~10 overs)
-        # Using 0.35 multiplier to make innings last longer and increase draw probability
-        base_prob = bowler.bowling_stats.wicket_probability_base * 0.35
+        # Base probability from bowler skill
+        # Target: ~1 wicket per 55-60 balls (roughly 9-10 overs per wicket)
+        # This gives ~95-100 overs per innings when all out
+        # Combined with ~3.3 rpo, this means ~330 runs per innings
+        base_prob = bowler.bowling_stats.wicket_probability_base * 0.52
 
         # Bowler skill modifier (0.7 to 1.3 - narrower range)
         skill_mod = 0.7 + (bowler.bowling_stats.skill_rating / 166)
@@ -652,11 +655,15 @@ class BallSimulator:
         # Bowler fatigue (reduces effectiveness)
         fatigue_mod = 1 - (bowler.bowling_stats.current_fatigue / 250)
 
-        # Match situation modifiers
+        # Match situation modifiers - 4th innings is significantly harder
         situation_mod = 1.0
-        if match_situation.get('innings', 1) >= 3:
-            # Late innings pitch deterioration effect
-            situation_mod *= 1.03
+        innings_num = match_situation.get('innings', 1)
+        if innings_num == 3:
+            # 3rd innings slightly harder
+            situation_mod *= 1.08
+        elif innings_num == 4:
+            # 4th innings significantly harder - pitch deterioration, pressure
+            situation_mod *= 1.25
 
         # Batsman vs bowling type matchup
         matchup_mod = 1.0
@@ -715,9 +722,9 @@ class BallSimulator:
         """Calculate runs scored off the bat"""
 
         # Base run distribution for test cricket
-        # Target: ~3.0-3.5 runs per over (0.5-0.58 runs per ball)
-        # Realistic test distribution: ~63% dots, ~23% singles, ~5% twos, ~1% threes, ~6.5% fours, ~1.5% sixes
-        base_probs = np.array([0.63, 0.23, 0.05, 0.01, 0.055, 0.003, 0.012])
+        # Target: ~3.0 runs per over (0.5 runs per ball)
+        # Conservative test distribution: ~66% dots, ~21% singles, ~5% twos, ~5.5% fours
+        base_probs = np.array([0.66, 0.21, 0.05, 0.008, 0.055, 0.002, 0.015])
         # Corresponds to: 0, 1, 2, 3, 4, 5, 6
 
         # Modify based on batsman strike rate
@@ -879,13 +886,15 @@ class DeclarationEngine:
 
         captain_aggression = innings.batting_team.declaration_aggression
 
-        # First innings: rarely declare unless massive score or late in the day
+        # First innings: declare to give bowlers time
         if match.current_innings == 1:
-            # Only declare with very high scores
-            if innings.runs >= 650 and wickets_in_hand <= 3:
+            # Aggressive teams declare earlier to bowl
+            if innings.runs >= 500 and wickets_in_hand <= 4:
                 return True
-            if innings.runs >= 550 and match.overs_remaining_today <= 10:
-                return self.rng.random() < captain_aggression * 0.5
+            if innings.runs >= 450 and wickets_in_hand <= 3:
+                return True
+            if innings.runs >= 400 and match.overs_remaining_today <= 15:
+                return self.rng.random() < captain_aggression
             return False
 
         # Second innings: typically bat out the innings, only declare if building big lead
@@ -898,33 +907,34 @@ class DeclarationEngine:
                     return self.rng.random() < captain_aggression * 0.8
             return False
 
-        # Third innings: set target for opponents (more conservative thresholds)
+        # Third innings: set challenging target for opponents
         if match.current_innings == 3:
             target = lead  # Opponent needs to chase this + 1
 
-            # Conservative declaration logic based on overs remaining
-            if overs_remaining <= 40:
-                # Limited time, need to bowl them out quickly
-                if target >= 150:
+            # Declaration logic: need sufficient lead AND time to bowl them out
+            # Higher targets give more chance of draw (opponent runs out of time)
+            if overs_remaining <= 50:
+                # Limited time - lower targets acceptable
+                if target >= 200:
                     return True
-                elif target >= 100:
+                elif target >= 150:
                     return self.rng.random() < captain_aggression
-            elif overs_remaining <= 70:
-                if target >= 275:
+            elif overs_remaining <= 80:
+                if target >= 325:
                     return True
-                elif target >= 225:
+                elif target >= 275:
                     return self.rng.random() < captain_aggression
-            elif overs_remaining <= 100:
-                if target >= 350:
+            elif overs_remaining <= 110:
+                if target >= 400:
                     return True
-                elif target >= 300:
-                    return self.rng.random() < captain_aggression * 0.7
+                elif target >= 350:
+                    return self.rng.random() < captain_aggression * 0.8
             else:
-                # Plenty of time - need big lead
-                if target >= 450:
+                # Plenty of time - need very big lead to force result
+                if target >= 500:
                     return True
-                elif target >= 400:
-                    return self.rng.random() < captain_aggression * 0.5
+                elif target >= 450:
+                    return self.rng.random() < captain_aggression * 0.6
 
         return False
 
