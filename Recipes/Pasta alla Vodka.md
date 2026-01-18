@@ -1,0 +1,51 @@
+# Pasta with Vodka Sauce
+
+A classic Italian-American dish featuring a creamy tomato sauce with a hint of vodka that enhances the flavors.
+
+**Total Time:** 25-30 minutes  
+**Prep Time:** 10-15 minutes  
+**Cook Time:** 20-25 minutes  
+**Servings:** 4-6
+
+## Ingredients
+
+- 1 pound pasta (penne works well)
+- 2 tablespoons olive oil
+- 1 small onion, finely diced
+- 3-4 garlic cloves, minced
+- 1/4 teaspoon red pepper flakes (adjust to taste)
+- 1/4 cup vodka
+- 1 (28 oz) can crushed tomatoes
+- 3/4 cup heavy cream
+- 1/2 cup freshly grated Parmesan cheese, plus more for serving
+- Salt and freshly ground black pepper
+- Fresh basil leaves, torn (for garnish)
+
+## Instructions
+
+1. Bring a large pot of salted water to a boil and cook pasta according to package directions until al dente. Reserve 1/2 cup pasta water before draining.
+
+2. While pasta cooks, heat olive oil in a large skillet over medium heat. Add onion and cook until soft and translucent, about 5 minutes.
+
+3. Add garlic and red pepper flakes, cooking for another 30 seconds until fragrant.
+
+4. Add vodka and simmer for 2-3 minutes to cook off the alcohol.
+
+5. Stir in crushed tomatoes and simmer for about 10 minutes to allow the flavors to meld.
+
+6. Reduce heat to low and stir in the heavy cream. Simmer gently for another 3-4 minutes.
+
+7. Add the drained pasta to the sauce along with the grated Parmesan. Toss well to coat, adding a splash of pasta water if needed to loosen the sauce.
+
+8. Season with salt and pepper to taste.
+
+9. Serve immediately, garnished with torn basil leaves and additional Parmesan cheese.
+
+## Tips
+
+- The vodka helps release flavors from the tomatoes that are alcohol-soluble, creating a more complex sauce
+- Reserve pasta water - the starchy water helps the sauce cling to the pasta
+- For a lighter version, you can use half-and-half instead of heavy cream
+- This dish pairs wonderfully with a crisp salad and garlic bread
+
+Enjoy your homemade pasta with vodka sauce!
