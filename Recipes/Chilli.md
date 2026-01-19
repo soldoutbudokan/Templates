@@ -28,7 +28,7 @@ A meat-forward chili recipe with minimal beans - perfect for those who prefer mo
 
 1. Brown the beef in a large pot over medium-high heat, breaking it up as it cooks. Drain excess fat if needed.
 
-2. Add onion, bell pepper, and garlic, cooking until softened (about 5 minutes).
+2. Add onion, bell pepper, potato, and garlic, cooking until softened (about 5 minutes).
 
 3. Stir in all the spices and cook for another minute until fragrant.
 
