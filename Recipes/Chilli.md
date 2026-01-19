@@ -16,6 +16,7 @@ A meat-forward chili recipe with minimal beans - perfect for those who prefer mo
 - 1 can (6 oz) tomato paste
 - 2 cups beef broth
 - 1 can (15 oz) kidney or pinto beans, drained
+- 1 small potato, diced
 - 3 tbsp chili powder
 - 1 tbsp cumin
 - 1 tsp smoked paprika
