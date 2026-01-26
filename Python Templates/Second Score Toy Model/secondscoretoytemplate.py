@@ -12,7 +12,7 @@ Original file is located at
 # Title: Second Score Sensitivity Simulation – Python Implementation
 # Author: Tirth Bhatt
 #
-# Project: Broadridge
+# Project: [PROJECT NAME]
 #
 # Notes:
 # - One common θ (simple logit).
