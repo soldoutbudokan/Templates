@@ -10,7 +10,7 @@
 # Last Updated: 						
 #   
 # Audited: No
-# To run from cmd: python "C:\Users\tbhatt\Documents\Templates\Geospatial\code\HighlightingCounties.py"
+# To run from cmd: python "C:\Users\[USERNAME]\Documents\Templates\Geospatial\code\HighlightingCounties.py"
 ################################################################################
 
 # %% Imports and setup
