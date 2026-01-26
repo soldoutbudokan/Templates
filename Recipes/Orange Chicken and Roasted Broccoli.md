@@ -26,7 +26,7 @@ This recipe is optimized for reheating and uses pan-frying instead of deep fryin
 - 2 tablespoons cornstarch mixed with 2 tablespoons water
 
 ### For the Broccoli
-- 1.5 lbs broccoli florets
+- 1.5 lbs broccoli florets (about 2 big heads)
 - 1-2 tablespoons oil (regular or sesame oil)
 - Salt to taste
 - **Seasoning options:**
