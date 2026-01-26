@@ -1,7 +1,7 @@
 # %%
 ################################################################################
 # Title: [Analysis Name]
-# Author: Tirth Bhatt
+# Author: soldoutbudokan
 # Date Created: [Date]
 # Last Modified: [Date]
 #
