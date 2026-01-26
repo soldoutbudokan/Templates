@@ -4,7 +4,7 @@
 
 
 param(
-  [string]$Path = 'C:\Users\tbhatt\Documents\Templates\',
+  [string]$Path = 'C:\Users\[USERNAME]\Documents\Templates\',
   [switch]$Recurse
 )
 

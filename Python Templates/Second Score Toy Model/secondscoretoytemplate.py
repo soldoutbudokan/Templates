@@ -9,18 +9,18 @@ Original file is located at
 
 # %%
 ################################################################################
-# Title: Second Score Sensitivity Simulation – Python Implementation
-# Author: Tirth Bhatt
+# Title: Second Score Sensitivity Simulation – Python Implementation
+# Author: soldoutbudokan
 #
-# Project: [PROJECT NAME]
+# Project: [Project]
 #
 # Notes:
 # - One common θ (simple logit).
 # - Closed‑form mark‑up formula taken from the R prototype.
 # - Three worlds:
 #     1. Pre‑merger date (no merger)
-#     2. Post‑merger date (no merger) – entrant’s share grows
-#     3. Post‑merger date (with merger) – Firm 1 merges with Firm 2
+#     2. Post‑merger date (no merger) – entrant's share grows
+#     3. Post‑merger date (with merger) – Firm 1 merges with Firm 2
 # - No external files.  Only numpy required.
 ################################################################################
 
@@ -31,27 +31,27 @@ import numpy as np
 theta = 0.5
 
 prices = np.array([100, 150,  90, 100, 110], dtype=float)
-product_names = np.array(["Product 1", "Product 2", "Product 3",
-                          "Product 4", "Product 5"])
+product_names = np.array(["Product 1", "Product 2", "Product 3",
+                          "Product 4", "Product 5"])
 
-owners_pre  = np.array([0, 0, 0, 1, 2])          # Firm 1, Firm 1, Firm 1, Firm 2, Firm 3
-owners_post = np.array([0, 0, 0, 0, 2])          # Firm 1+2, Firm 3
-firm_names  = np.array(["Firm 1", "Firm 2", "Firm 3"])
+owners_pre  = np.array([0, 0, 0, 1, 2])          # Firm 1, Firm 1, Firm 1, Firm 2, Firm 3
+owners_post = np.array([0, 0, 0, 0, 2])          # Firm 1+2, Firm 3
+firm_names  = np.array(["Firm 1", "Firm 2", "Firm 3"])
 
 # World‑1 inside‑market percentages (must sum to 1)
 inside_pct_w1 = np.array([0.50, 0.20, 0.20, 0.10, 1e-9])
 outside_w1    = 0.10
 
-# Margin for Product 4 (Firm 2)
+# Margin for Product 4 (Firm 2)
 margin_p4 = 0.40
 
-# World‑2 percentages after entrant gains share (still sum to 1)
+# World‑2 percentages after entrant gains share (still sum to 1)
 inside_pct_w2 = np.array([0.40, 0.15, 0.15, 0.10, 0.20])
 outside_w2    = 0.10
 # -----------------------------------------------------------------------------
 
 
-# %% ---------------------- HELPER FUNCTIONS -----------------------------------
+# %% ---------------------- HELPER FUNCTIONS -----------------------------------
 EPS = 1e-12
 
 def pct_to_abs(pct_vec, s0):
@@ -77,7 +77,7 @@ def markups(th, alpha, firm_sh):
     return ((1 - th) / alpha) * (1 / firm_sh) * np.log(1 / (1 - firm_sh))
 
 
-# %% ------------------------- WORLD 1  (pre) ----------------------------------
+# %% ------------------------- WORLD 1  (pre) ----------------------------------
 inside_w1 = pct_to_abs(inside_pct_w1, outside_w1)
 
 cost_p4   = (1 - margin_p4) * prices[3]                       # unit cost for p4
@@ -91,48 +91,48 @@ for i, owner in enumerate(owners_pre):
     costs[i] = prices[i] - firm_markup_w1[owner]
 costs[3] = cost_p4                                            # overwrite with known cost
 
-# %% ------------------------- WORLD 2  (post, no merger) ---------------------
+# %% ------------------------- WORLD 2  (post, no merger) ---------------------
 inside_w2        = pct_to_abs(inside_pct_w2, outside_w2)
 firm_share_w2    = firm_total(inside_w2, owners_pre, 3)
 firm_markup_w2   = markups(theta, alpha, firm_share_w2)
 prices_w2        = costs + firm_markup_w2[owners_pre]
 
-# %% ------------------------- WORLD 3  (post, with merger) -------------------
+# %% ------------------------- WORLD 3  (post, with merger) -------------------
 firm_share_w3    = firm_total(inside_w2, owners_post, 3)      # only two active firms
 firm_markup_w3   = markups(theta, alpha, firm_share_w3)
 prices_w3        = costs + firm_markup_w3[owners_post]
 
-# %% ------------------------- SUMMARY PRINT ----------------------------------
+# %% ------------------------- SUMMARY PRINT ----------------------------------
 
 def banner(txt):
     print("\n" + txt)
     print("-" * len(txt))
 
-# Scenario 1 output
-banner("World 1  –  No Entry, No Merger")
+# Scenario 1 output
+banner("World 1  –  No Entry, No Merger")
 print(f"Outside share           : {outside_w1:.4f}")
 print(f"Alpha                   : {alpha:.6f}")
 print(f"Theta                   : {theta:.2f}\n")
 
-print("By Firm (shares & mark‑ups):")
+print("By Firm (shares & mark‑ups):")
 for f_idx, firm in enumerate(firm_names):
     inside_pct_firm = inside_pct_w1[owners_pre == f_idx].sum()
     print(f"  {firm:<6s} inside‑pct {inside_pct_firm:.4f}  share {firm_share_w1[f_idx]:.4f}  markup {firm_markup_w1[f_idx]:.4f}")
     for i in np.where(owners_pre == f_idx)[0]:
         print(f"     {product_names[i]}  Price {prices[i]:.2f}  Cost {costs[i]:.2f}")
 
-# Scenario 2 output
-banner("World 2  –  Entry, No Merger")
+# Scenario 2 output
+banner("World 2  –  Entry, No Merger")
 for i, name in enumerate(product_names):
     print(f"{name:<10s} Price {prices_w2[i]:.2f}")
 
-# Scenario 3 output
-banner("World 3  –  Entry, With merger")
+# Scenario 3 output
+banner("World 3  –  Entry, With merger")
 for i, name in enumerate(product_names):
     print(f"{name:<10s} Price {prices_w3[i]:.2f}")
 
 # Price effects
-banner("PRICE EFFECT  (Effect of Only the Merger)")
+banner("PRICE EFFECT  (Effect of Only the Merger)")
 for i, name in enumerate(product_names):
     delta = prices_w3[i] - prices_w2[i]
     pct   = 100 * delta / prices_w2[i]

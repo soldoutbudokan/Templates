@@ -4,13 +4,13 @@
 # 
 #   
 # Case: Personal Interest/Training/Templates									
-# Author: Tirth Bhatt
+# Author: soldoutbudokan
 # Version Number:
 # Date Created: 						
 # Last Updated: 						
 #   
 # Audited: No
-# To run from cmd: python "C:\Users\tbhatt\Documents\Templates\Geospatial\code\HighlightingCounties.py"
+# To run from cmd: python "C:\Users\[USERNAME]\Documents\Templates\Geospatial\code\HighlightingCounties.py"
 ################################################################################
 
 # %% Imports and setup
