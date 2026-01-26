@@ -10,7 +10,7 @@ This recipe is optimized for reheating and uses pan-frying instead of deep fryin
 
 ### For the Chicken
 - 2 lbs boneless, skinless chicken thighs (better for reheating than breasts)
-- 3 tablespoons cornstarch (adjust to preference)
+- 4 tablespoons cornstarch (adjust to preference)
 - 2 tablespoons vegetable oil
 - Salt and pepper
 
@@ -19,7 +19,7 @@ This recipe is optimized for reheating and uses pan-frying instead of deep fryin
 - Zest of 1 orange
 - 1/4 cup low-sodium soy sauce
 - 1/4 cup rice vinegar
-- 1/3 cup honey or brown sugar (adjust to taste)
+- 1/2 cup honey or brown sugar (adjust to taste)
 - 3 cloves garlic, minced
 - 1 tablespoon fresh ginger, grated
 - 1/2 teaspoon red pepper flakes (optional)
