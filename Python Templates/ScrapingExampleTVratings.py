@@ -1,7 +1,7 @@
 # %%
 ################################################################################
 # Title: Example of Web Scraping
-# Author: Tirth Bhatt
+# Author: soldoutbudokan
 # Date Created:
 # Last Modified:
 #
