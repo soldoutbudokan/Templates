@@ -1,6 +1,5 @@
 import torch
 import os
-import json
 import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
@@ -12,20 +11,8 @@ from pathlib import Path
 import kaggle
 
 # ------------------------------------------------
-# Kaggle setup
+# Kaggle setup — expects ~/.kaggle/kaggle.json to exist
 # ------------------------------------------------
-kaggle_dir = os.path.expanduser('~/.kaggle')
-os.makedirs(kaggle_dir, exist_ok=True)
-
-credentials = {
-    "username": "soldoutbudokan",
-    "key": "c7611eb705a967e377ce5416ac014472"
-}
-with open(os.path.join(kaggle_dir, 'kaggle.json'), 'w') as f:
-    json.dump(credentials, f)
-
-os.chmod(os.path.join(kaggle_dir, 'kaggle.json'), 0o600)
-
 print("Downloading dataset...")
 kaggle.api.authenticate()
 owner_slug = "ikarus777"
