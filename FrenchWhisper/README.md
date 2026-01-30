@@ -4,7 +4,7 @@ A macOS app that provides live French-to-English audio translation, running enti
 
 ## Requirements
 
-- **macOS 14.0 (Sonoma)** or later
+- **macOS 15.0 (Sequoia)** or later
 - **Xcode 15** or later
 - Apple Silicon or Intel Mac with on-device speech recognition support
 

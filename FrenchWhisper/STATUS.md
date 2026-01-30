@@ -11,7 +11,7 @@ The app code is fully written and ready to build. Just needs Xcode installed.
 - [x] `SpeechService.swift` - Microphone capture + French speech recognition
 - [x] `ContentView.swift` - Main UI with live subtitle display
 - [x] `FrenchWhisperApp.swift` - App entry point
-- [x] Xcode project file configured (macOS 14+, permissions, entitlements)
+- [x] Xcode project file configured (macOS 15+, permissions, entitlements)
 - [x] Assets catalog setup
 - [x] README.md with usage instructions
 
