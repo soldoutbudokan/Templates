@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Translator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            color: #888;
+        }
+
+        .language-select {
+            margin-bottom: 30px;
+        }
+
+        .language-select label {
+            color: #888;
+            font-size: 0.875rem;
+            margin-right: 10px;
+        }
+
+        .language-select select {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .subtitle-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 30px 20px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .english {
+            font-size: 1.75rem;
+            font-weight: 500;
+            line-height: 1.4;
+            color: white;
+        }
+
+        .original {
+            font-size: 1rem;
+            color: #888;
+            font-style: italic;
+            margin-top: 12px;
+        }
+
+        .placeholder {
+            color: #555;
+            font-size: 1.25rem;
+        }
+
+        .status {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+            min-height: 20px;
+        }
+
+        .error {
+            color: #e74c3c;
+        }
+
+        .listening-status {
+            color: #22c55e;
+        }
+
+        .mic-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            background: #3b82f6;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-button:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .mic-button.listening {
+            background: #ef4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        .mic-button:disabled {
+            background: #444;
+            cursor: not-allowed;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        .debug {
+            margin-top: 30px;
+            padding: 15px;
+            background: #222;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #666;
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .debug-toggle {
+            color: #555;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Translator</h1>
+
+        <div class="language-select">
+            <label for="lang">I'm speaking:</label>
+            <select id="lang">
+                <option value="fr-FR">French</option>
+                <option value="es-ES">Spanish</option>
+                <option value="de-DE">German</option>
+                <option value="it-IT">Italian</option>
+                <option value="pt-PT">Portuguese</option>
+                <option value="nl-NL">Dutch</option>
+                <option value="ru-RU">Russian</option>
+                <option value="ja-JP">Japanese</option>
+                <option value="ko-KR">Korean</option>
+                <option value="zh-CN">Chinese (Mandarin)</option>
+                <option value="ar-SA">Arabic</option>
+                <option value="hi-IN">Hindi</option>
+            </select>
+        </div>
+
+        <div class="subtitle-box">
+            <div id="english" class="english"></div>
+            <div id="original" class="original"></div>
+            <div id="placeholder" class="placeholder">Tap the mic and speak</div>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <button id="micButton" class="mic-button" onclick="toggleListening()">
+            <span id="micIcon">🎤</span>
+        </button>
+
+        <div class="debug-toggle" onclick="toggleDebug()">Show debug info</div>
+        <div id="debug" class="debug" style="display: none;"></div>
+    </div>
+
+    <script>
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        let recognition;
+        let isListening = false;
+
+        const langSelect = document.getElementById('lang');
+        const micButton = document.getElementById('micButton');
+        const micIcon = document.getElementById('micIcon');
+        const englishEl = document.getElementById('english');
+        const originalEl = document.getElementById('original');
+        const placeholderEl = document.getElementById('placeholder');
+        const statusEl = document.getElementById('status');
+        const debugEl = document.getElementById('debug');
+
+        log('Page loaded');
+        log('SpeechRecognition available: ' + !!SpeechRecognition);
+
+        if (!SpeechRecognition) {
+            setStatus('Speech recognition not supported in this browser. Try Chrome.', true);
+            micButton.disabled = true;
+            log('ERROR: No SpeechRecognition API');
+        } else {
+            log('Initializing speech recognition...');
+            initRecognition();
+        }
+
+        function initRecognition() {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            log('Recognition object created');
+
+            recognition.onstart = () => {
+                log('Recognition started');
+                setStatus('Listening...', false, true);
+            };
+
+            recognition.onaudiostart = () => {
+                log('Audio capture started');
+            };
+
+            recognition.onsoundstart = () => {
+                log('Sound detected');
+            };
+
+            recognition.onspeechstart = () => {
+                log('Speech detected');
+            };
+
+            recognition.onresult = async (event) => {
+                log('Got result: ' + event.results.length + ' results');
+
+                let finalTranscript = '';
+                let interimTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    const confidence = event.results[i][0].confidence;
+                    log(`Result ${i}: "${transcript}" (final: ${event.results[i].isFinal}, confidence: ${confidence?.toFixed(2) || 'N/A'})`);
+
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                const textToShow = finalTranscript || interimTranscript;
+                if (textToShow) {
+                    placeholderEl.style.display = 'none';
+                    originalEl.textContent = textToShow;
+
+                    if (finalTranscript) {
+                        translate(finalTranscript);
+                    } else {
+                        debounceTranslate(interimTranscript);
+                    }
+                }
+            };
+
+            recognition.onerror = (event) => {
+                log('ERROR: ' + event.error + ' - ' + event.message);
+
+                if (event.error === 'not-allowed') {
+                    setStatus('Microphone access denied. Allow microphone in browser settings.', true);
+                    stopListening();
+                } else if (event.error === 'no-speech') {
+                    setStatus('No speech detected. Tap mic to try again.', false);
+                } else if (event.error === 'network') {
+                    setStatus('Network error. Check your connection.', true);
+                } else if (event.error === 'aborted') {
+                    log('Recognition aborted');
+                } else {
+                    setStatus(`Error: ${event.error}`, true);
+                }
+            };
+
+            recognition.onend = () => {
+                log('Recognition ended, isListening: ' + isListening);
+                if (isListening) {
+                    log('Restarting recognition...');
+                    setTimeout(() => {
+                        try {
+                            recognition.lang = langSelect.value;
+                            recognition.start();
+                        } catch (e) {
+                            log('Restart failed: ' + e.message);
+                            stopListening();
+                        }
+                    }, 100);
+                }
+            };
+        }
+
+        let translateTimeout;
+        function debounceTranslate(text) {
+            clearTimeout(translateTimeout);
+            translateTimeout = setTimeout(() => translate(text), 400);
+        }
+
+        async function translate(text) {
+            if (!text.trim()) return;
+
+            const sourceLang = langSelect.value.split('-')[0];
+            log(`Translating from ${sourceLang}: "${text}"`);
+
+            try {
+                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|en`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                log('Translation response: ' + JSON.stringify(data.responseStatus));
+
+                if (data.responseStatus === 200 && data.responseData) {
+                    englishEl.textContent = data.responseData.translatedText;
+                } else {
+                    log('Translation failed: ' + JSON.stringify(data));
+                }
+            } catch (err) {
+                log('Translation error: ' + err.message);
+            }
+        }
+
+        function toggleListening() {
+            if (isListening) {
+                stopListening();
+            } else {
+                startListening();
+            }
+        }
+
+        function startListening() {
+            log('Starting listening, lang: ' + langSelect.value);
+
+            try {
+                recognition.lang = langSelect.value;
+                recognition.start();
+                isListening = true;
+                micButton.classList.add('listening');
+                micIcon.textContent = '⏹';
+
+                englishEl.textContent = '';
+                originalEl.textContent = '';
+                placeholderEl.style.display = 'block';
+            } catch (e) {
+                log('Start failed: ' + e.message);
+                setStatus('Failed to start: ' + e.message, true);
+            }
+        }
+
+        function stopListening() {
+            log('Stopping listening');
+            isListening = false;
+            try {
+                recognition.stop();
+            } catch (e) {
+                log('Stop error: ' + e.message);
+            }
+            micButton.classList.remove('listening');
+            micIcon.textContent = '🎤';
+            setStatus('', false);
+        }
+
+        function setStatus(message, isError, isListening) {
+            statusEl.textContent = message;
+            statusEl.className = isError ? 'status error' : (isListening ? 'status listening-status' : 'status');
+        }
+
+        function log(msg) {
+            const time = new Date().toLocaleTimeString();
+            debugEl.innerHTML += `[${time}] ${msg}<br>`;
+            debugEl.scrollTop = debugEl.scrollHeight;
+            console.log(msg);
+        }
+
+        function toggleDebug() {
+            const debug = document.getElementById('debug');
+            debug.style.display = debug.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
