@@ -21,8 +21,6 @@ INPUT_FOLDER = r"[PATH]"
 CONTEXT_CHARS = 150
 
 # %%
-# Load all PDFs into memory once (faster repeated searches)
-
 def load_pdfs(folder_path):
     """
     Extract text from all PDFs upfront. Returns dict of {filename: {page_num: text}}
@@ -53,6 +51,7 @@ def load_pdfs(folder_path):
     return pdf_texts
 
 
+# %%
 def search_keyword(pdf_texts, keyword, context_chars=150):
     """
     Search all loaded PDFs for a keyword.
@@ -81,6 +80,7 @@ def search_keyword(pdf_texts, keyword, context_chars=150):
     return results
 
 
+# %%
 def display_results(results, keyword):
     """
     Print results in a readable format.
@@ -102,6 +102,7 @@ def display_results(results, keyword):
     print(f"\n--- Summary: {len(results)} matches across {len(files)} files ---")
 
 
+# %%
 def export_results(results, keyword):
     """
     Save results to CSV.
@@ -114,6 +115,7 @@ def export_results(results, keyword):
     print(f"Saved to: {filename}")
 
 
+# %%
 def main():
     print("="*60)
     print("PDF KEYWORD SEARCH")
@@ -164,4 +166,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

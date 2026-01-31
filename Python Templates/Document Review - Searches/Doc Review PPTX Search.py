@@ -21,8 +21,6 @@ INPUT_FOLDER = r"[PATH]"
 CONTEXT_CHARS = 150
 
 # %%
-# Load all PPTXs into memory once (faster repeated searches)
-
 def load_pptx_files(folder_path):
     """
     Extract text from all PPTX files upfront. Returns dict of {filename: {slide_num: text}}
