@@ -1,72 +1,99 @@
-# Getting Started with Create React App
+# Card Counting Trainer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web app to practice Hi-Lo card counting for blackjack. Features realistic multi-deck shoe simulation and speed drill mode for building counting speed.
 
-## Available Scripts
+**Live Demo:** https://counting-trainer-sob.vercel.app
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+### Classic Mode
+- Displays 15-30 cards at once
+- Submit your running count and check your answer
+- Cards animate in with a flip effect
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Speed Drill Mode
+- Cards flash one at a time at configurable speeds
+- Practice speeds: 1s, 0.75s, 0.5s, 0.25s per card
+- Enter your count after the sequence completes
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Realistic Deck Simulation
+- Choose from 1, 2, 6, or 8 deck shoes (common casino configurations)
+- No duplicate cards until reshuffle
+- Automatic reshuffle when ~75% of shoe is dealt (cut card)
+- Visual indicator showing cards remaining in shoe
 
-### `npm test`
+### Session Tracking
+- Rounds played counter
+- Accuracy percentage
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Hi-Lo Counting System
 
-### `npm run build`
+| Cards | Count Value |
+|-------|-------------|
+| 2-6   | +1          |
+| 7-9   | 0           |
+| 10-A  | -1          |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Keyboard Shortcuts
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Key   | Action      |
+|-------|-------------|
+| Enter | Submit guess |
+| Space | New hand / Start drill |
+| Esc   | Stop drill (speed mode) |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Tech Stack
 
-### `npm run eject`
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Deployed on Vercel
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Development
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+# Install dependencies
+npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# Run development server
+npm run dev
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Build for production
+npm run build
 
-## Learn More
+# Start production server
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Open http://localhost:3000 in your browser.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Deployment
 
-### Code Splitting
+Deployed to Vercel. To redeploy:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+vercel --prod
+```
 
-### Analyzing the Bundle Size
+Or push to the connected GitHub repository for automatic deployments.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Project Structure
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-"# Counting" 
-"# Counting" 
+```
+Counting/
+├── app/
+│   ├── layout.tsx      # Root layout with metadata
+│   ├── page.tsx        # Main game page
+│   └── globals.css     # Tailwind + custom animations
+├── components/
+│   ├── Card.tsx        # Card with flip animation
+│   ├── Controls.tsx    # Settings panel
+│   ├── GameBoard.tsx   # Classic mode
+│   └── SpeedDrill.tsx  # Speed drill mode
+├── lib/
+│   └── deck.ts         # Deck class with shuffle logic
+├── package.json
+├── next.config.js
+├── tailwind.config.js
+└── tsconfig.json
+```
