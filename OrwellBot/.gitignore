@@ -1,0 +1,32 @@
+# Corpus data (large text files)
+corpus/
+
+# Model checkpoints and weights
+checkpoints/
+models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# MLX/Training artifacts
+mlx_model/
+adapters/
+*.npz
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
