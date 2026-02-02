@@ -1,0 +1,36 @@
+# Simple Rotisserie Chicken Stock
+
+## Ingredients
+
+- Bones and carcass from your rotisserie chicken
+- 1 onion, quartered (skin on is fine)
+- 2 carrots, rough chopped
+- 2 celery stalks, rough chopped
+- A few garlic cloves, smashed
+- A handful of peppercorns
+- A bay leaf or two
+- Cold water to cover (about 8-10 cups)
+- 1 bouillon cube (optional)
+
+## Method
+
+1. Throw the bones into a large pot. Add the vegetables, peppercorns, and bay leaves. Cover with cold water by an inch or two.
+
+2. Bring to a boil over high heat. The moment it boils, drop to a low simmer. You want lazy bubbles, not a rolling boil. Boiling makes cloudy, greasy stock.
+
+3. Simmer uncovered for 1.5 to 4 hours. Skim any grey foam that rises in the first 20 minutes. After that, leave it alone.
+
+4. Strain through a fine mesh sieve. Press the solids to squeeze out the liquid, then discard them.
+
+5. Season with salt. Taste it. If it seems thin or weak, add half a bouillon cube, stir until dissolved, and taste again.
+
+## On Bouillon Cubes
+
+Yes, you can use them. No shame in it. Rotisserie bones make decent stock, but they've already given up some of their goodness during roasting. A bouillon cube fills the gap. Add it at the end so you control the salt. Start with half, taste, then add more if needed.
+
+## Storage
+
+- **Fridge:** 5 days
+- **Freezer:** 3-4 months
+
+Let it cool, then refrigerate. The fat will rise and solidify on top. Scrape it off or leave it as a seal.
