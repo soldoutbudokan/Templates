@@ -30,6 +30,9 @@
             font-size: 0.9rem;
         }
         .match {
+            display: block;
+            text-decoration: none;
+            color: inherit;
             border: 1px solid #333;
             padding: 15px;
             margin-bottom: 15px;
@@ -183,7 +186,7 @@
 
                 if (data.matches && data.matches.length > 0) {
                     container.innerHTML = data.matches.map(m => `
-                        <div class="match" onclick="showScore('${m.id}')">
+                        <a href="#match/${m.id}" class="match" onclick="event.preventDefault(); showScore('${m.id}')">
                             <div class="match-title">${m.title || 'Unknown Match'}</div>
                             ${m.venue ? `<div class="venue">${m.venue}</div>` : ''}
                             ${m.timeEST ? `<div class="match-time">${m.timeEST} / ${m.timeLocal}</div>` : ''}
@@ -200,7 +203,7 @@
                                 </div>
                             ` : ''}
                             ${m.status ? `<div class="status ${m.status.toLowerCase().includes('live') ? 'live' : ''}">${m.status}</div>` : ''}
-                        </div>
+                        </a>
                     `).join('');
                 } else {
                     container.innerHTML = '<p class="error">no matches found</p>';
@@ -212,6 +215,7 @@
 
         async function showScore(matchId) {
             currentMatchId = matchId;
+            window.location.hash = `match/${matchId}`;
             document.getElementById('matches-view').style.display = 'none';
             document.getElementById('detail-view').classList.add('active');
 
@@ -246,7 +250,7 @@
                                     <div class="section-title">Batting</div>
                                     ${inn.batsmen.map(b => `
                                         <div class="player-row">
-                                            <span class="player-name">${b.name}</span>
+                                            <span class="player-name">${b.name}${b.isNotOut ? '*' : ''}</span>
                                             <span class="player-stats">${b.runs} (${b.balls})</span>
                                         </div>
                                     `).join('')}
@@ -293,6 +297,7 @@
             document.getElementById('detail-view').classList.remove('active');
             document.getElementById('matches-view').style.display = 'block';
             currentMatchId = null;
+            history.pushState('', document.title, window.location.pathname);
         }
 
         function refreshScore() {
@@ -301,15 +306,23 @@
             }
         }
 
+        // Handle hash-based navigation for direct links
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#match/')) {
+                const matchId = hash.replace('#match/', '');
+                showScore(matchId);
+            }
+        }
+        window.addEventListener('hashchange', handleHash);
+
         // Initial load
         loadMatches();
 
-        // Auto-refresh every 30 seconds when viewing a match
-        setInterval(() => {
-            if (currentMatchId) {
-                refreshScore();
-            }
-        }, 30000);
+        // Check for hash on initial page load
+        if (window.location.hash) {
+            handleHash();
+        }
     </script>
 </body>
 </html>

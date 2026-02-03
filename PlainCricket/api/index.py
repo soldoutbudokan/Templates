@@ -371,6 +371,9 @@ def score():
                 current_innings_batsmen = []
             elif len(parts) >= 3 and parts[0] not in ["Batter", "Extras", "Total", "Did not Bat"]:
                 name = parts[0].split("(")[0].strip()
+                # Check dismissal status - parts[1] is typically the dismissal text
+                dismissal = parts[1] if len(parts) > 1 else ""
+                is_not_out = "not out" in dismissal.lower() or "batting" in dismissal.lower()
                 # Find runs and balls
                 runs = "--"
                 balls = "--"
@@ -382,7 +385,7 @@ def score():
                             balls = p
                             break
                 if name and runs != "--":
-                    current_innings_batsmen.append({"name": name, "runs": runs, "balls": balls})
+                    current_innings_batsmen.append({"name": name, "runs": runs, "balls": balls, "isNotOut": is_not_out})
 
         if current_innings_batsmen:
             all_batsmen.append(current_innings_batsmen)
