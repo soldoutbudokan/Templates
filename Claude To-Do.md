@@ -12,4 +12,8 @@ FrenchWhisper
 - Need to deploy this to Vercel
 
 OrwellBot
-- Possible to make this into a website? 
+
+- Possible to make this into a website?
+
+Recipes
+- Estimate calories and macros per serving based on the recipe
