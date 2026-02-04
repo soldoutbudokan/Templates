@@ -6,7 +6,7 @@ PlainCricket
 - It loads kinda slow
 
 Other
-- Re-write my git history because commits are not showing up in my github stats. FWIW my no-reply git address is 68517314+soldoutbudokan@users.noreply.github.com. Not sure about which one you actually need.
+- ~~Re-write my git history because commits are not showing up in my github stats.~~ **DONE** - Added `soldoutbudokan@protonmail.com` to GitHub account (verified). Updated local git config to use no-reply address for future commits.
 
 FrenchWhisper
 - Need to deploy this to Vercel
