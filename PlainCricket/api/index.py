@@ -2,12 +2,25 @@ import random
 import requests
 import re
 import os
+from time import time as time_func
 from bs4 import BeautifulSoup as bs
 from markupsafe import escape
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
 import pytz
+
+# Simple TTL cache for match data
+_cache = {}
+CACHE_TTL = 60  # seconds
+
+
+def clean_status_text(status):
+    """Remove 'b' suffix from ball counts (e.g., '36b' -> '36')"""
+    if not status:
+        return status
+    # Remove 'b' only when it follows a number at word boundary
+    return re.sub(r'(\d+)b\b', r'\1', status)
 
 app = Flask(__name__, static_folder='../public', static_url_path='')
 app.json.sort_keys = False
@@ -120,6 +133,11 @@ def matches():
     import json
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
+    # Check cache first
+    now = time_func()
+    if 'matches' in _cache and now - _cache['matches']['time'] < CACHE_TTL:
+        return jsonify({"matches": _cache['matches']['data']})
+
     try:
         soup = get_soup("https://www.cricbuzz.com/cricket-match/live-scores")
         match_list = []
@@ -184,7 +202,7 @@ def matches():
             if " - " in text:
                 parts = text.split(" - ", 1)
                 title = parts[0].strip()
-                status = parts[1].strip() if len(parts) > 1 else ""
+                status = clean_status_text(parts[1].strip()) if len(parts) > 1 else ""
 
             # Initialize venue and time
             venue = ""
@@ -223,7 +241,7 @@ def matches():
                 if match1 and match2:
                     team1, team2 = t1, t2
                     if not status and data["status"]:
-                        status = data["status"]
+                        status = clean_status_text(data["status"])
                     venue = data.get("venue", "")
                     start_time = data.get("startTime", "")
                     break
@@ -272,13 +290,16 @@ def matches():
                 match["timeLocal"] = ""
             return match
 
-        with ThreadPoolExecutor(max_workers=5) as executor:
+        with ThreadPoolExecutor(max_workers=3) as executor:
             futures = {executor.submit(fetch_details, m): m for m in match_list}
             for future in as_completed(futures):
                 try:
                     future.result()
                 except:
                     pass
+
+        # Cache the results
+        _cache['matches'] = {'data': match_list, 'time': time_func()}
 
         return jsonify({"matches": match_list})
 
@@ -467,7 +488,7 @@ def score():
             line = line.strip()
             if any(kw in line.lower() for kw in ["won by", "lead by", "trail by", " need ", "match tied", "match drawn"]):
                 if len(line) < 80 and len(line) > 5:
-                    status = line
+                    status = clean_status_text(line)
                     break
 
         # Build response with both innings
