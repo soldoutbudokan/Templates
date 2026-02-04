@@ -9,7 +9,7 @@ Other
 - ~~Re-write my git history because commits are not showing up in my github stats.~~ **DONE** - Added `soldoutbudokan@protonmail.com` to GitHub account (verified). Updated local git config to use no-reply address for future commits.
 
 FrenchWhisper
-- Need to deploy this to Vercel
+- ~~Need to deploy this to Vercel~~ **DONE** - Already deployed at frenchwhisper.vercel.app
 
 OrwellBot
 

@@ -87,3 +87,77 @@ OrwellBot/
 - **Base model**: Qwen2.5-1.5B-Instruct (4-bit quantized)
 - **Fine-tuning**: LoRA (Low-Rank Adaptation)
 - **Training**: 1000 iterations on Orwell's novels, essays, and articles
+
+## Web Deployment
+
+OrwellBot can be deployed as a web app with:
+- **Frontend**: Next.js on Vercel
+- **Backend**: Modal serverless GPU for inference
+
+### Prerequisites
+
+```bash
+pip install torch safetensors peft transformers modal
+npm install -g vercel
+modal setup  # Configure Modal account
+```
+
+### Step 1: Convert Adapters (One-time)
+
+The MLX adapters need to be converted to HuggingFace PEFT format for deployment:
+
+```bash
+cd OrwellBot
+python deployment/convert_adapters.py
+```
+
+This creates `deployment/peft_adapters/` with PEFT-compatible weights.
+
+### Step 2: Deploy Modal Backend
+
+```bash
+# Create the Modal volume for adapters
+modal volume create orwellbot-adapters
+
+# Upload converted adapters
+modal volume put orwellbot-adapters deployment/peft_adapters /orwellbot
+
+# Deploy the app (note the endpoint URL in output)
+modal deploy deployment/modal_app.py
+```
+
+Test the endpoint:
+```bash
+curl -X POST https://<your-app>--generate-text.modal.run \
+     -H "Content-Type: application/json" \
+     -d '{"prompt": "Power is", "max_tokens": 100}'
+```
+
+### Step 3: Deploy Vercel Frontend
+
+```bash
+cd web
+
+# Install dependencies
+npm install
+
+# Test locally (create .env.local with MODAL_ENDPOINT first)
+cp .env.example .env.local
+# Edit .env.local with your Modal endpoint URL
+npm run dev
+
+# Deploy to Vercel
+npx vercel --prod
+# Add MODAL_ENDPOINT environment variable in Vercel dashboard
+```
+
+### Cost Estimates
+
+- **Modal free tier**: 30 GPU-hours/month (~100-500 generations)
+- **Vercel free tier**: 100GB bandwidth, 100k function calls
+
+### Performance Notes
+
+- **Cold start**: First request ~30s (GPU container startup)
+- **Warm requests**: <5s response time
+- **Concurrent**: Up to 5 concurrent requests per container
