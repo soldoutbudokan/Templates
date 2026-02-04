@@ -2,6 +2,8 @@
 
 A language model fine-tuned on George Orwell's complete works using LoRA adapters. Built with MLX for Apple Silicon.
 
+**Live Demo**: https://orwell-bot.vercel.app
+
 ## Requirements
 
 - Apple Silicon Mac (M1/M2/M3)
@@ -76,10 +78,19 @@ OrwellBot/
 ├── adapters/           # Trained LoRA adapters
 ├── corpus/             # Scraped Orwell texts
 ├── scraper/            # Web scraping scripts
-└── training/
-    ├── prepare_data.py # Data preparation
-    ├── train.py        # LoRA fine-tuning
-    └── generate.py     # Text generation
+├── training/
+│   ├── prepare_data.py # Data preparation
+│   ├── train.py        # LoRA fine-tuning
+│   └── generate.py     # Text generation
+├── deployment/
+│   ├── convert_adapters.py  # MLX → PEFT converter
+│   ├── modal_app.py         # Modal serverless backend
+│   └── peft_adapters/       # Converted adapters
+└── web/                     # Next.js frontend
+    ├── app/
+    │   ├── page.tsx         # Main UI
+    │   └── api/generate/    # API proxy
+    └── components/          # React components
 ```
 
 ## Model Details
