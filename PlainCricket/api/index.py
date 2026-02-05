@@ -104,25 +104,34 @@ def get_match_details(match_id):
             if line.strip() in ["Date:", "Date"] and i + 1 < len(lines):
                 match_date = lines[i + 1].strip()
 
-        # Get scores
+        # Get scores from DOM containers (correct order, no index mismatch)
+        innings_headers = soup.select('div[id^="team-"][id*="-innings-"]')
+        seen_ids = set()
         scores = []
-        for i, line in enumerate(lines):
-            if re.match(r'^\d{1,3}-\d{1,2}$', line):
-                next_line = lines[i + 1] if i + 1 < len(lines) else ""
-                if re.match(r'^\(\d+', next_line):
-                    team_name = lines[i - 1] if i > 0 else ""
-                    if team_name not in ["Total", "Batter", "Bowler", "Did not Bat"]:
-                        scores.append({"team": team_name, "score": line, "overs": next_line})
+        for hdr in innings_headers:
+            hdr_id = hdr.get("id", "")
+            if not hdr_id or hdr_id in seen_ids:
+                continue
+            seen_ids.add(hdr_id)
 
-        # Dedupe scores
-        seen = set()
-        unique = []
-        for s in scores:
-            if s["team"] not in seen:
-                seen.add(s["team"])
-                unique.append(s)
+            # Team name (prefer full name)
+            full_name_div = hdr.select_one("div.hidden.tb\\:block.font-bold")
+            short_name_div = hdr.select_one("div.tb\\:hidden.font-bold")
+            team_name = safe_text(full_name_div, "") or safe_text(short_name_div, "")
 
-        return {"scores": unique[:2], "venue": venue, "date": match_date}
+            # Score and overs from score area
+            score_div = hdr.select_one("div.flex.gap-4 > div")
+            score_text = safe_text(score_div, "")
+            if score_text and team_name:
+                score_match = re.match(r'^(\d{1,4}-\d{1,2})\s*\((.+?)\)$', score_text)
+                if score_match:
+                    scores.append({
+                        "team": team_name,
+                        "score": score_match.group(1),
+                        "overs": f"({score_match.group(2)})"
+                    })
+
+        return {"scores": scores[:4], "venue": venue, "date": match_date}
     except:
         return {"scores": [], "venue": "", "date": ""}
 
@@ -338,149 +347,139 @@ def score():
             if line.strip() in ["Date:", "Date"] and i + 1 < len(lines):
                 match_date = lines[i + 1].strip()
 
-        # Find innings - pattern: TeamCode, TeamName, Score, (Overs), Batter
-        innings = []
-        i = 0
-        while i < len(lines) - 4:
-            line = lines[i]
-            # Look for score pattern like "271-5" or "225-10"
-            if re.match(r'^\d{1,3}-\d{1,2}$', line):
-                score = line
-                # Check if next line has overs
-                next_line = lines[i + 1] if i + 1 < len(lines) else ""
-                if re.match(r'^\(\d+(?:\.\d+)? Ov\)$', next_line):
-                    overs = next_line
-                    # Look back for team name
-                    team_name = lines[i - 1] if i > 0 else "Unknown"
-                    team_code = lines[i - 2] if i > 1 else ""
+        # Parse innings from DOM containers (each innings is self-contained)
+        # Pattern: div#team-{teamId}-innings-{n} (header) + div#scard-team-{teamId}-innings-{n} (body)
+        innings_headers = soup.select('div[id^="team-"][id*="-innings-"]')
 
-                    # Validate it's a team (not "Total" or other text)
-                    if team_name not in ["Total", "Batter", "Bowler", "Did not Bat"] and len(team_name) > 2:
-                        innings.append({
-                            "team": team_name,
-                            "code": team_code,
-                            "score": score,
-                            "overs": overs
-                        })
-            i += 1
+        # Deduplicate (page has mobile + desktop copies)
+        seen_ids = set()
+        unique_headers = []
+        for hdr in innings_headers:
+            hdr_id = hdr.get("id", "")
+            if hdr_id and hdr_id not in seen_ids:
+                seen_ids.add(hdr_id)
+                unique_headers.append(hdr)
 
-        # Deduplicate innings (page has duplicates for mobile/desktop)
-        seen_teams = set()
-        unique_innings = []
-        for inn in innings:
-            if inn["team"] not in seen_teams:
-                seen_teams.add(inn["team"])
-                unique_innings.append(inn)
-        innings = unique_innings[:2]  # Max 2 innings
+        response_innings = []
+        for hdr in unique_headers:
+            hdr_id = hdr.get("id", "")
 
-        # Parse batting rows - split by "Batter" header
-        bat_rows = soup.select("div[class*='scorecard-bat-grid']")
-        all_batsmen = []
-        current_innings_batsmen = []
+            # Extract team name (prefer full name from hidden-on-mobile div)
+            full_name_div = hdr.select_one("div.hidden.tb\\:block.font-bold")
+            short_name_div = hdr.select_one("div.tb\\:hidden.font-bold")
+            team_name = safe_text(full_name_div, "") or safe_text(short_name_div, "Unknown")
 
-        for row in bat_rows:
-            row_text = row.get_text(separator="|", strip=True)
-            parts = [p.strip() for p in row_text.split("|") if p.strip()]
+            # Extract score and overs from the score area
+            score_div = hdr.select_one("div.flex.gap-4 > div")
+            score_text = safe_text(score_div, "")
+            inn_score = "--"
+            inn_overs = ""
+            if score_text:
+                # Format is like "310-4 (50 Ov)" or "311-3 (41.1 Ov)"
+                score_match = re.match(r'^(\d{1,4}-\d{1,2})\s*\((.+?)\)$', score_text)
+                if score_match:
+                    inn_score = score_match.group(1)
+                    inn_overs = f"({score_match.group(2)})"
 
-            if not parts:
-                continue
+            # Find matching scorecard body: team-X-innings-N -> scard-team-X-innings-N
+            scard_id = "scard-" + hdr_id
+            scard = soup.find("div", id=scard_id)
 
-            if parts[0] == "Batter":
-                # New innings header - save previous if exists
-                if current_innings_batsmen:
-                    all_batsmen.append(current_innings_batsmen)
-                current_innings_batsmen = []
-            elif len(parts) >= 3 and parts[0] not in ["Batter", "Extras", "Total", "Did not Bat"]:
-                name = parts[0].split("(")[0].strip()
-                # Check dismissal status - parts[1] is typically the dismissal text
-                dismissal = parts[1] if len(parts) > 1 else ""
-                is_not_out = "not out" in dismissal.lower() or "batting" in dismissal.lower()
-                # Find runs and balls
-                runs = "--"
-                balls = "--"
-                for p in parts[1:]:
-                    if p.isdigit():
-                        if runs == "--":
-                            runs = p
-                        elif balls == "--":
-                            balls = p
-                            break
-                if name and runs != "--":
-                    current_innings_batsmen.append({"name": name, "runs": runs, "balls": balls, "isNotOut": is_not_out})
+            batsmen = []
+            bowlers = []
+            did_not_bat = []
 
-        if current_innings_batsmen:
-            all_batsmen.append(current_innings_batsmen)
+            if scard:
+                # Parse batsmen from scorecard-bat-grid rows
+                bat_grids = scard.select("div.scorecard-bat-grid")
+                for grid in bat_grids:
+                    children = grid.find_all("div", recursive=False)
+                    if not children:
+                        continue
+                    # Skip header row (contains "Batter" text in a font-bold div)
+                    first_text = safe_text(children[0], "").strip()
+                    if first_text == "Batter":
+                        continue
 
-        # Parse "Did not Bat" sections - associated with preceding innings total
-        dnb_by_score = {}
-        current_dnb = []
-        last_score = None
-        in_dnb = False
+                    # Batter row: cell[0]=name+dismissal, cell[1]=runs, cell[2]=balls, ...
+                    if len(children) >= 3:
+                        name_cell = children[0]
+                        name_link = name_cell.find("a")
+                        name = safe_text(name_link, "").strip() if name_link else first_text.split("\n")[0].strip()
+                        name = name.split("(")[0].strip()
 
-        for i, line in enumerate(lines):
-            # Track the last innings score we saw
-            if re.match(r'^\d{1,3}-\d{1,2}$', line):
-                potential_score = line
-                # Check if this is an innings total (followed by overs)
-                if i + 1 < len(lines) and re.match(r'^\(\d+', lines[i + 1]):
-                    last_score = potential_score
+                        dismissal_div = name_cell.select_one("div.text-cbTxtSec")
+                        dismissal = safe_text(dismissal_div, "").strip()
+                        is_not_out = "not out" in dismissal.lower() or "batting" in dismissal.lower()
 
-            if "Did not Bat" in line:
-                if current_dnb and last_score:
-                    dnb_by_score[last_score] = current_dnb
-                current_dnb = []
-                in_dnb = True
-            elif in_dnb:
-                if line in ["Bowler", "O", "M", "R", "W", "Batter", "Total", "Extras"]:
-                    in_dnb = False
-                    if current_dnb and last_score:
-                        dnb_by_score[last_score] = current_dnb
-                        current_dnb = []
-                else:
-                    name = line.rstrip(",").strip()
-                    if name and len(name) > 1 and not name.isdigit():
-                        current_dnb.append(name)
+                        runs = safe_text(children[1], "--").strip()
+                        balls = safe_text(children[2], "--").strip()
 
-        if current_dnb and last_score:
-            dnb_by_score[last_score] = current_dnb
+                        if name and runs != "--":
+                            batsmen.append({
+                                "name": name,
+                                "runs": runs,
+                                "balls": balls,
+                                "isNotOut": is_not_out
+                            })
 
-        # Parse bowling rows similarly
-        bowl_rows = soup.select("div[class*='scorecard-bowl-grid']")
-        all_bowlers = []
-        current_innings_bowlers = []
+                # Parse "Did not Bat" section within batting area
+                dnb_section = None
+                for div in scard.find_all("div", recursive=True):
+                    bold_child = div.find("div", class_="font-bold")
+                    if bold_child and "Did not Bat" in bold_child.get_text(strip=True):
+                        dnb_section = div
+                        break
+                if dnb_section:
+                    dnb_links = dnb_section.find_all("a")
+                    if dnb_links:
+                        did_not_bat = [a.get_text(strip=True).rstrip(",") for a in dnb_links if a.get_text(strip=True)]
+                    else:
+                        # Fallback: get text from the sibling div
+                        dnb_children = dnb_section.find_all("div", recursive=False)
+                        if len(dnb_children) >= 2:
+                            dnb_text = dnb_children[1].get_text(strip=True)
+                            did_not_bat = [n.strip() for n in dnb_text.split(",") if n.strip()]
 
-        for row in bowl_rows:
-            row_text = row.get_text(separator="|", strip=True)
-            parts = [p.strip() for p in row_text.split("|") if p.strip()]
+                # Parse bowlers from scorecard-bowl-grid rows
+                bowl_grids = scard.select("div.scorecard-bowl-grid")
+                for grid in bowl_grids:
+                    children = grid.find_all("div", recursive=False)
+                    # Also check for direct <a> children (bowler name is an <a> tag)
+                    first_child = grid.find(recursive=False)
+                    if not first_child:
+                        continue
 
-            if not parts:
-                continue
+                    # Skip header row
+                    first_text = safe_text(first_child, "").strip()
+                    if first_text == "Bowler":
+                        continue
 
-            if parts[0] == "Bowler":
-                if current_innings_bowlers:
-                    all_bowlers.append(current_innings_bowlers)
-                current_innings_bowlers = []
-            elif len(parts) >= 4 and parts[0] != "Bowler":
-                name = parts[0]
-                overs = parts[1] if len(parts) > 1 else "--"
-                runs = parts[3] if len(parts) > 3 else "--"
-                wickets = parts[4] if len(parts) > 4 else "--"
-                if name and not name.startswith("("):
-                    current_innings_bowlers.append({
-                        "name": name,
-                        "overs": overs,
-                        "runs": runs,
-                        "wickets": wickets
-                    })
+                    # Bowler row: cell[0]=name(a), cell[1]=overs, cell[2]=maidens, cell[3]=runs, cell[4]=wickets
+                    all_cells = grid.find_all(recursive=False)
+                    if len(all_cells) >= 5:
+                        name_el = all_cells[0]
+                        name = safe_text(name_el, "").strip()
+                        overs_val = safe_text(all_cells[1], "--").strip()
+                        runs_val = safe_text(all_cells[3], "--").strip()
+                        wickets_val = safe_text(all_cells[4], "--").strip()
 
-        if current_innings_bowlers:
-            all_bowlers.append(current_innings_bowlers)
+                        if name and not name.startswith("("):
+                            bowlers.append({
+                                "name": name,
+                                "overs": overs_val,
+                                "runs": runs_val,
+                                "wickets": wickets_val
+                            })
 
-        # Deduplicate (page has mobile/desktop duplicates)
-        if len(all_batsmen) > 2:
-            all_batsmen = all_batsmen[:2]
-        if len(all_bowlers) > 2:
-            all_bowlers = all_bowlers[:2]
+            response_innings.append({
+                "team": team_name,
+                "score": inn_score,
+                "overs": inn_overs,
+                "batsmen": batsmen,
+                "bowlers": bowlers,
+                "didNotBat": did_not_bat
+            })
 
         # Try to find match status - look for result line
         status = ""
@@ -490,19 +489,6 @@ def score():
                 if len(line) < 80 and len(line) > 5:
                     status = clean_status_text(line)
                     break
-
-        # Build response with both innings
-        response_innings = []
-        for idx, inn in enumerate(innings):
-            inn_data = {
-                "team": inn["team"],
-                "score": inn["score"],
-                "overs": inn["overs"],
-                "batsmen": all_batsmen[idx] if idx < len(all_batsmen) else [],
-                "bowlers": all_bowlers[idx] if idx < len(all_bowlers) else [],
-                "didNotBat": dnb_by_score.get(inn["score"], [])
-            }
-            response_innings.append(inn_data)
 
         return jsonify({
             "id": str(match_id),
