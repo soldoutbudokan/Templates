@@ -26,7 +26,7 @@ def load_pptx_files(folder_path):
     Extract text from all PPTX files upfront. Returns dict of {filename: {slide_num: text}}
     """
     folder = Path(folder_path)
-    pptx_files = list(folder.glob("*.pptx"))
+    pptx_files = list(folder.rglob("*.pptx"))
     
     print(f"Loading {len(pptx_files)} PPTX files...")
     
