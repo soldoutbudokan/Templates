@@ -26,7 +26,7 @@ def load_pdfs(folder_path):
     Extract text from all PDFs upfront. Returns dict of {filename: {page_num: text}}
     """
     folder = Path(folder_path)
-    pdf_files = list(folder.glob("*.pdf"))
+    pdf_files = list(folder.rglob("*.pdf"))
     
     print(f"Loading {len(pdf_files)} PDFs...")
     
