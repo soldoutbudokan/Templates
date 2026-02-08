@@ -12,7 +12,7 @@ import pytz
 
 # Simple TTL cache for match data
 _cache = {}
-CACHE_TTL = 60  # seconds
+CACHE_TTL = 180  # seconds
 
 
 def clean_status_text(status):
@@ -45,7 +45,7 @@ def get_soup(url):
     session = requests.Session()
     headers = {"User-Agent": random.choice(user_agents)}
     response = session.get(url, headers=headers, timeout=10)
-    return bs(response.content, "lxml")
+    return bs(response.content, "html.parser")
 
 
 def safe_text(element, default="--"):
@@ -180,13 +180,25 @@ def matches():
             except:
                 pass
 
-        # Find all links to live cricket scores
-        links = soup.find_all("a", href=True)
+        # Common abbreviation to full name mapping
+        abbr_to_full = {
+            "WI": "West Indies", "RSA": "South Africa", "NZ": "New Zealand",
+            "IND": "India", "PAK": "Pakistan", "AUS": "Australia",
+            "ENG": "England", "SL": "Sri Lanka", "BAN": "Bangladesh",
+            "AFG": "Afghanistan", "ZIM": "Zimbabwe", "IRE": "Ireland",
+            "UAE": "UAE", "SCO": "Scotland", "NEP": "Nepal", "USA": "USA",
+            "INDU19": "India U19", "PAKU19": "Pakistan U19", "ENGU19": "England U19",
+            "AUSU19": "Australia U19", "NZU19": "New Zealand U19"
+        }
+
+        # Find match links with class="block mb-3" (main content cards)
+        links = soup.find_all("a", href=re.compile(r'/live-cricket-scores/\d+'), class_="block")
+        if not links:
+            # Fallback: find all links with the href pattern
+            links = soup.find_all("a", href=re.compile(r'/live-cricket-scores/\d+'))
 
         for link in links:
             href = link.get("href", "")
-            if "/live-cricket-scores/" not in href:
-                continue
 
             # Extract match ID from URL
             parts = href.split("/")
@@ -200,18 +212,37 @@ def matches():
                 continue
             seen_ids.add(match_id)
 
-            # Parse title from link text
+            # Use title attribute for rich data (has full team names + status)
+            title_attr = link.get("title", "").strip()
             text = link.text.strip()
-            if not text or len(text) < 3:
+            if not title_attr and (not text or len(text) < 3):
                 continue
 
-            # Extract status if present
-            title = text
+            # Parse title attribute: "Team1 vs Team2, Match Type - Status"
+            title = text if text else title_attr
             status = ""
+            team1, team2 = "", ""
+
+            if title_attr:
+                # Extract status after last " - "
+                if " - " in title_attr:
+                    base, raw_status = title_attr.rsplit(" - ", 1)
+                    status = clean_status_text(raw_status.strip())
+                    # Extract teams from "Team1 vs Team2, Match Type"
+                    vs_match = re.match(r'^(.+?)\s+vs\s+(.+?)(?:,\s+.+)?$', base, re.IGNORECASE)
+                    if vs_match:
+                        team1, team2 = vs_match.group(1).strip(), vs_match.group(2).strip()
+                else:
+                    vs_match = re.match(r'^(.+?)\s+vs\s+(.+?)(?:,\s+.+)?$', title_attr, re.IGNORECASE)
+                    if vs_match:
+                        team1, team2 = vs_match.group(1).strip(), vs_match.group(2).strip()
+
+            # Construct display title from link text or title attr
             if " - " in text:
-                parts = text.split(" - ", 1)
-                title = parts[0].strip()
-                status = clean_status_text(parts[1].strip()) if len(parts) > 1 else ""
+                parts_text = text.split(" - ", 1)
+                title = parts_text[0].strip()
+                if not status:
+                    status = clean_status_text(parts_text[1].strip())
 
             # Initialize venue and time
             venue = ""
@@ -219,20 +250,8 @@ def matches():
             time_est = ""
             time_local = ""
 
-            # Common abbreviation to full name mapping
-            abbr_to_full = {
-                "WI": "West Indies", "RSA": "South Africa", "NZ": "New Zealand",
-                "IND": "India", "PAK": "Pakistan", "AUS": "Australia",
-                "ENG": "England", "SL": "Sri Lanka", "BAN": "Bangladesh",
-                "AFG": "Afghanistan", "ZIM": "Zimbabwe", "IRE": "Ireland",
-                "UAE": "UAE", "SCO": "Scotland", "NEP": "Nepal", "USA": "USA",
-                "INDU19": "India U19", "PAKU19": "Pakistan U19", "ENGU19": "England U19",
-                "AUSU19": "Australia U19", "NZU19": "New Zealand U19"
-            }
-
             # Try to find richer data from JSON-LD
-            team1, team2 = "", ""
-            title_upper = title.upper()
+            title_upper = (title_attr or title).upper()
             for name, data in json_ld_matches.items():
                 t1, t2 = data["team1"], data["team2"]
                 t1_abbr = t1[:3].upper() if len(t1) >= 3 else t1.upper()
@@ -248,16 +267,24 @@ def matches():
                     match2 = True
 
                 if match1 and match2:
-                    team1, team2 = t1, t2
+                    if not team1:
+                        team1 = t1
+                    if not team2:
+                        team2 = t2
                     if not status and data["status"]:
                         status = clean_status_text(data["status"])
                     venue = data.get("venue", "")
                     start_time = data.get("startTime", "")
                     break
 
-            # Fallback: parse team names from title like "IND vs NZ" or "India vs New Zealand"
+            # Fallback: expand abbreviations in team names
+            if team1:
+                team1 = abbr_to_full.get(team1.upper(), team1)
+            if team2:
+                team2 = abbr_to_full.get(team2.upper(), team2)
+
+            # Fallback: parse team names from title
             if not team1 or not team2:
-                # Match "Team1 vs Team2" allowing multi-word names, stopping at common suffixes
                 vs_match = re.match(r'^(.+?)\s+vs\s+(.+?)(?:\s+\d+(?:st|nd|rd|th)\s+|$)', title, re.IGNORECASE)
                 if vs_match:
                     t1_raw, t2_raw = vs_match.group(1).strip(), vs_match.group(2).strip()
@@ -284,7 +311,12 @@ def matches():
             if len(match_list) >= 15:
                 break
 
-        # Fetch scores/venue/date in parallel for matches
+        # Only fetch scores for matches that have started (skip Preview/upcoming)
+        matches_needing_scores = [
+            m for m in match_list
+            if m["status"].lower() not in ("preview", "upcoming")
+        ]
+
         def fetch_details(match):
             details = get_match_details(match["id"])
             scores = details["scores"]
@@ -299,8 +331,8 @@ def matches():
                 match["timeLocal"] = ""
             return match
 
-        with ThreadPoolExecutor(max_workers=3) as executor:
-            futures = {executor.submit(fetch_details, m): m for m in match_list}
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = {executor.submit(fetch_details, m): m for m in matches_needing_scores}
             for future in as_completed(futures):
                 try:
                     future.result()
