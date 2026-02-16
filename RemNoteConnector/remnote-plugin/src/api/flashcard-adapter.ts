@@ -1,4 +1,4 @@
-import { RNPlugin, Rem } from "@remnote/plugin-sdk";
+import { RNPlugin, PluginRem } from "@remnote/plugin-sdk";
 
 const RATE_LIMIT_DELAY_MS = 25;
 
@@ -61,7 +61,7 @@ export class FlashcardAdapter {
     return { remId: rem._id };
   }
 
-  private async findOrCreateDeck(deckPath: string): Promise<Rem | null> {
+  private async findOrCreateDeck(deckPath: string): Promise<PluginRem | null> {
     // Check cache first
     const cached = this.deckCache.get(deckPath);
     if (cached) {
@@ -117,10 +117,10 @@ export class FlashcardAdapter {
     }
 
     if (!parentId) return null;
-    return this.plugin.rem.findOne(parentId);
+    return (await this.plugin.rem.findOne(parentId)) ?? null;
   }
 
-  private async findOrCreateTag(tagName: string): Promise<Rem | null> {
+  private async findOrCreateTag(tagName: string): Promise<PluginRem | null> {
     const cached = this.tagCache.get(tagName);
     if (cached) {
       const existing = await this.plugin.rem.findOne(cached);

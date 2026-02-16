@@ -21,8 +21,9 @@ const config = {
       .relative("src/widgets", el)
       .replace(/\.[tj]sx?$/, "")
       .replace(/\\/g, "/");
-    obj[rel] = el;
-    obj[`${rel}${SANDBOX_SUFFIX}`] = el;
+    const entry = el.startsWith("./") ? el : `./${el}`;
+    obj[rel] = entry;
+    obj[`${rel}${SANDBOX_SUFFIX}`] = entry;
     return obj;
   }, {}),
   output: {

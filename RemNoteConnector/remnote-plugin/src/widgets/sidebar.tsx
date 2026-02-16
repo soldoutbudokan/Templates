@@ -1,4 +1,4 @@
-import { renderWidget, usePlugin, useTracker } from "@remnote/plugin-sdk";
+import { renderWidget, usePlugin } from "@remnote/plugin-sdk";
 import { useState, useEffect, useCallback } from "react";
 
 // Global state shared between the sidebar widget and the index entry point.
