@@ -14,7 +14,7 @@ A simple web app that provides real-time speech-to-text translation to English. 
 
 ## Usage
 
-1. Open `index.html` in a browser (Chrome recommended)
+1. Open `web/index.html` in a browser (Chrome recommended)
 2. Select the language you'll be speaking
 3. Tap the microphone button
 4. Allow microphone access when prompted
@@ -77,9 +77,11 @@ Click "Show debug info" at the bottom of the page to see detailed logs of speech
 ## Files
 
 ```
-web/
-├── index.html    # Complete app (HTML + CSS + JS)
-└── README.md     # This file
+FrenchWhisper/
+├── README.md         # This file
+└── web/
+    ├── index.html    # Complete app (HTML + CSS + JS)
+    └── .gitignore
 ```
 
 ## License
