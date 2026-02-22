@@ -1,6 +1,6 @@
 # Marry Me Chicken Soup (Rotisserie Chicken & Gnocchi)
 
-**Serves 6**
+**Servings:** 6
 
 ## Ingredients
 
@@ -39,7 +39,7 @@
 
 7. Season with salt and pepper to taste. Serve with a heavy hand of Parmesan.
 
-## Notes
+## Tips
 
 - **Gnocchi:** Cooks in 3-4 minutes. Add it later and watch the pot. Overcooked gnocchi turns to mush.
 - **Leftovers:** Good for 3-4 days refrigerated. The gnocchi will soften as it sits.

@@ -1,6 +1,6 @@
 # Japanese Curry with Paneer - Adjusted Recipe
 
-## Ingredients:
+## Ingredients
 
 - 4 Japanese curry roux blocks (we have been using the brand S&B for the most part - I would start with the "medium" spicy version, but none of them are particularly spicy)
 - 1 block of paneer (roughly 300-350g), cubed into 1-inch pieces (can replace this with just about any kind of meat)
@@ -15,7 +15,7 @@
 - Salt to taste
 - Steamed rice for serving (or Naan)
 
-## Instructions:
+## Instructions
 
 1. Coat the bottom of a pan in oil in a large pot over medium heat. Add diced onions until they just start to brown, stirring occasionally. Then add the minced garlic (and ginger if you have chosen to add).
 

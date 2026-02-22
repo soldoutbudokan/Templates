@@ -12,7 +12,7 @@
 - Cold water to cover (about 8-10 cups)
 - 1 bouillon cube (optional)
 
-## Method
+## Instructions
 
 1. Throw the bones into a large pot. Add the vegetables, peppercorns, and bay leaves. Cover with cold water by an inch or two.
 

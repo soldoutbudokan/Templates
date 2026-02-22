@@ -1,20 +1,20 @@
 # Meal Prep Beef Burritos
 
-**Yield:** 4-5 burritos  
 **Total Time:** 30 minutes
-
----
+**Servings:** 4-5 burritos
 
 ## Ingredients
 
-**Protein & Vegetables**
+### Protein and Vegetables
+
 - 1 lb lean ground beef (90/10 or 93/7)
 - 1 large yellow onion, diced
 - 1 large bell pepper, diced
 - 2 cloves garlic, minced
 - 1 can (16 oz) refried beans
 
-**Seasonings**
+### Seasonings
+
 - 1 tsp ground cumin
 - 1 tsp chili powder
 - 1/2 tsp paprika
@@ -23,68 +23,52 @@
 - 1/4 tsp black pepper
 - 1/4 tsp cayenne (optional)
 
-**Assembly**
+### Assembly
+
 - 4-5 large flour tortillas (10-12 inch)
 - 1 cup shredded Mexican cheese
 - 1/4 cup salsa (optional - reduce if concerned about excess moisture)
 - 2 tbsp olive oil
 
-**Optional Toppings**
+### Optional Toppings
+
 - Fresh cilantro, chopped
 - Lime juice
 - Sour cream (add when serving, not during assembly)
 
----
-
 ## Instructions
 
-**Step 1: Cook the Filling (20 minutes)**
+1. Heat 1 tbsp olive oil in a large skillet over medium-high heat.
 
-1. Heat 1 tbsp olive oil in a large skillet over medium-high heat
-2. Add onion and bell pepper, sauté 4-5 minutes until softened
-3. Add garlic, cook 30 seconds until fragrant
-4. Add ground beef, break apart with spoon, cook 6-8 minutes until browned
-5. Stir in all seasonings
-6. Add refried beans and salsa (if using), mix well and cook 3-4 minutes
-7. Taste and adjust seasoning
-8. Let cool 5-10 minutes and drain any excess liquid
+2. Add onion and bell pepper, sauté 4-5 minutes until softened.
 
-**Step 2: Assemble (10 minutes)**
+3. Add garlic, cook 30 seconds until fragrant.
 
-1. Warm tortillas 20-30 seconds in microwave
-2. Place 3/4 cup filling down center of each tortilla
-3. Top with cheese and cilantro
-4. Fold in sides, then roll tightly from bottom to top
+4. Add ground beef, break apart with spoon, cook 6-8 minutes until browned.
 
-**Step 3: Store**
+5. Stir in all seasonings.
 
-1. Let burritos cool completely
-2. Wrap each individually in foil or plastic wrap
-3. Refrigerate up to 4 days OR freeze up to 3 months
+6. Add refried beans and salsa (if using), mix well and cook 3-4 minutes. Taste and adjust seasoning. Let cool 5-10 minutes and drain any excess liquid.
 
----
+7. Warm tortillas 20-30 seconds in microwave.
+
+8. Place 3/4 cup filling down center of each tortilla. Top with cheese and cilantro. Fold in sides, then roll tightly from bottom to top.
+
+9. Let burritos cool completely. Wrap each individually in foil or plastic wrap. Refrigerate up to 4 days or freeze up to 3 months.
 
 ## Reheating
 
-**From Fridge:**
-- Unwrap completely
-- Place on plate (no cover)
-- Microwave 1-2 minutes, flip halfway
+**From Fridge:** Unwrap completely, place on plate (no cover), microwave 1-2 minutes, flip halfway.
 
-**From Freezer:**
-- Unwrap completely  
-- Place on plate (no cover)
-- Microwave 2-3 minutes, flip halfway
-
----
+**From Freezer:** Unwrap completely, place on plate (no cover), microwave 2-3 minutes, flip halfway.
 
 ## Tips
 
-- Don't reheat in closed containers - causes soggy exterior
-- Drain excess liquid from filling before assembling
-- Let filling cool before wrapping to prevent moisture buildup
-- Don't overfill or they won't seal properly
-- Lean beef renders less fat, so draining is usually optional
+- Don't reheat in closed containers - causes soggy exterior.
+- Drain excess liquid from filling before assembling.
+- Let filling cool before wrapping to prevent moisture buildup.
+- Don't overfill or they won't seal properly.
+- Lean beef renders less fat, so draining is usually optional.
 
 ## Nutrition (per serving)
 

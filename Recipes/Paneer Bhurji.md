@@ -1,10 +1,13 @@
-# Paneer Bhurji Recipe
+# Paneer Bhurji
 
 A simple and delicious Indian scrambled cottage cheese dish.
 
+**Cook Time:** 15-20 minutes
+**Servings:** 3-4
+
 ## Ingredients
 
-**For 300g paneer (serves 3-4)**
+### For 300g Paneer
 
 - 300g paneer, crumbled
 - 2 medium onions (about 200g), finely chopped
@@ -12,12 +15,12 @@ A simple and delicious Indian scrambled cottage cheese dish.
 - 2 tbsp oil
 - 1 tsp cumin seeds
 - 1 tbsp ginger-garlic paste
-- ½ tsp turmeric powder
+- 1/2 tsp turmeric powder
 - 1 tsp red chili powder (adjust to taste)
 - 1 tsp garam masala
 - Salt to taste
 - 2 tbsp chopped coriander leaves
-- ½ lemon for juice
+- 1/2 lemon for juice
 
 ## Instructions
 
@@ -35,14 +38,12 @@ A simple and delicious Indian scrambled cottage cheese dish.
 
 7. Serve hot with roti or paratha.
 
-## Quick Tips
+## Tips
 
-- Don't overcook the paneer or it will become dry
-- You can add finely chopped bell peppers for extra crunch
-- Adjust spices according to your taste
-- Fresh homemade paneer works best, but store-bought is fine too
-
-**Cooking time:** 15-20 minutes
+- Don't overcook the paneer or it will become dry.
+- You can add finely chopped bell peppers for extra crunch.
+- Adjust spices according to your taste.
+- Fresh homemade paneer works best, but store-bought is fine too.
 
 ## Nutrition (per serving)
 
