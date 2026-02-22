@@ -1,0 +1,61 @@
+# Creamy Baked Ziti
+
+A two-sauce baked ziti where soaked (not boiled) pasta gets tossed in a creamy pink sauce and topped with pure red sauce and cubed mozzarella for gooey, bubbly contrast.
+
+**Prep Time:** 30 minutes
+**Cook Time:** 1 hour
+**Servings:** 6-8
+
+## Why It Works
+
+- Soaking the pasta in warm salted water hydrates it without gelatinizing the starches, so the noodles won't turn to mush when baked.
+- The two-sauce method creates contrast: creamy pink sauce on the pasta, pure red sauce on top.
+- Cubed mozzarella melts into distinct gooey pockets rather than a uniform sheet.
+
+## Ingredients
+
+### The Pasta
+
+- 1 lb (450g) ziti or penne
+- Warm water
+- Salt
+
+### The Sauce Base
+
+- 4 tbsp unsalted butter
+- 4 tbsp extra virgin olive oil, plus more for finishing
+- 1/2 large onion, finely minced
+- 4 cloves garlic, minced
+- 1 tsp red pepper flakes
+- 1 tsp dried oregano
+- 2 (28 oz) cans crushed tomatoes
+- 1 bunch fresh basil, stems reserved, leaves chopped
+- 1/2 cup fresh parsley, chopped
+
+### The Dairy and Binders
+
+- 12 oz (340g) ricotta cheese
+- 1 cup heavy cream
+- 2 large eggs
+- 3 oz (85g) Parmesan, grated and divided
+- 1 lb (450g) low-moisture mozzarella, cut into 1/2-inch cubes
+
+## Instructions
+
+1. **Soak the Pasta.** Place dry pasta in a large bowl. Cover with warm water and season generously with salt. Stir so the noodles don't stick. Let soak 30 minutes at room temperature while you make the sauce. Stir now and then.
+
+2. **Make the Base Sauce.** Combine butter and olive oil in a large pot over medium heat. Add onion, garlic, red pepper flakes, and oregano. Sweat until soft but not browned, about 5-7 minutes. Add the whole basil stems to infuse flavor.
+
+3. **Simmer the Tomatoes.** Pour in both cans of crushed tomatoes. Stir and bring to a simmer. Cook 10-15 minutes to thicken slightly and meld the flavors. Taste and adjust salt.
+
+4. **Separate the Sauce.** Remove and discard basil stems. Ladle half the tomato sauce into a separate bowl and set aside. This becomes your red layer.
+
+5. **Create the Pink Sauce.** To the sauce still in the pot, add ricotta, heavy cream, half the Parmesan, and crack in both eggs. Stir hard until uniform and creamy. Stir in half the chopped basil and parsley.
+
+6. **Combine Pasta and Cheese.** Preheat oven to 400°F (200°C). Drain the soaked pasta. Add it to the pot with the pink sauce. Add half the cubed mozzarella. Fold everything together until the pasta is evenly coated.
+
+7. **Assemble the Casserole.** Pour the pasta mixture into a 9x13 baking dish and spread evenly. Spoon the reserved red sauce over the top, letting some pink spots show through. Scatter the remaining mozzarella cubes over the surface. Sprinkle with the remaining Parmesan.
+
+8. **Bake.** Cover the dish tightly with foil. Bake covered for 45 minutes. Remove foil and bake another 15 minutes uncovered. For brown bubbly spots, switch the broiler on for the last 2-3 minutes.
+
+9. **Finish and Serve.** Sprinkle with remaining basil and parsley. Drizzle with good olive oil. Let the casserole rest 10-15 minutes before serving — the sauce tightens as it cools. Skip this step and it runs like soup on the plate.
