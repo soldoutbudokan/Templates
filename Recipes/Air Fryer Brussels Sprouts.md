@@ -23,14 +23,6 @@
 
 5. Remove from air fryer and immediately toss with Parmesan while still hot.
 
-## Tips
-
-- Make sure sprouts are completely dry before tossing with oil for maximum crispiness.
-- No liner needed—direct contact with the basket gives the best results.
-- The sprouts are done when outer leaves are dark and crispy and you can pierce the center easily with a fork.
-- For crispy Parmesan, add it in the last 1–2 minutes of cooking (watch closely to avoid burning).
-- **Variations:** Balsamic glaze drizzled at the end, honey and sriracha, or crispy bacon bits with a squeeze of lemon.
-
 ## Nutrition (per serving)
 
 *Assumes 4 servings*

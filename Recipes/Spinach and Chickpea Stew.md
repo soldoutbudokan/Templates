@@ -45,11 +45,6 @@ A warming one-pot stew of spinach and chickpeas braised in a ginger-tomato base 
 
 6. Taste and adjust salt. Stir in the sherry vinegar. Ladle into bowls, drizzle with your best olive oil, and serve with toasted bread.
 
-## Tips
-
-- **Veggie stock:** Optional — it loosens the stew and gives you more broth to soak bread in. Without it, you get a thicker, more concentrated pot. Either way works.
-- **Heartier version:** If you use the larger 28 oz / 800 ml can of chickpeas, you may not need the stock at all since the extra aquafaba will add plenty of liquid.
-
 ## Nutrition (per serving)
 
 *Based on 6 servings, without optional vegetable stock*

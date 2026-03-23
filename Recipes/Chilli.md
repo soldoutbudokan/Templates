@@ -40,22 +40,6 @@ A meat-forward chili recipe with minimal beans - perfect for those who prefer mo
 
 7. Taste and adjust seasonings.
 
-## Tips
-
-- **Sweetness:** Add 1-2 tablespoons of brown sugar, honey, or maple syrup to balance acidity and add depth
-- **Beans optional:** You can skip beans entirely or substitute with vegetables like diced zucchini or mushrooms
-- **Leftovers:** Chili freezes beautifully - store in airtight containers for up to 3 months
-- **Longer cooking:** The longer it simmers, the better the flavor develops
-
-## Serving Suggestions
-
-- Topped with shredded cheese, sour cream, and green onions
-- With cornbread, tortilla chips, or over rice
-- With 3 small Hawaiian rolls on the side
-- In a bread bowl for a hearty presentation
-
-Enjoy!
-
 ## Nutrition (per serving)
 
 *Based on 5 servings*

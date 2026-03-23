@@ -41,15 +41,6 @@ A classic Italian-American dish featuring a creamy tomato sauce with a hint of v
 
 9. Serve immediately, garnished with torn basil leaves and additional Parmesan cheese.
 
-## Tips
-
-- The vodka helps release flavors from the tomatoes that are alcohol-soluble, creating a more complex sauce
-- Reserve pasta water - the starchy water helps the sauce cling to the pasta
-- For a lighter version, you can use half-and-half instead of heavy cream
-- This dish pairs wonderfully with a crisp salad and garlic bread
-
-Enjoy your homemade pasta with vodka sauce!
-
 ## Nutrition (per serving)
 
 *Based on 5 servings*

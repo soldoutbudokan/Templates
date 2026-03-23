@@ -62,14 +62,6 @@
 
 **From Freezer:** Unwrap completely, place on plate (no cover), microwave 2-3 minutes, flip halfway.
 
-## Tips
-
-- Don't reheat in closed containers - causes soggy exterior.
-- Drain excess liquid from filling before assembling.
-- Let filling cool before wrapping to prevent moisture buildup.
-- Don't overfill or they won't seal properly.
-- Lean beef renders less fat, so draining is usually optional.
-
 ## Nutrition (per serving)
 
 *Based on 5 servings (1 burrito each)*

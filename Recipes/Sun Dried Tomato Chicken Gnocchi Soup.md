@@ -39,12 +39,6 @@
 
 7. Season with salt and pepper to taste. Serve with a heavy hand of Parmesan.
 
-## Tips
-
-- **Gnocchi:** Cooks in 3-4 minutes. Add it later and watch the pot. Overcooked gnocchi turns to mush.
-- **Leftovers:** Good for 3-4 days refrigerated. The gnocchi will soften as it sits.
-- **Richer broth:** Toss the rotisserie bones into the simmering broth while you wait, then fish them out before adding cream.
-
 ## Nutrition (per serving)
 
 *Based on 6 servings*

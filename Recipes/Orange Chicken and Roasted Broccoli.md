@@ -93,36 +93,6 @@ Work in 2-3 batches to avoid overcrowding. Keep florets uniform in size for even
 - **For crispy broccoli:** Reheat broccoli in a hot skillet or toaster oven while microwaving the chicken separately.
 - **If sauce clumps:** Add a splash of water or orange juice and stir vigorously. Microwave in 30-second intervals, stirring between each.
 
-## Tips
-
-### Why Chicken Thighs?
-
-They retain moisture much better than chicken breasts when reheated, staying tender and juicy.
-
-### Sauce Consistency
-
-Should coat the back of a spoon but still drizzle off easily—like a thin syrup. Not watery, not gloppy.
-
-### Cornstarch Issues When Reheating
-
-Cornstarch-thickened sauces can clump or separate when reheated. This is normal!
-- **Fix:** Add liquid and stir vigorously when reheating.
-- **Prevention:** Slightly under-thicken the sauce initially for meal prep.
-- **Alternative:** Skip cornstarch and reduce sauce naturally until syrupy (takes longer but reheats more reliably).
-
-### Orange Variations
-
-Oranges vary in sweetness—trust your taste buds and adjust sugar accordingly!
-
-### Flavor Profile
-
-When done right, the sauce should taste:
-- **Sweet** (honey/sugar and orange juice)
-- **Tangy/acidic** (rice vinegar and orange juice)
-- **Savory/salty** (soy sauce)
-
-All three notes should be in harmony—none should dominate.
-
 ## Nutrition (per serving)
 
 *Based on 5 servings*

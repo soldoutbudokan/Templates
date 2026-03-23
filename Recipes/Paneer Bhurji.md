@@ -38,13 +38,6 @@ A simple and delicious Indian scrambled cottage cheese dish.
 
 7. Serve hot with roti or paratha.
 
-## Tips
-
-- Don't overcook the paneer or it will become dry.
-- You can add finely chopped bell peppers for extra crunch.
-- Adjust spices according to your taste.
-- Fresh homemade paneer works best, but store-bought is fine too.
-
 ## Nutrition (per serving)
 
 *Based on 4 servings*

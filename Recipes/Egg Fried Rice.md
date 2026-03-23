@@ -27,12 +27,6 @@ Egg-forward with crispy edges.
 
 5. Return the crispy eggs, add soy sauce and MSG, and toss everything together. Finish with sesame oil, white pepper, and the green parts of the onions.
 
-## Tips
-
-- Cold, dry rice is essential—freshly cooked rice will turn mushy.
-- High heat throughout; don't crowd the pan.
-- Let the eggs sit undisturbed to get those crispy, lacy edges.
-
 ## Nutrition (per serving)
 
 *Based on 2 servings*

@@ -40,12 +40,6 @@
 
 6. Remove from oven and immediately sprinkle with Parmigiano-Reggiano, remaining parsley/basil, and remaining 1 tablespoon olive oil. Cool slightly and serve.
 
-## Tips
-
-- Use soft grocery store "French" or "Italian" bread, not a crusty baguette. It should have a crisp exterior, but when you squeeze the bread, it should give.
-- The double cheese layer technique is key to preventing soggy bread.
-- Fresh herbs added at the end keep flavors bright.
-
 ## Nutrition (per serving)
 
 *Based on 4 servings (1 quarter loaf each)*
