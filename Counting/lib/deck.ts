@@ -103,6 +103,10 @@ export class Deck {
     this.shuffle();
   }
 
+  decksRemaining(): number {
+    return this.cards.length / 52;
+  }
+
   setCutCardPercentage(percentage: number): void {
     this.cutCardPercentage = percentage;
   }

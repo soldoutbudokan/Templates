@@ -3,17 +3,20 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card as CardType, getCardValue, Deck } from '@/lib/deck';
 import Card from './Card';
+import BettingAdvice from './BettingAdvice';
 
 interface GameBoardProps {
   deck: Deck;
   onRoundComplete: (correct: boolean) => void;
+  showBettingTips: boolean;
 }
 
-export default function GameBoard({ deck, onRoundComplete }: GameBoardProps) {
+export default function GameBoard({ deck, onRoundComplete, showBettingTips }: GameBoardProps) {
   const [cards, setCards] = useState<CardType[]>([]);
   const [userGuess, setUserGuess] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
+  const [decksRemainingAtDeal, setDecksRemainingAtDeal] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
 
   const generateNewHand = useCallback(() => {
@@ -28,6 +31,7 @@ export default function GameBoard({ deck, onRoundComplete }: GameBoardProps) {
     setShowAnswer(false);
     setUserGuess('');
     setCorrectCount(newCards.reduce((count, card) => count + getCardValue(card), 0));
+    setDecksRemainingAtDeal(deck.decksRemaining());
     setAnimationKey(prev => prev + 1);
   }, [deck]);
 
@@ -107,12 +111,19 @@ export default function GameBoard({ deck, onRoundComplete }: GameBoardProps) {
 
         {/* Answer Display */}
         {showAnswer && (
-          <div className="text-center animate-slide-in">
+          <div className="text-center animate-slide-in space-y-3">
             <p className="text-xl">Correct count: <span className="font-bold">{correctCount}</span></p>
             <p className="text-xl">Your guess: <span className="font-bold">{userGuess}</span></p>
             <p className={`text-2xl font-bold mt-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
               {isCorrect ? 'Correct!' : 'Incorrect. Try again!'}
             </p>
+
+            {showBettingTips && (
+              <BettingAdvice
+                runningCount={correctCount}
+                decksRemaining={decksRemainingAtDeal}
+              />
+            )}
           </div>
         )}
       </div>

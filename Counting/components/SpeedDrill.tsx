@@ -2,18 +2,22 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Card as CardType, getCardValue, Deck } from '@/lib/deck';
+import { SpeedSetting } from '@/lib/types';
 import { LargeCard } from './Card';
-import { SpeedSetting } from './Controls';
+import BettingAdvice from './BettingAdvice';
+import CasinoNoise from './CasinoNoise';
 
 interface SpeedDrillProps {
   deck: Deck;
   speed: SpeedSetting;
+  hardMode: boolean;
   onRoundComplete: (correct: boolean) => void;
+  showBettingTips: boolean;
 }
 
 type DrillState = 'idle' | 'running' | 'input' | 'result';
 
-export default function SpeedDrill({ deck, speed, onRoundComplete }: SpeedDrillProps) {
+export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, showBettingTips }: SpeedDrillProps) {
   const [state, setState] = useState<DrillState>('idle');
   const [cards, setCards] = useState<CardType[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -40,7 +44,10 @@ export default function SpeedDrill({ deck, speed, onRoundComplete }: SpeedDrillP
       deck.shuffle();
     }
 
-    const cardCount = Math.floor(Math.random() * 16) + 15; // 15 to 30 cards
+    // Hard mode: 40-60 cards, normal: 15-30
+    const cardCount = hardMode
+      ? Math.floor(Math.random() * 21) + 40
+      : Math.floor(Math.random() * 16) + 15;
     const newCards = deck.deal(cardCount);
     const count = newCards.reduce((sum, card) => sum + getCardValue(card), 0);
 
@@ -66,7 +73,7 @@ export default function SpeedDrill({ deck, speed, onRoundComplete }: SpeedDrillP
         return next;
       });
     }, speed * 1000);
-  }, [deck, speed, cleanup]);
+  }, [deck, speed, hardMode, cleanup]);
 
   const stopDrill = useCallback(() => {
     cleanup();
@@ -130,7 +137,10 @@ export default function SpeedDrill({ deck, speed, onRoundComplete }: SpeedDrillP
   const isCorrect = parseInt(userGuess, 10) === correctCount;
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center">
+    <div className="flex-1 flex flex-col items-center justify-center relative">
+      {/* Casino noise overlay for hard mode */}
+      {hardMode && (state === 'running' || state === 'input') && <CasinoNoise />}
+
       {/* Idle State */}
       {state === 'idle' && (
         <div className="text-center space-y-6">
@@ -139,6 +149,9 @@ export default function SpeedDrill({ deck, speed, onRoundComplete }: SpeedDrillP
           </div>
           <div className="space-y-2">
             <p className="text-lg text-white/70">Cards will flash at {speed}s each</p>
+            {hardMode && (
+              <p className="text-sm text-red-400">Hard Mode: 40-60 cards with distractions</p>
+            )}
             <button
               onClick={startDrill}
               className="btn-primary text-lg px-8 py-3"
@@ -151,7 +164,7 @@ export default function SpeedDrill({ deck, speed, onRoundComplete }: SpeedDrillP
 
       {/* Running State */}
       {state === 'running' && cards[currentIndex] && (
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-6 relative z-10">
           <div className="relative">
             <LargeCard card={cards[currentIndex]} visible={true} />
             <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-sm text-white/50">
@@ -172,7 +185,7 @@ export default function SpeedDrill({ deck, speed, onRoundComplete }: SpeedDrillP
 
       {/* Input State */}
       {state === 'input' && (
-        <div className="text-center space-y-6 animate-slide-in">
+        <div className="text-center space-y-6 animate-slide-in relative z-10">
           <div className="space-y-2">
             <p className="text-xl font-medium">Time&apos;s up!</p>
             <p className="text-white/70">{cardsDealt} cards in {formatTime(elapsedTime)}</p>
@@ -212,6 +225,14 @@ export default function SpeedDrill({ deck, speed, onRoundComplete }: SpeedDrillP
           <div className="space-y-2 text-white/70 text-sm">
             <p>{cardsDealt} cards at {speed}s = {formatTime(elapsedTime)}</p>
           </div>
+
+          {showBettingTips && (
+            <BettingAdvice
+              runningCount={correctCount}
+              decksRemaining={deck.decksRemaining()}
+            />
+          )}
+
           <button
             onClick={startDrill}
             className="btn-primary text-lg px-8 py-3"

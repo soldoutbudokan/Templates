@@ -134,3 +134,54 @@ input[type="number"] {
 .deck-progress-bar.danger {
   @apply from-red-400 to-red-600;
 }
+
+/* Casino noise animations for hard mode */
+@keyframes chipFloat {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes bgPulse {
+  0%, 100% {
+    background-color: rgba(27, 94, 32, 0);
+  }
+  50% {
+    background-color: rgba(27, 94, 32, 0.15);
+  }
+}
+
+@keyframes tickerScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.casino-chip-float {
+  animation: chipFloat linear infinite;
+  will-change: transform;
+}
+
+.casino-bg-pulse {
+  animation: bgPulse 3s ease-in-out infinite;
+  will-change: background-color;
+}
+
+.casino-ticker {
+  animation: tickerScroll 15s linear infinite;
+  will-change: transform;
+}
