@@ -26,6 +26,7 @@ const MODE_INFO: { mode: GameMode; label: string; subtitle: string }[] = [
   { mode: 'speed-drill', label: 'Speed Drill', subtitle: 'Cards flash by' },
   { mode: 'true-count', label: 'True Count', subtitle: 'Running → true' },
   { mode: 'multi-hand', label: 'Multi-Hand', subtitle: 'Table simulation' },
+  { mode: 'basic-strategy', label: 'Basic Strategy', subtitle: 'Hit, stand, double' },
 ];
 
 export default function Controls({

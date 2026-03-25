@@ -9,6 +9,7 @@ import GameBoard from '@/components/GameBoard';
 import SpeedDrill from '@/components/SpeedDrill';
 import TrueCountTrainer from '@/components/TrueCountTrainer';
 import MultiHandBoard from '@/components/MultiHandBoard';
+import BasicStrategyTrainer from '@/components/BasicStrategyTrainer';
 
 export default function Home() {
   const [mode, setMode] = useState<GameMode>('classic');
@@ -99,6 +100,14 @@ export default function Home() {
                 key={`mh-${deckKey}`}
                 deck={deck}
                 handCount={handCount}
+                onRoundComplete={handleRoundComplete}
+                showBettingTips={showBettingTips}
+              />
+            )}
+            {mode === 'basic-strategy' && (
+              <BasicStrategyTrainer
+                key={`bs-${deckKey}`}
+                deck={deck}
                 onRoundComplete={handleRoundComplete}
                 showBettingTips={showBettingTips}
               />
