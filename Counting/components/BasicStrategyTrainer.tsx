@@ -55,6 +55,7 @@ export default function BasicStrategyTrainer({ deck, onRoundComplete, showBettin
         else if (key === 's') handleAction('stand');
         else if (key === 'd') handleAction('double');
         else if (key === 'p' && canSplit) handleAction('split');
+        else if (key === 'r') handleAction('surrender');
       }
       if (key === ' ') {
         event.preventDefault();
@@ -134,6 +135,13 @@ export default function BasicStrategyTrainer({ deck, onRoundComplete, showBettin
             className={actionButtonClass('split')}
           >
             Split <kbd className="ml-1 text-xs opacity-60">P</kbd>
+          </button>
+          <button
+            onClick={() => handleAction('surrender')}
+            disabled={selectedAction !== null}
+            className={actionButtonClass('surrender')}
+          >
+            Surrender <kbd className="ml-1 text-xs opacity-60">R</kbd>
           </button>
         </div>
 

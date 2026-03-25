@@ -1,6 +1,6 @@
 import { Card } from './deck';
 
-export type Action = 'hit' | 'stand' | 'double' | 'split';
+export type Action = 'hit' | 'stand' | 'double' | 'split' | 'surrender';
 
 function cardNumericValue(value: string): number {
   if (value === 'A') return 11;
@@ -53,8 +53,8 @@ const HARD: Action[][] = [
   /* 12 */ ['hit', 'hit', 'stand', 'stand', 'stand', 'hit', 'hit', 'hit', 'hit', 'hit'],
   /* 13 */ ['stand', 'stand', 'stand', 'stand', 'stand', 'hit', 'hit', 'hit', 'hit', 'hit'],
   /* 14 */ ['stand', 'stand', 'stand', 'stand', 'stand', 'hit', 'hit', 'hit', 'hit', 'hit'],
-  /* 15 */ ['stand', 'stand', 'stand', 'stand', 'stand', 'hit', 'hit', 'hit', 'hit', 'hit'],
-  /* 16 */ ['stand', 'stand', 'stand', 'stand', 'stand', 'hit', 'hit', 'hit', 'hit', 'hit'],
+  /* 15 */ ['stand', 'stand', 'stand', 'stand', 'stand', 'hit', 'hit', 'hit', 'surrender', 'hit'],
+  /* 16 */ ['stand', 'stand', 'stand', 'stand', 'stand', 'hit', 'hit', 'surrender', 'surrender', 'surrender'],
   /* 17 */ ['stand', 'stand', 'stand', 'stand', 'stand', 'stand', 'stand', 'stand', 'stand', 'stand'],
 ];
 
@@ -120,5 +120,6 @@ export function formatAction(action: Action): string {
     case 'stand': return 'Stand';
     case 'double': return 'Double';
     case 'split': return 'Split';
+    case 'surrender': return 'Surrender';
   }
 }
