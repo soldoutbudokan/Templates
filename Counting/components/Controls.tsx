@@ -175,27 +175,29 @@ export default function Controls({
         <span className="text-sm text-white/70">Show Betting Tips</span>
       </label>
 
-      {/* Deck Progress */}
-      <div>
-        <div className="flex justify-between text-sm mb-1">
-          <span className="text-white/70">Cards Remaining</span>
-          <span className="font-medium">{cardsRemaining} / {totalCards}</span>
+      {/* Deck Progress (hidden in basic-strategy mode) */}
+      {mode !== 'basic-strategy' && (
+        <div>
+          <div className="flex justify-between text-sm mb-1">
+            <span className="text-white/70">Cards Remaining</span>
+            <span className="font-medium">{cardsRemaining} / {totalCards}</span>
+          </div>
+          <div className="deck-progress">
+            <div
+              className={`deck-progress-bar ${getProgressClass()}`}
+              style={{ width: `${percentRemaining}%` }}
+            />
+          </div>
+          {percentRemaining < 25 && (
+            <button
+              onClick={onShuffle}
+              className="mt-2 w-full py-1 px-3 bg-yellow-500/20 text-yellow-300 rounded text-sm hover:bg-yellow-500/30 transition-all"
+            >
+              Shuffle Deck
+            </button>
+          )}
         </div>
-        <div className="deck-progress">
-          <div
-            className={`deck-progress-bar ${getProgressClass()}`}
-            style={{ width: `${percentRemaining}%` }}
-          />
-        </div>
-        {percentRemaining < 25 && (
-          <button
-            onClick={onShuffle}
-            className="mt-2 w-full py-1 px-3 bg-yellow-500/20 text-yellow-300 rounded text-sm hover:bg-yellow-500/30 transition-all"
-          >
-            Shuffle Deck
-          </button>
-        )}
-      </div>
+      )}
 
       {/* Session Stats */}
       <div className="pt-2 border-t border-white/10">
