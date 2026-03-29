@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Deck } from '@/lib/deck';
 import { GameMode, SpeedSetting, SessionStats } from '@/lib/types';
 import { usePersistedState } from '@/lib/usePersistedState';
@@ -31,6 +31,18 @@ export default function Home() {
     { classic: 0, 'speed-drill': 0, 'true-count': 0, 'multi-hand': 0, 'basic-strategy': 0 },
   );
 
+  // One-time migration from old single bestStreak
+  useEffect(() => {
+    const legacy = localStorage.getItem('bestStreak');
+    if (legacy) {
+      const val = JSON.parse(legacy);
+      if (typeof val === 'number' && val > 0) {
+        setBestStreaks(prev => ({ ...prev, classic: Math.max(prev.classic, val) }));
+      }
+      localStorage.removeItem('bestStreak');
+    }
+  }, []);
+
   const [allStats, setAllStats] = useState<Record<GameMode, SessionStats>>(() =>
     Object.fromEntries(
       ALL_MODES.map(m => [m, emptyStats(bestStreaks[m] ?? 0)])
@@ -56,7 +68,7 @@ export default function Home() {
       const newStreak = correct ? modeStats.currentStreak + 1 : 0;
       const newBest = Math.max(newStreak, modeStats.bestStreak);
       if (newBest > modeStats.bestStreak) {
-        setBestStreaks({ ...bestStreaks, [mode]: newBest });
+        setBestStreaks(prev => ({ ...prev, [mode]: newBest }));
       }
       return {
         ...prev,
@@ -68,7 +80,7 @@ export default function Home() {
         },
       };
     });
-  }, [mode, setBestStreaks, bestStreaks]);
+  }, [mode, setBestStreaks]);
 
   return (
     <main className="min-h-screen p-4 flex flex-col">
