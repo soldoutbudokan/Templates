@@ -118,7 +118,7 @@ export default function Home() {
           <div className="w-64 flex-shrink-0">
             <Controls
               mode={mode}
-              onModeChange={setMode}
+              onModeChange={(newMode) => { setMode(newMode); setDeckKey(prev => prev + 1); }}
               deckCount={deckCount}
               onDeckCountChange={handleDeckCountChange}
               speed={speed}
