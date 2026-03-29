@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Deck } from '@/lib/deck';
 import { GameMode, SpeedSetting, SessionStats } from '@/lib/types';
 import { usePersistedState } from '@/lib/usePersistedState';
@@ -11,6 +11,12 @@ import TrueCountTrainer from '@/components/TrueCountTrainer';
 import MultiHandBoard from '@/components/MultiHandBoard';
 import BasicStrategyTrainer from '@/components/BasicStrategyTrainer';
 
+const ALL_MODES: GameMode[] = ['classic', 'speed-drill', 'true-count', 'multi-hand', 'basic-strategy'];
+
+function emptyStats(bestStreak = 0): SessionStats {
+  return { roundsPlayed: 0, correctGuesses: 0, currentStreak: 0, bestStreak };
+}
+
 export default function Home() {
   const [mode, setMode] = useState<GameMode>('classic');
   const [deckCount, setDeckCount] = useState(6);
@@ -20,15 +26,30 @@ export default function Home() {
   const [showBettingTips, setShowBettingTips] = useState(false);
   const [deckKey, setDeckKey] = useState(0);
 
-  const [bestStreak, setBestStreak] = usePersistedState('bestStreak', 0);
-  const [stats, setStats] = useState<SessionStats>({
-    roundsPlayed: 0,
-    correctGuesses: 0,
-    currentStreak: 0,
-    bestStreak: bestStreak,
-  });
+  const [bestStreaks, setBestStreaks] = usePersistedState<Record<GameMode, number>>(
+    'bestStreaks',
+    { classic: 0, 'speed-drill': 0, 'true-count': 0, 'multi-hand': 0, 'basic-strategy': 0 },
+  );
 
-  // Create deck instance - recreate when deck count changes
+  // One-time migration from old single bestStreak
+  useEffect(() => {
+    const legacy = localStorage.getItem('bestStreak');
+    if (legacy) {
+      const val = JSON.parse(legacy);
+      if (typeof val === 'number' && val > 0) {
+        setBestStreaks(prev => ({ ...prev, classic: Math.max(prev.classic, val) }));
+      }
+      localStorage.removeItem('bestStreak');
+    }
+  }, []);
+
+  const [allStats, setAllStats] = useState<Record<GameMode, SessionStats>>(() =>
+    Object.fromEntries(
+      ALL_MODES.map(m => [m, emptyStats(bestStreaks[m] ?? 0)])
+    ) as Record<GameMode, SessionStats>
+  );
+
+  // Create deck instance - recreate when deck count or deckKey changes
   const deck = useMemo(() => new Deck(deckCount), [deckCount, deckKey]);
 
   const handleDeckCountChange = useCallback((count: number) => {
@@ -42,20 +63,24 @@ export default function Home() {
   }, [deck]);
 
   const handleRoundComplete = useCallback((correct: boolean) => {
-    setStats(prev => {
-      const newStreak = correct ? prev.currentStreak + 1 : 0;
-      const newBest = Math.max(newStreak, prev.bestStreak);
-      if (newBest > prev.bestStreak) {
-        setBestStreak(newBest);
+    setAllStats(prev => {
+      const modeStats = prev[mode];
+      const newStreak = correct ? modeStats.currentStreak + 1 : 0;
+      const newBest = Math.max(newStreak, modeStats.bestStreak);
+      if (newBest > modeStats.bestStreak) {
+        setBestStreaks(prev => ({ ...prev, [mode]: newBest }));
       }
       return {
-        roundsPlayed: prev.roundsPlayed + 1,
-        correctGuesses: prev.correctGuesses + (correct ? 1 : 0),
-        currentStreak: newStreak,
-        bestStreak: newBest,
+        ...prev,
+        [mode]: {
+          roundsPlayed: modeStats.roundsPlayed + 1,
+          correctGuesses: modeStats.correctGuesses + (correct ? 1 : 0),
+          currentStreak: newStreak,
+          bestStreak: newBest,
+        },
       };
     });
-  }, [setBestStreak]);
+  }, [mode, setBestStreaks]);
 
   return (
     <main className="min-h-screen p-4 flex flex-col">
@@ -131,7 +156,7 @@ export default function Home() {
               onShowBettingTipsChange={setShowBettingTips}
               cardsRemaining={deck.remaining()}
               totalCards={deck.totalCards()}
-              stats={stats}
+              stats={allStats[mode]}
               onShuffle={handleShuffle}
             />
           </div>
