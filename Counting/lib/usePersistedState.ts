@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, SetStateAction } from 'react';
 
-export function usePersistedState<T>(key: string, defaultValue: T): [T, (val: T) => void] {
+export function usePersistedState<T>(key: string, defaultValue: T): [T, (val: SetStateAction<T>) => void] {
   const [value, setValue] = useState<T>(() => {
     if (typeof window === 'undefined') return defaultValue;
     try {
@@ -13,13 +13,18 @@ export function usePersistedState<T>(key: string, defaultValue: T): [T, (val: T)
     }
   });
 
-  const setPersisted = useCallback((newValue: T) => {
-    setValue(newValue);
-    try {
-      localStorage.setItem(key, JSON.stringify(newValue));
-    } catch {
-      // localStorage unavailable
-    }
+  const setPersisted = useCallback((newValue: SetStateAction<T>) => {
+    setValue(prev => {
+      const resolved = typeof newValue === 'function'
+        ? (newValue as (prev: T) => T)(prev)
+        : newValue;
+      try {
+        localStorage.setItem(key, JSON.stringify(resolved));
+      } catch {
+        // localStorage unavailable
+      }
+      return resolved;
+    });
   }, [key]);
 
   // Sync with localStorage on mount (handles SSR hydration mismatch)
