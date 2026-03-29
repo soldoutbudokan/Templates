@@ -80,7 +80,7 @@ const PAIRS: Action[][] = [
   /* 5,5 */ ['double', 'double', 'double', 'double', 'double', 'double', 'double', 'double', 'hit', 'hit'],
   /* 6,6 */ ['split', 'split', 'split', 'split', 'split', 'hit', 'hit', 'hit', 'hit', 'hit'],
   /* 7,7 */ ['split', 'split', 'split', 'split', 'split', 'split', 'hit', 'hit', 'hit', 'hit'],
-  /* 8,8 */ ['split', 'split', 'split', 'split', 'split', 'split', 'split', 'split', 'split', 'split'],
+  /* 8,8 */ ['split', 'split', 'split', 'split', 'split', 'split', 'split', 'split', 'split', 'surrender'],
   /* 9,9 */ ['split', 'split', 'split', 'split', 'split', 'stand', 'split', 'split', 'stand', 'stand'],
   /* T,T */ ['stand', 'stand', 'stand', 'stand', 'stand', 'stand', 'stand', 'stand', 'stand', 'stand'],
   /* A,A */ ['split', 'split', 'split', 'split', 'split', 'split', 'split', 'split', 'split', 'split'],
