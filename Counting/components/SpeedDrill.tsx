@@ -39,10 +39,8 @@ export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, sho
   const startDrill = useCallback(() => {
     cleanup();
 
-    // Check if we need to reshuffle
-    if (deck.needsReshuffle()) {
-      deck.shuffle();
-    }
+    // Always reshuffle — each drill is independent
+    deck.shuffle();
 
     // Hard mode: 40-60 cards, normal: 15-30
     const cardCount = hardMode

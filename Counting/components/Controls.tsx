@@ -176,7 +176,7 @@ export default function Controls({
       </label>
 
       {/* Deck Progress (hidden in basic-strategy mode) */}
-      {mode !== 'basic-strategy' && (
+      {mode !== 'basic-strategy' && mode !== 'speed-drill' && (
         <div>
           <div className="flex justify-between text-sm mb-1">
             <span className="text-white/70">Cards Remaining</span>
