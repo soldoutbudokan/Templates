@@ -2,6 +2,8 @@
 
 A smooth MP4 video player web app. Paste a link to an MP4 stream and play it with polished controls and keyboard shortcuts.
 
+**Live:** [smoothplayer.vercel.app](https://smoothplayer.vercel.app/)
+
 ## Quick Start
 
 ```bash
