@@ -34,14 +34,15 @@ def export_rankings(
 
     # Classify player roles
     qualified["role"] = "batter"
+    ball_ratio = qualified["bowling_balls"] / qualified["batting_balls"].replace(0, 1)
     qualified.loc[
-        (qualified["bowling_balls"] > 0) & (qualified["batting_balls"] > 0) &
-        (qualified["bowling_balls"] / qualified["batting_balls"] > 0.3),
+        (qualified["bowling_balls"] >= 50) & (qualified["batting_balls"] >= 50) &
+        ball_ratio.between(0.3, 3.0),
         "role",
     ] = "all-rounder"
     qualified.loc[
-        (qualified["bowling_balls"] > qualified["batting_balls"] * 2) &
-        (qualified["batting_tilt_per_match"].abs() < qualified["bowling_tilt_per_match"].abs()),
+        (qualified["bowling_balls"] >= 100) &
+        (qualified["bowling_balls"] > qualified["batting_balls"] * 1.5),
         "role",
     ] = "bowler"
 
