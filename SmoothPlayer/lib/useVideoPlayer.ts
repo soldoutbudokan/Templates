@@ -151,7 +151,11 @@ export function useVideoPlayer(
     if (document.fullscreenElement) {
       document.exitFullscreen()
     } else {
-      container.requestFullscreen()
+      if (container.requestFullscreen) {
+        container.requestFullscreen()
+      } else if ((container as any).webkitRequestFullscreen) {
+        (container as any).webkitRequestFullscreen()
+      }
     }
   }, [containerRef])
 
