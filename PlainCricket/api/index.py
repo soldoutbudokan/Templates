@@ -3,6 +3,7 @@ import requests
 import re
 import os
 from time import time as time_func
+from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup as bs
 from markupsafe import escape
 from flask import Flask, jsonify, request, send_from_directory
@@ -348,6 +349,40 @@ def matches():
         return jsonify({"error": str(e), "matches": []}), 500
 
 
+def get_playing_xi(match_id):
+    """Scrape playing XI from match facts page. Returns dict {team_name: [player_names]}"""
+    try:
+        facts_soup = get_soup(f"https://www.cricbuzz.com/cricket-match-facts/{match_id}")
+        playing_xi = {}
+        players_divs = facts_soup.find_all("div", class_="font-bold", string="Players")
+        for pd in players_divs:
+            # Get direct <a> children of the sibling flex-wrap div (excludes bench)
+            players_wrap = pd.find_next_sibling("div")
+            if not players_wrap:
+                continue
+            links = players_wrap.find_all("a", recursive=False)
+            names = []
+            for a in links:
+                name = a.get_text(strip=True).rstrip(",").strip()
+                name = re.sub(r'\s*\([^)]*\)', '', name).rstrip(",").strip()
+                if name:
+                    names.append(name)
+
+            # Find team name from the facts-row-grid container
+            row_grid = pd.find_parent(class_=re.compile("facts-row-grid"))
+            team_name = "Unknown"
+            if row_grid:
+                first_child = row_grid.find("div", recursive=False)
+                if first_child:
+                    team_name = first_child.get_text(strip=True).replace("squad", "").strip()
+
+            if team_name != "Unknown" and names:
+                playing_xi[team_name] = names
+        return playing_xi
+    except Exception:
+        return {}
+
+
 @app.route("/api/score")
 def score():
     """Get detailed score for a specific match"""
@@ -455,19 +490,31 @@ def score():
                                 "isNotOut": is_not_out
                             })
 
-                # Parse "Did not Bat" section within batting area
+                # Parse "Did not Bat" / "Yet to Bat" section
                 dnb_section = None
+                # First: search inside scard
                 for div in scard.find_all("div", recursive=True):
                     bold_child = div.find("div", class_="font-bold")
-                    if bold_child and "Did not Bat" in bold_child.get_text(strip=True):
+                    if bold_child and re.search(r'(did not bat|yet to bat)', bold_child.get_text(strip=True), re.IGNORECASE):
                         dnb_section = div
                         break
+                # Fallback: search siblings after scard
+                if not dnb_section:
+                    for sibling in scard.next_siblings:
+                        if not hasattr(sibling, 'find'):
+                            continue
+                        sib_id = sibling.get('id', '') if hasattr(sibling, 'get') else ''
+                        if sib_id.startswith('team-') or sib_id.startswith('scard-'):
+                            break
+                        bold_child = sibling.find("div", class_="font-bold")
+                        if bold_child and re.search(r'(did not bat|yet to bat)', bold_child.get_text(strip=True), re.IGNORECASE):
+                            dnb_section = sibling
+                            break
                 if dnb_section:
                     dnb_links = dnb_section.find_all("a")
                     if dnb_links:
                         did_not_bat = [a.get_text(strip=True).rstrip(",") for a in dnb_links if a.get_text(strip=True)]
                     else:
-                        # Fallback: get text from the sibling div
                         dnb_children = dnb_section.find_all("div", recursive=False)
                         if len(dnb_children) >= 2:
                             dnb_text = dnb_children[1].get_text(strip=True)
@@ -522,13 +569,19 @@ def score():
                     status = clean_status_text(line)
                     break
 
+        # Fetch playing XI if not all teams have innings data yet
+        playing_xi = {}
+        if len(response_innings) < 2:
+            playing_xi = get_playing_xi(match_id)
+
         return jsonify({
             "id": str(match_id),
             "title": title,
             "status": status,
             "venue": venue,
             "date": match_date,
-            "innings": response_innings
+            "innings": response_innings,
+            "playingXI": playing_xi
         })
 
     except Exception as e:
