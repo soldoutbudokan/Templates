@@ -7,6 +7,18 @@ body {
   overflow: hidden;
 }
 
+/* Fullscreen sizing */
+:fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+:fullscreen video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
 /* Prevent text selection on video controls */
 .select-none {
   -webkit-user-select: none;
