@@ -1,0 +1,240 @@
+# %% Imports
+import json
+from datetime import date
+from pathlib import Path
+from typing import Optional
+
+import pandas as pd
+import yaml
+
+from pipeline.compute_tilt import make_slug
+
+
+# %% Configuration
+def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
+    with open(config_path, "r") as f:
+        return yaml.safe_load(f)
+
+
+# %% Export rankings
+def export_rankings(
+    player_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+    min_matches: int = 10,
+) -> Path:
+    """Export player rankings to JSON for the website."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+    output_dir.mkdir(parents=True, exist_ok=True)
+    min_matches = config["export"].get("min_matches", min_matches)
+
+    # Filter by minimum matches
+    qualified = player_tilt[player_tilt["total_matches"] >= min_matches].copy()
+    print(f"  {len(qualified)} players with >= {min_matches} matches (of {len(player_tilt)} total)")
+
+    # Classify player roles
+    qualified["role"] = "batter"
+    qualified.loc[
+        (qualified["bowling_balls"] > 0) & (qualified["batting_balls"] > 0) &
+        (qualified["bowling_balls"] / qualified["batting_balls"] > 0.3),
+        "role",
+    ] = "all-rounder"
+    qualified.loc[
+        (qualified["bowling_balls"] > qualified["batting_balls"] * 2) &
+        (qualified["batting_tilt_per_match"].abs() < qualified["bowling_tilt_per_match"].abs()),
+        "role",
+    ] = "bowler"
+
+    # Build JSON records
+    rankings = []
+    for _, row in qualified.iterrows():
+        rankings.append({
+            "rank": 0,  # Will be set after sorting
+            "player": row["player"],
+            "slug": make_slug(row["player"]),
+            "team": row["team"],
+            "role": row["role"],
+            "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
+            "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5),
+            "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5),
+            "total_matches": int(row["total_matches"]),
+            "batting_balls": int(row["batting_balls"]),
+            "bowling_balls": int(row["bowling_balls"]),
+        })
+
+    # Sort and assign ranks
+    rankings.sort(key=lambda x: x["total_tilt_per_match"], reverse=True)
+    for i, r in enumerate(rankings):
+        r["rank"] = i + 1
+
+    # Write
+    rankings_path = output_dir / config["export"]["rankings_file"]
+    with open(rankings_path, "w") as f:
+        json.dump(rankings, f, indent=2)
+
+    print(f"  Exported {len(rankings)} players to {rankings_path}")
+    return rankings_path
+
+
+# %% Export player details
+def export_player_details(
+    deltas_df: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+    min_matches: int = 10,
+) -> Path:
+    """Export per-player detail JSON files."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+    players_dir = output_dir / config["export"]["players_dir"]
+    players_dir.mkdir(parents=True, exist_ok=True)
+    min_matches = config["export"].get("min_matches", min_matches)
+
+    qualified = player_tilt[player_tilt["total_matches"] >= min_matches]
+
+    exported = 0
+    for _, row in qualified.iterrows():
+        player_name = row["player"]
+        slug = make_slug(player_name)
+
+        # Get this player's ball-by-ball data
+        bat_df = deltas_df[deltas_df["batter"] == player_name]
+        bowl_df = deltas_df[deltas_df["bowler"] == player_name]
+
+        # Season breakdown (batting)
+        season_batting = (
+            bat_df.groupby("season")
+            .agg(tilt=("delta_wp", "sum"), balls=("delta_wp", "count"), matches=("match_id", "nunique"))
+            .reset_index()
+        )
+        season_batting["tilt_per_match"] = season_batting["tilt"] / season_batting["matches"]
+
+        # Phase breakdown (batting)
+        phase_map = {1: "powerplay", 0: "middle"}  # Will compute from flags
+        phase_batting = []
+        for phase_name, col in [("powerplay", "is_powerplay"), ("middle", "is_middle"), ("death", "is_death")]:
+            phase_df = bat_df[bat_df[col] == 1]
+            if len(phase_df) > 0:
+                phase_batting.append({
+                    "phase": phase_name,
+                    "tilt": round(phase_df["delta_wp"].sum(), 5),
+                    "balls": len(phase_df),
+                    "avg_delta": round(phase_df["delta_wp"].mean(), 6),
+                })
+
+        # Best/worst match performances (batting)
+        match_perf = (
+            bat_df.groupby(["match_id", "date", "bowling_team"])
+            .agg(tilt=("delta_wp", "sum"), balls=("delta_wp", "count"), runs=("runs_batter", "sum"))
+            .reset_index()
+            .sort_values("tilt", ascending=False)
+        )
+        best_matches = match_perf.head(5).to_dict("records")
+        worst_matches = match_perf.tail(5).sort_values("tilt").to_dict("records")
+
+        # Build player detail JSON
+        detail = {
+            "player": player_name,
+            "slug": slug,
+            "team": row["team"],
+            "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
+            "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5),
+            "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5),
+            "total_matches": int(row["total_matches"]),
+            "batting_balls": int(row["batting_balls"]),
+            "bowling_balls": int(row["bowling_balls"]),
+            "seasons": [
+                {
+                    "season": str(r["season"]),
+                    "tilt_per_match": round(r["tilt_per_match"], 5),
+                    "matches": int(r["matches"]),
+                    "balls": int(r["balls"]),
+                }
+                for _, r in season_batting.iterrows()
+            ],
+            "phases": phase_batting,
+            "best_matches": [
+                {
+                    "date": str(r["date"]),
+                    "vs": r["bowling_team"],
+                    "tilt": round(r["tilt"], 5),
+                    "runs": int(r["runs"]),
+                    "balls": int(r["balls"]),
+                }
+                for r in best_matches
+            ],
+            "worst_matches": [
+                {
+                    "date": str(r["date"]),
+                    "vs": r["bowling_team"],
+                    "tilt": round(r["tilt"], 5),
+                    "runs": int(r["runs"]),
+                    "balls": int(r["balls"]),
+                }
+                for r in worst_matches
+            ],
+        }
+
+        player_path = players_dir / f"{slug}.json"
+        with open(player_path, "w") as f:
+            json.dump(detail, f, indent=2)
+
+        exported += 1
+
+    print(f"  Exported {exported} player detail files to {players_dir}")
+    return players_dir
+
+
+# %% Export metadata
+def export_meta(
+    deltas_df: pd.DataFrame,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """Export metadata JSON."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+
+    meta = {
+        "last_updated": str(date.today()),
+        "matches_count": int(deltas_df["match_id"].nunique()),
+        "balls_count": len(deltas_df),
+        "seasons": sorted(deltas_df["season"].unique().tolist()),
+        "data_source": "cricsheet.org",
+        "model_version": "1.0",
+        "stat_name": "TILT",
+        "stat_description": "Win Probability Added per match — how much a player tilts the game",
+    }
+
+    meta_path = output_dir / config["export"]["meta_file"]
+    with open(meta_path, "w") as f:
+        json.dump(meta, f, indent=2)
+
+    print(f"  Exported metadata to {meta_path}")
+    return meta_path
+
+
+# %% Main
+def export_all(
+    deltas_df: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+) -> None:
+    """Export all JSON files for the website."""
+    print("\nExporting JSON for website...")
+    export_rankings(player_tilt)
+    export_player_details(deltas_df, player_tilt)
+    export_meta(deltas_df)
+    print("  Done!")
+
+
+if __name__ == "__main__":
+    # Load pre-computed data
+    import pickle
+
+    config = load_config()
+    processed_dir = Path(config["data"]["processed_dir"])
+
+    print("Loading deltas and player TILT data...")
+    deltas_df = pd.read_parquet(processed_dir / "deltas.parquet")
+    player_tilt = pd.read_parquet(processed_dir / "player_tilt.parquet")
+
+    export_all(deltas_df, player_tilt)

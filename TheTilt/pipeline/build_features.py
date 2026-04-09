@@ -1,0 +1,156 @@
+# %% Imports
+from pathlib import Path
+from typing import Optional
+
+import pandas as pd
+import yaml
+
+
+# %% Configuration
+def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
+    with open(config_path, "r") as f:
+        return yaml.safe_load(f)
+
+
+# %% Build features for a single match-innings
+def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = None) -> pd.DataFrame:
+    """Add match state features to each ball in an innings.
+
+    Features represent the state BEFORE the delivery is bowled.
+    """
+    df = innings_df.copy().reset_index(drop=True)
+    n = len(df)
+
+    # Cumulative runs and wickets (BEFORE each ball)
+    df["runs_scored"] = df["runs_total"].cumsum().shift(1, fill_value=0)
+    df["wickets_fallen"] = df["is_wicket"].astype(int).cumsum().shift(1, fill_value=0)
+
+    # Ball number in innings (1-indexed, legal deliveries only)
+    df["ball_number"] = range(1, n + 1)
+
+    # Balls remaining (T20 = 120 legal deliveries max)
+    # Note: extras like wides/no-balls add extra deliveries, but we approximate
+    # using the over.ball structure. Max 120 balls per innings.
+    total_balls = 120
+    df["balls_bowled"] = df["ball_number"] - 1  # Before this ball
+    df["balls_remaining"] = total_balls - df["balls_bowled"]
+    df["balls_remaining"] = df["balls_remaining"].clip(lower=1)
+
+    # Wickets in hand
+    df["wickets_in_hand"] = 10 - df["wickets_fallen"]
+
+    # Run rate (runs per over so far)
+    overs_bowled = df["balls_bowled"] / 6
+    df["run_rate"] = df["runs_scored"] / overs_bowled.replace(0, 0.1)
+
+    # Phase flags
+    df["is_powerplay"] = (df["over"] <= 5).astype(int)  # Overs 0-5 (1-6)
+    df["is_middle"] = ((df["over"] >= 6) & (df["over"] <= 14)).astype(int)  # Overs 7-15
+    df["is_death"] = (df["over"] >= 15).astype(int)  # Overs 16-20
+
+    # Target and chase features (innings 2 only)
+    if target is not None and target > 0:
+        df["target"] = target
+        df["runs_needed"] = target - df["runs_scored"]
+        df["required_run_rate"] = (df["runs_needed"] / (df["balls_remaining"] / 6)).clip(upper=36)
+    else:
+        df["target"] = 0
+        df["runs_needed"] = 0
+        df["required_run_rate"] = 0.0
+
+    # Recent form: run rate and wickets in last 18 balls (3 overs)
+    window = 18
+    df["recent_runs"] = df["runs_total"].rolling(window=window, min_periods=1).sum().shift(1, fill_value=0)
+    df["recent_wickets"] = df["is_wicket"].astype(int).rolling(window=window, min_periods=1).sum().shift(1, fill_value=0)
+    recent_overs = df["runs_total"].rolling(window=window, min_periods=1).count().shift(1, fill_value=1) / 6
+    df["recent_run_rate"] = df["recent_runs"] / recent_overs.replace(0, 0.1)
+
+    return df
+
+
+# %% Build features for all matches
+def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
+    """Load ball events and add match state features."""
+    config = load_config()
+    processed_dir = Path(config["data"]["processed_dir"])
+
+    if ball_events_path is None:
+        ball_events_path = processed_dir / config["data"]["ball_events_file"]
+
+    print(f"Loading ball events from {ball_events_path}...")
+    df = pd.read_parquet(ball_events_path)
+    print(f"  Loaded {len(df):,} balls from {df['match_id'].nunique()} matches")
+
+    # Compute first innings totals for each match (needed for innings 2 target)
+    first_innings_totals = (
+        df[df["innings"] == 1]
+        .groupby("match_id")["runs_total"]
+        .sum()
+        .to_dict()
+    )
+
+    # Process each match-innings
+    featured_dfs = []
+
+    match_ids = df["match_id"].unique()
+    for i, match_id in enumerate(match_ids):
+        match_df = df[df["match_id"] == match_id]
+
+        for innings in match_df["innings"].unique():
+            innings_df = match_df[match_df["innings"] == innings]
+
+            # Target for innings 2
+            target = None
+            if innings == 2:
+                first_total = first_innings_totals.get(match_id, 0)
+                target = first_total + 1  # Need to beat first innings score
+
+            featured = build_innings_features(innings_df, target=target)
+            featured_dfs.append(featured)
+
+        if (i + 1) % 200 == 0:
+            print(f"  Processed {i + 1}/{len(match_ids)} matches...")
+
+    result = pd.concat(featured_dfs, ignore_index=True)
+
+    # Add binary target: did the batting team win this match?
+    result["batting_team_won"] = (result["batting_team"] == result["winner"]).astype(int)
+
+    # Select feature columns + identifiers
+    feature_cols = [
+        # Identifiers
+        "match_id", "date", "venue", "season",
+        "batting_team", "bowling_team", "winner",
+        "innings", "over", "ball",
+        "batter", "bowler", "non_striker",
+        # Raw event data
+        "runs_batter", "runs_extras", "runs_total",
+        "is_wicket", "wicket_kind", "player_dismissed",
+        # Features (state before delivery)
+        "ball_number", "balls_remaining", "wickets_in_hand",
+        "runs_scored", "wickets_fallen", "run_rate",
+        "is_powerplay", "is_middle", "is_death",
+        "target", "runs_needed", "required_run_rate",
+        "recent_runs", "recent_wickets", "recent_run_rate",
+        # Target
+        "batting_team_won",
+    ]
+
+    result = result[feature_cols]
+
+    # Save
+    output_path = processed_dir / config["data"]["featured_balls_file"]
+    result.to_parquet(output_path, index=False)
+    print(f"\n  Saved {len(result):,} featured balls to {output_path}")
+    print(f"  Win rate (batting team): {result['batting_team_won'].mean():.3f}")
+
+    return result
+
+
+# %% Main
+if __name__ == "__main__":
+    df = build_all_features()
+    print(f"\nShape: {df.shape}")
+    print(f"\nFeature stats:")
+    print(df[["balls_remaining", "wickets_in_hand", "runs_scored", "run_rate",
+              "required_run_rate", "recent_run_rate"]].describe())

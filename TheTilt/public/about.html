@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — About</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .about-section { margin-bottom: 28px; }
+        .about-section h2 { color: #4ade80; font-size: 1.1rem; margin-bottom: 8px; }
+        .about-section p { color: #bbb; font-size: 0.85rem; margin-bottom: 8px; }
+        .formula { background: #222; padding: 12px 16px; border-left: 3px solid #4ade80; margin: 12px 0; font-size: 0.85rem; }
+        .formula code { color: #4ade80; }
+    </style>
+</head>
+<body>
+    <h1>THE TILT</h1>
+    <div class="subtitle">win probability added for IPL cricket</div>
+
+    <div class="nav">
+        <a href="index.html">leaderboard</a>
+        <a href="about.html" class="active">about</a>
+    </div>
+
+    <div class="about-section">
+        <h2>what is TILT?</h2>
+        <p>
+            TILT measures how much a player tilts the game in their team's favour.
+            For every ball bowled in the IPL, we calculate the change in win probability
+            and attribute it to the batter and bowler involved.
+        </p>
+        <p>
+            A player's TILT score is their average total win probability added per match.
+            A TILT of +5.00% means the player adds 5 percentage points of win probability
+            to their team every match they play.
+        </p>
+    </div>
+
+    <div class="about-section">
+        <h2>how it works</h2>
+        <div class="formula">
+            For each ball:<br>
+            <code>delta = win_prob_after - win_prob_before</code><br><br>
+            Batter credit: <code>+delta</code> (positive = helped batting team)<br>
+            Bowler credit: <code>-delta</code> (positive = helped bowling team)
+        </div>
+        <p>
+            The win probability model is a LightGBM classifier trained on all historical
+            IPL ball-by-ball data. Features include: balls remaining, wickets in hand,
+            current run rate, required run rate, match phase (powerplay/middle/death),
+            and recent form.
+        </p>
+    </div>
+
+    <div class="about-section">
+        <h2>interpreting the numbers</h2>
+        <p>
+            <strong>Batting TILT</strong>: How much a batter shifts win probability when at the crease.
+            Big positive = consistently scores runs when it matters.
+        </p>
+        <p>
+            <strong>Bowling TILT</strong>: How much a bowler shifts win probability in their team's favour.
+            Big positive = takes wickets and contains runs at key moments.
+        </p>
+        <p>
+            <strong>Total TILT</strong>: Combined batting + bowling impact per match.
+            The best all-rounders dominate this ranking.
+        </p>
+    </div>
+
+    <div class="about-section">
+        <h2>inspiration</h2>
+        <p>
+            Inspired by basketball's EPM (Estimated Plus-Minus) and RAPTOR statistics,
+            which measure player impact through win probability models.
+            TILT adapts the concept for cricket's ball-by-ball structure.
+        </p>
+    </div>
+
+    <div class="about-section">
+        <h2>data source</h2>
+        <p>
+            All ball-by-ball data from <a href="https://cricsheet.org" style="color:#4ade80">Cricsheet</a>,
+            an open cricket data project. IPL matches only.
+        </p>
+    </div>
+
+    <div class="footer">
+        data from <a href="https://cricsheet.org">cricsheet.org</a> |
+        <a href="index.html">back to leaderboard</a>
+    </div>
+</body>
+</html>

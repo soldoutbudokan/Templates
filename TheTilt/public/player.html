@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — Player</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .player-header { margin-bottom: 24px; }
+        .player-header h2 { color: #4ade80; font-size: 1.3rem; }
+        .player-header .team { color: #888; font-size: 0.9rem; }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 28px; }
+        .stat-card { background: #222; padding: 12px; border: 1px solid #333; }
+        .stat-card .label { color: #888; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 4px; }
+        .stat-card .value { font-size: 1.2rem; font-weight: bold; }
+
+        .section { margin-bottom: 28px; }
+        .section h3 { color: #888; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 4px; }
+
+        .detail-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .detail-table th { text-align: left; padding: 6px; color: #888; border-bottom: 1px solid #333; }
+        .detail-table td { padding: 6px; border-bottom: 1px solid #222; }
+
+        .bar-container { width: 80px; height: 10px; background: #222; display: inline-block; vertical-align: middle; }
+        .bar-fill { height: 100%; }
+        .bar-fill.positive { background: #4ade80; }
+        .bar-fill.negative { background: #f87171; }
+    </style>
+</head>
+<body>
+    <h1>THE TILT</h1>
+    <div class="subtitle">win probability added for IPL cricket</div>
+
+    <div class="nav">
+        <a href="index.html">leaderboard</a>
+        <a href="about.html">about</a>
+    </div>
+
+    <div id="content">
+        <div class="loading">loading player...</div>
+    </div>
+
+    <div class="footer">
+        data from <a href="https://cricsheet.org">cricsheet.org</a> |
+        <a href="index.html">back to leaderboard</a>
+    </div>
+
+<script>
+function formatTilt(val) {
+    const sign = val >= 0 ? '+' : '';
+    const pct = (val * 100).toFixed(2);
+    const cls = val > 0.001 ? 'tilt-positive' : val < -0.001 ? 'tilt-negative' : 'tilt-neutral';
+    return `<span class="${cls}">${sign}${pct}%</span>`;
+}
+
+async function loadPlayer() {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('player');
+
+    if (!slug) {
+        document.getElementById('content').innerHTML = '<div class="loading">no player specified</div>';
+        return;
+    }
+
+    try {
+        const res = await fetch(`data/players/${slug}.json`);
+        if (!res.ok) throw new Error('not found');
+        const p = await res.json();
+
+        document.title = `The TILT — ${p.player}`;
+
+        let html = `
+            <div class="player-header">
+                <h2>${p.player}</h2>
+                <div class="team">${p.team} | ${p.total_matches} matches | ${p.batting_balls} balls faced | ${p.bowling_balls} balls bowled</div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="label">total TILT/match</div>
+                    <div class="value">${formatTilt(p.total_tilt_per_match)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">batting TILT/match</div>
+                    <div class="value">${formatTilt(p.batting_tilt_per_match)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">bowling TILT/match</div>
+                    <div class="value">${formatTilt(p.bowling_tilt_per_match)}</div>
+                </div>
+            </div>
+        `;
+
+        // Season breakdown
+        if (p.seasons && p.seasons.length > 0) {
+            const maxSeasonTilt = Math.max(...p.seasons.map(s => Math.abs(s.tilt_per_match)), 0.01);
+            html += `<div class="section"><h3>by season</h3><table class="detail-table">
+                <tr><th>season</th><th>TILT/match</th><th></th><th>matches</th></tr>`;
+            p.seasons.sort((a, b) => a.season.localeCompare(b.season));
+            for (const s of p.seasons) {
+                const barW = Math.abs(s.tilt_per_match) / maxSeasonTilt * 80;
+                const barCls = s.tilt_per_match >= 0 ? 'positive' : 'negative';
+                html += `<tr>
+                    <td>${s.season}</td>
+                    <td>${formatTilt(s.tilt_per_match)}</td>
+                    <td><div class="bar-container"><div class="bar-fill ${barCls}" style="width:${barW}px"></div></div></td>
+                    <td>${s.matches}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+        }
+
+        // Phase breakdown
+        if (p.phases && p.phases.length > 0) {
+            html += `<div class="section"><h3>by phase (batting)</h3><table class="detail-table">
+                <tr><th>phase</th><th>avg TILT/ball</th><th>total TILT</th><th>balls</th></tr>`;
+            for (const ph of p.phases) {
+                html += `<tr>
+                    <td>${ph.phase}</td>
+                    <td>${formatTilt(ph.avg_delta)}</td>
+                    <td>${formatTilt(ph.tilt)}</td>
+                    <td>${ph.balls}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+        }
+
+        // Best matches
+        if (p.best_matches && p.best_matches.length > 0) {
+            html += `<div class="section"><h3>best performances</h3><table class="detail-table">
+                <tr><th>date</th><th>vs</th><th>TILT</th><th>runs</th><th>balls</th></tr>`;
+            for (const m of p.best_matches) {
+                html += `<tr>
+                    <td>${m.date}</td><td>${m.vs}</td>
+                    <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+        }
+
+        // Worst matches
+        if (p.worst_matches && p.worst_matches.length > 0) {
+            html += `<div class="section"><h3>worst performances</h3><table class="detail-table">
+                <tr><th>date</th><th>vs</th><th>TILT</th><th>runs</th><th>balls</th></tr>`;
+            for (const m of p.worst_matches) {
+                html += `<tr>
+                    <td>${m.date}</td><td>${m.vs}</td>
+                    <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+        }
+
+        document.getElementById('content').innerHTML = html;
+
+    } catch (e) {
+        document.getElementById('content').innerHTML = '<div class="loading">player not found</div>';
+    }
+}
+
+loadPlayer();
+</script>
+</body>
+</html>

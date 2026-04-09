@@ -1,0 +1,24 @@
+# The TILT Pipeline Configuration
+
+data:
+  source_url: "https://cricsheet.org/downloads/ipl_json.zip"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  ball_events_file: "ball_events.parquet"
+  featured_balls_file: "featured_balls.parquet"
+
+model:
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_samples: 100
+  test_size: 0.2
+  random_state: 42
+  save_path: "models/win_prob_lgbm.pkl"
+
+export:
+  output_dir: "public/data"
+  rankings_file: "tilt_rankings.json"
+  players_dir: "players"
+  meta_file: "meta.json"
+  min_matches: 10  # Minimum matches to appear in rankings

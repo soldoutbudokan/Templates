@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>THE TILT</h1>
+    <div class="subtitle">win probability added for IPL cricket</div>
+    <div class="meta" id="meta"></div>
+
+    <div class="nav">
+        <a href="index.html" class="active">leaderboard</a>
+        <a href="about.html">about</a>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="search players..." autocomplete="off">
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" data-filter="all">all</button>
+        <button class="tab" data-filter="batter">batters</button>
+        <button class="tab" data-filter="bowler">bowlers</button>
+        <button class="tab" data-filter="all-rounder">all-rounders</button>
+    </div>
+
+    <div id="content">
+        <div class="loading">loading rankings...</div>
+    </div>
+
+    <div class="footer">
+        data from <a href="https://cricsheet.org">cricsheet.org</a> |
+        <a href="about.html">methodology</a>
+    </div>
+
+<script>
+let allPlayers = [];
+let currentSort = { key: 'total_tilt_per_match', desc: true };
+let currentFilter = 'all';
+let searchQuery = '';
+
+// Load data
+async function init() {
+    try {
+        const [rankingsRes, metaRes] = await Promise.all([
+            fetch('data/tilt_rankings.json'),
+            fetch('data/meta.json'),
+        ]);
+
+        if (!rankingsRes.ok) {
+            document.getElementById('content').innerHTML =
+                '<div class="loading">rankings not yet generated. run the pipeline first.</div>';
+            return;
+        }
+
+        allPlayers = await rankingsRes.json();
+
+        if (metaRes.ok) {
+            const meta = await metaRes.json();
+            document.getElementById('meta').textContent =
+                `${meta.matches_count} matches | ${meta.seasons[0]}-${meta.seasons[meta.seasons.length-1]} | updated ${meta.last_updated}`;
+        }
+
+        render();
+    } catch (e) {
+        document.getElementById('content').innerHTML =
+            '<div class="loading">error loading data</div>';
+    }
+}
+
+// Filter and sort
+function getFilteredPlayers() {
+    let players = [...allPlayers];
+
+    // Role filter
+    if (currentFilter !== 'all') {
+        players = players.filter(p => p.role === currentFilter);
+    }
+
+    // Search filter
+    if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        players = players.filter(p =>
+            p.player.toLowerCase().includes(q) ||
+            p.team.toLowerCase().includes(q)
+        );
+    }
+
+    // Sort
+    players.sort((a, b) => {
+        const va = a[currentSort.key];
+        const vb = b[currentSort.key];
+        if (typeof va === 'string') {
+            return currentSort.desc ? vb.localeCompare(va) : va.localeCompare(vb);
+        }
+        return currentSort.desc ? vb - va : va - vb;
+    });
+
+    return players;
+}
+
+// Format TILT value
+function formatTilt(val) {
+    const sign = val >= 0 ? '+' : '';
+    const pct = (val * 100).toFixed(2);
+    const cls = val > 0.001 ? 'tilt-positive' : val < -0.001 ? 'tilt-negative' : 'tilt-neutral';
+    return `<span class="${cls}">${sign}${pct}%</span>`;
+}
+
+// Render table
+function render() {
+    const players = getFilteredPlayers();
+    const maxTilt = Math.max(...allPlayers.map(p => Math.abs(p.total_tilt_per_match)), 0.01);
+
+    let html = `
+        <table class="rankings-table">
+            <thead>
+                <tr>
+                    <th data-sort="rank">#</th>
+                    <th data-sort="player">player</th>
+                    <th data-sort="total_tilt_per_match" class="${currentSort.key === 'total_tilt_per_match' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">TILT/match</th>
+                    <th data-sort="batting_tilt_per_match" class="hide-mobile ${currentSort.key === 'batting_tilt_per_match' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">bat TILT</th>
+                    <th data-sort="bowling_tilt_per_match" class="hide-mobile ${currentSort.key === 'bowling_tilt_per_match' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">bowl TILT</th>
+                    <th data-sort="total_matches" class="${currentSort.key === 'total_matches' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">matches</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    players.forEach((p, i) => {
+        const barWidth = Math.abs(p.total_tilt_per_match) / maxTilt * 60;
+        const barClass = p.total_tilt_per_match >= 0 ? 'positive' : 'negative';
+
+        html += `
+            <tr onclick="window.location='player.html?player=${p.slug}'">
+                <td>${i + 1}</td>
+                <td>
+                    <span class="player-name">${p.player}</span><br>
+                    <span class="player-team">${p.team}</span>
+                    <span class="role-badge">${p.role}</span>
+                </td>
+                <td>
+                    ${formatTilt(p.total_tilt_per_match)}
+                    <span class="tilt-bar ${barClass}" style="width:${barWidth}px"></span>
+                </td>
+                <td class="hide-mobile">${formatTilt(p.batting_tilt_per_match)}</td>
+                <td class="hide-mobile">${formatTilt(p.bowling_tilt_per_match)}</td>
+                <td>${p.total_matches}</td>
+            </tr>
+        `;
+    });
+
+    html += '</tbody></table>';
+
+    if (players.length === 0) {
+        html = '<div class="loading">no players found</div>';
+    }
+
+    document.getElementById('content').innerHTML = html;
+
+    // Add sort handlers
+    document.querySelectorAll('[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+            const key = th.dataset.sort;
+            if (currentSort.key === key) {
+                currentSort.desc = !currentSort.desc;
+            } else {
+                currentSort.key = key;
+                currentSort.desc = key !== 'player' && key !== 'rank';
+            }
+            render();
+        });
+    });
+}
+
+// Tab handlers
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        render();
+    });
+});
+
+// Search handler
+document.getElementById('search').addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    render();
+});
+
+// Init
+init();
+</script>
+</body>
+</html>

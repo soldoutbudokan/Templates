@@ -1,0 +1,28 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Data (raw is large — keep processed outputs in public/data/)
+data/raw/
+data/processed/
+
+# Models (large binary files)
+models/*.pkl
+models/*.joblib
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+.vercel
