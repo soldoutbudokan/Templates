@@ -124,6 +124,7 @@ function render() {
                     <th data-sort="total_tilt_per_match" class="${currentSort.key === 'total_tilt_per_match' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">TILT/match</th>
                     <th data-sort="batting_tilt_per_match" class="hide-mobile ${currentSort.key === 'batting_tilt_per_match' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">bat TILT</th>
                     <th data-sort="bowling_tilt_per_match" class="hide-mobile ${currentSort.key === 'bowling_tilt_per_match' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">bowl TILT</th>
+                    <th data-sort="total_tilt" class="hide-mobile ${currentSort.key === 'total_tilt' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">career TILT</th>
                     <th data-sort="total_matches" class="${currentSort.key === 'total_matches' ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : ''}">matches</th>
                 </tr>
             </thead>
@@ -148,6 +149,7 @@ function render() {
                 </td>
                 <td class="hide-mobile">${formatTilt(p.batting_tilt_per_match)}</td>
                 <td class="hide-mobile">${formatTilt(p.bowling_tilt_per_match)}</td>
+                <td class="hide-mobile">${formatTilt(p.total_tilt || 0)}</td>
                 <td>${p.total_matches}</td>
             </tr>
         `;

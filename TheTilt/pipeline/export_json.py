@@ -49,15 +49,20 @@ def export_rankings(
     # Build JSON records
     rankings = []
     for _, row in qualified.iterrows():
+        player_id = row.get("player_id", "")
         rankings.append({
             "rank": 0,  # Will be set after sorting
             "player": row["player"],
-            "slug": make_slug(row["player"]),
+            "player_id": player_id,
+            "slug": make_slug(row["player"], player_id if player_id else None),
             "team": row["team"],
             "role": row["role"],
             "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
             "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5),
             "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5),
+            "total_tilt": round(row["total_tilt"], 5),
+            "batting_total_tilt": round(row["batting_total_tilt"], 5),
+            "bowling_total_tilt": round(row["bowling_total_tilt"], 5),
             "total_matches": int(row["total_matches"]),
             "batting_balls": int(row["batting_balls"]),
             "bowling_balls": int(row["bowling_balls"]),
@@ -96,11 +101,16 @@ def export_player_details(
     exported = 0
     for _, row in qualified.iterrows():
         player_name = row["player"]
-        slug = make_slug(player_name)
+        player_id = row.get("player_id", "")
+        slug = make_slug(player_name, player_id if player_id else None)
 
-        # Get this player's ball-by-ball data
-        bat_df = deltas_df[deltas_df["batter"] == player_name]
-        bowl_df = deltas_df[deltas_df["bowler"] == player_name]
+        # Get this player's ball-by-ball data using unique player ID
+        if player_id:
+            bat_df = deltas_df[deltas_df["batter_id"] == player_id]
+            bowl_df = deltas_df[deltas_df["bowler_id"] == player_id]
+        else:
+            bat_df = deltas_df[deltas_df["batter"] == player_name]
+            bowl_df = deltas_df[deltas_df["bowler"] == player_name]
 
         # Season breakdown (batting)
         season_batting = (
@@ -110,8 +120,42 @@ def export_player_details(
         )
         season_batting["tilt_per_match"] = season_batting["tilt"] / season_batting["matches"]
 
+        # Season breakdown (bowling)
+        bowl_df_copy = bowl_df.copy()
+        bowl_df_copy["bowling_delta"] = -bowl_df_copy["delta_wp"]
+        season_bowling = (
+            bowl_df_copy.groupby("season")
+            .agg(tilt=("bowling_delta", "sum"), balls=("bowling_delta", "count"), matches=("match_id", "nunique"))
+            .reset_index()
+        )
+        season_bowling["tilt_per_match"] = season_bowling["tilt"] / season_bowling["matches"]
+
+        # Merge seasons: combine batting and bowling by season
+        all_seasons = set(season_batting["season"].tolist()) | set(season_bowling["season"].tolist())
+        bat_season_map = {r["season"]: r for _, r in season_batting.iterrows()}
+        bowl_season_map = {r["season"]: r for _, r in season_bowling.iterrows()}
+
+        merged_seasons = []
+        for season in sorted(all_seasons, key=str):
+            bat_s = bat_season_map.get(season)
+            bowl_s = bowl_season_map.get(season)
+            bat_tilt = float(bat_s["tilt_per_match"]) if bat_s is not None else 0.0
+            bowl_tilt = float(bowl_s["tilt_per_match"]) if bowl_s is not None else 0.0
+            bat_matches = int(bat_s["matches"]) if bat_s is not None else 0
+            bowl_matches = int(bowl_s["matches"]) if bowl_s is not None else 0
+            bat_balls = int(bat_s["balls"]) if bat_s is not None else 0
+            bowl_balls = int(bowl_s["balls"]) if bowl_s is not None else 0
+            merged_seasons.append({
+                "season": str(season),
+                "batting_tilt_per_match": round(bat_tilt, 5),
+                "bowling_tilt_per_match": round(bowl_tilt, 5),
+                "batting_matches": bat_matches,
+                "bowling_matches": bowl_matches,
+                "batting_balls": bat_balls,
+                "bowling_balls": bowl_balls,
+            })
+
         # Phase breakdown (batting)
-        phase_map = {1: "powerplay", 0: "middle"}  # Will compute from flags
         phase_batting = []
         for phase_name, col in [("powerplay", "is_powerplay"), ("middle", "is_middle"), ("death", "is_death")]:
             phase_df = bat_df[bat_df[col] == 1]
@@ -121,6 +165,18 @@ def export_player_details(
                     "tilt": round(phase_df["delta_wp"].sum(), 5),
                     "balls": len(phase_df),
                     "avg_delta": round(phase_df["delta_wp"].mean(), 6),
+                })
+
+        # Phase breakdown (bowling)
+        phase_bowling = []
+        for phase_name, col in [("powerplay", "is_powerplay"), ("middle", "is_middle"), ("death", "is_death")]:
+            phase_df = bowl_df_copy[bowl_df_copy[col] == 1]
+            if len(phase_df) > 0:
+                phase_bowling.append({
+                    "phase": phase_name,
+                    "tilt": round(phase_df["bowling_delta"].sum(), 5),
+                    "balls": len(phase_df),
+                    "avg_delta": round(phase_df["bowling_delta"].mean(), 6),
                 })
 
         # Best/worst match performances (batting)
@@ -133,27 +189,36 @@ def export_player_details(
         best_matches = match_perf.head(5).to_dict("records")
         worst_matches = match_perf.tail(5).sort_values("tilt").to_dict("records")
 
+        # Best/worst match performances (bowling)
+        if len(bowl_df_copy) > 0:
+            bowl_match_perf = (
+                bowl_df_copy.groupby(["match_id", "date", "batting_team"])
+                .agg(tilt=("bowling_delta", "sum"), balls=("bowling_delta", "count"), wickets=("is_wicket", "sum"))
+                .reset_index()
+                .sort_values("tilt", ascending=False)
+            )
+            bowling_best = bowl_match_perf.head(5).to_dict("records")
+            bowling_worst = bowl_match_perf.tail(5).sort_values("tilt").to_dict("records")
+        else:
+            bowling_best = []
+            bowling_worst = []
+
         # Build player detail JSON
         detail = {
             "player": player_name,
+            "player_id": player_id,
             "slug": slug,
             "team": row["team"],
             "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
             "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5),
             "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5),
+            "total_tilt": round(row["total_tilt"], 5),
             "total_matches": int(row["total_matches"]),
             "batting_balls": int(row["batting_balls"]),
             "bowling_balls": int(row["bowling_balls"]),
-            "seasons": [
-                {
-                    "season": str(r["season"]),
-                    "tilt_per_match": round(r["tilt_per_match"], 5),
-                    "matches": int(r["matches"]),
-                    "balls": int(r["balls"]),
-                }
-                for _, r in season_batting.iterrows()
-            ],
-            "phases": phase_batting,
+            "seasons": merged_seasons,
+            "batting_phases": phase_batting,
+            "bowling_phases": phase_bowling,
             "best_matches": [
                 {
                     "date": str(r["date"]),
@@ -173,6 +238,26 @@ def export_player_details(
                     "balls": int(r["balls"]),
                 }
                 for r in worst_matches
+            ],
+            "bowling_best_matches": [
+                {
+                    "date": str(r["date"]),
+                    "vs": r["batting_team"],
+                    "tilt": round(r["tilt"], 5),
+                    "wickets": int(r["wickets"]),
+                    "balls": int(r["balls"]),
+                }
+                for r in bowling_best
+            ],
+            "bowling_worst_matches": [
+                {
+                    "date": str(r["date"]),
+                    "vs": r["batting_team"],
+                    "tilt": round(r["tilt"], 5),
+                    "wickets": int(r["wickets"]),
+                    "balls": int(r["balls"]),
+                }
+                for r in bowling_worst
             ],
         }
 

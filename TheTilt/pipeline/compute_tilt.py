@@ -25,6 +25,9 @@ FEATURE_COLS = [
     "is_death",
     "recent_run_rate",
     "recent_wickets",
+    "venue",
+    "batting_team_chose_to_bat",
+    "season_numeric",
 ]
 
 
@@ -61,9 +64,21 @@ def compute_state_after(row: pd.Series) -> dict:
         after["runs_needed"] = 0
         after["required_run_rate"] = 0.0
 
-    # Approximate recent stats (shift by one ball)
-    after["recent_run_rate"] = row["recent_run_rate"]  # Approximation
-    after["recent_wickets"] = row["recent_wickets"]
+    # Recalculate recent stats after this ball (improved approximation)
+    # recent_run_rate covers last 18 balls (3 overs). Adding this ball's runs
+    # and recomputing is more accurate than copying the pre-ball value.
+    recent_balls = min(row.get("ball_number", 18), 18)
+    recent_overs_before = max((recent_balls - 1) / 6, 1 / 6)
+    recent_overs_after = recent_balls / 6
+    after["recent_run_rate"] = (
+        row["recent_run_rate"] * recent_overs_before + row["runs_total"]
+    ) / max(recent_overs_after, 1 / 6)
+    after["recent_wickets"] = row["recent_wickets"] + (1 if row["is_wicket"] else 0)
+
+    # Carry forward context features (unchanged within a ball)
+    after["venue"] = row["venue"]
+    after["batting_team_chose_to_bat"] = row["batting_team_chose_to_bat"]
+    after["season_numeric"] = row["season_numeric"]
 
     return after
 
@@ -76,14 +91,21 @@ def compute_ball_deltas(
     """Compute win probability delta for each ball."""
     print("Computing win probability for each ball...")
 
+    # Ensure venue is categorical for LightGBM
+    if "venue" in df.columns:
+        df["venue"] = df["venue"].astype("category")
+
     # Win prob BEFORE each ball
-    X_before = df[FEATURE_COLS]
+    X_before = df[FEATURE_COLS].copy()
     wp_before = model.predict_proba(X_before)[:, 1]
 
     # Win prob AFTER each ball
     print("Computing post-delivery states...")
     after_states = df.apply(compute_state_after, axis=1, result_type="expand")
-    X_after = after_states[FEATURE_COLS]
+    X_after = after_states[FEATURE_COLS].copy()
+    # Restore categorical dtype for venue in after states
+    if "venue" in X_after.columns:
+        X_after["venue"] = X_after["venue"].astype("category")
     wp_after = model.predict_proba(X_after)[:, 1]
 
     # Delta (from batting team's perspective)
@@ -104,17 +126,17 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate ball-level deltas into per-player TILT scores."""
     print("\nAggregating per-player TILT scores...")
 
-    # Batting TILT: delta_wp credited to batter
+    # Batting TILT: delta_wp credited to batter (grouped by player ID)
     batting = (
-        deltas_df.groupby("batter")
+        deltas_df.groupby("batter_id")
         .agg(
+            player=("batter", "last"),
             batting_total_tilt=("delta_wp", "sum"),
             batting_balls=("delta_wp", "count"),
             batting_matches=("match_id", "nunique"),
             batting_avg_delta=("delta_wp", "mean"),
         )
         .reset_index()
-        .rename(columns={"batter": "player"})
     )
     batting["batting_tilt_per_match"] = batting["batting_total_tilt"] / batting["batting_matches"]
 
@@ -123,33 +145,43 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     deltas_df["bowling_delta"] = -deltas_df["delta_wp"]
 
     bowling = (
-        deltas_df.groupby("bowler")
+        deltas_df.groupby("bowler_id")
         .agg(
+            player=("bowler", "last"),
             bowling_total_tilt=("bowling_delta", "sum"),
             bowling_balls=("bowling_delta", "count"),
             bowling_matches=("match_id", "nunique"),
             bowling_avg_delta=("bowling_delta", "mean"),
         )
         .reset_index()
-        .rename(columns={"bowler": "player"})
     )
     bowling["bowling_tilt_per_match"] = bowling["bowling_total_tilt"] / bowling["bowling_matches"]
 
-    # Merge batting and bowling
-    combined = pd.merge(batting, bowling, on="player", how="outer").fillna(0)
+    # Merge batting and bowling on player ID
+    batting_merge = batting.rename(columns={"batter_id": "player_id"})
+    bowling_merge = bowling.rename(columns={"bowler_id": "player_id"}).drop(columns=["player"])
+    combined = pd.merge(batting_merge, bowling_merge, on="player_id", how="outer").fillna(0)
+
+    # For players who only bowled, fill in their name from bowling data
+    bowl_only = bowling.rename(columns={"bowler_id": "player_id"})
+    combined["player"] = combined["player"].replace(0, np.nan)
+    combined = combined.set_index("player_id")
+    bowl_only_names = bowl_only.set_index("player_id")["player"]
+    combined["player"] = combined["player"].fillna(bowl_only_names)
+    combined = combined.reset_index()
 
     # Total matches (union of batting and bowling appearances)
-    batting_matches = deltas_df.groupby("batter")["match_id"].apply(set).reset_index()
-    batting_matches.columns = ["player", "bat_match_set"]
-    bowling_matches = deltas_df.groupby("bowler")["match_id"].apply(set).reset_index()
-    bowling_matches.columns = ["player", "bowl_match_set"]
+    batting_matches = deltas_df.groupby("batter_id")["match_id"].apply(set).reset_index()
+    batting_matches.columns = ["player_id", "bat_match_set"]
+    bowling_matches = deltas_df.groupby("bowler_id")["match_id"].apply(set).reset_index()
+    bowling_matches.columns = ["player_id", "bowl_match_set"]
 
-    match_sets = pd.merge(batting_matches, bowling_matches, on="player", how="outer")
+    match_sets = pd.merge(batting_matches, bowling_matches, on="player_id", how="outer")
     match_sets["bat_match_set"] = match_sets["bat_match_set"].apply(lambda x: x if isinstance(x, set) else set())
     match_sets["bowl_match_set"] = match_sets["bowl_match_set"].apply(lambda x: x if isinstance(x, set) else set())
     match_sets["total_matches"] = match_sets.apply(lambda r: len(r["bat_match_set"] | r["bowl_match_set"]), axis=1)
 
-    combined = combined.merge(match_sets[["player", "total_matches"]], on="player", how="left")
+    combined = combined.merge(match_sets[["player_id", "total_matches"]], on="player_id", how="left")
 
     # Total TILT per match
     combined["total_tilt"] = combined["batting_total_tilt"] + combined["bowling_total_tilt"]
@@ -158,12 +190,12 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     # Most recent team
     last_team = (
         deltas_df.sort_values("date")
-        .groupby("batter")["batting_team"]
+        .groupby("batter_id")["batting_team"]
         .last()
         .reset_index()
-        .rename(columns={"batter": "player", "batting_team": "team"})
+        .rename(columns={"batter_id": "player_id", "batting_team": "team"})
     )
-    combined = combined.merge(last_team, on="player", how="left")
+    combined = combined.merge(last_team, on="player_id", how="left")
     combined["team"] = combined["team"].fillna("Unknown")
 
     # Sort by total TILT per match
@@ -178,11 +210,13 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
 
 
 # %% Slug helper
-def make_slug(name: str) -> str:
-    """Convert player name to URL-friendly slug."""
+def make_slug(name: str, player_id: Optional[str] = None) -> str:
+    """Convert player name to URL-friendly slug, with optional ID suffix for uniqueness."""
     slug = name.lower().strip()
     slug = re.sub(r"[^a-z0-9\s-]", "", slug)
     slug = re.sub(r"[\s]+", "-", slug)
+    if player_id:
+        slug = f"{slug}-{player_id}"
     return slug
 
 

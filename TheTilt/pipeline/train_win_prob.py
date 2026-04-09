@@ -30,6 +30,12 @@ class WinProbModelConfig:
         "is_death",
         "recent_run_rate",
         "recent_wickets",
+        "venue",
+        "batting_team_chose_to_bat",
+        "season_numeric",
+    ])
+    categorical_features: List[str] = field(default_factory=lambda: [
+        "venue",
     ])
     target: str = "batting_team_won"
     n_estimators: int = 500
@@ -87,10 +93,17 @@ def train_win_prob_model(
         verbose=-1,
     )
 
+    # Ensure categorical columns have correct dtype
+    for col in config.categorical_features:
+        if col in X_train.columns:
+            X_train[col] = X_train[col].astype("category")
+            X_test[col] = X_test[col].astype("category")
+
     print("Training LightGBM model...")
     model.fit(
         X_train, y_train,
         eval_set=[(X_test, y_test)],
+        categorical_feature=config.categorical_features,
         callbacks=[lgb.log_evaluation(100)],
     )
 
@@ -154,7 +167,8 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
                 "runs_scored": 160, "run_rate": 8.42, "required_run_rate": 2.0,
                 "target": 162, "runs_needed": 2, "is_powerplay": 0,
                 "is_middle": 0, "is_death": 1, "recent_run_rate": 10.0,
-                "recent_wickets": 0,
+                "recent_wickets": 0, "venue": "Wankhede Stadium",
+                "batting_team_chose_to_bat": 0, "season_numeric": 2024,
             },
             "expected": "high (>0.90)",
         },
@@ -165,7 +179,8 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
                 "runs_scored": 100, "run_rate": 5.26, "required_run_rate": 60.0,
                 "target": 160, "runs_needed": 60, "is_powerplay": 0,
                 "is_middle": 0, "is_death": 1, "recent_run_rate": 4.0,
-                "recent_wickets": 3,
+                "recent_wickets": 3, "venue": "Wankhede Stadium",
+                "batting_team_chose_to_bat": 0, "season_numeric": 2024,
             },
             "expected": "very low (<0.05)",
         },
@@ -176,7 +191,8 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
                 "runs_scored": 0, "run_rate": 0.0, "required_run_rate": 0.0,
                 "target": 0, "runs_needed": 0, "is_powerplay": 1,
                 "is_middle": 0, "is_death": 0, "recent_run_rate": 0.0,
-                "recent_wickets": 0,
+                "recent_wickets": 0, "venue": "Wankhede Stadium",
+                "batting_team_chose_to_bat": 1, "season_numeric": 2024,
             },
             "expected": "near 0.50",
         },
@@ -187,7 +203,8 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
                 "runs_scored": 200, "run_rate": 11.11, "required_run_rate": 0.0,
                 "target": 0, "runs_needed": 0, "is_powerplay": 0,
                 "is_middle": 0, "is_death": 1, "recent_run_rate": 14.0,
-                "recent_wickets": 0,
+                "recent_wickets": 0, "venue": "M.Chinnaswamy Stadium",
+                "batting_team_chose_to_bat": 1, "season_numeric": 2024,
             },
             "expected": "high (>0.70)",
         },
@@ -195,6 +212,10 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
 
     for scenario in scenarios:
         X = pd.DataFrame([scenario["features"]])[config.features]
+        # Ensure venue is categorical for LightGBM
+        for col in config.categorical_features:
+            if col in X.columns:
+                X[col] = X[col].astype("category")
         prob = model.predict_proba(X)[0, 1]
         print(f"  {scenario['name']}")
         print(f"    Win prob: {prob:.3f} (expected: {scenario['expected']})")
@@ -232,6 +253,14 @@ def train_and_evaluate(featured_balls_path: Optional[str] = None) -> lgb.LGBMCla
     print(f"Loading featured balls from {path}...")
     df = pd.read_parquet(path)
     print(f"  Loaded {len(df):,} balls")
+
+    # Filter out DLS-affected matches from training (unreliable targets)
+    if "dls_method" in df.columns:
+        dls_matches = df[df["dls_method"].notna()]["match_id"].unique()
+        n_dls = len(dls_matches)
+        if n_dls > 0:
+            df = df[~df["match_id"].isin(dls_matches)]
+            print(f"  Excluded {n_dls} DLS-affected matches ({len(df):,} balls remaining)")
 
     model, train_df, test_df = train_win_prob_model(df, model_config)
     metrics = evaluate_model(model, test_df, model_config)

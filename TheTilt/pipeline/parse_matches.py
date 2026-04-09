@@ -22,14 +22,22 @@ class BallEvent:
     batter: str
     bowler: str
     non_striker: str
+    batter_id: Optional[str]
+    bowler_id: Optional[str]
+    non_striker_id: Optional[str]
     runs_batter: int
     runs_extras: int
     runs_total: int
     is_wicket: bool
     wicket_kind: Optional[str]
     player_dismissed: Optional[str]
+    player_dismissed_id: Optional[str]
     winner: Optional[str]
     season: str
+    toss_winner: Optional[str]
+    toss_decision: Optional[str]
+    dls_method: Optional[str]
+    is_impact_sub_match: bool
 
 
 # %% Configuration
@@ -59,6 +67,21 @@ def parse_match(filepath: Path) -> List[BallEvent]:
     teams = info.get("teams", [])
     season = str(info.get("season", "unknown"))
 
+    # Toss info
+    toss = info.get("toss", {})
+    toss_winner = toss.get("winner")
+    toss_decision = toss.get("decision")
+
+    # DLS method
+    dls_method = outcome.get("method")
+
+    # Impact sub detection (teams with > 11 players listed)
+    players_info = info.get("players", {})
+    is_impact_sub_match = any(len(v) > 11 for v in players_info.values())
+
+    # Player name → unique ID mapping from Cricsheet registry
+    registry = info.get("registry", {}).get("people", {})
+
     events: List[BallEvent] = []
 
     for innings_idx, innings_data in enumerate(data.get("innings", []), start=1):
@@ -77,6 +100,10 @@ def parse_match(filepath: Path) -> List[BallEvent]:
                 wicket_kind = wickets[0].get("kind") if is_wicket else None
                 player_dismissed = wickets[0].get("player_out") if is_wicket else None
 
+                batter_name = delivery.get("batter", "")
+                bowler_name = delivery.get("bowler", "")
+                non_striker_name = delivery.get("non_striker", "")
+
                 events.append(BallEvent(
                     match_id=match_id,
                     date=date,
@@ -86,17 +113,25 @@ def parse_match(filepath: Path) -> List[BallEvent]:
                     innings=innings_idx,
                     over=over_num,
                     ball=ball_idx,
-                    batter=delivery.get("batter", ""),
-                    bowler=delivery.get("bowler", ""),
-                    non_striker=delivery.get("non_striker", ""),
+                    batter=batter_name,
+                    bowler=bowler_name,
+                    non_striker=non_striker_name,
+                    batter_id=registry.get(batter_name),
+                    bowler_id=registry.get(bowler_name),
+                    non_striker_id=registry.get(non_striker_name),
                     runs_batter=runs.get("batter", 0),
                     runs_extras=runs.get("extras", 0),
                     runs_total=runs.get("total", 0),
                     is_wicket=is_wicket,
                     wicket_kind=wicket_kind,
                     player_dismissed=player_dismissed,
+                    player_dismissed_id=registry.get(player_dismissed) if player_dismissed else None,
                     winner=winner,
                     season=season,
+                    toss_winner=toss_winner,
+                    toss_decision=toss_decision,
+                    dls_method=dls_method,
+                    is_impact_sub_match=is_impact_sub_match,
                 ))
 
     return events

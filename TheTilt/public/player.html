@@ -92,30 +92,39 @@ async function loadPlayer() {
             </div>
         `;
 
-        // Season breakdown
+        // Season breakdown (batting + bowling)
         if (p.seasons && p.seasons.length > 0) {
-            const maxSeasonTilt = Math.max(...p.seasons.map(s => Math.abs(s.tilt_per_match)), 0.01);
+            const maxSeasonTilt = Math.max(
+                ...p.seasons.map(s => Math.abs(s.batting_tilt_per_match)),
+                ...p.seasons.map(s => Math.abs(s.bowling_tilt_per_match)),
+                0.01
+            );
             html += `<div class="section"><h3>by season</h3><table class="detail-table">
-                <tr><th>season</th><th>TILT/match</th><th></th><th>matches</th></tr>`;
+                <tr><th>season</th><th>bat TILT/m</th><th>bowl TILT/m</th><th></th><th>bat m</th><th>bowl m</th></tr>`;
             p.seasons.sort((a, b) => a.season.localeCompare(b.season));
             for (const s of p.seasons) {
-                const barW = Math.abs(s.tilt_per_match) / maxSeasonTilt * 80;
-                const barCls = s.tilt_per_match >= 0 ? 'positive' : 'negative';
+                const batTilt = s.batting_tilt_per_match || 0;
+                const bowlTilt = s.bowling_tilt_per_match || 0;
+                const totalTilt = batTilt + bowlTilt;
+                const barW = Math.abs(totalTilt) / maxSeasonTilt * 80;
+                const barCls = totalTilt >= 0 ? 'positive' : 'negative';
                 html += `<tr>
                     <td>${s.season}</td>
-                    <td>${formatTilt(s.tilt_per_match)}</td>
-                    <td><div class="bar-container"><div class="bar-fill ${barCls}" style="width:${barW}px"></div></div></td>
-                    <td>${s.matches}</td>
+                    <td>${formatTilt(batTilt)}</td>
+                    <td>${formatTilt(bowlTilt)}</td>
+                    <td><div class="bar-container"><div class="bar-fill ${barCls}" style="width:${Math.min(barW, 80)}px"></div></div></td>
+                    <td>${s.batting_matches || 0}</td>
+                    <td>${s.bowling_matches || 0}</td>
                 </tr>`;
             }
             html += '</table></div>';
         }
 
-        // Phase breakdown
-        if (p.phases && p.phases.length > 0) {
+        // Phase breakdown (batting)
+        if (p.batting_phases && p.batting_phases.length > 0) {
             html += `<div class="section"><h3>by phase (batting)</h3><table class="detail-table">
                 <tr><th>phase</th><th>avg TILT/ball</th><th>total TILT</th><th>balls</th></tr>`;
-            for (const ph of p.phases) {
+            for (const ph of p.batting_phases) {
                 html += `<tr>
                     <td>${ph.phase}</td>
                     <td>${formatTilt(ph.avg_delta)}</td>
@@ -126,9 +135,24 @@ async function loadPlayer() {
             html += '</table></div>';
         }
 
-        // Best matches
+        // Phase breakdown (bowling)
+        if (p.bowling_phases && p.bowling_phases.length > 0) {
+            html += `<div class="section"><h3>by phase (bowling)</h3><table class="detail-table">
+                <tr><th>phase</th><th>avg TILT/ball</th><th>total TILT</th><th>balls</th></tr>`;
+            for (const ph of p.bowling_phases) {
+                html += `<tr>
+                    <td>${ph.phase}</td>
+                    <td>${formatTilt(ph.avg_delta)}</td>
+                    <td>${formatTilt(ph.tilt)}</td>
+                    <td>${ph.balls}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+        }
+
+        // Best batting performances
         if (p.best_matches && p.best_matches.length > 0) {
-            html += `<div class="section"><h3>best performances</h3><table class="detail-table">
+            html += `<div class="section"><h3>best batting performances</h3><table class="detail-table">
                 <tr><th>date</th><th>vs</th><th>TILT</th><th>runs</th><th>balls</th></tr>`;
             for (const m of p.best_matches) {
                 html += `<tr>
@@ -139,14 +163,40 @@ async function loadPlayer() {
             html += '</table></div>';
         }
 
-        // Worst matches
+        // Worst batting performances
         if (p.worst_matches && p.worst_matches.length > 0) {
-            html += `<div class="section"><h3>worst performances</h3><table class="detail-table">
+            html += `<div class="section"><h3>worst batting performances</h3><table class="detail-table">
                 <tr><th>date</th><th>vs</th><th>TILT</th><th>runs</th><th>balls</th></tr>`;
             for (const m of p.worst_matches) {
                 html += `<tr>
                     <td>${m.date}</td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+        }
+
+        // Best bowling performances
+        if (p.bowling_best_matches && p.bowling_best_matches.length > 0) {
+            html += `<div class="section"><h3>best bowling performances</h3><table class="detail-table">
+                <tr><th>date</th><th>vs</th><th>TILT</th><th>wickets</th><th>balls</th></tr>`;
+            for (const m of p.bowling_best_matches) {
+                html += `<tr>
+                    <td>${m.date}</td><td>${m.vs}</td>
+                    <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+        }
+
+        // Worst bowling performances
+        if (p.bowling_worst_matches && p.bowling_worst_matches.length > 0) {
+            html += `<div class="section"><h3>worst bowling performances</h3><table class="detail-table">
+                <tr><th>date</th><th>vs</th><th>TILT</th><th>wickets</th><th>balls</th></tr>`;
+            for (const m of p.bowling_worst_matches) {
+                html += `<tr>
+                    <td>${m.date}</td><td>${m.vs}</td>
+                    <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
             html += '</table></div>';

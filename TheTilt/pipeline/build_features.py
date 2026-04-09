@@ -116,6 +116,23 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
     # Add binary target: did the batting team win this match?
     result["batting_team_won"] = (result["batting_team"] == result["winner"]).astype(int)
 
+    # Venue as categorical feature (LightGBM handles natively)
+    result["venue"] = result["venue"].astype("category")
+
+    # Toss-derived feature: did the batting team choose to bat?
+    if "toss_winner" in result.columns and "toss_decision" in result.columns:
+        result["batting_team_chose_to_bat"] = (
+            (result["batting_team"] == result["toss_winner"]) &
+            (result["toss_decision"] == "bat")
+        ).astype(int)
+    else:
+        result["batting_team_chose_to_bat"] = 0
+
+    # Era feature: numeric season year
+    result["season_numeric"] = result["season"].apply(
+        lambda s: int(s.split("/")[0]) if "/" in str(s) else int(s) if str(s).isdigit() else 2008
+    )
+
     # Select feature columns + identifiers
     feature_cols = [
         # Identifiers
@@ -123,18 +140,26 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         "batting_team", "bowling_team", "winner",
         "innings", "over", "ball",
         "batter", "bowler", "non_striker",
+        "batter_id", "bowler_id", "non_striker_id",
         # Raw event data
         "runs_batter", "runs_extras", "runs_total",
-        "is_wicket", "wicket_kind", "player_dismissed",
+        "is_wicket", "wicket_kind", "player_dismissed", "player_dismissed_id",
         # Features (state before delivery)
         "ball_number", "balls_remaining", "wickets_in_hand",
         "runs_scored", "wickets_fallen", "run_rate",
         "is_powerplay", "is_middle", "is_death",
         "target", "runs_needed", "required_run_rate",
         "recent_runs", "recent_wickets", "recent_run_rate",
+        # New features (venue, toss, era)
+        "batting_team_chose_to_bat", "season_numeric",
         # Target
         "batting_team_won",
     ]
+
+    # Include DLS/impact sub metadata if available (for filtering, not as model features)
+    for optional_col in ["dls_method", "is_impact_sub_match", "toss_winner", "toss_decision"]:
+        if optional_col in result.columns:
+            feature_cols.append(optional_col)
 
     result = result[feature_cols]
 
