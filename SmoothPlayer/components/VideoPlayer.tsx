@@ -76,7 +76,7 @@ export default function VideoPlayer({ url, onChangeUrl }: VideoPlayerProps) {
       <video
         ref={videoRef}
         src={url}
-        className="w-full h-full object-contain"
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'contain' }}
         preload="auto"
         onClick={handleClick}
       />
