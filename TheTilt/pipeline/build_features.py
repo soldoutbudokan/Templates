@@ -43,10 +43,10 @@ def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = Non
     overs_bowled = df["balls_bowled"] / 6
     df["run_rate"] = df["runs_scored"] / overs_bowled.replace(0, 0.1)
 
-    # Phase flags
-    df["is_powerplay"] = (df["over"] <= 5).astype(int)  # Overs 0-5 (1-6)
-    df["is_middle"] = ((df["over"] >= 6) & (df["over"] <= 14)).astype(int)  # Overs 7-15
-    df["is_death"] = (df["over"] >= 15).astype(int)  # Overs 16-20
+    # Phase flags (over is 0-indexed: 0 = first over, 19 = last over)
+    df["is_powerplay"] = (df["over"] <= 5).astype(int)  # Overs 0-5 (cricket overs 1-6)
+    df["is_middle"] = ((df["over"] >= 6) & (df["over"] <= 14)).astype(int)  # Overs 6-14 (cricket overs 7-15)
+    df["is_death"] = (df["over"] >= 15).astype(int)  # Overs 15-19 (cricket overs 16-20)
 
     # Target and chase features (innings 2 only)
     if target is not None and target > 0:

@@ -1,11 +1,12 @@
 import json
+import os
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 app = Flask(__name__, static_folder="../public", static_url_path="")
-CORS(app)
+CORS(app, origins=["https://thetilt-rust.vercel.app"])
 
 DATA_DIR = Path(__file__).parent.parent / "public" / "data"
 
@@ -30,19 +31,24 @@ def api_info():
 @app.route("/api/search")
 def search_players():
     query = request.args.get("q", "").lower().strip()
-    if not query:
+    if not query or len(query) < 2 or len(query) > 100:
         return jsonify([])
 
     rankings_path = DATA_DIR / "tilt_rankings.json"
     if not rankings_path.exists():
         return jsonify({"error": "Rankings data not yet generated"}), 404
 
-    with open(rankings_path) as f:
-        rankings = json.load(f)
+    try:
+        with open(rankings_path) as f:
+            rankings = json.load(f)
+    except (IOError, json.JSONDecodeError):
+        return jsonify({"error": "Failed to load rankings data"}), 500
 
     results = [p for p in rankings if query in p["player"].lower()]
-    return jsonify(results[:20])
+    response = jsonify(results[:20])
+    response.headers["Cache-Control"] = "public, max-age=300"
+    return response
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=os.environ.get("FLASK_DEBUG", "0") == "1", port=5002)
