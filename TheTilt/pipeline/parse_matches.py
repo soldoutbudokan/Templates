@@ -46,11 +46,41 @@ def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
         return yaml.safe_load(f)
 
 
+# %% Schema validation
+def validate_match_data(data: dict, filepath: Path) -> bool:
+    """Validate that a Cricsheet match JSON has required fields."""
+    info = data.get("info")
+    if not isinstance(info, dict):
+        return False
+    for key in ("dates", "teams", "outcome"):
+        if key not in info:
+            return False
+    teams = info.get("teams", [])
+    if len(teams) < 2:
+        return False
+    innings = data.get("innings")
+    if not isinstance(innings, list) or len(innings) == 0:
+        return False
+    for inn in innings:
+        if "team" not in inn or "overs" not in inn:
+            return False
+        for over in inn["overs"]:
+            if "deliveries" not in over:
+                return False
+            for delivery in over["deliveries"]:
+                if "batter" not in delivery or "bowler" not in delivery or "runs" not in delivery:
+                    return False
+    return True
+
+
 # %% Parse single match
 def parse_match(filepath: Path) -> List[BallEvent]:
     """Parse a single Cricsheet JSON match file into BallEvent records."""
     with open(filepath, "r") as f:
         data = json.load(f)
+
+    if not validate_match_data(data, filepath):
+        return []
 
     info = data.get("info", {})
 

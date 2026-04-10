@@ -8,7 +8,7 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import yaml
-from sklearn.calibration import calibration_curve
+from sklearn.calibration import CalibratedClassifierCV, calibration_curve
 from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
 from sklearn.model_selection import GroupShuffleSplit
 
@@ -77,9 +77,9 @@ def train_win_prob_model(
     print(f"Training set: {len(train_df):,} balls from {train_df['match_id'].nunique()} matches")
     print(f"Test set: {len(test_df):,} balls from {test_df['match_id'].nunique()} matches")
 
-    X_train = train_df[config.features]
+    X_train = train_df[config.features].copy()
     y_train = train_df[config.target]
-    X_test = test_df[config.features]
+    X_test = test_df[config.features].copy()
     y_test = test_df[config.target]
 
     model = lgb.LGBMClassifier(
@@ -104,7 +104,10 @@ def train_win_prob_model(
         X_train, y_train,
         eval_set=[(X_test, y_test)],
         categorical_feature=config.categorical_features,
-        callbacks=[lgb.log_evaluation(100)],
+        callbacks=[
+            lgb.log_evaluation(100),
+            lgb.early_stopping(stopping_rounds=50),
+        ],
     )
 
     return model, train_df, test_df
@@ -140,16 +143,18 @@ def evaluate_model(
         bar = "#" * int(true * 40)
         print(f"    {pred:.2f} → {true:.2f}  {bar}")
 
-    # Feature importances
-    importances = pd.Series(
-        model.feature_importances_,
-        index=config.features,
-    ).sort_values(ascending=False)
+    # Feature importances (not available on CalibratedClassifierCV)
+    base_model = getattr(model, "estimator", model)
+    if hasattr(base_model, "feature_importances_"):
+        importances = pd.Series(
+            base_model.feature_importances_,
+            index=config.features,
+        ).sort_values(ascending=False)
 
-    print("\n  Feature Importances:")
-    for feat, imp in importances.items():
-        bar = "#" * int(imp / importances.max() * 30)
-        print(f"    {feat:25s} {imp:6.0f}  {bar}")
+        print("\n  Feature Importances:")
+        for feat, imp in importances.items():
+            bar = "#" * int(imp / importances.max() * 30)
+            print(f"    {feat:25s} {imp:6.0f}  {bar}")
 
     return metrics
 
@@ -263,11 +268,34 @@ def train_and_evaluate(featured_balls_path: Optional[str] = None) -> lgb.LGBMCla
             print(f"  Excluded {n_dls} DLS-affected matches ({len(df):,} balls remaining)")
 
     model, train_df, test_df = train_win_prob_model(df, model_config)
-    metrics = evaluate_model(model, test_df, model_config)
-    sanity_check(model, model_config)
-    save_model(model)
 
-    return model
+    # Apply Platt scaling to fix calibration at extremes
+    # Split test set: half for calibration, half for evaluation
+    cal_splitter = GroupShuffleSplit(n_splits=1, test_size=0.5, random_state=model_config.random_state)
+    cal_idx, eval_idx = next(cal_splitter.split(test_df, groups=test_df["match_id"]))
+    cal_df = test_df.iloc[cal_idx]
+    eval_df = test_df.iloc[eval_idx]
+
+    X_cal = cal_df[model_config.features].copy()
+    y_cal = cal_df[model_config.target]
+    for col in model_config.categorical_features:
+        if col in X_cal.columns:
+            X_cal[col] = X_cal[col].astype("category")
+
+    print("\nApplying Platt scaling for calibration...")
+    calibrated_model = CalibratedClassifierCV(model, method="sigmoid", cv="prefit")
+    calibrated_model.fit(X_cal, y_cal)
+    print(f"  Calibrated on {len(cal_df):,} balls from {cal_df['match_id'].nunique()} matches")
+
+    # Evaluate both raw and calibrated models
+    print("\n--- Raw Model ---")
+    evaluate_model(model, eval_df, model_config)
+    print("\n--- Calibrated Model ---")
+    metrics = evaluate_model(calibrated_model, eval_df, model_config)
+    sanity_check(calibrated_model, model_config)
+    save_model(calibrated_model)
+
+    return calibrated_model
 
 
 # %% Script entry

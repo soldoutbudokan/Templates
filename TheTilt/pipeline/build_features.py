@@ -89,29 +89,21 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         .to_dict()
     )
 
-    # Process each match-innings
-    featured_dfs = []
+    # Merge target into dataframe for vectorized processing
+    df["_target"] = df.apply(
+        lambda r: first_innings_totals.get(r["match_id"], 0) + 1 if r["innings"] == 2 else 0,
+        axis=1,
+    )
 
-    match_ids = df["match_id"].unique()
-    for i, match_id in enumerate(match_ids):
-        match_df = df[df["match_id"] == match_id]
+    # Process all match-innings in one vectorized groupby
+    def _build_group(group):
+        target = group["_target"].iloc[0] if group["_target"].iloc[0] > 0 else None
+        return build_innings_features(group, target=target)
 
-        for innings in match_df["innings"].unique():
-            innings_df = match_df[match_df["innings"] == innings]
-
-            # Target for innings 2
-            target = None
-            if innings == 2:
-                first_total = first_innings_totals.get(match_id, 0)
-                target = first_total + 1  # Need to beat first innings score
-
-            featured = build_innings_features(innings_df, target=target)
-            featured_dfs.append(featured)
-
-        if (i + 1) % 200 == 0:
-            print(f"  Processed {i + 1}/{len(match_ids)} matches...")
-
-    result = pd.concat(featured_dfs, ignore_index=True)
+    print("  Building features per match-innings...")
+    result = df.groupby(["match_id", "innings"], group_keys=False).apply(_build_group)
+    result = result.reset_index(drop=True)
+    result = result.drop(columns=["_target"], errors="ignore")
 
     # Add binary target: did the batting team win this match?
     result["batting_team_won"] = (result["batting_team"] == result["winner"]).astype(int)

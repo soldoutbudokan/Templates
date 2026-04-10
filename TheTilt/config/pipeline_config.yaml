@@ -8,10 +8,10 @@ data:
   featured_balls_file: "featured_balls.parquet"
 
 model:
-  n_estimators: 500
-  learning_rate: 0.05
-  max_depth: 6
-  min_child_samples: 100
+  n_estimators: 1000
+  learning_rate: 0.03
+  max_depth: 5
+  min_child_samples: 200
   test_size: 0.2
   random_state: 42
   save_path: "models/win_prob_lgbm.pkl"
