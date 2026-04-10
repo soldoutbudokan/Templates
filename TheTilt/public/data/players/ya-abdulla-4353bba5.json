@@ -3,10 +3,16 @@
   "player_id": "4353bba5",
   "slug": "ya-abdulla-4353bba5",
   "team": "Kings XI Punjab",
-  "total_tilt_per_match": -0.02482,
+  "total_tilt_per_match": -0.0192,
   "batting_tilt_per_match": 0.0,
-  "bowling_tilt_per_match": -0.02482,
-  "total_tilt": -0.27304,
+  "bowling_tilt_per_match": -0.0192,
+  "shrunk_total_tilt_per_match": -0.01899,
+  "shrunk_batting_tilt_per_match": -0.00366,
+  "shrunk_bowling_tilt_per_match": -0.01675,
+  "tilt_ci_lower": -0.09222,
+  "tilt_ci_upper": 0.05424,
+  "confidence": "low",
+  "total_tilt": -0.21123,
   "total_matches": 11,
   "batting_balls": 1,
   "bowling_balls": 222,
@@ -14,7 +20,7 @@
     {
       "season": "2009",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.00108,
+      "bowling_tilt_per_match": 0.00453,
       "batting_matches": 0,
       "bowling_matches": 9,
       "batting_balls": 0,
@@ -23,7 +29,7 @@
     {
       "season": "2009/10",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.1414,
+      "bowling_tilt_per_match": -0.12602,
       "batting_matches": 1,
       "bowling_matches": 2,
       "batting_balls": 1,
@@ -41,21 +47,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.22492,
+      "tilt": 0.20805,
       "balls": 89,
-      "avg_delta": 0.002527
+      "avg_delta": 0.002338
     },
     {
       "phase": "middle",
-      "tilt": 0.1548,
+      "tilt": 0.15785,
       "balls": 69,
-      "avg_delta": 0.002243
+      "avg_delta": 0.002288
     },
     {
       "phase": "death",
-      "tilt": -0.65276,
+      "tilt": -0.57714,
       "balls": 64,
-      "avg_delta": -0.010199
+      "avg_delta": -0.009018
     }
   ],
   "best_matches": [
@@ -80,35 +86,35 @@
     {
       "date": "2009-04-26",
       "vs": "Rajasthan Royals",
-      "tilt": 0.22277,
+      "tilt": 0.22444,
       "wickets": 3,
       "balls": 25
     },
     {
       "date": "2009-04-24",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.1292,
+      "tilt": 0.13836,
       "wickets": 4,
-      "balls": 27
-    },
-    {
-      "date": "2009-04-29",
-      "vs": "Mumbai Indians",
-      "tilt": 0.03076,
-      "wickets": 2,
       "balls": 27
     },
     {
       "date": "2009-05-03",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.02379,
+      "tilt": 0.03248,
       "wickets": 1,
       "balls": 24
     },
     {
+      "date": "2009-04-29",
+      "vs": "Mumbai Indians",
+      "tilt": 0.01876,
+      "wickets": 2,
+      "balls": 27
+    },
+    {
       "date": "2009-04-21",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.01487,
+      "tilt": -0.0138,
       "wickets": 0,
       "balls": 14
     }
@@ -117,37 +123,112 @@
     {
       "date": "2009-05-05",
       "vs": "Rajasthan Royals",
-      "tilt": -0.19876,
+      "tilt": -0.19325,
       "wickets": 0,
       "balls": 19
     },
     {
       "date": "2010-03-16",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.19856,
+      "tilt": -0.17414,
       "wickets": 0,
       "balls": 18
     },
     {
       "date": "2009-05-01",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.10666,
+      "tilt": -0.10193,
       "wickets": 4,
       "balls": 25
     },
     {
       "date": "2010-03-13",
       "vs": "Delhi Daredevils",
-      "tilt": -0.08424,
+      "tilt": -0.0779,
       "wickets": 1,
       "balls": 24
     },
     {
       "date": "2009-04-19",
       "vs": "Delhi Daredevils",
-      "tilt": -0.04997,
+      "tilt": -0.04459,
       "wickets": 0,
       "balls": 7
+    }
+  ],
+  "career_trend": [
+    {
+      "match": 1,
+      "date": "2009-04-19",
+      "tilt": -0.04459,
+      "cumulative": -0.04459
+    },
+    {
+      "match": 2,
+      "date": "2009-04-21",
+      "tilt": -0.0138,
+      "cumulative": -0.05839
+    },
+    {
+      "match": 3,
+      "date": "2009-04-24",
+      "tilt": 0.13836,
+      "cumulative": 0.07997
+    },
+    {
+      "match": 4,
+      "date": "2009-04-26",
+      "tilt": 0.22444,
+      "cumulative": 0.30441
+    },
+    {
+      "match": 5,
+      "date": "2009-04-29",
+      "tilt": 0.01876,
+      "cumulative": 0.32317
+    },
+    {
+      "match": 6,
+      "date": "2009-05-01",
+      "tilt": -0.10193,
+      "cumulative": 0.22124
+    },
+    {
+      "match": 7,
+      "date": "2009-05-03",
+      "tilt": 0.03248,
+      "cumulative": 0.25372
+    },
+    {
+      "match": 8,
+      "date": "2009-05-05",
+      "tilt": -0.19325,
+      "cumulative": 0.06048
+    },
+    {
+      "match": 9,
+      "date": "2009-05-07",
+      "tilt": -0.01967,
+      "cumulative": 0.0408
+    },
+    {
+      "match": 10,
+      "date": "2010-03-13",
+      "tilt": -0.0779,
+      "cumulative": -0.03709
+    },
+    {
+      "match": 11,
+      "date": "2010-03-16",
+      "tilt": -0.17414,
+      "cumulative": -0.21123
+    }
+  ],
+  "team_matchups": [
+    {
+      "opponent": "Delhi Daredevils",
+      "tilt_per_match": 0.0,
+      "matches": 1
     }
   ]
 }

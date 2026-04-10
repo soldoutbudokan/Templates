@@ -125,6 +125,20 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         lambda s: int(s.split("/")[0]) if "/" in str(s) else int(s) if str(s).isdigit() else 2008
     )
 
+    # Opponent quality proxy: career bowling economy per bowler
+    # Computed across all data (career-level, not in-match) as a static lookup
+    bowler_stats = (
+        result.groupby("bowler_id")
+        .agg(total_runs=("runs_total", "sum"), total_balls=("runs_total", "count"))
+        .reset_index()
+    )
+    bowler_stats["career_economy"] = bowler_stats["total_runs"] / (bowler_stats["total_balls"] / 6).clip(lower=1)
+    # Fill missing with league average
+    league_avg_economy = bowler_stats["career_economy"].mean()
+    bowler_economy_map = bowler_stats.set_index("bowler_id")["career_economy"]
+    result["opponent_bowler_economy"] = result["bowler_id"].map(bowler_economy_map).fillna(league_avg_economy)
+    print(f"  Opponent bowler economy: mean={result['opponent_bowler_economy'].mean():.2f}, std={result['opponent_bowler_economy'].std():.2f}")
+
     # Select feature columns + identifiers
     feature_cols = [
         # Identifiers
@@ -142,8 +156,9 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         "is_powerplay", "is_middle", "is_death",
         "target", "runs_needed", "required_run_rate",
         "recent_runs", "recent_wickets", "recent_run_rate",
-        # New features (venue, toss, era)
+        # New features (venue, toss, era, opponent quality)
         "batting_team_chose_to_bat", "season_numeric",
+        "opponent_bowler_economy",
         # Target
         "batting_team_won",
     ]

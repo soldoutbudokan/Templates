@@ -3,18 +3,24 @@
   "player_id": "2af1b6d2",
   "slug": "an-ahmed-2af1b6d2",
   "team": "Royal Challengers Bangalore",
-  "total_tilt_per_match": -0.02705,
-  "batting_tilt_per_match": 0.0169,
-  "bowling_tilt_per_match": -0.03302,
-  "total_tilt": -0.4599,
+  "total_tilt_per_match": -0.02388,
+  "batting_tilt_per_match": 0.01452,
+  "bowling_tilt_per_match": -0.02901,
+  "shrunk_total_tilt_per_match": -0.02253,
+  "shrunk_batting_tilt_per_match": 0.00803,
+  "shrunk_bowling_tilt_per_match": -0.02437,
+  "tilt_ci_lower": -0.06665,
+  "tilt_ci_upper": 0.0216,
+  "confidence": "low",
+  "total_tilt": -0.40603,
   "total_matches": 17,
   "batting_balls": 27,
   "bowling_balls": 362,
   "seasons": [
     {
       "season": "2009/10",
-      "batting_tilt_per_match": 0.00148,
-      "bowling_tilt_per_match": -0.09128,
+      "batting_tilt_per_match": 0.00105,
+      "bowling_tilt_per_match": -0.10455,
       "batting_matches": 1,
       "bowling_matches": 1,
       "batting_balls": 8,
@@ -22,8 +28,8 @@
     },
     {
       "season": "2011",
-      "batting_tilt_per_match": 0.00287,
-      "bowling_tilt_per_match": -0.05615,
+      "batting_tilt_per_match": 0.00203,
+      "bowling_tilt_per_match": -0.05089,
       "batting_matches": 1,
       "bowling_matches": 6,
       "batting_balls": 13,
@@ -32,7 +38,7 @@
     {
       "season": "2012",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.01431,
+      "bowling_tilt_per_match": -0.00535,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -41,7 +47,7 @@
     {
       "season": "2013",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.01973,
+      "bowling_tilt_per_match": -0.00214,
       "batting_matches": 0,
       "bowling_matches": 2,
       "batting_balls": 0,
@@ -49,8 +55,8 @@
     },
     {
       "season": "2014",
-      "batting_tilt_per_match": 0.04297,
-      "bowling_tilt_per_match": 0.00653,
+      "batting_tilt_per_match": 0.03238,
+      "bowling_tilt_per_match": 0.01307,
       "batting_matches": 1,
       "bowling_matches": 4,
       "batting_balls": 1,
@@ -58,8 +64,8 @@
     },
     {
       "season": "2015",
-      "batting_tilt_per_match": 0.01803,
-      "bowling_tilt_per_match": -0.03516,
+      "batting_tilt_per_match": 0.01722,
+      "bowling_tilt_per_match": -0.04197,
       "batting_matches": 3,
       "bowling_matches": 3,
       "batting_balls": 5,
@@ -69,73 +75,73 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": 0.1014,
+      "tilt": 0.08713,
       "balls": 27,
-      "avg_delta": 0.003756
+      "avg_delta": 0.003227
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.14189,
+      "tilt": -0.07801,
       "balls": 143,
-      "avg_delta": -0.000992
+      "avg_delta": -0.000545
     },
     {
       "phase": "middle",
-      "tilt": -0.16502,
+      "tilt": -0.18048,
       "balls": 117,
-      "avg_delta": -0.00141
+      "avg_delta": -0.001543
     },
     {
       "phase": "death",
-      "tilt": -0.2544,
+      "tilt": -0.23467,
       "balls": 102,
-      "avg_delta": -0.002494
+      "avg_delta": -0.002301
     }
   ],
   "best_matches": [
     {
       "date": "2015-04-13",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.05408,
+      "tilt": 0.05211,
       "runs": 4,
       "balls": 2
     },
     {
       "date": "2014-05-18",
       "vs": "Chennai Super Kings",
-      "tilt": 0.04297,
+      "tilt": 0.03238,
       "runs": 4,
       "balls": 1
     },
     {
       "date": "2011-05-27",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.00287,
+      "tilt": 0.00203,
       "runs": 18,
       "balls": 13
     },
     {
       "date": "2010-04-06",
       "vs": "Chennai Super Kings",
-      "tilt": 0.00148,
+      "tilt": 0.00105,
       "runs": 4,
       "balls": 8
     },
     {
-      "date": "2015-04-11",
-      "vs": "Kolkata Knight Riders",
+      "date": "2015-04-19",
+      "vs": "Mumbai Indians",
       "tilt": 0.0,
-      "runs": 5,
-      "balls": 2
+      "runs": 1,
+      "balls": 1
     }
   ],
   "worst_matches": [
     {
       "date": "2015-04-11",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.0,
+      "tilt": -0.00044,
       "runs": 5,
       "balls": 2
     },
@@ -149,21 +155,21 @@
     {
       "date": "2010-04-06",
       "vs": "Chennai Super Kings",
-      "tilt": 0.00148,
+      "tilt": 0.00105,
       "runs": 4,
       "balls": 8
     },
     {
       "date": "2011-05-27",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.00287,
+      "tilt": 0.00203,
       "runs": 18,
       "balls": 13
     },
     {
       "date": "2014-05-18",
       "vs": "Chennai Super Kings",
-      "tilt": 0.04297,
+      "tilt": 0.03238,
       "runs": 4,
       "balls": 1
     }
@@ -172,35 +178,35 @@
     {
       "date": "2014-05-18",
       "vs": "Chennai Super Kings",
-      "tilt": 0.19813,
+      "tilt": 0.20916,
       "wickets": 1,
       "balls": 24
     },
     {
       "date": "2011-04-20",
       "vs": "Pune Warriors",
-      "tilt": 0.07184,
+      "tilt": 0.08868,
       "wickets": 2,
       "balls": 18
     },
     {
       "date": "2015-04-11",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.04639,
+      "tilt": 0.02961,
       "wickets": 1,
       "balls": 24
     },
     {
       "date": "2013-05-07",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.00951,
+      "tilt": 0.01543,
       "wickets": 1,
       "balls": 18
     },
     {
       "date": "2012-04-04",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01431,
+      "tilt": -0.00535,
       "wickets": 0,
       "balls": 13
     }
@@ -209,37 +215,168 @@
     {
       "date": "2011-05-27",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.16143,
+      "tilt": -0.14988,
       "wickets": 1,
       "balls": 30
     },
     {
       "date": "2015-04-19",
       "vs": "Mumbai Indians",
-      "tilt": -0.12994,
+      "tilt": -0.14501,
       "wickets": 1,
       "balls": 25
     },
     {
       "date": "2010-04-06",
       "vs": "Chennai Super Kings",
-      "tilt": -0.09128,
+      "tilt": -0.10455,
       "wickets": 0,
       "balls": 14
     },
     {
       "date": "2011-05-02",
       "vs": "Kings XI Punjab",
-      "tilt": -0.08762,
+      "tilt": -0.08156,
       "wickets": 0,
       "balls": 18
     },
     {
       "date": "2011-04-22",
       "vs": "Chennai Super Kings",
-      "tilt": -0.07761,
+      "tilt": -0.06889,
       "wickets": 0,
       "balls": 13
+    }
+  ],
+  "career_trend": [
+    {
+      "match": 1,
+      "date": "2010-04-06",
+      "tilt": -0.1035,
+      "cumulative": -0.1035
+    },
+    {
+      "match": 2,
+      "date": "2011-04-20",
+      "tilt": 0.08868,
+      "cumulative": -0.01482
+    },
+    {
+      "match": 3,
+      "date": "2011-04-22",
+      "tilt": -0.06889,
+      "cumulative": -0.08371
+    },
+    {
+      "match": 4,
+      "date": "2011-04-24",
+      "tilt": -0.06264,
+      "cumulative": -0.14635
+    },
+    {
+      "match": 5,
+      "date": "2011-05-02",
+      "tilt": -0.08156,
+      "cumulative": -0.22791
+    },
+    {
+      "match": 6,
+      "date": "2011-05-22",
+      "tilt": -0.03104,
+      "cumulative": -0.25895
+    },
+    {
+      "match": 7,
+      "date": "2011-05-27",
+      "tilt": -0.14785,
+      "cumulative": -0.4068
+    },
+    {
+      "match": 8,
+      "date": "2012-04-04",
+      "tilt": -0.00535,
+      "cumulative": -0.41215
+    },
+    {
+      "match": 9,
+      "date": "2013-05-07",
+      "tilt": 0.01543,
+      "cumulative": -0.39671
+    },
+    {
+      "match": 10,
+      "date": "2013-05-11",
+      "tilt": -0.01971,
+      "cumulative": -0.41642
+    },
+    {
+      "match": 11,
+      "date": "2014-05-13",
+      "tilt": -0.05291,
+      "cumulative": -0.46933
+    },
+    {
+      "match": 12,
+      "date": "2014-05-18",
+      "tilt": 0.24153,
+      "cumulative": -0.2278
+    },
+    {
+      "match": 13,
+      "date": "2014-05-20",
+      "tilt": -0.05282,
+      "cumulative": -0.28062
+    },
+    {
+      "match": 14,
+      "date": "2014-05-22",
+      "tilt": -0.05116,
+      "cumulative": -0.33178
+    },
+    {
+      "match": 15,
+      "date": "2015-04-11",
+      "tilt": 0.02917,
+      "cumulative": -0.30261
+    },
+    {
+      "match": 16,
+      "date": "2015-04-13",
+      "tilt": 0.04159,
+      "cumulative": -0.26102
+    },
+    {
+      "match": 17,
+      "date": "2015-04-19",
+      "tilt": -0.14501,
+      "cumulative": -0.40603
+    }
+  ],
+  "team_matchups": [
+    {
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": 0.05211,
+      "matches": 1
+    },
+    {
+      "opponent": "Chennai Super Kings",
+      "tilt_per_match": 0.01672,
+      "matches": 2
+    },
+    {
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": 0.00203,
+      "matches": 1
+    },
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": 0.0,
+      "matches": 1
+    },
+    {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": -0.00044,
+      "matches": 1
     }
   ]
 }

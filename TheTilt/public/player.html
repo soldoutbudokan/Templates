@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The TILT — Player</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <style>
         .player-header { margin-bottom: 24px; }
         .player-header h2 { color: #4ade80; font-size: 1.3rem; }
@@ -79,15 +80,16 @@ async function loadPlayer() {
             <div class="stat-grid">
                 <div class="stat-card">
                     <div class="label">total TILT/match</div>
-                    <div class="value">${formatTilt(p.total_tilt_per_match)}</div>
+                    <div class="value">${formatTilt(p.shrunk_total_tilt_per_match || p.total_tilt_per_match)}</div>
+                    ${p.shrunk_total_tilt_per_match != null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">raw: ${formatTilt(p.total_tilt_per_match)} | ${p.confidence || 'low'} conf</div>` : ''}
                 </div>
                 <div class="stat-card">
                     <div class="label">batting TILT/match</div>
-                    <div class="value">${formatTilt(p.batting_tilt_per_match)}</div>
+                    <div class="value">${formatTilt(p.shrunk_batting_tilt_per_match || p.batting_tilt_per_match)}</div>
                 </div>
                 <div class="stat-card">
                     <div class="label">bowling TILT/match</div>
-                    <div class="value">${formatTilt(p.bowling_tilt_per_match)}</div>
+                    <div class="value">${formatTilt(p.shrunk_bowling_tilt_per_match || p.bowling_tilt_per_match)}</div>
                 </div>
             </div>
         `;
@@ -202,7 +204,108 @@ async function loadPlayer() {
             html += '</table></div>';
         }
 
+        // Career trend chart
+        if (p.career_trend && p.career_trend.length > 1) {
+            html += `<div class="section"><h3>career TILT trend</h3>
+                <div style="height:220px;background:#1a1a1a;padding:8px;border:1px solid #333">
+                    <canvas id="careerChart"></canvas>
+                </div></div>`;
+        }
+
+        // Team matchups chart
+        if (p.team_matchups && p.team_matchups.length > 0) {
+            html += `<div class="section"><h3>batting TILT by opponent</h3>
+                <div style="height:${Math.max(150, p.team_matchups.length * 28)}px;background:#1a1a1a;padding:8px;border:1px solid #333">
+                    <canvas id="matchupChart"></canvas>
+                </div></div>`;
+        }
+
         document.getElementById('content').innerHTML = html;
+
+        // Render charts after DOM is ready
+        if (p.career_trend && p.career_trend.length > 1) {
+            const ctx = document.getElementById('careerChart');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: p.career_trend.map(t => t.match),
+                    datasets: [{
+                        label: 'Cumulative TILT',
+                        data: p.career_trend.map(t => +(t.cumulative * 100).toFixed(2)),
+                        borderColor: '#4ade80',
+                        backgroundColor: 'rgba(74,222,128,0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: p.career_trend.length > 50 ? 0 : 2,
+                        pointHoverRadius: 4,
+                        borderWidth: 1.5,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: (items) => {
+                                    const i = items[0].dataIndex;
+                                    const t = p.career_trend[i];
+                                    return `Match ${t.match} (${t.date})`;
+                                },
+                                label: (item) => {
+                                    const i = item.dataIndex;
+                                    const t = p.career_trend[i];
+                                    return `Cumulative: ${item.formattedValue}% | This match: ${(t.tilt*100).toFixed(2)}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Match #', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#333' } },
+                        y: { title: { display: true, text: 'Cumulative TILT %', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#333' } }
+                    }
+                }
+            });
+        }
+
+        if (p.team_matchups && p.team_matchups.length > 0) {
+            const ctx2 = document.getElementById('matchupChart');
+            const matchups = p.team_matchups;
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: matchups.map(m => m.opponent),
+                    datasets: [{
+                        label: 'TILT/match',
+                        data: matchups.map(m => +(m.tilt_per_match * 100).toFixed(2)),
+                        backgroundColor: matchups.map(m => m.tilt_per_match >= 0 ? 'rgba(74,222,128,0.7)' : 'rgba(248,113,113,0.7)'),
+                        borderColor: matchups.map(m => m.tilt_per_match >= 0 ? '#4ade80' : '#f87171'),
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (item) => {
+                                    const m = matchups[item.dataIndex];
+                                    return `${item.formattedValue}% (${m.matches} matches)`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'TILT/match %', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#333' } },
+                        y: { ticks: { color: '#aaa', font: { size: 10 } }, grid: { display: false } }
+                    }
+                }
+            });
+        }
 
     } catch (e) {
         document.getElementById('content').innerHTML = '<div class="loading">player not found</div>';

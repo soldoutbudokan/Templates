@@ -3,10 +3,16 @@
   "player_id": "4933f499",
   "slug": "jp-behrendorff-4933f499",
   "team": "Mumbai Indians",
-  "total_tilt_per_match": -0.00055,
-  "batting_tilt_per_match": 0.00062,
-  "bowling_tilt_per_match": -0.00062,
-  "total_tilt": -0.00933,
+  "total_tilt_per_match": 0.01327,
+  "batting_tilt_per_match": 0.00034,
+  "bowling_tilt_per_match": 0.01323,
+  "shrunk_total_tilt_per_match": 0.00509,
+  "shrunk_batting_tilt_per_match": -0.00245,
+  "shrunk_bowling_tilt_per_match": 0.00578,
+  "tilt_ci_lower": -0.0579,
+  "tilt_ci_upper": 0.06809,
+  "confidence": "low",
+  "total_tilt": 0.22552,
   "total_matches": 17,
   "batting_balls": 9,
   "bowling_balls": 379,
@@ -14,7 +20,7 @@
     {
       "season": "2019",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.00507,
+      "bowling_tilt_per_match": 0.01889,
       "batting_matches": 0,
       "bowling_matches": 5,
       "batting_balls": 0,
@@ -22,8 +28,8 @@
     },
     {
       "season": "2023",
-      "batting_tilt_per_match": 0.00062,
-      "bowling_tilt_per_match": 0.00123,
+      "batting_tilt_per_match": 0.00034,
+      "bowling_tilt_per_match": 0.01087,
       "batting_matches": 2,
       "bowling_matches": 12,
       "batting_balls": 9,
@@ -33,43 +39,43 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": 0.00124,
+      "tilt": 0.00069,
       "balls": 9,
-      "avg_delta": 0.000138
+      "avg_delta": 7.6e-05
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.57414,
+      "tilt": -0.36656,
       "balls": 245,
-      "avg_delta": -0.002343
+      "avg_delta": -0.001496
     },
     {
       "phase": "middle",
-      "tilt": 0.24765,
+      "tilt": 0.2667,
       "balls": 70,
-      "avg_delta": 0.003538
+      "avg_delta": 0.00381
     },
     {
       "phase": "death",
-      "tilt": 0.31592,
+      "tilt": 0.3247,
       "balls": 64,
-      "avg_delta": 0.004936
+      "avg_delta": 0.005073
     }
   ],
   "best_matches": [
     {
       "date": "2023-05-26",
       "vs": "Gujarat Titans",
-      "tilt": 0.00178,
+      "tilt": 0.00155,
       "runs": 3,
       "balls": 5
     },
     {
       "date": "2023-04-25",
       "vs": "Gujarat Titans",
-      "tilt": -0.00054,
+      "tilt": -0.00086,
       "runs": 3,
       "balls": 4
     }
@@ -78,51 +84,51 @@
     {
       "date": "2023-04-25",
       "vs": "Gujarat Titans",
-      "tilt": -0.00054,
+      "tilt": -0.00086,
       "runs": 3,
       "balls": 4
     },
     {
       "date": "2023-05-26",
       "vs": "Gujarat Titans",
-      "tilt": 0.00178,
+      "tilt": 0.00155,
       "runs": 3,
       "balls": 5
     }
   ],
   "bowling_best_matches": [
     {
-      "date": "2023-04-11",
-      "vs": "Delhi Capitals",
-      "tilt": 0.24044,
-      "wickets": 4,
-      "balls": 18
-    },
-    {
       "date": "2019-04-03",
       "vs": "Chennai Super Kings",
-      "tilt": 0.21537,
+      "tilt": 0.28814,
       "wickets": 2,
       "balls": 25
     },
     {
+      "date": "2023-04-11",
+      "vs": "Delhi Capitals",
+      "tilt": 0.24542,
+      "wickets": 4,
+      "balls": 18
+    },
+    {
       "date": "2023-04-18",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.166,
+      "tilt": 0.1731,
       "wickets": 3,
       "balls": 25
     },
     {
       "date": "2023-05-16",
       "vs": "Lucknow Super Giants",
-      "tilt": 0.06435,
+      "tilt": 0.07227,
       "wickets": 2,
       "balls": 25
     },
     {
       "date": "2023-04-22",
       "vs": "Punjab Kings",
-      "tilt": 0.03828,
+      "tilt": 0.05137,
       "wickets": 2,
       "balls": 19
     }
@@ -131,37 +137,148 @@
     {
       "date": "2023-05-24",
       "vs": "Lucknow Super Giants",
-      "tilt": -0.27746,
+      "tilt": -0.25634,
       "wickets": 0,
       "balls": 18
     },
     {
       "date": "2019-04-13",
       "vs": "Rajasthan Royals",
-      "tilt": -0.10755,
+      "tilt": -0.1314,
       "wickets": 0,
       "balls": 19
     },
     {
       "date": "2023-04-02",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.09644,
+      "tilt": -0.08693,
       "wickets": 0,
       "balls": 18
     },
     {
-      "date": "2019-04-15",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.09458,
-      "wickets": 1,
-      "balls": 25
+      "date": "2023-05-26",
+      "vs": "Gujarat Titans",
+      "tilt": -0.06355,
+      "wickets": 0,
+      "balls": 24
     },
     {
       "date": "2023-05-21",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.07295,
+      "tilt": -0.05996,
       "wickets": 0,
       "balls": 21
+    }
+  ],
+  "career_trend": [
+    {
+      "match": 1,
+      "date": "2019-04-03",
+      "tilt": 0.28814,
+      "cumulative": 0.28814
+    },
+    {
+      "match": 2,
+      "date": "2019-04-06",
+      "tilt": 0.01907,
+      "cumulative": 0.30721
+    },
+    {
+      "match": 3,
+      "date": "2019-04-10",
+      "tilt": -0.04076,
+      "cumulative": 0.26645
+    },
+    {
+      "match": 4,
+      "date": "2019-04-13",
+      "tilt": -0.1314,
+      "cumulative": 0.13505
+    },
+    {
+      "match": 5,
+      "date": "2019-04-15",
+      "tilt": -0.04061,
+      "cumulative": 0.09444
+    },
+    {
+      "match": 6,
+      "date": "2023-04-02",
+      "tilt": -0.08693,
+      "cumulative": 0.0075
+    },
+    {
+      "match": 7,
+      "date": "2023-04-08",
+      "tilt": -0.00142,
+      "cumulative": 0.00609
+    },
+    {
+      "match": 8,
+      "date": "2023-04-11",
+      "tilt": 0.24542,
+      "cumulative": 0.25151
+    },
+    {
+      "match": 9,
+      "date": "2023-04-18",
+      "tilt": 0.1731,
+      "cumulative": 0.42461
+    },
+    {
+      "match": 10,
+      "date": "2023-04-22",
+      "tilt": 0.05137,
+      "cumulative": 0.47597
+    },
+    {
+      "match": 11,
+      "date": "2023-04-25",
+      "tilt": 0.00969,
+      "cumulative": 0.48566
+    },
+    {
+      "match": 12,
+      "date": "2023-05-09",
+      "tilt": 0.01536,
+      "cumulative": 0.50103
+    },
+    {
+      "match": 13,
+      "date": "2023-05-12",
+      "tilt": 0.03053,
+      "cumulative": 0.53156
+    },
+    {
+      "match": 14,
+      "date": "2023-05-16",
+      "tilt": 0.07227,
+      "cumulative": 0.60383
+    },
+    {
+      "match": 15,
+      "date": "2023-05-21",
+      "tilt": -0.05996,
+      "cumulative": 0.54386
+    },
+    {
+      "match": 16,
+      "date": "2023-05-24",
+      "tilt": -0.25634,
+      "cumulative": 0.28753
+    },
+    {
+      "match": 17,
+      "date": "2023-05-26",
+      "tilt": -0.062,
+      "cumulative": 0.22552
+    }
+  ],
+  "team_matchups": [
+    {
+      "opponent": "Gujarat Titans",
+      "tilt_per_match": 0.00034,
+      "matches": 2
     }
   ]
 }

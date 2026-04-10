@@ -63,13 +63,19 @@ def export_rankings(
             "total_tilt": round(row["total_tilt"], 5),
             "batting_total_tilt": round(row["batting_total_tilt"], 5),
             "bowling_total_tilt": round(row["bowling_total_tilt"], 5),
+            "shrunk_total_tilt_per_match": round(row.get("shrunk_total_tilt_per_match", row["total_tilt_per_match"]), 5),
+            "shrunk_batting_tilt_per_match": round(row.get("shrunk_batting_tilt_per_match", row["batting_tilt_per_match"]), 5),
+            "shrunk_bowling_tilt_per_match": round(row.get("shrunk_bowling_tilt_per_match", row["bowling_tilt_per_match"]), 5),
+            "tilt_ci_lower": round(row.get("tilt_ci_lower", 0), 5),
+            "tilt_ci_upper": round(row.get("tilt_ci_upper", 0), 5),
+            "confidence": row.get("confidence", "low"),
             "total_matches": int(row["total_matches"]),
             "batting_balls": int(row["batting_balls"]),
             "bowling_balls": int(row["bowling_balls"]),
         })
 
-    # Sort and assign ranks
-    rankings.sort(key=lambda x: x["total_tilt_per_match"], reverse=True)
+    # Sort by shrunk TILT (stabilized rankings)
+    rankings.sort(key=lambda x: x["shrunk_total_tilt_per_match"], reverse=True)
     for i, r in enumerate(rankings):
         r["rank"] = i + 1
 
@@ -203,6 +209,44 @@ def export_player_details(
             bowling_best = []
             bowling_worst = []
 
+        # Career trend: cumulative TILT over time
+        all_player_df = pd.concat([bat_df.assign(_role="bat"), bowl_df_copy.assign(_role="bowl")]) if len(bowl_df_copy) > 0 else bat_df.assign(_role="bat")
+        if len(all_player_df) > 0:
+            # Combine batting delta_wp and bowling -delta_wp per match
+            match_tilt_trend = all_player_df.copy()
+            match_tilt_trend["_tilt"] = match_tilt_trend.apply(
+                lambda r: r["delta_wp"] if r["_role"] == "bat" else r.get("bowling_delta", -r["delta_wp"]), axis=1
+            )
+            match_trend = (
+                match_tilt_trend.groupby(["match_id", "date"])
+                .agg(tilt=("_tilt", "sum"))
+                .reset_index()
+                .sort_values("date")
+            )
+            match_trend["cumulative"] = match_trend["tilt"].cumsum()
+            career_trend = [
+                {"match": i + 1, "date": str(r["date"]), "tilt": round(r["tilt"], 5), "cumulative": round(r["cumulative"], 5)}
+                for i, (_, r) in enumerate(match_trend.iterrows())
+            ]
+        else:
+            career_trend = []
+
+        # Team matchups: TILT per match vs each opponent
+        if len(bat_df) > 0:
+            opp_tilt = (
+                bat_df.groupby("bowling_team")
+                .agg(tilt=("delta_wp", "sum"), matches=("match_id", "nunique"))
+                .reset_index()
+            )
+            opp_tilt["tilt_per_match"] = opp_tilt["tilt"] / opp_tilt["matches"]
+            opp_tilt = opp_tilt.sort_values("tilt_per_match", ascending=False)
+            team_matchups = [
+                {"opponent": r["bowling_team"], "tilt_per_match": round(r["tilt_per_match"], 5), "matches": int(r["matches"])}
+                for _, r in opp_tilt.iterrows()
+            ]
+        else:
+            team_matchups = []
+
         # Build player detail JSON
         detail = {
             "player": player_name,
@@ -212,6 +256,12 @@ def export_player_details(
             "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
             "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5),
             "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5),
+            "shrunk_total_tilt_per_match": round(row.get("shrunk_total_tilt_per_match", row["total_tilt_per_match"]), 5),
+            "shrunk_batting_tilt_per_match": round(row.get("shrunk_batting_tilt_per_match", row["batting_tilt_per_match"]), 5),
+            "shrunk_bowling_tilt_per_match": round(row.get("shrunk_bowling_tilt_per_match", row["bowling_tilt_per_match"]), 5),
+            "tilt_ci_lower": round(row.get("tilt_ci_lower", 0), 5),
+            "tilt_ci_upper": round(row.get("tilt_ci_upper", 0), 5),
+            "confidence": row.get("confidence", "low"),
             "total_tilt": round(row["total_tilt"], 5),
             "total_matches": int(row["total_matches"]),
             "batting_balls": int(row["batting_balls"]),
@@ -259,6 +309,8 @@ def export_player_details(
                 }
                 for r in bowling_worst
             ],
+            "career_trend": career_trend,
+            "team_matchups": team_matchups,
         }
 
         player_path = players_dir / f"{slug}.json"

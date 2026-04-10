@@ -3,18 +3,24 @@
   "player_id": "ee7d0c82",
   "slug": "gd-mcgrath-ee7d0c82",
   "team": "Delhi Daredevils",
-  "total_tilt_per_match": 0.01138,
-  "batting_tilt_per_match": -0.00821,
-  "bowling_tilt_per_match": 0.01255,
-  "total_tilt": 0.15928,
+  "total_tilt_per_match": 0.01215,
+  "batting_tilt_per_match": -0.00729,
+  "bowling_tilt_per_match": 0.0132,
+  "shrunk_total_tilt_per_match": 0.00308,
+  "shrunk_batting_tilt_per_match": -0.00821,
+  "shrunk_bowling_tilt_per_match": 0.00469,
+  "tilt_ci_lower": -0.09419,
+  "tilt_ci_upper": 0.10035,
+  "confidence": "low",
+  "total_tilt": 0.17016,
   "total_matches": 14,
   "batting_balls": 5,
   "bowling_balls": 329,
   "seasons": [
     {
       "season": "2007/08",
-      "batting_tilt_per_match": -0.00821,
-      "bowling_tilt_per_match": 0.01255,
+      "batting_tilt_per_match": -0.00729,
+      "bowling_tilt_per_match": 0.0132,
       "batting_matches": 2,
       "bowling_matches": 14,
       "batting_balls": 5,
@@ -24,29 +30,29 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.01642,
+      "tilt": -0.01458,
       "balls": 5,
-      "avg_delta": -0.003284
+      "avg_delta": -0.002916
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.08118,
+      "tilt": 0.09184,
       "balls": 226,
-      "avg_delta": 0.000359
+      "avg_delta": 0.000406
     },
     {
       "phase": "middle",
-      "tilt": 0.2078,
+      "tilt": 0.20136,
       "balls": 24,
-      "avg_delta": 0.008658
+      "avg_delta": 0.00839
     },
     {
       "phase": "death",
-      "tilt": -0.11328,
+      "tilt": -0.10846,
       "balls": 79,
-      "avg_delta": -0.001434
+      "avg_delta": -0.001373
     }
   ],
   "best_matches": [
@@ -60,7 +66,7 @@
     {
       "date": "2008-05-04",
       "vs": "Mumbai Indians",
-      "tilt": -0.01642,
+      "tilt": -0.01458,
       "runs": 0,
       "balls": 2
     }
@@ -69,7 +75,7 @@
     {
       "date": "2008-05-04",
       "vs": "Mumbai Indians",
-      "tilt": -0.01642,
+      "tilt": -0.01458,
       "runs": 0,
       "balls": 2
     },
@@ -85,74 +91,172 @@
     {
       "date": "2008-04-30",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.39777,
+      "tilt": 0.40311,
       "wickets": 4,
       "balls": 24
     },
     {
-      "date": "2008-05-19",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": 0.20586,
-      "wickets": 2,
+      "date": "2008-05-11",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.19718,
+      "wickets": 1,
       "balls": 25
     },
     {
-      "date": "2008-05-11",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.20178,
-      "wickets": 1,
+      "date": "2008-05-19",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": 0.19491,
+      "wickets": 2,
       "balls": 25
     },
     {
       "date": "2008-04-19",
       "vs": "Rajasthan Royals",
-      "tilt": 0.14645,
+      "tilt": 0.13365,
       "wickets": 1,
       "balls": 25
     },
     {
-      "date": "2008-05-02",
-      "vs": "Chennai Super Kings",
-      "tilt": 0.01312,
+      "date": "2008-05-17",
+      "vs": "Kings XI Punjab",
+      "tilt": 0.01388,
       "wickets": 1,
-      "balls": 24
+      "balls": 12
     }
   ],
   "bowling_worst_matches": [
     {
       "date": "2008-05-15",
       "vs": "Deccan Chargers",
-      "tilt": -0.40212,
+      "tilt": -0.38129,
       "wickets": 2,
       "balls": 24
     },
     {
       "date": "2008-05-24",
       "vs": "Mumbai Indians",
-      "tilt": -0.15521,
+      "tilt": -0.15054,
       "wickets": 0,
       "balls": 25
     },
     {
       "date": "2008-05-30",
       "vs": "Rajasthan Royals",
-      "tilt": -0.13034,
+      "tilt": -0.13428,
       "wickets": 0,
       "balls": 25
     },
     {
       "date": "2008-04-27",
       "vs": "Kings XI Punjab",
-      "tilt": -0.04794,
+      "tilt": -0.05607,
       "wickets": 1,
       "balls": 24
     },
     {
       "date": "2008-05-04",
       "vs": "Mumbai Indians",
-      "tilt": -0.02721,
+      "tilt": -0.04259,
       "wickets": 0,
       "balls": 24
+    }
+  ],
+  "career_trend": [
+    {
+      "match": 1,
+      "date": "2008-04-19",
+      "tilt": 0.13365,
+      "cumulative": 0.13365
+    },
+    {
+      "match": 2,
+      "date": "2008-04-22",
+      "tilt": 0.0,
+      "cumulative": 0.13365
+    },
+    {
+      "match": 3,
+      "date": "2008-04-27",
+      "tilt": -0.05607,
+      "cumulative": 0.07758
+    },
+    {
+      "match": 4,
+      "date": "2008-04-30",
+      "tilt": 0.40311,
+      "cumulative": 0.4807
+    },
+    {
+      "match": 5,
+      "date": "2008-05-02",
+      "tilt": 0.00922,
+      "cumulative": 0.48991
+    },
+    {
+      "match": 6,
+      "date": "2008-05-04",
+      "tilt": -0.05717,
+      "cumulative": 0.43275
+    },
+    {
+      "match": 7,
+      "date": "2008-05-08",
+      "tilt": 0.01134,
+      "cumulative": 0.44409
+    },
+    {
+      "match": 8,
+      "date": "2008-05-11",
+      "tilt": 0.19718,
+      "cumulative": 0.64126
+    },
+    {
+      "match": 9,
+      "date": "2008-05-13",
+      "tilt": -0.01378,
+      "cumulative": 0.62748
+    },
+    {
+      "match": 10,
+      "date": "2008-05-15",
+      "tilt": -0.38129,
+      "cumulative": 0.24619
+    },
+    {
+      "match": 11,
+      "date": "2008-05-17",
+      "tilt": 0.01388,
+      "cumulative": 0.26007
+    },
+    {
+      "match": 12,
+      "date": "2008-05-19",
+      "tilt": 0.19491,
+      "cumulative": 0.45498
+    },
+    {
+      "match": 13,
+      "date": "2008-05-24",
+      "tilt": -0.15054,
+      "cumulative": 0.30445
+    },
+    {
+      "match": 14,
+      "date": "2008-05-30",
+      "tilt": -0.13428,
+      "cumulative": 0.17016
+    }
+  ],
+  "team_matchups": [
+    {
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": 0.0,
+      "matches": 1
+    },
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.01458,
+      "matches": 1
     }
   ]
 }

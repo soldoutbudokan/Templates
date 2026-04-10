@@ -28,6 +28,7 @@ FEATURE_COLS = [
     "venue",
     "batting_team_chose_to_bat",
     "season_numeric",
+    "opponent_bowler_economy",
 ]
 
 
@@ -79,6 +80,7 @@ def compute_state_after(row: pd.Series) -> dict:
     after["venue"] = row["venue"]
     after["batting_team_chose_to_bat"] = row["batting_team_chose_to_bat"]
     after["season_numeric"] = row["season_numeric"]
+    after["opponent_bowler_economy"] = row["opponent_bowler_economy"]
 
     return after
 
@@ -198,12 +200,106 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     combined = combined.merge(last_team, on="player_id", how="left")
     combined["team"] = combined["team"].fillna("Unknown")
 
-    # Sort by total TILT per match
+    # Sort by total TILT per match (before shrinkage)
     combined = combined.sort_values("total_tilt_per_match", ascending=False).reset_index(drop=True)
 
     print(f"  Total players: {len(combined)}")
-    print(f"\n  Top 10 by Total TILT/Match:")
+    print(f"\n  Top 10 by Raw TILT/Match:")
     top10 = combined.head(10)[["player", "team", "total_tilt_per_match", "batting_tilt_per_match", "bowling_tilt_per_match", "total_matches"]]
+    print(top10.to_string(index=False))
+
+    return combined
+
+
+# %% Bayesian shrinkage
+def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataFrame:
+    """Apply empirical Bayes shrinkage to stabilize small-sample rankings.
+
+    Uses James-Stein / empirical Bayes formula:
+        shrunk = (n / (n + k)) * observed + (k / (n + k)) * population_mean
+    where k = within_variance / between_variance
+    """
+    print("\nApplying Bayesian shrinkage...")
+
+    # Compute per-match TILT for each player (need match-level variance)
+    # Batting: sum delta_wp per player per match
+    bat_match = (
+        deltas_df.groupby(["batter_id", "match_id"])["delta_wp"]
+        .sum()
+        .reset_index()
+        .rename(columns={"batter_id": "player_id", "delta_wp": "match_tilt"})
+    )
+    # Bowling: sum -delta_wp per player per match
+    bowl_match = (
+        deltas_df.groupby(["bowler_id", "match_id"])
+        .agg(match_tilt=("delta_wp", lambda x: -x.sum()))
+        .reset_index()
+        .rename(columns={"bowler_id": "player_id"})
+    )
+    # Total: merge batting + bowling per match
+    total_match = pd.concat([
+        bat_match.assign(role="bat"),
+        bowl_match.assign(role="bowl"),
+    ]).groupby(["player_id", "match_id"])["match_tilt"].sum().reset_index()
+
+    def _compute_shrinkage(combined_df, col, match_df, match_col="match_tilt"):
+        """Compute shrinkage for a single TILT column."""
+        # Population mean (across all players)
+        pop_mean = combined_df[col].mean()
+
+        # Between-player variance: variance of player-level averages
+        between_var = combined_df[col].var()
+
+        # Within-player variance: average of each player's match-to-match variance
+        player_var = match_df.groupby("player_id")[match_col].var().dropna()
+        within_var = player_var.mean()
+
+        if between_var <= 0 or within_var <= 0:
+            print(f"  Warning: cannot compute shrinkage for {col} (between={between_var:.6f}, within={within_var:.6f})")
+            combined_df[f"shrunk_{col}"] = combined_df[col]
+            return combined_df, 0
+
+        k = within_var / between_var
+        print(f"  {col}: k={k:.1f} (within_var={within_var:.6f}, between_var={between_var:.6f}, pop_mean={pop_mean:.6f})")
+
+        # Apply shrinkage
+        n = combined_df["total_matches"]
+        combined_df[f"shrunk_{col}"] = (n / (n + k)) * combined_df[col] + (k / (n + k)) * pop_mean
+
+        return combined_df, k
+
+    # Apply to each TILT column
+    combined, k_total = _compute_shrinkage(combined, "total_tilt_per_match", total_match)
+
+    # For batting/bowling shrinkage, use batting/bowling specific match data
+    bat_player_match = bat_match.copy()
+    combined, k_bat = _compute_shrinkage(combined, "batting_tilt_per_match", bat_player_match)
+    bowl_player_match = bowl_match.copy()
+    combined, k_bowl = _compute_shrinkage(combined, "bowling_tilt_per_match", bowl_player_match)
+
+    # Confidence intervals (match-level std dev / sqrt(n))
+    player_std = total_match.groupby("player_id")["match_tilt"].std().fillna(0)
+    combined = combined.merge(
+        player_std.rename("match_tilt_std").reset_index(),
+        on="player_id",
+        how="left",
+    )
+    combined["match_tilt_std"] = combined["match_tilt_std"].fillna(0)
+    n = combined["total_matches"]
+    se = combined["match_tilt_std"] / np.sqrt(n.clip(lower=1))
+    combined["tilt_ci_lower"] = combined["shrunk_total_tilt_per_match"] - 1.96 * se
+    combined["tilt_ci_upper"] = combined["shrunk_total_tilt_per_match"] + 1.96 * se
+
+    # Confidence level
+    combined["confidence"] = "low"
+    combined.loc[combined["total_matches"] >= 30, "confidence"] = "medium"
+    combined.loc[combined["total_matches"] >= 100, "confidence"] = "high"
+
+    # Re-sort by shrunk TILT
+    combined = combined.sort_values("shrunk_total_tilt_per_match", ascending=False).reset_index(drop=True)
+
+    print(f"\n  Top 10 by Shrunk TILT/Match:")
+    top10 = combined.head(10)[["player", "team", "shrunk_total_tilt_per_match", "total_tilt_per_match", "total_matches", "confidence"]]
     print(top10.to_string(index=False))
 
     return combined
@@ -242,6 +338,7 @@ def compute_tilt(
 
     deltas_df = compute_ball_deltas(model, df)
     player_tilt = aggregate_player_tilt(deltas_df)
+    player_tilt = apply_shrinkage(player_tilt, deltas_df)
 
     return deltas_df, player_tilt
 

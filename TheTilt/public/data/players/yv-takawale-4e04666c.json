@@ -3,17 +3,23 @@
   "player_id": "4e04666c",
   "slug": "yv-takawale-4e04666c",
   "team": "Royal Challengers Bangalore",
-  "total_tilt_per_match": -0.02134,
-  "batting_tilt_per_match": -0.02134,
+  "total_tilt_per_match": -0.02237,
+  "batting_tilt_per_match": -0.02237,
   "bowling_tilt_per_match": 0.0,
-  "total_tilt": -0.21339,
+  "shrunk_total_tilt_per_match": -0.02097,
+  "shrunk_batting_tilt_per_match": -0.01787,
+  "shrunk_bowling_tilt_per_match": -0.00519,
+  "tilt_ci_lower": -0.05808,
+  "tilt_ci_upper": 0.01613,
+  "confidence": "low",
+  "total_tilt": -0.22371,
   "total_matches": 10,
   "batting_balls": 183,
   "bowling_balls": 0,
   "seasons": [
     {
       "season": "2007/08",
-      "batting_tilt_per_match": 0.00882,
+      "batting_tilt_per_match": 0.01221,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 4,
       "bowling_matches": 0,
@@ -22,7 +28,7 @@
     },
     {
       "season": "2009",
-      "batting_tilt_per_match": -0.05659,
+      "batting_tilt_per_match": -0.061,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 1,
       "bowling_matches": 0,
@@ -31,7 +37,7 @@
     },
     {
       "season": "2014",
-      "batting_tilt_per_match": -0.03842,
+      "batting_tilt_per_match": -0.04231,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 5,
       "bowling_matches": 0,
@@ -42,21 +48,21 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.25439,
+      "tilt": -0.27208,
       "balls": 137,
-      "avg_delta": -0.001857
+      "avg_delta": -0.001986
     },
     {
       "phase": "middle",
-      "tilt": 0.0137,
+      "tilt": 0.0199,
       "balls": 33,
-      "avg_delta": 0.000415
+      "avg_delta": 0.000603
     },
     {
       "phase": "death",
-      "tilt": 0.0273,
+      "tilt": 0.02847,
       "balls": 13,
-      "avg_delta": 0.0021
+      "avg_delta": 0.00219
     }
   ],
   "bowling_phases": [],
@@ -64,35 +70,35 @@
     {
       "date": "2014-04-24",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.06373,
+      "tilt": 0.07062,
       "runs": 40,
       "balls": 29
     },
     {
       "date": "2008-05-26",
       "vs": "Rajasthan Royals",
-      "tilt": 0.03246,
+      "tilt": 0.02847,
       "runs": 24,
       "balls": 8
     },
     {
       "date": "2008-05-04",
       "vs": "Delhi Daredevils",
-      "tilt": 0.01571,
+      "tilt": 0.0219,
       "runs": 14,
       "balls": 21
     },
     {
       "date": "2008-05-18",
       "vs": "Deccan Chargers",
-      "tilt": -0.00517,
+      "tilt": 0.0,
       "runs": 5,
       "balls": 5
     },
     {
       "date": "2008-05-07",
       "vs": "Rajasthan Royals",
-      "tilt": -0.00774,
+      "tilt": -0.00151,
       "runs": 27,
       "balls": 35
     }
@@ -101,39 +107,133 @@
     {
       "date": "2014-04-28",
       "vs": "Kings XI Punjab",
-      "tilt": -0.11374,
+      "tilt": -0.1274,
       "runs": 0,
       "balls": 7
     },
     {
       "date": "2014-05-24",
       "vs": "Chennai Super Kings",
-      "tilt": -0.07245,
+      "tilt": -0.09309,
       "runs": 19,
       "balls": 17
     },
     {
       "date": "2009-05-14",
       "vs": "Rajasthan Royals",
-      "tilt": -0.05659,
+      "tilt": -0.061,
       "runs": 18,
       "balls": 22
     },
     {
       "date": "2014-05-22",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.04645,
+      "tilt": -0.04595,
       "runs": 45,
       "balls": 36
     },
     {
       "date": "2014-04-26",
       "vs": "Rajasthan Royals",
-      "tilt": -0.02318,
+      "tilt": -0.01575,
       "runs": 0,
       "balls": 3
     }
   ],
   "bowling_best_matches": [],
-  "bowling_worst_matches": []
+  "bowling_worst_matches": [],
+  "career_trend": [
+    {
+      "match": 1,
+      "date": "2008-05-04",
+      "tilt": 0.0219,
+      "cumulative": 0.0219
+    },
+    {
+      "match": 2,
+      "date": "2008-05-07",
+      "tilt": -0.00151,
+      "cumulative": 0.02039
+    },
+    {
+      "match": 3,
+      "date": "2008-05-18",
+      "tilt": 0.0,
+      "cumulative": 0.02039
+    },
+    {
+      "match": 4,
+      "date": "2008-05-26",
+      "tilt": 0.02847,
+      "cumulative": 0.04886
+    },
+    {
+      "match": 5,
+      "date": "2009-05-14",
+      "tilt": -0.061,
+      "cumulative": -0.01214
+    },
+    {
+      "match": 6,
+      "date": "2014-04-24",
+      "tilt": 0.07062,
+      "cumulative": 0.05848
+    },
+    {
+      "match": 7,
+      "date": "2014-04-26",
+      "tilt": -0.01575,
+      "cumulative": 0.04272
+    },
+    {
+      "match": 8,
+      "date": "2014-04-28",
+      "tilt": -0.1274,
+      "cumulative": -0.08468
+    },
+    {
+      "match": 9,
+      "date": "2014-05-22",
+      "tilt": -0.04595,
+      "cumulative": -0.13062
+    },
+    {
+      "match": 10,
+      "date": "2014-05-24",
+      "tilt": -0.09309,
+      "cumulative": -0.22371
+    }
+  ],
+  "team_matchups": [
+    {
+      "opponent": "Delhi Daredevils",
+      "tilt_per_match": 0.0219,
+      "matches": 1
+    },
+    {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": 0.01234,
+      "matches": 2
+    },
+    {
+      "opponent": "Deccan Chargers",
+      "tilt_per_match": 0.0,
+      "matches": 1
+    },
+    {
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.01245,
+      "matches": 4
+    },
+    {
+      "opponent": "Chennai Super Kings",
+      "tilt_per_match": -0.09309,
+      "matches": 1
+    },
+    {
+      "opponent": "Kings XI Punjab",
+      "tilt_per_match": -0.1274,
+      "matches": 1
+    }
+  ]
 }

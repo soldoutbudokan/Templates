@@ -3,17 +3,23 @@
   "player_id": "d2a6c0e6",
   "slug": "ejg-morgan-d2a6c0e6",
   "team": "Kolkata Knight Riders",
-  "total_tilt_per_match": -0.01635,
-  "batting_tilt_per_match": -0.01635,
+  "total_tilt_per_match": -0.01564,
+  "batting_tilt_per_match": -0.01564,
   "bowling_tilt_per_match": 0.0,
-  "total_tilt": -1.19387,
+  "shrunk_total_tilt_per_match": -0.01586,
+  "shrunk_batting_tilt_per_match": -0.01524,
+  "shrunk_bowling_tilt_per_match": -0.00109,
+  "tilt_ci_lower": -0.03639,
+  "tilt_ci_upper": 0.00467,
+  "confidence": "medium",
+  "total_tilt": -1.14171,
   "total_matches": 73,
   "batting_balls": 1156,
   "bowling_balls": 0,
   "seasons": [
     {
       "season": "2009/10",
-      "batting_tilt_per_match": -0.04986,
+      "batting_tilt_per_match": -0.05794,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 4,
       "bowling_matches": 0,
@@ -22,7 +28,7 @@
     },
     {
       "season": "2011",
-      "batting_tilt_per_match": -0.00398,
+      "batting_tilt_per_match": -0.00427,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 9,
       "bowling_matches": 0,
@@ -31,7 +37,7 @@
     },
     {
       "season": "2013",
-      "batting_tilt_per_match": 0.01426,
+      "batting_tilt_per_match": 0.01839,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 13,
       "bowling_matches": 0,
@@ -40,7 +46,7 @@
     },
     {
       "season": "2015",
-      "batting_tilt_per_match": -0.03277,
+      "batting_tilt_per_match": -0.02981,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 9,
       "bowling_matches": 0,
@@ -49,7 +55,7 @@
     },
     {
       "season": "2016",
-      "batting_tilt_per_match": -0.0175,
+      "batting_tilt_per_match": -0.01795,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 6,
       "bowling_matches": 0,
@@ -58,7 +64,7 @@
     },
     {
       "season": "2017",
-      "batting_tilt_per_match": -0.07653,
+      "batting_tilt_per_match": -0.06659,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 4,
       "bowling_matches": 0,
@@ -67,7 +73,7 @@
     },
     {
       "season": "2020/21",
-      "batting_tilt_per_match": 0.01312,
+      "batting_tilt_per_match": 0.00944,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 13,
       "bowling_matches": 0,
@@ -76,7 +82,7 @@
     },
     {
       "season": "2021",
-      "batting_tilt_per_match": -0.04057,
+      "batting_tilt_per_match": -0.03939,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 15,
       "bowling_matches": 0,
@@ -87,21 +93,21 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.4684,
+      "tilt": -0.42578,
       "balls": 197,
-      "avg_delta": -0.002378
+      "avg_delta": -0.002161
     },
     {
       "phase": "middle",
-      "tilt": -0.49012,
+      "tilt": -0.42963,
       "balls": 647,
-      "avg_delta": -0.000758
+      "avg_delta": -0.000664
     },
     {
       "phase": "death",
-      "tilt": -0.23535,
+      "tilt": -0.2863,
       "balls": 312,
-      "avg_delta": -0.000754
+      "avg_delta": -0.000918
     }
   ],
   "bowling_phases": [],
@@ -109,76 +115,593 @@
     {
       "date": "2013-04-26",
       "vs": "Kings XI Punjab",
-      "tilt": 0.21031,
+      "tilt": 0.20147,
       "runs": 42,
       "balls": 27
     },
     {
       "date": "2011-05-03",
       "vs": "Deccan Chargers",
-      "tilt": 0.20388,
+      "tilt": 0.19627,
       "runs": 14,
       "balls": 18
     },
     {
       "date": "2013-04-28",
       "vs": "Chennai Super Kings",
-      "tilt": 0.16029,
+      "tilt": 0.17634,
       "runs": 32,
       "balls": 25
     },
     {
       "date": "2015-05-11",
       "vs": "Kings XI Punjab",
-      "tilt": 0.15781,
+      "tilt": 0.15209,
       "runs": 17,
       "balls": 7
     },
     {
-      "date": "2020-10-26",
-      "vs": "Kings XI Punjab",
-      "tilt": 0.15688,
-      "runs": 40,
-      "balls": 25
+      "date": "2020-11-01",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.14792,
+      "runs": 68,
+      "balls": 36
     }
   ],
   "worst_matches": [
     {
-      "date": "2021-09-26",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.24586,
-      "runs": 8,
-      "balls": 14
-    },
-    {
       "date": "2015-04-18",
       "vs": "Delhi Daredevils",
-      "tilt": -0.24372,
+      "tilt": -0.24614,
       "runs": 1,
       "balls": 2
     },
     {
+      "date": "2021-09-26",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.21599,
+      "runs": 8,
+      "balls": 14
+    },
+    {
       "date": "2021-09-28",
       "vs": "Delhi Capitals",
-      "tilt": -0.21983,
+      "tilt": -0.20095,
       "runs": 0,
       "balls": 2
     },
     {
-      "date": "2011-04-08",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.15734,
-      "runs": 6,
-      "balls": 6
-    },
-    {
       "date": "2013-05-01",
       "vs": "Delhi Daredevils",
-      "tilt": -0.15515,
+      "tilt": -0.16244,
       "runs": 10,
       "balls": 9
+    },
+    {
+      "date": "2011-04-08",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.15362,
+      "runs": 6,
+      "balls": 6
     }
   ],
   "bowling_best_matches": [],
-  "bowling_worst_matches": []
+  "bowling_worst_matches": [],
+  "career_trend": [
+    {
+      "match": 1,
+      "date": "2010-03-14",
+      "tilt": -0.09352,
+      "cumulative": -0.09352
+    },
+    {
+      "match": 2,
+      "date": "2010-03-20",
+      "tilt": 0.0,
+      "cumulative": -0.09352
+    },
+    {
+      "match": 3,
+      "date": "2010-03-23",
+      "tilt": -0.02957,
+      "cumulative": -0.12309
+    },
+    {
+      "match": 4,
+      "date": "2010-03-25",
+      "tilt": -0.10868,
+      "cumulative": -0.23176
+    },
+    {
+      "match": 5,
+      "date": "2011-04-08",
+      "tilt": -0.15362,
+      "cumulative": -0.38539
+    },
+    {
+      "match": 6,
+      "date": "2011-04-20",
+      "tilt": 0.04067,
+      "cumulative": -0.34472
+    },
+    {
+      "match": 7,
+      "date": "2011-04-22",
+      "tilt": -0.0023,
+      "cumulative": -0.34703
+    },
+    {
+      "match": 8,
+      "date": "2011-04-28",
+      "tilt": -0.0012,
+      "cumulative": -0.34822
+    },
+    {
+      "match": 9,
+      "date": "2011-04-30",
+      "tilt": 0.01326,
+      "cumulative": -0.33496
+    },
+    {
+      "match": 10,
+      "date": "2011-05-03",
+      "tilt": 0.19627,
+      "cumulative": -0.13869
+    },
+    {
+      "match": 11,
+      "date": "2011-05-05",
+      "tilt": 0.01514,
+      "cumulative": -0.12355
+    },
+    {
+      "match": 12,
+      "date": "2011-05-07",
+      "tilt": -0.02292,
+      "cumulative": -0.14647
+    },
+    {
+      "match": 13,
+      "date": "2011-05-14",
+      "tilt": -0.12375,
+      "cumulative": -0.27022
+    },
+    {
+      "match": 14,
+      "date": "2013-04-03",
+      "tilt": 0.02756,
+      "cumulative": -0.24266
+    },
+    {
+      "match": 15,
+      "date": "2013-04-08",
+      "tilt": -0.04967,
+      "cumulative": -0.29233
+    },
+    {
+      "match": 16,
+      "date": "2013-04-11",
+      "tilt": -0.03764,
+      "cumulative": -0.32997
+    },
+    {
+      "match": 17,
+      "date": "2013-04-14",
+      "tilt": 0.10216,
+      "cumulative": -0.22782
+    },
+    {
+      "match": 18,
+      "date": "2013-04-16",
+      "tilt": 0.14781,
+      "cumulative": -0.08
+    },
+    {
+      "match": 19,
+      "date": "2013-04-20",
+      "tilt": -0.11785,
+      "cumulative": -0.19785
+    },
+    {
+      "match": 20,
+      "date": "2013-04-24",
+      "tilt": 0.0048,
+      "cumulative": -0.19304
+    },
+    {
+      "match": 21,
+      "date": "2013-04-26",
+      "tilt": 0.20147,
+      "cumulative": 0.00842
+    },
+    {
+      "match": 22,
+      "date": "2013-04-28",
+      "tilt": 0.17634,
+      "cumulative": 0.18476
+    },
+    {
+      "match": 23,
+      "date": "2013-05-01",
+      "tilt": -0.16244,
+      "cumulative": 0.02232
+    },
+    {
+      "match": 24,
+      "date": "2013-05-07",
+      "tilt": -0.03209,
+      "cumulative": -0.00977
+    },
+    {
+      "match": 25,
+      "date": "2013-05-09",
+      "tilt": 0.0403,
+      "cumulative": 0.03053
+    },
+    {
+      "match": 26,
+      "date": "2013-05-19",
+      "tilt": -0.06173,
+      "cumulative": -0.0312
+    },
+    {
+      "match": 27,
+      "date": "2015-04-16",
+      "tilt": 0.02393,
+      "cumulative": -0.00727
+    },
+    {
+      "match": 28,
+      "date": "2015-04-18",
+      "tilt": -0.24614,
+      "cumulative": -0.25341
+    },
+    {
+      "match": 29,
+      "date": "2015-05-02",
+      "tilt": -0.04413,
+      "cumulative": -0.29754
+    },
+    {
+      "match": 30,
+      "date": "2015-05-04",
+      "tilt": -0.12175,
+      "cumulative": -0.41929
+    },
+    {
+      "match": 31,
+      "date": "2015-05-07",
+      "tilt": 0.14754,
+      "cumulative": -0.27175
+    },
+    {
+      "match": 32,
+      "date": "2015-05-09",
+      "tilt": -0.10436,
+      "cumulative": -0.37611
+    },
+    {
+      "match": 33,
+      "date": "2015-05-11",
+      "tilt": 0.15209,
+      "cumulative": -0.22402
+    },
+    {
+      "match": 34,
+      "date": "2015-05-15",
+      "tilt": 0.00487,
+      "cumulative": -0.21915
+    },
+    {
+      "match": 35,
+      "date": "2015-05-17",
+      "tilt": -0.08038,
+      "cumulative": -0.29953
+    },
+    {
+      "match": 36,
+      "date": "2016-04-12",
+      "tilt": -0.00091,
+      "cumulative": -0.30044
+    },
+    {
+      "match": 37,
+      "date": "2016-04-16",
+      "tilt": -0.00013,
+      "cumulative": -0.30057
+    },
+    {
+      "match": 38,
+      "date": "2016-04-18",
+      "tilt": 0.00327,
+      "cumulative": -0.2973
+    },
+    {
+      "match": 39,
+      "date": "2016-04-23",
+      "tilt": -0.01123,
+      "cumulative": -0.30853
+    },
+    {
+      "match": 40,
+      "date": "2016-04-26",
+      "tilt": -0.03376,
+      "cumulative": -0.34229
+    },
+    {
+      "match": 41,
+      "date": "2016-05-20",
+      "tilt": -0.06494,
+      "cumulative": -0.40723
+    },
+    {
+      "match": 42,
+      "date": "2017-04-15",
+      "tilt": -0.04511,
+      "cumulative": -0.45233
+    },
+    {
+      "match": 43,
+      "date": "2017-04-17",
+      "tilt": -0.10161,
+      "cumulative": -0.55394
+    },
+    {
+      "match": 44,
+      "date": "2017-04-28",
+      "tilt": -0.06316,
+      "cumulative": -0.6171
+    },
+    {
+      "match": 45,
+      "date": "2017-05-14",
+      "tilt": -0.05648,
+      "cumulative": -0.67357
+    },
+    {
+      "match": 46,
+      "date": "2020-09-23",
+      "tilt": -0.01375,
+      "cumulative": -0.68732
+    },
+    {
+      "match": 47,
+      "date": "2020-09-26",
+      "tilt": 0.06246,
+      "cumulative": -0.62485
+    },
+    {
+      "match": 48,
+      "date": "2020-09-30",
+      "tilt": 0.02428,
+      "cumulative": -0.60057
+    },
+    {
+      "match": 49,
+      "date": "2020-10-03",
+      "tilt": -0.06316,
+      "cumulative": -0.66373
+    },
+    {
+      "match": 50,
+      "date": "2020-10-07",
+      "tilt": -0.08686,
+      "cumulative": -0.75059
+    },
+    {
+      "match": 51,
+      "date": "2020-10-10",
+      "tilt": -0.03712,
+      "cumulative": -0.78771
+    },
+    {
+      "match": 52,
+      "date": "2020-10-12",
+      "tilt": -0.06579,
+      "cumulative": -0.8535
+    },
+    {
+      "match": 53,
+      "date": "2020-10-16",
+      "tilt": 0.06606,
+      "cumulative": -0.78744
+    },
+    {
+      "match": 54,
+      "date": "2020-10-21",
+      "tilt": -0.01763,
+      "cumulative": -0.80507
+    },
+    {
+      "match": 55,
+      "date": "2020-10-24",
+      "tilt": -0.03047,
+      "cumulative": -0.83554
+    },
+    {
+      "match": 56,
+      "date": "2020-10-26",
+      "tilt": 0.13354,
+      "cumulative": -0.702
+    },
+    {
+      "match": 57,
+      "date": "2020-10-29",
+      "tilt": 0.0032,
+      "cumulative": -0.6988
+    },
+    {
+      "match": 58,
+      "date": "2020-11-01",
+      "tilt": 0.14792,
+      "cumulative": -0.55088
+    },
+    {
+      "match": 59,
+      "date": "2021-04-11",
+      "tilt": -0.05671,
+      "cumulative": -0.60759
+    },
+    {
+      "match": 60,
+      "date": "2021-04-13",
+      "tilt": -0.02669,
+      "cumulative": -0.63427
+    },
+    {
+      "match": 61,
+      "date": "2021-04-18",
+      "tilt": -0.05795,
+      "cumulative": -0.69222
+    },
+    {
+      "match": 62,
+      "date": "2021-04-21",
+      "tilt": -0.00209,
+      "cumulative": -0.69432
+    },
+    {
+      "match": 63,
+      "date": "2021-04-26",
+      "tilt": 0.01249,
+      "cumulative": -0.68183
+    },
+    {
+      "match": 64,
+      "date": "2021-04-29",
+      "tilt": -0.06513,
+      "cumulative": -0.74696
+    },
+    {
+      "match": 65,
+      "date": "2021-09-23",
+      "tilt": -0.00182,
+      "cumulative": -0.74878
+    },
+    {
+      "match": 66,
+      "date": "2021-09-26",
+      "tilt": -0.21599,
+      "cumulative": -0.96477
+    },
+    {
+      "match": 67,
+      "date": "2021-09-28",
+      "tilt": -0.20095,
+      "cumulative": -1.16572
+    },
+    {
+      "match": 68,
+      "date": "2021-10-01",
+      "tilt": -0.02291,
+      "cumulative": -1.18863
+    },
+    {
+      "match": 69,
+      "date": "2021-10-03",
+      "tilt": 0.0,
+      "cumulative": -1.18863
+    },
+    {
+      "match": 70,
+      "date": "2021-10-07",
+      "tilt": 0.05057,
+      "cumulative": -1.13806
+    },
+    {
+      "match": 71,
+      "date": "2021-10-11",
+      "tilt": 0.04019,
+      "cumulative": -1.09787
+    },
+    {
+      "match": 72,
+      "date": "2021-10-13",
+      "tilt": -0.04205,
+      "cumulative": -1.13992
+    },
+    {
+      "match": 73,
+      "date": "2021-10-15",
+      "tilt": -0.00179,
+      "cumulative": -1.14171
+    }
+  ],
+  "team_matchups": [
+    {
+      "opponent": "Deccan Chargers",
+      "tilt_per_match": 0.19627,
+      "matches": 1
+    },
+    {
+      "opponent": "Kings XI Punjab",
+      "tilt_per_match": 0.08569,
+      "matches": 7
+    },
+    {
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": 0.05743,
+      "matches": 6
+    },
+    {
+      "opponent": "Pune Warriors",
+      "tilt_per_match": 0.0403,
+      "matches": 1
+    },
+    {
+      "opponent": "Kochi Tuskers Kerala",
+      "tilt_per_match": 0.0279,
+      "matches": 2
+    },
+    {
+      "opponent": "Punjab Kings",
+      "tilt_per_match": -0.00521,
+      "matches": 2
+    },
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.00895,
+      "matches": 9
+    },
+    {
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": -0.01694,
+      "matches": 7
+    },
+    {
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.02899,
+      "matches": 9
+    },
+    {
+      "opponent": "Rising Pune Supergiants",
+      "tilt_per_match": -0.03376,
+      "matches": 1
+    },
+    {
+      "opponent": "Chennai Super Kings",
+      "tilt_per_match": -0.04503,
+      "matches": 11
+    },
+    {
+      "opponent": "Rising Pune Supergiant",
+      "tilt_per_match": -0.05648,
+      "matches": 1
+    },
+    {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": -0.0718,
+      "matches": 3
+    },
+    {
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": -0.08035,
+      "matches": 5
+    },
+    {
+      "opponent": "Delhi Daredevils",
+      "tilt_per_match": -0.08816,
+      "matches": 8
+    }
+  ]
 }

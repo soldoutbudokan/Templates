@@ -3,18 +3,24 @@
   "player_id": "2049f3a0",
   "slug": "sj-srivastava-2049f3a0",
   "team": "Kings XI Punjab",
-  "total_tilt_per_match": -0.01581,
-  "batting_tilt_per_match": -0.0022,
-  "bowling_tilt_per_match": -0.01513,
-  "total_tilt": -0.20552,
+  "total_tilt_per_match": -0.01015,
+  "batting_tilt_per_match": -0.00112,
+  "bowling_tilt_per_match": -0.00981,
+  "shrunk_total_tilt_per_match": -0.01278,
+  "shrunk_batting_tilt_per_match": -0.00404,
+  "shrunk_bowling_tilt_per_match": -0.01084,
+  "tilt_ci_lower": -0.10432,
+  "tilt_ci_upper": 0.07877,
+  "confidence": "low",
+  "total_tilt": -0.132,
   "total_matches": 13,
   "batting_balls": 5,
   "bowling_balls": 286,
   "seasons": [
     {
       "season": "2009/10",
-      "batting_tilt_per_match": -0.0044,
-      "bowling_tilt_per_match": -0.04939,
+      "batting_tilt_per_match": -0.00371,
+      "bowling_tilt_per_match": -0.04582,
       "batting_matches": 2,
       "bowling_matches": 7,
       "batting_balls": 2,
@@ -22,8 +28,8 @@
     },
     {
       "season": "2011",
-      "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.02484,
+      "batting_tilt_per_match": 0.00147,
+      "bowling_tilt_per_match": 0.0322,
       "batting_matches": 2,
       "bowling_matches": 6,
       "batting_balls": 3,
@@ -33,36 +39,43 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.0088,
+      "tilt": -0.0045,
       "balls": 5,
-      "avg_delta": -0.00176
+      "avg_delta": -0.0009
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.5261,
+      "tilt": -0.44698,
       "balls": 129,
-      "avg_delta": -0.004078
+      "avg_delta": -0.003465
     },
     {
       "phase": "middle",
-      "tilt": 0.11362,
+      "tilt": 0.14704,
       "balls": 97,
-      "avg_delta": 0.001171
+      "avg_delta": 0.001516
     },
     {
       "phase": "death",
-      "tilt": 0.21575,
+      "tilt": 0.17244,
       "balls": 60,
-      "avg_delta": 0.003596
+      "avg_delta": 0.002874
     }
   ],
   "best_matches": [
     {
+      "date": "2011-05-10",
+      "vs": "Mumbai Indians",
+      "tilt": 0.00293,
+      "runs": 3,
+      "balls": 2
+    },
+    {
       "date": "2010-03-24",
       "vs": "Rajasthan Royals",
-      "tilt": 0.0,
+      "tilt": 0.00014,
       "runs": 0,
       "balls": 1
     },
@@ -74,16 +87,9 @@
       "balls": 1
     },
     {
-      "date": "2011-05-10",
-      "vs": "Mumbai Indians",
-      "tilt": 0.0,
-      "runs": 3,
-      "balls": 2
-    },
-    {
       "date": "2010-03-30",
       "vs": "Mumbai Indians",
-      "tilt": -0.0088,
+      "tilt": -0.00757,
       "runs": 1,
       "balls": 1
     }
@@ -92,15 +98,8 @@
     {
       "date": "2010-03-30",
       "vs": "Mumbai Indians",
-      "tilt": -0.0088,
+      "tilt": -0.00757,
       "runs": 1,
-      "balls": 1
-    },
-    {
-      "date": "2010-03-24",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.0,
-      "runs": 0,
       "balls": 1
     },
     {
@@ -111,9 +110,16 @@
       "balls": 1
     },
     {
+      "date": "2010-03-24",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.00014,
+      "runs": 0,
+      "balls": 1
+    },
+    {
       "date": "2011-05-10",
       "vs": "Mumbai Indians",
-      "tilt": 0.0,
+      "tilt": 0.00293,
       "runs": 3,
       "balls": 2
     }
@@ -122,35 +128,35 @@
     {
       "date": "2011-05-15",
       "vs": "Delhi Daredevils",
-      "tilt": 0.20506,
+      "tilt": 0.21545,
       "wickets": 2,
       "balls": 25
     },
     {
-      "date": "2010-03-30",
-      "vs": "Mumbai Indians",
-      "tilt": 0.17408,
-      "wickets": 1,
-      "balls": 27
-    },
-    {
       "date": "2010-03-27",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.17,
+      "tilt": 0.18983,
       "wickets": 2,
       "balls": 22
     },
     {
+      "date": "2010-03-30",
+      "vs": "Mumbai Indians",
+      "tilt": 0.13137,
+      "wickets": 1,
+      "balls": 27
+    },
+    {
       "date": "2011-05-10",
       "vs": "Mumbai Indians",
-      "tilt": 0.05323,
+      "tilt": 0.0492,
       "wickets": 1,
       "balls": 13
     },
     {
       "date": "2011-05-08",
       "vs": "Pune Warriors",
-      "tilt": 0.03307,
+      "tilt": 0.03417,
       "wickets": 2,
       "balls": 20
     }
@@ -159,37 +165,134 @@
     {
       "date": "2010-03-24",
       "vs": "Rajasthan Royals",
-      "tilt": -0.483,
+      "tilt": -0.47364,
       "wickets": 1,
       "balls": 27
     },
     {
       "date": "2010-04-16",
       "vs": "Deccan Chargers",
-      "tilt": -0.08867,
+      "tilt": -0.07395,
       "wickets": 0,
       "balls": 26
     },
     {
       "date": "2011-04-23",
       "vs": "Delhi Daredevils",
-      "tilt": -0.08561,
+      "tilt": -0.05958,
       "wickets": 0,
-      "balls": 26
-    },
-    {
-      "date": "2011-05-13",
-      "vs": "Kochi Tuskers Kerala",
-      "tilt": -0.05716,
-      "wickets": 2,
       "balls": 26
     },
     {
       "date": "2010-04-04",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.05544,
+      "tilt": -0.05774,
       "wickets": 0,
       "balls": 20
+    },
+    {
+      "date": "2011-05-13",
+      "vs": "Kochi Tuskers Kerala",
+      "tilt": -0.04633,
+      "wickets": 2,
+      "balls": 26
+    }
+  ],
+  "career_trend": [
+    {
+      "match": 1,
+      "date": "2010-03-19",
+      "tilt": -0.00115,
+      "cumulative": -0.00115
+    },
+    {
+      "match": 2,
+      "date": "2010-03-24",
+      "tilt": -0.47351,
+      "cumulative": -0.47466
+    },
+    {
+      "match": 3,
+      "date": "2010-03-27",
+      "tilt": 0.18983,
+      "cumulative": -0.28483
+    },
+    {
+      "match": 4,
+      "date": "2010-03-30",
+      "tilt": 0.1238,
+      "cumulative": -0.16103
+    },
+    {
+      "match": 5,
+      "date": "2010-04-02",
+      "tilt": -0.03543,
+      "cumulative": -0.19645
+    },
+    {
+      "match": 6,
+      "date": "2010-04-04",
+      "tilt": -0.05774,
+      "cumulative": -0.25419
+    },
+    {
+      "match": 7,
+      "date": "2010-04-16",
+      "tilt": -0.07395,
+      "cumulative": -0.32814
+    },
+    {
+      "match": 8,
+      "date": "2011-04-23",
+      "tilt": -0.05958,
+      "cumulative": -0.38772
+    },
+    {
+      "match": 9,
+      "date": "2011-05-08",
+      "tilt": 0.03417,
+      "cumulative": -0.35355
+    },
+    {
+      "match": 10,
+      "date": "2011-05-10",
+      "tilt": 0.05214,
+      "cumulative": -0.30141
+    },
+    {
+      "match": 11,
+      "date": "2011-05-13",
+      "tilt": -0.04633,
+      "cumulative": -0.34775
+    },
+    {
+      "match": 12,
+      "date": "2011-05-15",
+      "tilt": 0.21545,
+      "cumulative": -0.13229
+    },
+    {
+      "match": 13,
+      "date": "2011-05-17",
+      "tilt": 0.00029,
+      "cumulative": -0.132
+    }
+  ],
+  "team_matchups": [
+    {
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": 0.00014,
+      "matches": 1
+    },
+    {
+      "opponent": "Pune Warriors",
+      "tilt_per_match": 0.0,
+      "matches": 1
+    },
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.00232,
+      "matches": 2
     }
   ]
 }

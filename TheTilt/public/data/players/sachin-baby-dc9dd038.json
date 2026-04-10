@@ -3,17 +3,23 @@
   "player_id": "dc9dd038",
   "slug": "sachin-baby-dc9dd038",
   "team": "Royal Challengers Bangalore",
-  "total_tilt_per_match": 0.0169,
-  "batting_tilt_per_match": 0.01899,
-  "bowling_tilt_per_match": 0.00537,
-  "total_tilt": 0.21964,
+  "total_tilt_per_match": 0.01174,
+  "batting_tilt_per_match": 0.01332,
+  "bowling_tilt_per_match": 0.00309,
+  "shrunk_total_tilt_per_match": 0.00231,
+  "shrunk_batting_tilt_per_match": 0.00584,
+  "shrunk_bowling_tilt_per_match": -0.00237,
+  "tilt_ci_lower": -0.02514,
+  "tilt_ci_upper": 0.02977,
+  "confidence": "low",
+  "total_tilt": 0.15266,
   "total_matches": 13,
   "batting_balls": 123,
   "bowling_balls": 10,
   "seasons": [
     {
       "season": "2013",
-      "batting_tilt_per_match": -0.03765,
+      "batting_tilt_per_match": -0.03455,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 1,
       "bowling_matches": 0,
@@ -22,8 +28,8 @@
     },
     {
       "season": "2016",
-      "batting_tilt_per_match": 0.06115,
-      "bowling_tilt_per_match": 0.00537,
+      "batting_tilt_per_match": 0.04819,
+      "bowling_tilt_per_match": 0.00309,
       "batting_matches": 6,
       "bowling_matches": 2,
       "batting_balls": 82,
@@ -31,7 +37,7 @@
     },
     {
       "season": "2017",
-      "batting_tilt_per_match": -0.03635,
+      "batting_tilt_per_match": -0.03334,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 3,
       "bowling_matches": 0,
@@ -40,7 +46,7 @@
     },
     {
       "season": "2021",
-      "batting_tilt_per_match": -0.01129,
+      "batting_tilt_per_match": -0.00812,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 1,
       "bowling_matches": 0,
@@ -51,107 +57,107 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.00813,
+      "tilt": -0.0046,
       "balls": 3,
-      "avg_delta": -0.002709
+      "avg_delta": -0.001532
     },
     {
       "phase": "middle",
-      "tilt": -0.03159,
+      "tilt": -0.0421,
       "balls": 55,
-      "avg_delta": -0.000574
+      "avg_delta": -0.000765
     },
     {
       "phase": "death",
-      "tilt": 0.24862,
+      "tilt": 0.19316,
       "balls": 65,
-      "avg_delta": 0.003825
+      "avg_delta": 0.002972
     }
   ],
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": 0.01057,
+      "tilt": 0.00632,
       "balls": 6,
-      "avg_delta": 0.001761
+      "avg_delta": 0.001054
     },
     {
       "phase": "death",
-      "tilt": 0.00017,
+      "tilt": -0.00014,
       "balls": 4,
-      "avg_delta": 4.2e-05
+      "avg_delta": -3.4e-05
     }
   ],
   "best_matches": [
     {
       "date": "2016-05-02",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.13594,
+      "tilt": 0.12912,
       "runs": 16,
       "balls": 9
     },
     {
-      "date": "2016-05-29",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.08068,
-      "runs": 18,
-      "balls": 10
-    },
-    {
       "date": "2016-05-09",
       "vs": "Kings XI Punjab",
-      "tilt": 0.05652,
+      "tilt": 0.08382,
       "runs": 33,
       "balls": 31
     },
     {
       "date": "2016-05-11",
       "vs": "Mumbai Indians",
-      "tilt": 0.05522,
+      "tilt": 0.04927,
       "runs": 25,
       "balls": 13
     },
     {
       "date": "2016-04-30",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.04668,
+      "tilt": 0.01625,
       "runs": 27,
       "balls": 16
+    },
+    {
+      "date": "2016-05-29",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.01527,
+      "runs": 18,
+      "balls": 10
     }
   ],
   "worst_matches": [
     {
       "date": "2017-04-05",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.0529,
+      "tilt": -0.0507,
       "runs": 1,
       "balls": 3
     },
     {
       "date": "2017-04-29",
       "vs": "Rising Pune Supergiant",
-      "tilt": -0.0473,
+      "tilt": -0.04298,
       "runs": 2,
       "balls": 4
     },
     {
       "date": "2013-05-17",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.03765,
+      "tilt": -0.03455,
       "runs": 3,
       "balls": 7
     },
     {
       "date": "2021-09-20",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.01129,
+      "tilt": -0.00812,
       "runs": 7,
       "balls": 17
     },
     {
       "date": "2017-05-14",
       "vs": "Delhi Daredevils",
-      "tilt": -0.00886,
+      "tilt": -0.00633,
       "runs": 12,
       "balls": 10
     }
@@ -160,14 +166,14 @@
     {
       "date": "2016-05-18",
       "vs": "Kings XI Punjab",
-      "tilt": 0.01057,
+      "tilt": 0.00632,
       "wickets": 1,
       "balls": 6
     },
     {
       "date": "2016-05-14",
       "vs": "Gujarat Lions",
-      "tilt": 0.00017,
+      "tilt": -0.00014,
       "wickets": 2,
       "balls": 4
     }
@@ -176,16 +182,133 @@
     {
       "date": "2016-05-14",
       "vs": "Gujarat Lions",
-      "tilt": 0.00017,
+      "tilt": -0.00014,
       "wickets": 2,
       "balls": 4
     },
     {
       "date": "2016-05-18",
       "vs": "Kings XI Punjab",
-      "tilt": 0.01057,
+      "tilt": 0.00632,
       "wickets": 1,
       "balls": 6
+    }
+  ],
+  "career_trend": [
+    {
+      "match": 1,
+      "date": "2013-05-17",
+      "tilt": -0.03455,
+      "cumulative": -0.03455
+    },
+    {
+      "match": 2,
+      "date": "2016-04-30",
+      "tilt": 0.01625,
+      "cumulative": -0.0183
+    },
+    {
+      "match": 3,
+      "date": "2016-05-02",
+      "tilt": 0.12912,
+      "cumulative": 0.11083
+    },
+    {
+      "match": 4,
+      "date": "2016-05-09",
+      "tilt": 0.08382,
+      "cumulative": 0.19465
+    },
+    {
+      "match": 5,
+      "date": "2016-05-11",
+      "tilt": 0.04927,
+      "cumulative": 0.24392
+    },
+    {
+      "match": 6,
+      "date": "2016-05-14",
+      "tilt": -0.00014,
+      "cumulative": 0.24379
+    },
+    {
+      "match": 7,
+      "date": "2016-05-18",
+      "tilt": 0.00632,
+      "cumulative": 0.25011
+    },
+    {
+      "match": 8,
+      "date": "2016-05-24",
+      "tilt": -0.0046,
+      "cumulative": 0.24551
+    },
+    {
+      "match": 9,
+      "date": "2016-05-29",
+      "tilt": 0.01527,
+      "cumulative": 0.26078
+    },
+    {
+      "match": 10,
+      "date": "2017-04-05",
+      "tilt": -0.0507,
+      "cumulative": 0.21008
+    },
+    {
+      "match": 11,
+      "date": "2017-04-29",
+      "tilt": -0.04298,
+      "cumulative": 0.1671
+    },
+    {
+      "match": 12,
+      "date": "2017-05-14",
+      "tilt": -0.00633,
+      "cumulative": 0.16077
+    },
+    {
+      "match": 13,
+      "date": "2021-09-20",
+      "tilt": -0.00812,
+      "cumulative": 0.15266
+    }
+  ],
+  "team_matchups": [
+    {
+      "opponent": "Kings XI Punjab",
+      "tilt_per_match": 0.08382,
+      "matches": 1
+    },
+    {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": 0.0605,
+      "matches": 2
+    },
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": 0.04927,
+      "matches": 1
+    },
+    {
+      "opponent": "Gujarat Lions",
+      "tilt_per_match": -0.0046,
+      "matches": 1
+    },
+    {
+      "opponent": "Delhi Daredevils",
+      "tilt_per_match": -0.00633,
+      "matches": 1
+    },
+    {
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": -0.01343,
+      "matches": 4
+    },
+    {
+      "opponent": "Rising Pune Supergiant",
+      "tilt_per_match": -0.04298,
+      "matches": 1
     }
   ]
 }

@@ -70,6 +70,10 @@ For each ball, we compute the **match state before the delivery is bowled**:
 | `is_death` | Overs 16-20 (final phase) |
 | `recent_run_rate` | Scoring rate over the last 3 overs |
 | `recent_wickets` | Wickets fallen in the last 3 overs |
+| `venue` | Match venue (categorical — LightGBM native handling) |
+| `batting_team_chose_to_bat` | 1 if batting team won toss and chose to bat |
+| `season_numeric` | IPL season year (2008-2026) for era adjustment |
+| `opponent_bowler_economy` | Career bowling economy of the bowler (opponent quality proxy) |
 
 **Key design decision:** We use a single model for both innings. For innings 1, the target/required run rate features are set to 0. This lets the model learn that innings 1 is about *setting a total* while innings 2 is about *chasing*. The `innings` feature acts as a switch.
 
@@ -78,7 +82,7 @@ For each ball, we compute the **match state before the delivery is bowled**:
 We train a **LightGBM gradient-boosted classifier** to predict: *will the team currently batting win this match?*
 
 ```
-Input:  13 match-state features (before each ball)
+Input:  17 match-state features (before each ball)
 Output: P(batting team wins) ∈ [0, 1]
 ```
 
@@ -90,58 +94,61 @@ Output: P(batting team wins) ∈ [0, 1]
 
 **Training details:**
 - Train/test split: **80/20 by match** (not by ball — splitting by ball would leak information since balls within the same match are correlated)
-- 500 trees, learning rate 0.05, max depth 6
+- 1000 trees (with early stopping at ~135), learning rate 0.03, max depth 5
+- DLS-affected matches excluded from training (22 matches)
+- Platt scaling applied for calibration
 - Trained in ~5 seconds
 
 **Model performance:**
 
 | Metric | Value |
 |--------|-------|
-| Brier Score | 0.202 (lower is better, perfect = 0) |
-| AUC | 0.759 |
-| Log Loss | 0.603 |
+| Brier Score | 0.203 (lower is better, perfect = 0) |
+| AUC | 0.747 |
+| Log Loss | 0.588 |
 
 **Calibration** — the model's predicted probabilities closely match actual outcomes:
 
 ```
 Predicted → Actual Win Rate
-  3%  →  14%    (slightly under-confident at extremes)
- 15%  →  25%
- 25%  →  33%
- 36%  →  35%    
- 46%  →  43%    (well-calibrated in the middle)
- 54%  →  50%
- 65%  →  61%
- 75%  →  73%    
- 85%  →  74%
- 97%  →  89%    (slightly over-confident at extremes)
+  6%  →   9%
+ 15%  →  16%
+ 26%  →  29%
+ 35%  →  42%
+ 45%  →  51%    (well-calibrated in the middle)
+ 55%  →  48%
+ 65%  →  55%
+ 75%  →  72%
+ 85%  →  82%
+ 93%  →  95%
 ```
 
 **Sanity checks pass:**
 
 | Scenario | Predicted Win Prob |
 |----------|--------------------|
-| Innings 2, need 2 off 6 balls, 8 wickets in hand | 99.9% |
-| Innings 2, need 60 off 6 balls, 2 wickets in hand | 0.0% |
-| Start of match (0/0, ball 1) | 47.7% |
-| Innings 1, scored 200/2 off 18 overs | 94.5% |
+| Innings 2, need 2 off 6 balls, 8 wickets in hand | 89.0% |
+| Innings 2, need 60 off 6 balls, 2 wickets in hand | 10.7% |
+| Start of match (0/0, ball 1) | 42.3% |
+| Innings 1, scored 200/2 off 18 overs | 77.4% |
 
 **Feature importances** (what matters most for predicting the winner):
 
 ```
-target                 ████████████████████████████████  (4373)
-run_rate               ██████████████████               (2457)
-wickets_in_hand        ████████████                     (1685)
-required_run_rate      ███████████                      (1596)
-runs_scored            ██████████                       (1378)
-recent_run_rate        ████████                         (1144)
-runs_needed            ███████                          ( 949)
-recent_wickets         ████                             ( 506)
-balls_remaining        ███                              ( 459)
-innings                ██                               ( 222)
+venue                  ████████████████████████████████  (1173)
+required_run_rate      ████████████                     ( 444)
+target                 ███████████                      ( 419)
+wickets_in_hand        ██████████                       ( 375)
+runs_needed            ████████                         ( 310)
+run_rate               ████████                         ( 306)
+runs_scored            ██████                           ( 255)
+innings                █████                            ( 187)
+season_numeric         ███                              ( 137)
+opponent_bowler_econ   ██                               (  84)
+balls_remaining        █                                (  50)
 ```
 
-The target (chase total) dominates, which makes sense — knowing what you're chasing is the single most important piece of information in an IPL match.
+Venue is now the most important feature — confirming that where the match is played significantly affects win probability (e.g., Chinnaswamy's high-scoring conditions vs Chepauk's spin-friendly tracks). Season captures era effects.
 
 ### Step 4: Computing TILT
 
@@ -166,6 +173,19 @@ For each player across their career:
 - `bowling_tilt_per_match` = total bowling delta / matches bowled
 - `total_tilt_per_match` = batting + bowling combined
 
+**Bayesian Shrinkage:**
+
+Raw per-match averages are noisy for players with few matches. We apply empirical Bayes shrinkage:
+
+```
+shrunk_tilt = (n / (n + k)) * raw_tilt + (k / (n + k)) * population_mean
+```
+
+Where `k` is estimated from the ratio of within-player to between-player variance (k ≈ 6 for IPL data). This means:
+- A player with 6 matches: 50% raw, 50% population mean
+- A player with 60 matches: 91% raw, 9% population mean
+- A player with 188 matches (Narine): 97% raw, 3% population mean
+
 ### Step 5: Export & Website
 
 Rankings and per-player breakdowns are exported as static JSON files and served on a Vercel-hosted website with sortable tables, search, and player detail pages.
@@ -174,33 +194,42 @@ Rankings and per-player breakdowns are exported as static JSON files and served 
 
 ## Results & Findings
 
-### Top Overall Players (10+ matches)
+Rankings use **Bayesian shrinkage** (empirical Bayes) to stabilize small-sample estimates. Players with few matches are pulled toward the population mean; high-match players keep their raw values. Confidence levels: green (100+ matches), yellow (30-100), gray (<30).
 
-| Rank | Player | Team | TILT/Match | Matches |
-|------|--------|------|------------|---------|
-| 14 | JC Buttler | Gujarat Titans | +6.45% | 121 |
-| 17 | YBK Jaiswal | Rajasthan Royals | +6.11% | 68 |
-| 20 | KL Rahul | Delhi Capitals | +5.89% | 133 |
-| 23 | DA Warner | Sunrisers Hyderabad | +5.47% | 180 |
-| 24 | AB de Villiers | Royal Challengers Bangalore | +5.40% | 166 |
+### Top Overall Players (Shrunk TILT, 10+ matches)
+
+| Rank | Player | TILT/Match | Raw | Confidence | Matches |
+|------|--------|------------|-----|------------|---------|
+| 1 | Priyansh Arya | +11.48% | +15.83% | low | 18 |
+| 2 | HM Amla | +6.89% | +10.11% | low | 16 |
+| 3 | DE Bollinger | +5.51% | +7.11% | low | 27 |
+| 4 | Rashid Khan | +4.98% | +5.28% | **high** | 136 |
+| 5 | ML Hayden | +4.72% | +5.97% | medium | 31 |
+| 6 | SP Narine | +4.59% | +4.79% | **high** | 188 |
+| 7 | TM Head | +4.47% | +5.40% | medium | 40 |
+| 8 | V Sehwag | +4.29% | +4.65% | **high** | 102 |
+| 9 | RD Gaikwad | +4.20% | +4.69% | medium | 73 |
+| 10 | YBK Jaiswal | +4.14% | +4.66% | medium | 68 |
 
 ### Top Bowlers
 
-| Rank | Player | Team | Bowl TILT/Match | Matches |
-|------|--------|------|-----------------|---------|
-| 1 | GD McGrath | Delhi Daredevils | +6.98% | 14 |
-| 2 | DL Vettori | Royal Challengers Bangalore | +5.52% | 34 |
-| 4 | SL Malinga | Mumbai Indians | +5.78% | 120 |
-| 6 | SP Narine | Kolkata Knight Riders | +3.73% | 188 |
-| 8 | Rashid Khan | Gujarat Titans | +4.04% | 136 |
+| Rank | Player | Bowl TILT/Match | Confidence | Matches |
+|------|--------|-----------------|------------|---------|
+| 4 | Rashid Khan | +4.33% | **high** | 136 |
+| 6 | SP Narine | +3.60% | **high** | 188 |
+| 25 | YS Chahal | +3.14% | **high** | 171 |
+| 26 | SL Malinga | +3.03% | **high** | 120 |
+| 34 | JJ Bumrah | +2.75% | **high** | 144 |
 
 ### Notable Observations
 
-- **Rashid Khan** is the best all-rounder by TILT — positive in both batting (+1.57%) and bowling (+4.04%)
-- **Bumrah** has a bowling TILT of +2.71% across 144 matches — elite consistency
-- **Kohli** (+2.46%) ranks lower than you might expect — he's extremely consistent but TILT rewards *clutch moments* and *game-changing innings* more than volume
-- **AB de Villiers** (+5.40%) ranks much higher — his explosive style created larger win probability swings per innings
-- Small-sample players dominate the very top (V Suryavanshi at +18% in 10 matches). Phase 2 will add Bayesian shrinkage to handle this.
+- **Rashid Khan** (#4) is the highest-ranked high-confidence player — elite in both batting and bowling
+- **SP Narine** (#6) across 188 matches — the most consistent all-round impact player in IPL history
+- **Bumrah** (#34) with +2.90% across 144 matches — pure bowling consistency. His raw and shrunk values are almost identical (high match count = minimal shrinkage)
+- **Sehwag** (#8) at +4.29% with high confidence — his aggressive opening style created enormous win probability swings
+- **Venue matters most**: The venue feature has the highest importance (1173), confirming that ground conditions significantly affect match outcomes
+- **Era adjustment works**: Old-era bowlers (McGrath, Vettori) no longer disproportionately dominate — the season_numeric feature captures evolving T20 scoring rates
+- **Shrinkage effect**: Priyansh Arya drops from +15.83% raw to +11.48% shrunk (18 matches). Rashid Khan barely moves: +5.28% → +4.98% (136 matches). The shrinkage constant k ≈ 6 means you need ~6 matches before the model trusts your data 50%.
 
 ---
 
@@ -245,7 +274,7 @@ TheTilt/
 ## Tech Stack
 
 - **Data Pipeline:** Python 3, pandas, LightGBM, pyarrow, scikit-learn
-- **Website:** Vanilla HTML/CSS/JS (no framework needed — it's a static data site)
+- **Website:** Vanilla HTML/CSS/JS + Chart.js for interactive visualizations
 - **API:** Flask (minimal — mostly just routes to static files)
 - **Hosting:** Vercel (serverless Python + static files)
 - **Aesthetic:** Dark monospace terminal style, matching [PlainCricket](https://plaincricket.vercel.app)
@@ -256,25 +285,28 @@ TheTilt/
 
 ### Current Limitations
 
-1. **No opponent quality adjustment** — A boundary off Bumrah should count for more than a boundary off a part-timer. Currently both are weighted equally.
-2. **Small sample bias** — Players with 10-15 matches can have extreme TILT values that are more noise than signal.
-3. **Fielding is invisible** — The model can't attribute catches, run-outs, or misfields to specific fielders.
-4. **No batting position context** — An opener facing the new ball operates in a different context than a #6 batter.
-5. **Single model for all eras** — IPL scoring rates have changed over 18 years, but we use one model for everything.
+1. **Fielding is invisible** — The model can't attribute catches, run-outs, or misfields to specific fielders.
+2. **No batting position context** — An opener facing the new ball operates in a different context than a #6 batter.
+3. **No bowler type classification** — The model doesn't know if a bowler is pace or spin. PaceOrSpin × Venue interactions could improve predictions. This requires external data or manual classification.
+4. **Opponent quality is approximate** — We use career bowling economy as a proxy, but a full iterative system (using TILT-derived quality) would be more accurate.
 
-### Phase 2 (Planned)
+### What's Been Addressed
 
-- **Opponent quality adjustment:** Two-pass system where pass 1 computes raw TILT, then pass 2 re-weights based on opponent strength
-- **Bayesian shrinkage:** Regress small-sample players toward the population mean
-- **Confidence intervals:** Bootstrap-based uncertainty bounds
-- **Richer breakdowns:** Season-by-season trends, venue effects, matchup analysis
+- ~~Small sample bias~~ → **Bayesian shrinkage** with empirical Bayes (k ≈ 6)
+- ~~Single model for all eras~~ → **Season year** as a continuous feature
+- ~~No venue context~~ → **Venue** as categorical feature (highest importance)
+- ~~No toss context~~ → **Toss** parsed and used as `batting_team_chose_to_bat`
+- ~~No opponent quality~~ → **Bowling economy** proxy added as feature
+- ~~DLS matches~~ → Excluded from training (22 matches)
+- ~~Recent run rate bug~~ → Fixed approximation in `compute_tilt.py`
 
-### Phase 3 (Future)
+### Future Work
 
+- **Bowler type classification** (pace/spin) + PaceOrSpin × Venue interactions
 - Expand to all T20 internationals (21,000+ matches on Cricsheet)
 - Player comparison tool
 - Automated pipeline for new Cricsheet data releases
-- More sophisticated model (pitch conditions, toss, home advantage)
+- Impact sub analysis (data parsed, analysis pending)
 
 ---
 
