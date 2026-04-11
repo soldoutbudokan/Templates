@@ -3,24 +3,29 @@
   "player_id": "3dba85c2",
   "slug": "wa-mota-3dba85c2",
   "team": "Kings XI Punjab",
-  "total_tilt_per_match": -0.03439,
-  "batting_tilt_per_match": -0.01373,
-  "bowling_tilt_per_match": -0.03344,
-  "shrunk_total_tilt_per_match": -0.02855,
-  "shrunk_batting_tilt_per_match": -0.01247,
-  "shrunk_bowling_tilt_per_match": -0.02508,
-  "tilt_ci_lower": -0.06923,
-  "tilt_ci_upper": 0.01214,
+  "teams": [
+    "Kings XI Punjab"
+  ],
+  "total_tilt_per_match": -0.03213,
+  "batting_tilt_per_match": -0.01623,
+  "bowling_tilt_per_match": -0.02735,
+  "shrunk_total_tilt_per_match": -0.02773,
+  "shrunk_batting_tilt_per_match": -0.01337,
+  "shrunk_bowling_tilt_per_match": -0.02274,
+  "tilt_ci_lower": -0.07121,
+  "tilt_ci_upper": 0.01575,
+  "tilt_ci_lower_90": -0.06422,
+  "tilt_ci_upper_90": 0.00876,
   "confidence": "low",
-  "total_tilt": -0.34393,
+  "total_tilt": -0.3213,
   "total_matches": 10,
   "batting_balls": 76,
   "bowling_balls": 75,
   "seasons": [
     {
       "season": "2007/08",
-      "batting_tilt_per_match": 0.00719,
-      "bowling_tilt_per_match": -0.06399,
+      "batting_tilt_per_match": 0.00782,
+      "bowling_tilt_per_match": -0.03749,
       "batting_matches": 2,
       "bowling_matches": 2,
       "batting_balls": 28,
@@ -28,8 +33,8 @@
     },
     {
       "season": "2009",
-      "batting_tilt_per_match": -0.02071,
-      "bowling_tilt_per_match": -0.02122,
+      "batting_tilt_per_match": -0.02425,
+      "bowling_tilt_per_match": -0.0233,
       "batting_matches": 6,
       "bowling_matches": 5,
       "batting_balls": 48,
@@ -39,52 +44,59 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.06343,
+      "tilt": -0.07286,
       "balls": 48,
-      "avg_delta": -0.001322
+      "avg_delta": -0.001518
     },
     {
       "phase": "death",
-      "tilt": -0.04644,
+      "tilt": -0.05697,
       "balls": 28,
-      "avg_delta": -0.001658
+      "avg_delta": -0.002035
     }
   ],
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": -0.06332,
+      "tilt": -0.00088,
       "balls": 50,
-      "avg_delta": -0.001266
+      "avg_delta": -1.8e-05
     },
     {
       "phase": "death",
-      "tilt": -0.17074,
+      "tilt": -0.1906,
       "balls": 25,
-      "avg_delta": -0.006829
+      "avg_delta": -0.007624
     }
   ],
   "best_matches": [
     {
       "date": "2009-04-29",
       "vs": "Mumbai Indians",
-      "tilt": 0.01777,
+      "tilt": 0.01416,
       "runs": 5,
       "balls": 6
     },
     {
       "date": "2008-04-21",
       "vs": "Rajasthan Royals",
-      "tilt": 0.00882,
+      "tilt": 0.01108,
       "runs": 1,
       "balls": 1
     },
     {
       "date": "2008-05-31",
       "vs": "Chennai Super Kings",
-      "tilt": 0.00556,
+      "tilt": 0.00456,
       "runs": 25,
       "balls": 27
+    },
+    {
+      "date": "2009-05-12",
+      "vs": "Mumbai Indians",
+      "tilt": 0.00185,
+      "runs": 4,
+      "balls": 7
     },
     {
       "date": "2009-04-26",
@@ -92,41 +104,27 @@
       "tilt": 0.0,
       "runs": 1,
       "balls": 2
-    },
-    {
-      "date": "2009-05-17",
-      "vs": "Deccan Chargers",
-      "tilt": -0.00495,
-      "runs": 12,
-      "balls": 19
     }
   ],
   "worst_matches": [
     {
       "date": "2009-05-20",
       "vs": "Chennai Super Kings",
-      "tilt": -0.07582,
+      "tilt": -0.11088,
       "runs": 5,
       "balls": 10
     },
     {
       "date": "2009-05-09",
       "vs": "Deccan Chargers",
-      "tilt": -0.04484,
+      "tilt": -0.04152,
       "runs": 3,
       "balls": 4
     },
     {
-      "date": "2009-05-12",
-      "vs": "Mumbai Indians",
-      "tilt": -0.01642,
-      "runs": 4,
-      "balls": 7
-    },
-    {
       "date": "2009-05-17",
       "vs": "Deccan Chargers",
-      "tilt": -0.00495,
+      "tilt": -0.00908,
       "runs": 12,
       "balls": 19
     },
@@ -136,41 +134,48 @@
       "tilt": 0.0,
       "runs": 1,
       "balls": 2
+    },
+    {
+      "date": "2009-05-12",
+      "vs": "Mumbai Indians",
+      "tilt": 0.00185,
+      "runs": 4,
+      "balls": 7
     }
   ],
   "bowling_best_matches": [
     {
       "date": "2009-05-15",
       "vs": "Delhi Daredevils",
-      "tilt": 0.06602,
+      "tilt": 0.0575,
       "wickets": 1,
       "balls": 6
     },
     {
       "date": "2009-05-09",
       "vs": "Deccan Chargers",
-      "tilt": 0.00807,
+      "tilt": 0.0116,
       "wickets": 1,
       "balls": 25
     },
     {
-      "date": "2009-04-29",
-      "vs": "Mumbai Indians",
-      "tilt": -0.00832,
-      "wickets": 0,
-      "balls": 6
-    },
-    {
       "date": "2009-05-20",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01653,
+      "tilt": 0.00394,
       "wickets": 1,
       "balls": 12
     },
     {
+      "date": "2009-04-29",
+      "vs": "Mumbai Indians",
+      "tilt": -0.0078,
+      "wickets": 0,
+      "balls": 6
+    },
+    {
       "date": "2008-04-19",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01962,
+      "tilt": -0.01667,
       "wickets": 1,
       "balls": 14
     }
@@ -179,120 +184,120 @@
     {
       "date": "2009-05-17",
       "vs": "Deccan Chargers",
-      "tilt": -0.15532,
+      "tilt": -0.18173,
       "wickets": 0,
       "balls": 6
     },
     {
       "date": "2008-04-21",
       "vs": "Rajasthan Royals",
-      "tilt": -0.10836,
+      "tilt": -0.05831,
       "wickets": 0,
       "balls": 6
     },
     {
       "date": "2008-04-19",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01962,
+      "tilt": -0.01667,
       "wickets": 1,
       "balls": 14
     },
     {
-      "date": "2009-05-20",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.01653,
-      "wickets": 1,
-      "balls": 12
-    },
-    {
       "date": "2009-04-29",
       "vs": "Mumbai Indians",
-      "tilt": -0.00832,
+      "tilt": -0.0078,
       "wickets": 0,
       "balls": 6
+    },
+    {
+      "date": "2009-05-20",
+      "vs": "Chennai Super Kings",
+      "tilt": 0.00394,
+      "wickets": 1,
+      "balls": 12
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2008-04-19",
-      "tilt": -0.01962,
-      "cumulative": -0.01962
+      "tilt": -0.01667,
+      "cumulative": -0.01667
     },
     {
       "match": 2,
       "date": "2008-04-21",
-      "tilt": -0.09954,
-      "cumulative": -0.11916
+      "tilt": -0.04722,
+      "cumulative": -0.06389
     },
     {
       "match": 3,
       "date": "2008-05-31",
-      "tilt": 0.00556,
-      "cumulative": -0.1136
+      "tilt": 0.00456,
+      "cumulative": -0.05933
     },
     {
       "match": 4,
       "date": "2009-04-26",
       "tilt": 0.0,
-      "cumulative": -0.1136
+      "cumulative": -0.05933
     },
     {
       "match": 5,
       "date": "2009-04-29",
-      "tilt": 0.00946,
-      "cumulative": -0.10415
+      "tilt": 0.00636,
+      "cumulative": -0.05297
     },
     {
       "match": 6,
       "date": "2009-05-09",
-      "tilt": -0.03677,
-      "cumulative": -0.14092
+      "tilt": -0.02992,
+      "cumulative": -0.08289
     },
     {
       "match": 7,
       "date": "2009-05-12",
-      "tilt": -0.01642,
-      "cumulative": -0.15734
+      "tilt": 0.00185,
+      "cumulative": -0.08104
     },
     {
       "match": 8,
       "date": "2009-05-15",
-      "tilt": 0.06602,
-      "cumulative": -0.09131
+      "tilt": 0.0575,
+      "cumulative": -0.02355
     },
     {
       "match": 9,
       "date": "2009-05-17",
-      "tilt": -0.16027,
-      "cumulative": -0.25158
+      "tilt": -0.19081,
+      "cumulative": -0.21436
     },
     {
       "match": 10,
       "date": "2009-05-20",
-      "tilt": -0.09235,
-      "cumulative": -0.34393
+      "tilt": -0.10695,
+      "cumulative": -0.3213
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.00441,
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": 0.008,
       "matches": 2
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.00068,
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": 0.00554,
       "matches": 2
     },
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.02489,
+      "tilt_per_match": -0.0253,
       "matches": 2
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.03513,
+      "tilt_per_match": -0.05316,
       "matches": 2
     }
   ]

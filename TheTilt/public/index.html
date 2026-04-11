@@ -27,6 +27,11 @@
         <button class="tab" data-filter="all-rounder">all-rounders</button>
     </div>
 
+    <div class="rank-toggle">
+        <button class="rank-btn active" data-rank="floor">rank by floor</button>
+        <button class="rank-btn" data-rank="estimate">rank by estimate</button>
+    </div>
+
     <div id="content">
         <div class="loading">loading rankings...</div>
     </div>
@@ -38,7 +43,8 @@
 
 <script>
 let allPlayers = [];
-let currentSort = { key: 'shrunk_total_tilt_per_match', desc: true };
+let rankMode = 'floor'; // 'floor' (CI lower bound) or 'estimate' (point estimate)
+let currentSort = { key: 'tilt_ci_lower_90', desc: true };
 let currentFilter = 'all';
 let searchQuery = '';
 
@@ -113,7 +119,9 @@ function formatTilt(val) {
 // Render table
 function render() {
     const players = getFilteredPlayers();
-    const maxTilt = Math.max(...allPlayers.map(p => Math.abs(p.shrunk_total_tilt_per_match || p.total_tilt_per_match)), 0.01);
+    const tiltKey = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
+    const tiltLabel = rankMode === 'floor' ? 'TILT floor' : 'TILT/match';
+    const maxTilt = Math.max(...allPlayers.map(p => Math.abs(p[tiltKey] || p.total_tilt_per_match)), 0.01);
 
     function sortCls(key) {
         return currentSort.key === key ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : '';
@@ -125,7 +133,7 @@ function render() {
                 <tr>
                     <th data-sort="rank">#</th>
                     <th data-sort="player">player</th>
-                    <th data-sort="shrunk_total_tilt_per_match" class="${sortCls('shrunk_total_tilt_per_match')}">TILT/match</th>
+                    <th data-sort="${tiltKey}" class="${sortCls(tiltKey)}">${tiltLabel}</th>
                     <th data-sort="batting_tilt_per_match" class="hide-mobile ${sortCls('batting_tilt_per_match')}">bat TILT</th>
                     <th data-sort="bowling_tilt_per_match" class="hide-mobile ${sortCls('bowling_tilt_per_match')}">bowl TILT</th>
                     <th data-sort="total_tilt" class="hide-mobile ${sortCls('total_tilt')}">career TILT</th>
@@ -138,7 +146,7 @@ function render() {
     const confColor = { high: '#4ade80', medium: '#facc15', low: '#888' };
 
     players.forEach((p, i) => {
-        const tilt = p.shrunk_total_tilt_per_match || p.total_tilt_per_match;
+        const tilt = p[tiltKey] || p.total_tilt_per_match;
         const barWidth = Math.abs(tilt) / maxTilt * 60;
         const barClass = tilt >= 0 ? 'positive' : 'negative';
         const conf = p.confidence || 'low';
@@ -156,8 +164,8 @@ function render() {
                     <span class="tilt-bar ${barClass}" style="width:${barWidth}px"></span>
                     <span style="color:${confColor[conf]};font-size:0.6rem;margin-left:4px" title="${conf} confidence (${p.total_matches}m)">\u25CF</span>
                 </td>
-                <td class="hide-mobile">${formatTilt(p.batting_tilt_per_match)}</td>
-                <td class="hide-mobile">${formatTilt(p.bowling_tilt_per_match)}</td>
+                <td class="hide-mobile">${p.batting_tilt_per_match != null ? formatTilt(p.batting_tilt_per_match) : '<span class="tilt-neutral">\u2014</span>'}</td>
+                <td class="hide-mobile">${p.bowling_tilt_per_match != null ? formatTilt(p.bowling_tilt_per_match) : '<span class="tilt-neutral">\u2014</span>'}</td>
                 <td class="hide-mobile">${formatTilt(p.total_tilt || 0)}</td>
                 <td>${p.total_matches}</td>
             </tr>
@@ -201,6 +209,18 @@ document.querySelectorAll('.tab').forEach(tab => {
 document.getElementById('search').addEventListener('input', (e) => {
     searchQuery = e.target.value;
     render();
+});
+
+// Rank toggle handler
+document.querySelectorAll('.rank-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.rank-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        rankMode = btn.dataset.rank;
+        currentSort.key = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
+        currentSort.desc = true;
+        render();
+    });
 });
 
 // Init

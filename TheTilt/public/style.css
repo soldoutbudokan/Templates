@@ -110,6 +110,37 @@ h1 {
     border-bottom-color: #4ade80;
 }
 
+/* Rank toggle */
+.rank-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+}
+
+.rank-btn {
+    padding: 4px 12px;
+    color: #666;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: 'Courier New', Courier, monospace;
+    background: none;
+    border: 1px solid #333;
+    transition: all 0.2s;
+}
+
+.rank-btn:first-child {
+    border-right: none;
+}
+
+.rank-btn:hover {
+    color: #aaa;
+}
+
+.rank-btn.active {
+    color: #4ade80;
+    border-color: #4ade80;
+}
+
 /* Table */
 .rankings-table {
     width: 100%;

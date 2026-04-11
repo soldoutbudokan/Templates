@@ -108,8 +108,9 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
     # Add binary target: did the batting team win this match?
     result["batting_team_won"] = (result["batting_team"] == result["winner"]).astype(int)
 
-    # Venue as categorical feature (LightGBM handles natively)
+    # Categorical features (LightGBM handles natively)
     result["venue"] = result["venue"].astype("category")
+    result["over"] = result["over"].astype("category")
 
     # Toss-derived feature: did the batting team choose to bat?
     if "toss_winner" in result.columns and "toss_decision" in result.columns:

@@ -3,23 +3,29 @@
   "player_id": "c995d726",
   "slug": "ca-ingram-c995d726",
   "team": "Delhi Capitals",
-  "total_tilt_per_match": -0.06568,
-  "batting_tilt_per_match": -0.06568,
-  "bowling_tilt_per_match": 0.0,
-  "shrunk_total_tilt_per_match": -0.05104,
-  "shrunk_batting_tilt_per_match": -0.04822,
-  "shrunk_bowling_tilt_per_match": -0.0044,
-  "tilt_ci_lower": -0.10469,
-  "tilt_ci_upper": 0.00262,
+  "teams": [
+    "Delhi Capitals",
+    "Delhi Daredevils"
+  ],
+  "total_tilt_per_match": -0.0566,
+  "batting_tilt_per_match": -0.0566,
+  "bowling_tilt_per_match": null,
+  "shrunk_total_tilt_per_match": -0.0454,
+  "shrunk_batting_tilt_per_match": -0.04081,
+  "shrunk_bowling_tilt_per_match": null,
+  "tilt_ci_lower": -0.10905,
+  "tilt_ci_upper": 0.01824,
+  "tilt_ci_lower_90": -0.09882,
+  "tilt_ci_upper_90": 0.00802,
   "confidence": "low",
-  "total_tilt": -0.85384,
+  "total_tilt": -0.73576,
   "total_matches": 13,
   "batting_balls": 164,
   "bowling_balls": 0,
   "seasons": [
     {
       "season": "2011",
-      "batting_tilt_per_match": -0.13567,
+      "batting_tilt_per_match": -0.14507,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 2,
       "bowling_matches": 0,
@@ -28,7 +34,7 @@
     },
     {
       "season": "2019",
-      "batting_tilt_per_match": -0.05295,
+      "batting_tilt_per_match": -0.04051,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 11,
       "bowling_matches": 0,
@@ -39,96 +45,96 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.09497,
+      "tilt": -0.11246,
       "balls": 18,
-      "avg_delta": -0.005276
+      "avg_delta": -0.006248
     },
     {
       "phase": "middle",
-      "tilt": -0.30399,
+      "tilt": -0.32727,
       "balls": 110,
-      "avg_delta": -0.002764
+      "avg_delta": -0.002975
     },
     {
       "phase": "death",
-      "tilt": -0.45488,
+      "tilt": -0.29603,
       "balls": 36,
-      "avg_delta": -0.012636
+      "avg_delta": -0.008223
     }
   ],
   "bowling_phases": [],
   "best_matches": [
     {
+      "date": "2019-04-20",
+      "vs": "Kings XI Punjab",
+      "tilt": 0.14982,
+      "runs": 19,
+      "balls": 10
+    },
+    {
       "date": "2019-03-24",
       "vs": "Mumbai Indians",
-      "tilt": 0.07581,
+      "tilt": 0.07151,
       "runs": 47,
       "balls": 32
     },
     {
       "date": "2019-04-22",
       "vs": "Rajasthan Royals",
-      "tilt": 0.04046,
+      "tilt": 0.05365,
       "runs": 3,
       "balls": 5
     },
     {
-      "date": "2019-04-20",
-      "vs": "Kings XI Punjab",
-      "tilt": 0.02103,
-      "runs": 19,
-      "balls": 10
-    },
-    {
       "date": "2019-04-12",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.01946,
+      "tilt": 0.01954,
       "runs": 14,
       "balls": 6
     },
     {
-      "date": "2019-04-04",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.01797,
-      "runs": 5,
-      "balls": 9
+      "date": "2019-04-28",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.01456,
+      "runs": 11,
+      "balls": 7
     }
   ],
   "worst_matches": [
     {
       "date": "2019-04-01",
       "vs": "Kings XI Punjab",
-      "tilt": -0.27835,
+      "tilt": -0.29158,
       "runs": 38,
       "balls": 29
     },
     {
       "date": "2011-05-12",
       "vs": "Chennai Super Kings",
-      "tilt": -0.18357,
+      "tilt": -0.18673,
       "runs": 7,
       "balls": 12
     },
     {
       "date": "2019-05-04",
       "vs": "Rajasthan Royals",
-      "tilt": -0.11973,
+      "tilt": -0.12123,
       "runs": 12,
       "balls": 23
     },
     {
       "date": "2019-03-26",
       "vs": "Chennai Super Kings",
-      "tilt": -0.11876,
+      "tilt": -0.10695,
       "runs": 2,
       "balls": 2
     },
     {
-      "date": "2019-05-01",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.09195,
+      "date": "2011-05-07",
+      "vs": "Mumbai Indians",
+      "tilt": -0.10341,
       "runs": 1,
-      "balls": 5
+      "balls": 2
     }
   ],
   "bowling_best_matches": [],
@@ -137,116 +143,116 @@
     {
       "match": 1,
       "date": "2011-05-07",
-      "tilt": -0.08777,
-      "cumulative": -0.08777
+      "tilt": -0.10341,
+      "cumulative": -0.10341
     },
     {
       "match": 2,
       "date": "2011-05-12",
-      "tilt": -0.18357,
-      "cumulative": -0.27134
+      "tilt": -0.18673,
+      "cumulative": -0.29014
     },
     {
       "match": 3,
       "date": "2019-03-24",
-      "tilt": 0.07581,
-      "cumulative": -0.19553
+      "tilt": 0.07151,
+      "cumulative": -0.21863
     },
     {
       "match": 4,
       "date": "2019-03-26",
-      "tilt": -0.11876,
-      "cumulative": -0.31429
+      "tilt": -0.10695,
+      "cumulative": -0.32558
     },
     {
       "match": 5,
       "date": "2019-04-01",
-      "tilt": -0.27835,
-      "cumulative": -0.59264
+      "tilt": -0.29158,
+      "cumulative": -0.61716
     },
     {
       "match": 6,
       "date": "2019-04-04",
-      "tilt": -0.01797,
-      "cumulative": -0.61061
+      "tilt": -0.0158,
+      "cumulative": -0.63295
     },
     {
       "match": 7,
       "date": "2019-04-07",
-      "tilt": -0.09058,
-      "cumulative": -0.70119
+      "tilt": -0.10132,
+      "cumulative": -0.73428
     },
     {
       "match": 8,
       "date": "2019-04-12",
-      "tilt": 0.01946,
-      "cumulative": -0.68173
+      "tilt": 0.01954,
+      "cumulative": -0.71473
     },
     {
       "match": 9,
       "date": "2019-04-20",
-      "tilt": 0.02103,
-      "cumulative": -0.66069
+      "tilt": 0.14982,
+      "cumulative": -0.56491
     },
     {
       "match": 10,
       "date": "2019-04-22",
-      "tilt": 0.04046,
-      "cumulative": -0.62023
+      "tilt": 0.05365,
+      "cumulative": -0.51126
     },
     {
       "match": 11,
       "date": "2019-04-28",
-      "tilt": -0.02194,
-      "cumulative": -0.64217
+      "tilt": -0.01456,
+      "cumulative": -0.52582
     },
     {
       "match": 12,
       "date": "2019-05-01",
-      "tilt": -0.09195,
-      "cumulative": -0.73412
+      "tilt": -0.08871,
+      "cumulative": -0.61453
     },
     {
       "match": 13,
       "date": "2019-05-04",
-      "tilt": -0.11973,
-      "cumulative": -0.85384
+      "tilt": -0.12123,
+      "cumulative": -0.73576
     }
   ],
   "team_matchups": [
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.01946,
+      "tilt_per_match": 0.01954,
+      "matches": 1
+    },
+    {
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": -0.0158,
       "matches": 1
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.00598,
+      "tilt_per_match": -0.01595,
       "matches": 2
     },
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.01797,
-      "matches": 1
-    },
-    {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.03963,
+      "tilt_per_match": -0.03379,
       "matches": 2
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.05626,
+      "tilt_per_match": -0.05794,
       "matches": 2
     },
     {
       "opponent": "Kings XI Punjab",
-      "tilt_per_match": -0.12866,
+      "tilt_per_match": -0.07088,
       "matches": 2
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.13143,
+      "tilt_per_match": -0.12746,
       "matches": 3
     }
   ]

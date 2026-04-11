@@ -3,24 +3,29 @@
   "player_id": "1da489ff",
   "slug": "s-kaushik-1da489ff",
   "team": "Gujarat Lions",
-  "total_tilt_per_match": 0.02248,
-  "batting_tilt_per_match": -3e-05,
-  "bowling_tilt_per_match": 0.02248,
-  "shrunk_total_tilt_per_match": 0.0073,
-  "shrunk_batting_tilt_per_match": -0.0039,
-  "shrunk_bowling_tilt_per_match": 0.00819,
-  "tilt_ci_lower": -0.07256,
-  "tilt_ci_upper": 0.08715,
+  "teams": [
+    "Gujarat Lions"
+  ],
+  "total_tilt_per_match": 0.02299,
+  "batting_tilt_per_match": null,
+  "bowling_tilt_per_match": 0.02301,
+  "shrunk_total_tilt_per_match": 0.00728,
+  "shrunk_batting_tilt_per_match": null,
+  "shrunk_bowling_tilt_per_match": 0.00778,
+  "tilt_ci_lower": -0.07595,
+  "tilt_ci_upper": 0.09051,
+  "tilt_ci_lower_90": -0.06258,
+  "tilt_ci_upper_90": 0.07713,
   "confidence": "low",
-  "total_tilt": 0.22478,
+  "total_tilt": 0.22995,
   "total_matches": 10,
   "batting_balls": 1,
   "bowling_balls": 210,
   "seasons": [
     {
       "season": "2016",
-      "batting_tilt_per_match": -3e-05,
-      "bowling_tilt_per_match": 0.0547,
+      "batting_tilt_per_match": -0.00011,
+      "bowling_tilt_per_match": 0.05119,
       "batting_matches": 1,
       "bowling_matches": 7,
       "batting_balls": 1,
@@ -29,7 +34,7 @@
     {
       "season": "2017",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.0527,
+      "bowling_tilt_per_match": -0.04275,
       "batting_matches": 0,
       "bowling_matches": 3,
       "batting_balls": 0,
@@ -39,36 +44,36 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -3e-05,
+      "tilt": -0.00011,
       "balls": 1,
-      "avg_delta": -2.7e-05
+      "avg_delta": -0.000108
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.04599,
+      "tilt": -0.03411,
       "balls": 19,
-      "avg_delta": -0.002421
+      "avg_delta": -0.001795
     },
     {
       "phase": "middle",
-      "tilt": 0.35923,
+      "tilt": 0.33135,
       "balls": 167,
-      "avg_delta": 0.002151
+      "avg_delta": 0.001984
     },
     {
       "phase": "death",
-      "tilt": -0.08842,
+      "tilt": -0.06718,
       "balls": 24,
-      "avg_delta": -0.003684
+      "avg_delta": -0.002799
     }
   ],
   "best_matches": [
     {
       "date": "2016-05-14",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -3e-05,
+      "tilt": -0.00011,
       "runs": 0,
       "balls": 1
     }
@@ -77,81 +82,81 @@
     {
       "date": "2016-05-14",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -3e-05,
+      "tilt": -0.00011,
       "runs": 0,
       "balls": 1
     }
   ],
   "bowling_best_matches": [
     {
-      "date": "2016-05-01",
-      "vs": "Kings XI Punjab",
-      "tilt": 0.25857,
-      "wickets": 3,
-      "balls": 25
-    },
-    {
       "date": "2016-05-27",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.25739,
+      "tilt": 0.2741,
       "wickets": 2,
       "balls": 24
     },
     {
+      "date": "2016-05-01",
+      "vs": "Kings XI Punjab",
+      "tilt": 0.26171,
+      "wickets": 3,
+      "balls": 25
+    },
+    {
       "date": "2016-05-03",
       "vs": "Delhi Daredevils",
-      "tilt": 0.00449,
+      "tilt": -0.001,
       "wickets": 1,
       "balls": 24
     },
     {
       "date": "2016-05-08",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.00531,
+      "tilt": -0.00556,
       "wickets": 0,
       "balls": 6
     },
     {
       "date": "2017-04-09",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.00554,
+      "tilt": -0.01242,
       "wickets": 0,
       "balls": 25
     }
   ],
   "bowling_worst_matches": [
     {
-      "date": "2017-04-18",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.10753,
-      "wickets": 0,
-      "balls": 19
-    },
-    {
       "date": "2016-05-06",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.0783,
+      "tilt": -0.12239,
       "wickets": 0,
       "balls": 25
     },
     {
-      "date": "2017-04-07",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.04504,
-      "wickets": 0,
-      "balls": 24
-    },
-    {
-      "date": "2016-05-14",
+      "date": "2017-04-18",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.03367,
+      "tilt": -0.07874,
       "wickets": 0,
       "balls": 19
     },
     {
+      "date": "2017-04-07",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.03709,
+      "wickets": 0,
+      "balls": 24
+    },
+    {
       "date": "2016-04-29",
       "vs": "Rising Pune Supergiants",
-      "tilt": -0.02025,
+      "tilt": -0.02784,
+      "wickets": 0,
+      "balls": 19
+    },
+    {
+      "date": "2016-05-14",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.02072,
       "wickets": 0,
       "balls": 19
     }
@@ -160,68 +165,68 @@
     {
       "match": 1,
       "date": "2016-04-29",
-      "tilt": -0.02025,
-      "cumulative": -0.02025
+      "tilt": -0.02784,
+      "cumulative": -0.02784
     },
     {
       "match": 2,
       "date": "2016-05-01",
-      "tilt": 0.25857,
-      "cumulative": 0.23832
+      "tilt": 0.26171,
+      "cumulative": 0.23387
     },
     {
       "match": 3,
       "date": "2016-05-03",
-      "tilt": 0.00449,
-      "cumulative": 0.24281
+      "tilt": -0.001,
+      "cumulative": 0.23287
     },
     {
       "match": 4,
       "date": "2016-05-06",
-      "tilt": -0.0783,
-      "cumulative": 0.16451
+      "tilt": -0.12239,
+      "cumulative": 0.11048
     },
     {
       "match": 5,
       "date": "2016-05-08",
-      "tilt": -0.00531,
-      "cumulative": 0.1592
+      "tilt": -0.00556,
+      "cumulative": 0.10492
     },
     {
       "match": 6,
       "date": "2016-05-14",
-      "tilt": -0.03369,
-      "cumulative": 0.12551
+      "tilt": -0.02082,
+      "cumulative": 0.08409
     },
     {
       "match": 7,
       "date": "2016-05-27",
-      "tilt": 0.25739,
-      "cumulative": 0.3829
+      "tilt": 0.2741,
+      "cumulative": 0.35819
     },
     {
       "match": 8,
       "date": "2017-04-07",
-      "tilt": -0.04504,
-      "cumulative": 0.33786
+      "tilt": -0.03709,
+      "cumulative": 0.32111
     },
     {
       "match": 9,
       "date": "2017-04-09",
-      "tilt": -0.00554,
-      "cumulative": 0.33232
+      "tilt": -0.01242,
+      "cumulative": 0.30869
     },
     {
       "match": 10,
       "date": "2017-04-18",
-      "tilt": -0.10753,
-      "cumulative": 0.22478
+      "tilt": -0.07874,
+      "cumulative": 0.22995
     }
   ],
   "team_matchups": [
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -3e-05,
+      "tilt_per_match": -0.00011,
       "matches": 1
     }
   ]

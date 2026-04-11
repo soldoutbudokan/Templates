@@ -25,9 +25,7 @@ class WinProbModelConfig:
         "required_run_rate",
         "target",
         "runs_needed",
-        "is_powerplay",
-        "is_middle",
-        "is_death",
+        "over",
         "recent_run_rate",
         "recent_wickets",
         "venue",
@@ -37,6 +35,7 @@ class WinProbModelConfig:
     ])
     categorical_features: List[str] = field(default_factory=lambda: [
         "venue",
+        "over",
     ])
     target: str = "batting_team_won"
     n_estimators: int = 500
@@ -121,8 +120,12 @@ def evaluate_model(
     config: WinProbModelConfig,
 ) -> Dict[str, float]:
     """Evaluate model with Brier score, log loss, and AUC."""
-    X_test = test_df[config.features]
+    X_test = test_df[config.features].copy()
     y_test = test_df[config.target]
+
+    for col in config.categorical_features:
+        if col in X_test.columns:
+            X_test[col] = X_test[col].astype("category")
 
     y_prob = model.predict_proba(X_test)[:, 1]
 
@@ -171,8 +174,8 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
             "features": {
                 "innings": 2, "balls_remaining": 6, "wickets_in_hand": 8,
                 "runs_scored": 160, "run_rate": 8.42, "required_run_rate": 2.0,
-                "target": 162, "runs_needed": 2, "is_powerplay": 0,
-                "is_middle": 0, "is_death": 1, "recent_run_rate": 10.0,
+                "target": 162, "runs_needed": 2, "over": 19,
+                "recent_run_rate": 10.0,
                 "recent_wickets": 0, "venue": "Wankhede Stadium",
                 "batting_team_chose_to_bat": 0, "season_numeric": 2024, "opponent_bowler_economy": 8.0,
             },
@@ -183,8 +186,8 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
             "features": {
                 "innings": 2, "balls_remaining": 6, "wickets_in_hand": 2,
                 "runs_scored": 100, "run_rate": 5.26, "required_run_rate": 60.0,
-                "target": 160, "runs_needed": 60, "is_powerplay": 0,
-                "is_middle": 0, "is_death": 1, "recent_run_rate": 4.0,
+                "target": 160, "runs_needed": 60, "over": 19,
+                "recent_run_rate": 4.0,
                 "recent_wickets": 3, "venue": "Wankhede Stadium",
                 "batting_team_chose_to_bat": 0, "season_numeric": 2024, "opponent_bowler_economy": 8.0,
             },
@@ -195,8 +198,8 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
             "features": {
                 "innings": 1, "balls_remaining": 120, "wickets_in_hand": 10,
                 "runs_scored": 0, "run_rate": 0.0, "required_run_rate": 0.0,
-                "target": 0, "runs_needed": 0, "is_powerplay": 1,
-                "is_middle": 0, "is_death": 0, "recent_run_rate": 0.0,
+                "target": 0, "runs_needed": 0, "over": 0,
+                "recent_run_rate": 0.0,
                 "recent_wickets": 0, "venue": "Wankhede Stadium",
                 "batting_team_chose_to_bat": 1, "season_numeric": 2024, "opponent_bowler_economy": 8.0,
             },
@@ -207,8 +210,8 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
             "features": {
                 "innings": 1, "balls_remaining": 12, "wickets_in_hand": 8,
                 "runs_scored": 200, "run_rate": 11.11, "required_run_rate": 0.0,
-                "target": 0, "runs_needed": 0, "is_powerplay": 0,
-                "is_middle": 0, "is_death": 1, "recent_run_rate": 14.0,
+                "target": 0, "runs_needed": 0, "over": 19,
+                "recent_run_rate": 14.0,
                 "recent_wickets": 0, "venue": "M.Chinnaswamy Stadium",
                 "batting_team_chose_to_bat": 1, "season_numeric": 2024, "opponent_bowler_economy": 8.0,
             },

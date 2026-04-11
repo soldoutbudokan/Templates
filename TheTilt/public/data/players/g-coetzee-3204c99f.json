@@ -3,24 +3,30 @@
   "player_id": "3204c99f",
   "slug": "g-coetzee-3204c99f",
   "team": "Gujarat Titans",
-  "total_tilt_per_match": -0.03948,
-  "batting_tilt_per_match": -0.06953,
-  "bowling_tilt_per_match": -0.00471,
-  "shrunk_total_tilt_per_match": -0.03331,
-  "shrunk_batting_tilt_per_match": -0.05179,
-  "shrunk_bowling_tilt_per_match": -0.00736,
-  "tilt_ci_lower": -0.07547,
-  "tilt_ci_upper": 0.00885,
+  "teams": [
+    "Gujarat Titans",
+    "Mumbai Indians"
+  ],
+  "total_tilt_per_match": -0.03463,
+  "batting_tilt_per_match": null,
+  "bowling_tilt_per_match": -0.00838,
+  "shrunk_total_tilt_per_match": -0.03039,
+  "shrunk_batting_tilt_per_match": null,
+  "shrunk_bowling_tilt_per_match": -0.01068,
+  "tilt_ci_lower": -0.076,
+  "tilt_ci_upper": 0.01522,
+  "tilt_ci_lower_90": -0.06867,
+  "tilt_ci_upper_90": 0.00789,
   "confidence": "low",
-  "total_tilt": -0.55272,
+  "total_tilt": -0.48476,
   "total_matches": 14,
   "batting_balls": 33,
   "bowling_balls": 292,
   "seasons": [
     {
       "season": "2024",
-      "batting_tilt_per_match": -0.08607,
-      "bowling_tilt_per_match": -0.01439,
+      "batting_tilt_per_match": -0.07541,
+      "bowling_tilt_per_match": -0.0189,
       "batting_matches": 5,
       "bowling_matches": 10,
       "batting_balls": 22,
@@ -28,8 +34,8 @@
     },
     {
       "season": "2025",
-      "batting_tilt_per_match": -0.0282,
-      "bowling_tilt_per_match": 0.01949,
+      "batting_tilt_per_match": 0.00478,
+      "bowling_tilt_per_match": 0.01793,
       "batting_matches": 2,
       "bowling_matches": 4,
       "batting_balls": 11,
@@ -39,38 +45,45 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": 0.00467,
+      "tilt": 0.00459,
       "balls": 9,
-      "avg_delta": 0.000519
+      "avg_delta": 0.00051
     },
     {
       "phase": "death",
-      "tilt": -0.49142,
+      "tilt": -0.37208,
       "balls": 24,
-      "avg_delta": -0.020476
+      "avg_delta": -0.015503
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.07666,
+      "tilt": -0.0988,
       "balls": 73,
-      "avg_delta": -0.00105
+      "avg_delta": -0.001353
     },
     {
       "phase": "middle",
-      "tilt": 0.07898,
+      "tilt": 0.0386,
       "balls": 113,
-      "avg_delta": 0.000699
+      "avg_delta": 0.000342
     },
     {
       "phase": "death",
-      "tilt": -0.06829,
+      "tilt": -0.05707,
       "balls": 106,
-      "avg_delta": -0.000644
+      "avg_delta": -0.000538
     }
   ],
   "best_matches": [
+    {
+      "date": "2025-05-06",
+      "vs": "Mumbai Indians",
+      "tilt": 0.00957,
+      "runs": 12,
+      "balls": 6
+    },
     {
       "date": "2024-04-30",
       "vs": "Lucknow Super Giants",
@@ -81,139 +94,132 @@
     {
       "date": "2025-05-25",
       "vs": "Chennai Super Kings",
-      "tilt": -0.00035,
+      "tilt": -0.0,
       "runs": 5,
       "balls": 5
     },
     {
       "date": "2024-04-01",
       "vs": "Rajasthan Royals",
-      "tilt": -0.01151,
+      "tilt": -0.00061,
       "runs": 4,
       "balls": 9
     },
     {
       "date": "2024-05-03",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.01189,
+      "tilt": -0.00905,
       "runs": 8,
       "balls": 7
-    },
-    {
-      "date": "2025-05-06",
-      "vs": "Mumbai Indians",
-      "tilt": -0.05606,
-      "runs": 12,
-      "balls": 6
     }
   ],
   "worst_matches": [
     {
       "date": "2024-03-24",
       "vs": "Gujarat Titans",
-      "tilt": -0.33475,
+      "tilt": -0.28999,
       "runs": 1,
       "balls": 3
     },
     {
       "date": "2024-04-22",
       "vs": "Rajasthan Royals",
-      "tilt": -0.07219,
+      "tilt": -0.0774,
       "runs": 0,
       "balls": 1
     },
     {
-      "date": "2025-05-06",
-      "vs": "Mumbai Indians",
-      "tilt": -0.05606,
-      "runs": 12,
-      "balls": 6
-    },
-    {
       "date": "2024-05-03",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.01189,
+      "tilt": -0.00905,
       "runs": 8,
       "balls": 7
     },
     {
       "date": "2024-04-01",
       "vs": "Rajasthan Royals",
-      "tilt": -0.01151,
+      "tilt": -0.00061,
       "runs": 4,
       "balls": 9
+    },
+    {
+      "date": "2025-05-25",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.0,
+      "runs": 5,
+      "balls": 5
     }
   ],
   "bowling_best_matches": [
     {
       "date": "2025-05-06",
       "vs": "Mumbai Indians",
-      "tilt": 0.12883,
+      "tilt": 0.11365,
       "wickets": 1,
       "balls": 12
     },
     {
       "date": "2024-03-24",
       "vs": "Gujarat Titans",
-      "tilt": 0.11111,
+      "tilt": 0.11136,
       "wickets": 2,
       "balls": 24
     },
     {
       "date": "2024-04-18",
       "vs": "Punjab Kings",
-      "tilt": 0.06432,
+      "tilt": 0.08092,
       "wickets": 3,
       "balls": 26
     },
     {
       "date": "2024-04-07",
       "vs": "Delhi Capitals",
-      "tilt": 0.03606,
+      "tilt": 0.05164,
       "wickets": 4,
       "balls": 24
     },
     {
       "date": "2025-05-02",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.00249,
+      "tilt": 0.00699,
       "wickets": 1,
       "balls": 25
     }
   ],
   "bowling_worst_matches": [
     {
-      "date": "2024-04-22",
+      "date": "2024-04-01",
       "vs": "Rajasthan Royals",
-      "tilt": -0.08711,
+      "tilt": -0.10429,
       "wickets": 0,
       "balls": 15
     },
     {
-      "date": "2024-04-01",
+      "date": "2024-04-22",
       "vs": "Rajasthan Royals",
-      "tilt": -0.0794,
+      "tilt": -0.1032,
       "wickets": 0,
       "balls": 15
     },
     {
       "date": "2024-05-03",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.05583,
+      "tilt": -0.06564,
       "wickets": 0,
       "balls": 12
     },
     {
-      "date": "2024-04-11",
-      "vs": "Royal Challengers Bengaluru",
-      "tilt": -0.04604,
+      "date": "2024-03-27",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.06192,
       "wickets": 1,
       "balls": 27
     },
     {
-      "date": "2024-03-27",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.04298,
+      "date": "2024-04-11",
+      "vs": "Royal Challengers Bengaluru",
+      "tilt": -0.05006,
       "wickets": 1,
       "balls": 27
     }
@@ -222,89 +228,94 @@
     {
       "match": 1,
       "date": "2024-03-24",
-      "tilt": -0.22364,
-      "cumulative": -0.22364
+      "tilt": -0.17862,
+      "cumulative": -0.17862
     },
     {
       "match": 2,
       "date": "2024-03-27",
-      "tilt": -0.04298,
-      "cumulative": -0.26663
+      "tilt": -0.06192,
+      "cumulative": -0.24054
     },
     {
       "match": 3,
       "date": "2024-04-01",
-      "tilt": -0.0909,
-      "cumulative": -0.35753
+      "tilt": -0.1049,
+      "cumulative": -0.34544
     },
     {
       "match": 4,
       "date": "2024-04-07",
-      "tilt": 0.03606,
-      "cumulative": -0.32146
+      "tilt": 0.05164,
+      "cumulative": -0.2938
     },
     {
       "match": 5,
       "date": "2024-04-11",
-      "tilt": -0.04604,
-      "cumulative": -0.3675
+      "tilt": -0.05006,
+      "cumulative": -0.34385
     },
     {
       "match": 6,
       "date": "2024-04-14",
-      "tilt": -0.00823,
-      "cumulative": -0.37573
+      "tilt": -0.00108,
+      "cumulative": -0.34493
     },
     {
       "match": 7,
       "date": "2024-04-18",
-      "tilt": 0.06432,
-      "cumulative": -0.3114
+      "tilt": 0.08092,
+      "cumulative": -0.26402
     },
     {
       "match": 8,
       "date": "2024-04-22",
-      "tilt": -0.1593,
-      "cumulative": -0.4707
+      "tilt": -0.18061,
+      "cumulative": -0.44463
     },
     {
       "match": 9,
       "date": "2024-04-30",
-      "tilt": -0.03585,
-      "cumulative": -0.50655
+      "tilt": -0.04672,
+      "cumulative": -0.49135
     },
     {
       "match": 10,
       "date": "2024-05-03",
-      "tilt": -0.06772,
-      "cumulative": -0.57427
+      "tilt": -0.07469,
+      "cumulative": -0.56603
     },
     {
       "match": 11,
       "date": "2025-05-02",
-      "tilt": 0.00249,
-      "cumulative": -0.57178
+      "tilt": 0.00699,
+      "cumulative": -0.55905
     },
     {
       "match": 12,
       "date": "2025-05-06",
-      "tilt": 0.07277,
-      "cumulative": -0.49901
+      "tilt": 0.12322,
+      "cumulative": -0.43582
     },
     {
       "match": 13,
       "date": "2025-05-25",
-      "tilt": -0.01463,
-      "cumulative": -0.51364
+      "tilt": -0.01828,
+      "cumulative": -0.4541
     },
     {
       "match": 14,
       "date": "2025-05-30",
-      "tilt": -0.03908,
-      "cumulative": -0.55272
+      "tilt": -0.03066,
+      "cumulative": -0.48476
     }
   ],
   "team_matchups": [
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": 0.00957,
+      "matches": 1
+    },
     {
       "opponent": "Lucknow Super Giants",
       "tilt_per_match": 0.0,
@@ -312,27 +323,22 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.00035,
+      "tilt_per_match": -0.0,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.01189,
+      "tilt_per_match": -0.00905,
       "matches": 1
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.04185,
+      "tilt_per_match": -0.03901,
       "matches": 2
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.05606,
-      "matches": 1
-    },
-    {
       "opponent": "Gujarat Titans",
-      "tilt_per_match": -0.33475,
+      "tilt_per_match": -0.28999,
       "matches": 1
     }
   ]

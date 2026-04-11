@@ -20,9 +20,7 @@ FEATURE_COLS = [
     "required_run_rate",
     "target",
     "runs_needed",
-    "is_powerplay",
-    "is_middle",
-    "is_death",
+    "over",
     "recent_run_rate",
     "recent_wickets",
     "venue",
@@ -50,9 +48,7 @@ def compute_state_after(row: pd.Series) -> dict:
     overs_bowled = (row["ball_number"]) / 6  # After this ball
     after["run_rate"] = after["runs_scored"] / max(overs_bowled, 0.1)
 
-    after["is_powerplay"] = row["is_powerplay"]
-    after["is_middle"] = row["is_middle"]
-    after["is_death"] = row["is_death"]
+    after["over"] = row["over"]
 
     after["target"] = row["target"]
     if row["target"] > 0:
@@ -93,9 +89,11 @@ def compute_ball_deltas(
     """Compute win probability delta for each ball."""
     print("Computing win probability for each ball...")
 
-    # Ensure venue is categorical for LightGBM
+    # Ensure categorical features for LightGBM
     if "venue" in df.columns:
         df["venue"] = df["venue"].astype("category")
+    if "over" in df.columns:
+        df["over"] = df["over"].astype("category")
 
     # Win prob BEFORE each ball
     X_before = df[FEATURE_COLS].copy()
@@ -105,9 +103,11 @@ def compute_ball_deltas(
     print("Computing post-delivery states...")
     after_states = df.apply(compute_state_after, axis=1, result_type="expand")
     X_after = after_states[FEATURE_COLS].copy()
-    # Restore categorical dtype for venue in after states
+    # Restore categorical dtypes for after states
     if "venue" in X_after.columns:
         X_after["venue"] = X_after["venue"].astype("category")
+    if "over" in X_after.columns:
+        X_after["over"] = X_after["over"].astype("category")
     wp_after = model.predict_proba(X_after)[:, 1]
 
     # Delta (from batting team's perspective)
@@ -189,16 +189,31 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     combined["total_tilt"] = combined["batting_total_tilt"] + combined["bowling_total_tilt"]
     combined["total_tilt_per_match"] = combined["total_tilt"] / combined["total_matches"]
 
-    # Most recent team
-    last_team = (
+    # Collect all teams per player (from both batting and bowling sides)
+    bat_teams = (
         deltas_df.sort_values("date")
         .groupby("batter_id")["batting_team"]
-        .last()
+        .agg(last_team="last", all_teams=lambda x: list(x.unique()))
         .reset_index()
-        .rename(columns={"batter_id": "player_id", "batting_team": "team"})
+        .rename(columns={"batter_id": "player_id"})
     )
-    combined = combined.merge(last_team, on="player_id", how="left")
+    bowl_teams = (
+        deltas_df.sort_values("date")
+        .groupby("bowler_id")["bowling_team"]
+        .agg(all_teams=lambda x: list(x.unique()))
+        .reset_index()
+        .rename(columns={"bowler_id": "player_id"})
+    )
+    # Merge: union of teams from batting and bowling
+    all_teams = pd.merge(bat_teams, bowl_teams, on="player_id", how="outer", suffixes=("_bat", "_bowl"))
+    all_teams["all_teams_bat"] = all_teams["all_teams_bat"].apply(lambda x: x if isinstance(x, list) else [])
+    all_teams["all_teams_bowl"] = all_teams["all_teams_bowl"].apply(lambda x: x if isinstance(x, list) else [])
+    all_teams["teams"] = all_teams.apply(lambda r: sorted(set(r["all_teams_bat"]) | set(r["all_teams_bowl"])), axis=1)
+    all_teams["team"] = all_teams["last_team"].fillna(all_teams["all_teams_bowl"].apply(lambda x: x[-1] if x else "Unknown"))
+
+    combined = combined.merge(all_teams[["player_id", "team", "teams"]], on="player_id", how="left")
     combined["team"] = combined["team"].fillna("Unknown")
+    combined["teams"] = combined["teams"].apply(lambda x: x if isinstance(x, list) else [])
 
     # Sort by total TILT per match (before shrinkage)
     combined = combined.sort_values("total_tilt_per_match", ascending=False).reset_index(drop=True)
@@ -289,17 +304,19 @@ def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataF
     se = combined["match_tilt_std"] / np.sqrt(n.clip(lower=1))
     combined["tilt_ci_lower"] = combined["shrunk_total_tilt_per_match"] - 1.96 * se
     combined["tilt_ci_upper"] = combined["shrunk_total_tilt_per_match"] + 1.96 * se
+    combined["tilt_ci_lower_90"] = combined["shrunk_total_tilt_per_match"] - 1.645 * se
+    combined["tilt_ci_upper_90"] = combined["shrunk_total_tilt_per_match"] + 1.645 * se
 
     # Confidence level
     combined["confidence"] = "low"
     combined.loc[combined["total_matches"] >= 30, "confidence"] = "medium"
     combined.loc[combined["total_matches"] >= 100, "confidence"] = "high"
 
-    # Re-sort by shrunk TILT
-    combined = combined.sort_values("shrunk_total_tilt_per_match", ascending=False).reset_index(drop=True)
+    # Re-sort by 90% CI lower bound (penalizes small samples naturally)
+    combined = combined.sort_values("tilt_ci_lower_90", ascending=False).reset_index(drop=True)
 
-    print(f"\n  Top 10 by Shrunk TILT/Match:")
-    top10 = combined.head(10)[["player", "team", "shrunk_total_tilt_per_match", "total_tilt_per_match", "total_matches", "confidence"]]
+    print(f"\n  Top 10 by TILT Floor (90% CI Lower Bound):")
+    top10 = combined.head(10)[["player", "team", "shrunk_total_tilt_per_match", "tilt_ci_lower_90", "total_matches", "confidence"]]
     print(top10.to_string(index=False))
 
     return combined

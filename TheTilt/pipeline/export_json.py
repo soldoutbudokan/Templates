@@ -46,36 +46,46 @@ def export_rankings(
         "role",
     ] = "bowler"
 
+    # Minimum balls threshold for per-role display
+    min_role_balls = config["export"].get("min_role_balls", 50)
+
     # Build JSON records
     rankings = []
     for _, row in qualified.iterrows():
         player_id = row.get("player_id", "")
+        bat_balls = int(row["batting_balls"])
+        bowl_balls = int(row["bowling_balls"])
+        bat_qualified = bat_balls >= min_role_balls
+        bowl_qualified = bowl_balls >= min_role_balls
         rankings.append({
             "rank": 0,  # Will be set after sorting
             "player": row["player"],
             "player_id": player_id,
             "slug": make_slug(row["player"], player_id if player_id else None),
             "team": row["team"],
+            "teams": row.get("teams", [row["team"]]) if isinstance(row.get("teams"), list) else [row["team"]],
             "role": row["role"],
             "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
-            "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5),
-            "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5),
+            "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5) if bat_qualified else None,
+            "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5) if bowl_qualified else None,
             "total_tilt": round(row["total_tilt"], 5),
             "batting_total_tilt": round(row["batting_total_tilt"], 5),
             "bowling_total_tilt": round(row["bowling_total_tilt"], 5),
             "shrunk_total_tilt_per_match": round(row.get("shrunk_total_tilt_per_match", row["total_tilt_per_match"]), 5),
-            "shrunk_batting_tilt_per_match": round(row.get("shrunk_batting_tilt_per_match", row["batting_tilt_per_match"]), 5),
-            "shrunk_bowling_tilt_per_match": round(row.get("shrunk_bowling_tilt_per_match", row["bowling_tilt_per_match"]), 5),
+            "shrunk_batting_tilt_per_match": round(row.get("shrunk_batting_tilt_per_match", row["batting_tilt_per_match"]), 5) if bat_qualified else None,
+            "shrunk_bowling_tilt_per_match": round(row.get("shrunk_bowling_tilt_per_match", row["bowling_tilt_per_match"]), 5) if bowl_qualified else None,
             "tilt_ci_lower": round(row.get("tilt_ci_lower", 0), 5),
             "tilt_ci_upper": round(row.get("tilt_ci_upper", 0), 5),
+            "tilt_ci_lower_90": round(row.get("tilt_ci_lower_90", 0), 5),
+            "tilt_ci_upper_90": round(row.get("tilt_ci_upper_90", 0), 5),
             "confidence": row.get("confidence", "low"),
             "total_matches": int(row["total_matches"]),
             "batting_balls": int(row["batting_balls"]),
             "bowling_balls": int(row["bowling_balls"]),
         })
 
-    # Sort by shrunk TILT (stabilized rankings)
-    rankings.sort(key=lambda x: x["shrunk_total_tilt_per_match"], reverse=True)
+    # Sort by 90% CI lower bound (penalizes small samples naturally)
+    rankings.sort(key=lambda x: x["tilt_ci_lower_90"], reverse=True)
     for i, r in enumerate(rankings):
         r["rank"] = i + 1
 
@@ -248,19 +258,27 @@ def export_player_details(
             team_matchups = []
 
         # Build player detail JSON
+        bat_balls = int(row["batting_balls"])
+        bowl_balls = int(row["bowling_balls"])
+        min_role_balls = config["export"].get("min_role_balls", 50)
+        bat_qualified = bat_balls >= min_role_balls
+        bowl_qualified = bowl_balls >= min_role_balls
         detail = {
             "player": player_name,
             "player_id": player_id,
             "slug": slug,
             "team": row["team"],
+            "teams": row.get("teams", [row["team"]]) if isinstance(row.get("teams"), list) else [row["team"]],
             "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
-            "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5),
-            "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5),
+            "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5) if bat_qualified else None,
+            "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5) if bowl_qualified else None,
             "shrunk_total_tilt_per_match": round(row.get("shrunk_total_tilt_per_match", row["total_tilt_per_match"]), 5),
-            "shrunk_batting_tilt_per_match": round(row.get("shrunk_batting_tilt_per_match", row["batting_tilt_per_match"]), 5),
-            "shrunk_bowling_tilt_per_match": round(row.get("shrunk_bowling_tilt_per_match", row["bowling_tilt_per_match"]), 5),
+            "shrunk_batting_tilt_per_match": round(row.get("shrunk_batting_tilt_per_match", row["batting_tilt_per_match"]), 5) if bat_qualified else None,
+            "shrunk_bowling_tilt_per_match": round(row.get("shrunk_bowling_tilt_per_match", row["bowling_tilt_per_match"]), 5) if bowl_qualified else None,
             "tilt_ci_lower": round(row.get("tilt_ci_lower", 0), 5),
             "tilt_ci_upper": round(row.get("tilt_ci_upper", 0), 5),
+            "tilt_ci_lower_90": round(row.get("tilt_ci_lower_90", 0), 5),
+            "tilt_ci_upper_90": round(row.get("tilt_ci_upper_90", 0), 5),
             "confidence": row.get("confidence", "low"),
             "total_tilt": round(row["total_tilt"], 5),
             "total_matches": int(row["total_matches"]),

@@ -74,22 +74,25 @@ async function loadPlayer() {
         let html = `
             <div class="player-header">
                 <h2>${p.player}</h2>
-                <div class="team">${p.team} | ${p.total_matches} matches | ${p.batting_balls} balls faced | ${p.bowling_balls} balls bowled</div>
+                <div class="team">${(p.teams && p.teams.length > 0 ? p.teams.join(', ') : p.team)} | ${p.total_matches} matches | ${p.batting_balls} balls faced | ${p.bowling_balls} balls bowled</div>
             </div>
 
             <div class="stat-grid">
                 <div class="stat-card">
                     <div class="label">total TILT/match</div>
                     <div class="value">${formatTilt(p.shrunk_total_tilt_per_match || p.total_tilt_per_match)}</div>
+                    ${p.tilt_ci_lower_90 != null && p.tilt_ci_upper_90 != null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">90% CI: [${formatTilt(p.tilt_ci_lower_90)}, ${formatTilt(p.tilt_ci_upper_90)}]</div>` : ''}
                     ${p.shrunk_total_tilt_per_match != null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">raw: ${formatTilt(p.total_tilt_per_match)} | ${p.confidence || 'low'} conf</div>` : ''}
                 </div>
                 <div class="stat-card">
                     <div class="label">batting TILT/match</div>
-                    <div class="value">${formatTilt(p.shrunk_batting_tilt_per_match || p.batting_tilt_per_match)}</div>
+                    <div class="value">${p.shrunk_batting_tilt_per_match != null ? formatTilt(p.shrunk_batting_tilt_per_match) : p.batting_tilt_per_match != null ? formatTilt(p.batting_tilt_per_match) : '<span class="tilt-neutral">n/a</span>'}</div>
+                    ${p.batting_tilt_per_match == null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">${p.batting_balls} balls (min 50)</div>` : ''}
                 </div>
                 <div class="stat-card">
                     <div class="label">bowling TILT/match</div>
-                    <div class="value">${formatTilt(p.shrunk_bowling_tilt_per_match || p.bowling_tilt_per_match)}</div>
+                    <div class="value">${p.shrunk_bowling_tilt_per_match != null ? formatTilt(p.shrunk_bowling_tilt_per_match) : p.bowling_tilt_per_match != null ? formatTilt(p.bowling_tilt_per_match) : '<span class="tilt-neutral">n/a</span>'}</div>
+                    ${p.bowling_tilt_per_match == null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">${p.bowling_balls} balls (min 50)</div>` : ''}
                 </div>
             </div>
         `;
