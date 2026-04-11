@@ -7,48 +7,56 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>THE TILT</h1>
-    <div class="subtitle">win probability added for IPL cricket</div>
-    <div class="meta" id="meta"></div>
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <div class="logo"><a href="index.html">THE TILT</a></div>
+            <div class="nav-links">
+                <a href="index.html" class="active">leaderboard</a>
+                <a href="about.html">about</a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="nav">
-        <a href="index.html" class="active">leaderboard</a>
-        <a href="about.html">about</a>
-    </div>
+    <div class="container">
+        <div class="page-header">
+            <h1>Player Rankings</h1>
+            <div class="subtitle">win probability added for IPL cricket</div>
+            <div class="meta" id="meta"></div>
+        </div>
 
-    <div class="search-bar">
-        <input type="text" id="search" placeholder="search players..." autocomplete="off">
-    </div>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="search players by name or team..." autocomplete="off">
+        </div>
 
-    <div class="tabs">
-        <button class="tab active" data-filter="all">all</button>
-        <button class="tab" data-filter="batter">batters</button>
-        <button class="tab" data-filter="bowler">bowlers</button>
-        <button class="tab" data-filter="all-rounder">all-rounders</button>
-    </div>
+        <div class="tabs">
+            <button class="tab active" data-filter="all">all</button>
+            <button class="tab" data-filter="batter">batters</button>
+            <button class="tab" data-filter="bowler">bowlers</button>
+            <button class="tab" data-filter="all-rounder">all-rounders</button>
+        </div>
 
-    <div class="rank-toggle">
-        <button class="rank-btn active" data-rank="floor">rank by floor</button>
-        <button class="rank-btn" data-rank="estimate">rank by estimate</button>
-    </div>
+        <div class="rank-toggle">
+            <button class="rank-btn active" data-rank="floor">rank by floor</button>
+            <button class="rank-btn" data-rank="estimate">rank by estimate</button>
+        </div>
 
-    <div id="content">
-        <div class="loading">loading rankings...</div>
-    </div>
+        <div id="content">
+            <div class="loading">loading rankings...</div>
+        </div>
 
-    <div class="footer">
-        data from <a href="https://cricsheet.org">cricsheet.org</a> |
-        <a href="about.html">methodology</a>
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="about.html">methodology</a>
+        </div>
     </div>
 
 <script>
 let allPlayers = [];
-let rankMode = 'floor'; // 'floor' (CI lower bound) or 'estimate' (point estimate)
+let rankMode = 'floor';
 let currentSort = { key: 'tilt_ci_lower_90', desc: true };
 let currentFilter = 'all';
 let searchQuery = '';
 
-// Load data
 async function init() {
     try {
         const [rankingsRes, metaRes] = await Promise.all([
@@ -67,7 +75,7 @@ async function init() {
         if (metaRes.ok) {
             const meta = await metaRes.json();
             document.getElementById('meta').textContent =
-                `${meta.matches_count} matches | ${meta.seasons[0]}-${meta.seasons[meta.seasons.length-1]} | updated ${meta.last_updated}`;
+                `${meta.matches_count} matches | ${meta.seasons[0]}\u2013${meta.seasons[meta.seasons.length-1]} | updated ${meta.last_updated}`;
         }
 
         render();
@@ -77,25 +85,23 @@ async function init() {
     }
 }
 
-// Filter and sort
 function getFilteredPlayers() {
     let players = [...allPlayers];
 
-    // Role filter
     if (currentFilter !== 'all') {
         players = players.filter(p => p.role === currentFilter);
     }
 
-    // Search filter
     if (searchQuery) {
         const q = searchQuery.toLowerCase();
         players = players.filter(p =>
             p.player.toLowerCase().includes(q) ||
-            p.team.toLowerCase().includes(q)
+            (p.full_name && p.full_name.toLowerCase().includes(q)) ||
+            p.team.toLowerCase().includes(q) ||
+            (p.teams && p.teams.some(t => t.toLowerCase().includes(q)))
         );
     }
 
-    // Sort
     players.sort((a, b) => {
         const va = a[currentSort.key];
         const vb = b[currentSort.key];
@@ -108,7 +114,6 @@ function getFilteredPlayers() {
     return players;
 }
 
-// Format TILT value
 function formatTilt(val) {
     const sign = val >= 0 ? '+' : '';
     const pct = (val * 100).toFixed(2);
@@ -116,7 +121,6 @@ function formatTilt(val) {
     return `<span class="${cls}">${sign}${pct}%</span>`;
 }
 
-// Render table
 function render() {
     const players = getFilteredPlayers();
     const tiltKey = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
@@ -143,21 +147,24 @@ function render() {
             <tbody>
     `;
 
-    const confColor = { high: '#4ade80', medium: '#facc15', low: '#888' };
+    const confColor = { high: '#4ade80', medium: '#fbbf24', low: '#6b7280' };
 
     players.forEach((p, i) => {
         const tilt = p[tiltKey] || p.total_tilt_per_match;
         const barWidth = Math.abs(tilt) / maxTilt * 60;
         const barClass = tilt >= 0 ? 'positive' : 'negative';
         const conf = p.confidence || 'low';
+        const displayName = p.full_name && p.full_name !== p.player ? p.full_name : p.player;
 
         html += `
-            <tr onclick="window.location='player.html?player=${p.slug}'">
+            <tr>
                 <td>${i + 1}</td>
                 <td>
-                    <span class="player-name">${p.player}</span><br>
-                    <span class="player-team">${p.team}</span>
-                    <span class="role-badge">${p.role}</span>
+                    <a href="player.html?player=${p.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${displayName}</span><br>
+                        <span class="player-team">${p.team}</span>
+                        <span class="role-badge">${p.role}</span>
+                    </a>
                 </td>
                 <td>
                     ${formatTilt(tilt)}
@@ -180,7 +187,6 @@ function render() {
 
     document.getElementById('content').innerHTML = html;
 
-    // Add sort handlers
     document.querySelectorAll('[data-sort]').forEach(th => {
         th.addEventListener('click', () => {
             const key = th.dataset.sort;
@@ -223,7 +229,6 @@ document.querySelectorAll('.rank-btn').forEach(btn => {
     });
 });
 
-// Init
 init();
 </script>
 </body>

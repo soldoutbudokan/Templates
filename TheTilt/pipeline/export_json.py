@@ -60,6 +60,7 @@ def export_rankings(
         rankings.append({
             "rank": 0,  # Will be set after sorting
             "player": row["player"],
+            "full_name": row.get("full_name", row["player"]),
             "player_id": player_id,
             "slug": make_slug(row["player"], player_id if player_id else None),
             "team": row["team"],
@@ -257,6 +258,59 @@ def export_player_details(
         else:
             team_matchups = []
 
+        # Traditional counting stats (batting)
+        batting_stats = None
+        if len(bat_df) > 0:
+            total_runs = int(bat_df["runs_batter"].sum())
+            balls_faced = len(bat_df)
+            batting_innings = bat_df["match_id"].nunique()
+            # Dismissals: count balls where this player was dismissed
+            dismissals = int(bat_df["player_dismissed_id"].eq(player_id).sum()) if player_id else int(bat_df["player_dismissed"].eq(player_name).sum())
+            # Per-match runs for HS, 50s, 100s
+            match_runs = bat_df.groupby("match_id")["runs_batter"].sum()
+            batting_stats = {
+                "runs": total_runs,
+                "innings": batting_innings,
+                "balls": balls_faced,
+                "avg": round(total_runs / max(dismissals, 1), 2),
+                "sr": round(total_runs / max(balls_faced, 1) * 100, 2),
+                "hs": int(match_runs.max()),
+                "dismissals": dismissals,
+                "not_outs": batting_innings - dismissals,
+                "fifties": int((match_runs >= 50).sum()),
+                "hundreds": int((match_runs >= 100).sum()),
+            }
+
+        # Traditional counting stats (bowling)
+        bowling_stats = None
+        if len(bowl_df) > 0:
+            total_wickets = int(bowl_df["is_wicket"].sum())
+            bowling_balls_total = len(bowl_df)
+            runs_conceded = int(bowl_df["runs_total"].sum())
+            bowling_innings = bowl_df["match_id"].nunique()
+            # Best figures per match
+            bowl_match = bowl_df.groupby("match_id").agg(
+                wickets=("is_wicket", "sum"),
+                runs=("runs_total", "sum"),
+            )
+            best_idx = bowl_match["wickets"].idxmax()
+            best_w = int(bowl_match.loc[best_idx, "wickets"])
+            best_r = int(bowl_match.loc[best_idx, "runs"])
+            bowling_stats = {
+                "wickets": total_wickets,
+                "innings": bowling_innings,
+                "balls": bowling_balls_total,
+                "runs_conceded": runs_conceded,
+                "avg": round(runs_conceded / max(total_wickets, 1), 2),
+                "economy": round(runs_conceded / max(bowling_balls_total, 1) * 6, 2),
+                "best_figures": f"{best_w}/{best_r}",
+            }
+
+        # Match TILT distribution (for histogram)
+        match_tilt_distribution = []
+        if len(career_trend) > 0:
+            match_tilt_distribution = [round(t["tilt"], 5) for t in career_trend]
+
         # Build player detail JSON
         bat_balls = int(row["batting_balls"])
         bowl_balls = int(row["bowling_balls"])
@@ -265,6 +319,7 @@ def export_player_details(
         bowl_qualified = bowl_balls >= min_role_balls
         detail = {
             "player": player_name,
+            "full_name": row.get("full_name", player_name),
             "player_id": player_id,
             "slug": slug,
             "team": row["team"],
@@ -289,6 +344,7 @@ def export_player_details(
             "bowling_phases": phase_bowling,
             "best_matches": [
                 {
+                    "match_id": str(r["match_id"]),
                     "date": str(r["date"]),
                     "vs": r["bowling_team"],
                     "tilt": round(r["tilt"], 5),
@@ -299,6 +355,7 @@ def export_player_details(
             ],
             "worst_matches": [
                 {
+                    "match_id": str(r["match_id"]),
                     "date": str(r["date"]),
                     "vs": r["bowling_team"],
                     "tilt": round(r["tilt"], 5),
@@ -309,6 +366,7 @@ def export_player_details(
             ],
             "bowling_best_matches": [
                 {
+                    "match_id": str(r["match_id"]),
                     "date": str(r["date"]),
                     "vs": r["batting_team"],
                     "tilt": round(r["tilt"], 5),
@@ -319,6 +377,7 @@ def export_player_details(
             ],
             "bowling_worst_matches": [
                 {
+                    "match_id": str(r["match_id"]),
                     "date": str(r["date"]),
                     "vs": r["batting_team"],
                     "tilt": round(r["tilt"], 5),
@@ -329,6 +388,9 @@ def export_player_details(
             ],
             "career_trend": career_trend,
             "team_matchups": team_matchups,
+            "batting_stats": batting_stats,
+            "bowling_stats": bowling_stats,
+            "match_tilt_distribution": match_tilt_distribution,
         }
 
         player_path = players_dir / f"{slug}.json"
@@ -339,6 +401,194 @@ def export_player_details(
 
     print(f"  Exported {exported} player detail files to {players_dir}")
     return players_dir
+
+
+# %% Export match details
+def export_match_details(
+    deltas_df: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """Export per-match detail JSON files with scorecards and ball-by-ball WP."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+    matches_dir = output_dir / "matches"
+    matches_dir.mkdir(parents=True, exist_ok=True)
+
+    # Build player slug lookup for linking
+    slug_lookup = {}
+    if player_tilt is not None:
+        for _, row in player_tilt.iterrows():
+            pid = row.get("player_id", "")
+            if pid:
+                slug_lookup[pid] = make_slug(row["player"], pid)
+
+    match_ids = deltas_df["match_id"].unique()
+    print(f"  Exporting {len(match_ids)} match detail files...")
+
+    match_index = []
+
+    for match_id in match_ids:
+        mdf = deltas_df[deltas_df["match_id"] == match_id].sort_values(["innings", "ball_number"])
+
+        # Match info
+        first_row = mdf.iloc[0]
+        teams = sorted(mdf["batting_team"].unique().tolist())
+        winner = str(first_row["winner"]) if pd.notna(first_row["winner"]) else None
+
+        match_info = {
+            "match_id": str(match_id),
+            "date": str(first_row["date"]),
+            "venue": str(first_row["venue"]),
+            "season": str(first_row["season"]),
+            "teams": teams,
+            "winner": winner,
+            "toss_winner": str(first_row.get("toss_winner", "")) if pd.notna(first_row.get("toss_winner")) else None,
+            "toss_decision": str(first_row.get("toss_decision", "")) if pd.notna(first_row.get("toss_decision")) else None,
+        }
+
+        # Per-innings data
+        innings_data = []
+        for inn_num in sorted(mdf["innings"].unique()):
+            inn_df = mdf[mdf["innings"] == inn_num]
+            batting_team = str(inn_df.iloc[0]["batting_team"])
+            bowling_team = str(inn_df.iloc[0]["bowling_team"])
+
+            # Batting scorecard — sorted by order of appearance
+            bat_card = (
+                inn_df.groupby(["batter_id", "batter"])
+                .agg(
+                    runs=("runs_batter", "sum"),
+                    balls=("runs_batter", "count"),
+                    tilt=("delta_wp", "sum"),
+                    first_ball=("ball_number", "min"),
+                )
+                .reset_index()
+                .sort_values("first_ball")
+            )
+            batting_scorecard = [
+                {
+                    "player": r["batter"],
+                    "slug": slug_lookup.get(r["batter_id"], ""),
+                    "runs": int(r["runs"]),
+                    "balls": int(r["balls"]),
+                    "sr": round(r["runs"] / max(r["balls"], 1) * 100, 1),
+                    "tilt": round(r["tilt"], 5),
+                }
+                for _, r in bat_card.iterrows()
+            ]
+
+            # Bowling scorecard — compute legal deliveries (exclude extras overflow)
+            # In Cricsheet, wides/no-balls add extra rows beyond 6 per over
+            bowl_card = (
+                inn_df.groupby(["bowler_id", "bowler"])
+                .agg(
+                    runs=("runs_total", "sum"),
+                    total_deliveries=("runs_total", "count"),
+                    wickets=("is_wicket", "sum"),
+                    tilt=("delta_wp", lambda x: -x.sum()),
+                    first_ball=("ball_number", "min"),
+                )
+                .reset_index()
+                .sort_values("first_ball")
+            )
+            # Count legal deliveries per bowler: for each over, min(balls_in_over, 6)
+            for idx, row in bowl_card.iterrows():
+                bowler_balls = inn_df[inn_df["bowler_id"] == row["bowler_id"]]
+                legal = sum(min(len(g), 6) for _, g in bowler_balls.groupby("over"))
+                bowl_card.at[idx, "legal_balls"] = legal
+
+            bowling_scorecard = [
+                {
+                    "player": r["bowler"],
+                    "slug": slug_lookup.get(r["bowler_id"], ""),
+                    "overs": f"{int(r['legal_balls'] // 6)}.{int(r['legal_balls'] % 6)}",
+                    "runs": int(r["runs"]),
+                    "wickets": int(r["wickets"]),
+                    "economy": round(r["runs"] / max(r["legal_balls"], 1) * 6, 2),
+                    "tilt": round(r["tilt"], 5),
+                }
+                for _, r in bowl_card.iterrows()
+            ]
+
+            # Total score
+            total_runs = int(inn_df["runs_scored"].iloc[-1] + inn_df["runs_total"].iloc[-1])
+            total_wickets = int(inn_df["wickets_fallen"].iloc[-1] + (1 if inn_df.iloc[-1]["is_wicket"] else 0))
+
+            innings_data.append({
+                "innings": int(inn_num),
+                "batting_team": batting_team,
+                "bowling_team": bowling_team,
+                "total": f"{total_runs}/{total_wickets}",
+                "batting": batting_scorecard,
+                "bowling": bowling_scorecard,
+            })
+
+        # Ball-by-ball WP data
+        balls = [
+            {
+                "inn": int(r["innings"]),
+                "over": int(r["over"]),
+                "ball": int(r["ball"]),
+                "batter": r["batter"],
+                "bowler": r["bowler"],
+                "runs": int(r["runs_total"]),
+                "wicket": bool(r["is_wicket"]),
+                "wp": round(r["wp_before"], 4),
+                "wp_after": round(r["wp_after"], 4),
+                "delta": round(r["delta_wp"], 5),
+            }
+            for _, r in mdf.iterrows()
+        ]
+
+        # Key moments (top 5 by |delta_wp|)
+        mdf_sorted = mdf.reindex(mdf["delta_wp"].abs().sort_values(ascending=False).index)
+        key_moments = [
+            {
+                "inn": int(r["innings"]),
+                "over": int(r["over"]),
+                "ball": int(r["ball"]),
+                "batter": r["batter"],
+                "bowler": r["bowler"],
+                "runs": int(r["runs_total"]),
+                "wicket": bool(r["is_wicket"]),
+                "wicket_kind": r["wicket_kind"] if r["is_wicket"] else None,
+                "delta": round(r["delta_wp"], 5),
+                "wp_after": round(r["wp_after"], 4),
+            }
+            for _, r in mdf_sorted.head(5).iterrows()
+        ]
+
+        match_detail = {
+            **match_info,
+            "innings": innings_data,
+            "balls": balls,
+            "key_moments": key_moments,
+        }
+
+        match_path = matches_dir / f"{match_id}.json"
+        with open(match_path, "w") as f:
+            json.dump(match_detail, f)
+
+        # Add to index
+        match_index.append({
+            "match_id": str(match_id),
+            "date": str(first_row["date"]),
+            "season": str(first_row["season"]),
+            "teams": teams,
+            "venue": str(first_row["venue"]),
+            "winner": winner,
+        })
+
+    # Sort index by date descending
+    match_index.sort(key=lambda x: x["date"], reverse=True)
+    index_path = output_dir / "match_index.json"
+    with open(index_path, "w") as f:
+        json.dump(match_index, f, indent=2)
+
+    print(f"  Exported {len(match_ids)} match files to {matches_dir}")
+    print(f"  Match index at {index_path}")
+    return matches_dir
 
 
 # %% Export metadata
@@ -378,6 +628,7 @@ def export_all(
     print("\nExporting JSON for website...")
     export_rankings(player_tilt)
     export_player_details(deltas_df, player_tilt)
+    export_match_details(deltas_df, player_tilt)
     export_meta(deltas_df)
     print("  Done!")
 

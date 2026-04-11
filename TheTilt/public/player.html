@@ -6,45 +6,27 @@
     <title>The TILT — Player</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-    <style>
-        .player-header { margin-bottom: 24px; }
-        .player-header h2 { color: #4ade80; font-size: 1.3rem; }
-        .player-header .team { color: #888; font-size: 0.9rem; }
-
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 28px; }
-        .stat-card { background: #222; padding: 12px; border: 1px solid #333; }
-        .stat-card .label { color: #888; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 4px; }
-        .stat-card .value { font-size: 1.2rem; font-weight: bold; }
-
-        .section { margin-bottom: 28px; }
-        .section h3 { color: #888; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 4px; }
-
-        .detail-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        .detail-table th { text-align: left; padding: 6px; color: #888; border-bottom: 1px solid #333; }
-        .detail-table td { padding: 6px; border-bottom: 1px solid #222; }
-
-        .bar-container { width: 80px; height: 10px; background: #222; display: inline-block; vertical-align: middle; }
-        .bar-fill { height: 100%; }
-        .bar-fill.positive { background: #4ade80; }
-        .bar-fill.negative { background: #f87171; }
-    </style>
 </head>
 <body>
-    <h1>THE TILT</h1>
-    <div class="subtitle">win probability added for IPL cricket</div>
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <div class="logo"><a href="index.html">THE TILT</a></div>
+            <div class="nav-links">
+                <a href="index.html">leaderboard</a>
+                <a href="about.html">about</a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="nav">
-        <a href="index.html">leaderboard</a>
-        <a href="about.html">about</a>
-    </div>
+    <div class="container">
+        <div id="content">
+            <div class="loading">loading player...</div>
+        </div>
 
-    <div id="content">
-        <div class="loading">loading player...</div>
-    </div>
-
-    <div class="footer">
-        data from <a href="https://cricsheet.org">cricsheet.org</a> |
-        <a href="index.html">back to leaderboard</a>
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="index.html">back to leaderboard</a>
+        </div>
     </div>
 
 <script>
@@ -69,11 +51,13 @@ async function loadPlayer() {
         if (!res.ok) throw new Error('not found');
         const p = await res.json();
 
-        document.title = `The TILT — ${p.player}`;
+        const displayName = p.full_name && p.full_name !== p.player ? p.full_name : p.player;
+        document.title = `The TILT — ${displayName}`;
 
         let html = `
             <div class="player-header">
-                <h2>${p.player}</h2>
+                <h2>${displayName}</h2>
+                ${p.full_name && p.full_name !== p.player ? `<div class="initials">${p.player}</div>` : ''}
                 <div class="team">${(p.teams && p.teams.length > 0 ? p.teams.join(', ') : p.team)} | ${p.total_matches} matches | ${p.batting_balls} balls faced | ${p.bowling_balls} balls bowled</div>
             </div>
 
@@ -81,23 +65,63 @@ async function loadPlayer() {
                 <div class="stat-card">
                     <div class="label">total TILT/match</div>
                     <div class="value">${formatTilt(p.shrunk_total_tilt_per_match || p.total_tilt_per_match)}</div>
-                    ${p.tilt_ci_lower_90 != null && p.tilt_ci_upper_90 != null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">90% CI: [${formatTilt(p.tilt_ci_lower_90)}, ${formatTilt(p.tilt_ci_upper_90)}]</div>` : ''}
-                    ${p.shrunk_total_tilt_per_match != null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">raw: ${formatTilt(p.total_tilt_per_match)} | ${p.confidence || 'low'} conf</div>` : ''}
+                    ${p.tilt_ci_lower_90 != null && p.tilt_ci_upper_90 != null ? `<div style="color:var(--text-dim);font-size:0.7rem;margin-top:4px">90% CI: ${formatTilt(p.tilt_ci_lower_90)} to ${formatTilt(p.tilt_ci_upper_90)}</div>` : ''}
+                    ${p.shrunk_total_tilt_per_match != null ? `<div style="color:var(--text-dim);font-size:0.65rem;margin-top:2px">raw: ${formatTilt(p.total_tilt_per_match)} | ${p.confidence || 'low'} confidence</div>` : ''}
                 </div>
                 <div class="stat-card">
                     <div class="label">batting TILT/match</div>
                     <div class="value">${p.shrunk_batting_tilt_per_match != null ? formatTilt(p.shrunk_batting_tilt_per_match) : p.batting_tilt_per_match != null ? formatTilt(p.batting_tilt_per_match) : '<span class="tilt-neutral">n/a</span>'}</div>
-                    ${p.batting_tilt_per_match == null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">${p.batting_balls} balls (min 50)</div>` : ''}
+                    ${p.batting_tilt_per_match == null ? `<div style="color:var(--text-dim);font-size:0.65rem;margin-top:2px">${p.batting_balls} balls (min 50)</div>` : ''}
                 </div>
                 <div class="stat-card">
                     <div class="label">bowling TILT/match</div>
                     <div class="value">${p.shrunk_bowling_tilt_per_match != null ? formatTilt(p.shrunk_bowling_tilt_per_match) : p.bowling_tilt_per_match != null ? formatTilt(p.bowling_tilt_per_match) : '<span class="tilt-neutral">n/a</span>'}</div>
-                    ${p.bowling_tilt_per_match == null ? `<div style="color:#888;font-size:0.6rem;margin-top:2px">${p.bowling_balls} balls (min 50)</div>` : ''}
+                    ${p.bowling_tilt_per_match == null ? `<div style="color:var(--text-dim);font-size:0.65rem;margin-top:2px">${p.bowling_balls} balls (min 50)</div>` : ''}
                 </div>
             </div>
         `;
 
-        // Season breakdown (batting + bowling)
+        // Traditional counting stats
+        if (p.batting_stats || p.bowling_stats) {
+            html += '<div class="section"><h3>career statistics</h3>';
+            if (p.batting_stats) {
+                const s = p.batting_stats;
+                html += `<div style="margin-bottom:12px"><span style="color:var(--text-muted);font-size:0.75rem;font-weight:600">BATTING</span></div>
+                <div class="counting-stats">
+                    <div class="counting-stat"><div class="cs-label">runs</div><div class="cs-value">${s.runs}</div></div>
+                    <div class="counting-stat"><div class="cs-label">innings</div><div class="cs-value">${s.innings}</div></div>
+                    <div class="counting-stat"><div class="cs-label">average</div><div class="cs-value">${s.avg}</div></div>
+                    <div class="counting-stat"><div class="cs-label">SR</div><div class="cs-value">${s.sr}</div></div>
+                    <div class="counting-stat"><div class="cs-label">HS</div><div class="cs-value">${s.hs}</div></div>
+                    <div class="counting-stat"><div class="cs-label">50s / 100s</div><div class="cs-value">${s.fifties} / ${s.hundreds}</div></div>
+                    <div class="counting-stat"><div class="cs-label">not outs</div><div class="cs-value">${s.not_outs}</div></div>
+                </div>`;
+            }
+            if (p.bowling_stats) {
+                const s = p.bowling_stats;
+                html += `<div style="margin-bottom:12px;margin-top:16px"><span style="color:var(--text-muted);font-size:0.75rem;font-weight:600">BOWLING</span></div>
+                <div class="counting-stats">
+                    <div class="counting-stat"><div class="cs-label">wickets</div><div class="cs-value">${s.wickets}</div></div>
+                    <div class="counting-stat"><div class="cs-label">innings</div><div class="cs-value">${s.innings}</div></div>
+                    <div class="counting-stat"><div class="cs-label">average</div><div class="cs-value">${s.avg}</div></div>
+                    <div class="counting-stat"><div class="cs-label">economy</div><div class="cs-value">${s.economy}</div></div>
+                    <div class="counting-stat"><div class="cs-label">best</div><div class="cs-value">${s.best_figures}</div></div>
+                </div>`;
+            }
+            html += '</div>';
+        }
+
+        // Match TILT distribution histogram
+        if (p.match_tilt_distribution && p.match_tilt_distribution.length > 3) {
+            html += `<div class="section"><h3>match TILT distribution</h3>
+                <div class="chart-container" style="height:220px">
+                    <canvas id="distChart"></canvas>
+                </div>
+                <div style="color:var(--text-dim);font-size:0.65rem;margin-top:6px">each bar represents matches where this player's total TILT fell in that range</div>
+            </div>`;
+        }
+
+        // Season breakdown
         if (p.seasons && p.seasons.length > 0) {
             const maxSeasonTilt = Math.max(
                 ...p.seasons.map(s => Math.abs(s.batting_tilt_per_match)),
@@ -155,52 +179,54 @@ async function loadPlayer() {
             html += '</table></div>';
         }
 
-        // Best batting performances
+        // Best/worst batting performances (with match links)
         if (p.best_matches && p.best_matches.length > 0) {
             html += `<div class="section"><h3>best batting performances</h3><table class="detail-table">
                 <tr><th>date</th><th>vs</th><th>TILT</th><th>runs</th><th>balls</th></tr>`;
             for (const m of p.best_matches) {
-                html += `<tr>
-                    <td>${m.date}</td><td>${m.vs}</td>
+                const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
+                html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
+                    <td><a href="${matchLink}" style="color:inherit;text-decoration:none">${m.date}</a></td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
                 </tr>`;
             }
             html += '</table></div>';
         }
 
-        // Worst batting performances
         if (p.worst_matches && p.worst_matches.length > 0) {
             html += `<div class="section"><h3>worst batting performances</h3><table class="detail-table">
                 <tr><th>date</th><th>vs</th><th>TILT</th><th>runs</th><th>balls</th></tr>`;
             for (const m of p.worst_matches) {
-                html += `<tr>
-                    <td>${m.date}</td><td>${m.vs}</td>
+                const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
+                html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
+                    <td><a href="${matchLink}" style="color:inherit;text-decoration:none">${m.date}</a></td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
                 </tr>`;
             }
             html += '</table></div>';
         }
 
-        // Best bowling performances
+        // Best/worst bowling performances (with match links)
         if (p.bowling_best_matches && p.bowling_best_matches.length > 0) {
             html += `<div class="section"><h3>best bowling performances</h3><table class="detail-table">
                 <tr><th>date</th><th>vs</th><th>TILT</th><th>wickets</th><th>balls</th></tr>`;
             for (const m of p.bowling_best_matches) {
-                html += `<tr>
-                    <td>${m.date}</td><td>${m.vs}</td>
+                const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
+                html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
+                    <td><a href="${matchLink}" style="color:inherit;text-decoration:none">${m.date}</a></td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
             html += '</table></div>';
         }
 
-        // Worst bowling performances
         if (p.bowling_worst_matches && p.bowling_worst_matches.length > 0) {
             html += `<div class="section"><h3>worst bowling performances</h3><table class="detail-table">
                 <tr><th>date</th><th>vs</th><th>TILT</th><th>wickets</th><th>balls</th></tr>`;
             for (const m of p.bowling_worst_matches) {
-                html += `<tr>
-                    <td>${m.date}</td><td>${m.vs}</td>
+                const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
+                html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
+                    <td><a href="${matchLink}" style="color:inherit;text-decoration:none">${m.date}</a></td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
@@ -210,7 +236,7 @@ async function loadPlayer() {
         // Career trend chart
         if (p.career_trend && p.career_trend.length > 1) {
             html += `<div class="section"><h3>career TILT trend</h3>
-                <div style="height:220px;background:#1a1a1a;padding:8px;border:1px solid #333">
+                <div class="chart-container" style="height:220px">
                     <canvas id="careerChart"></canvas>
                 </div></div>`;
         }
@@ -218,17 +244,90 @@ async function loadPlayer() {
         // Team matchups chart
         if (p.team_matchups && p.team_matchups.length > 0) {
             html += `<div class="section"><h3>batting TILT by opponent</h3>
-                <div style="height:${Math.max(150, p.team_matchups.length * 28)}px;background:#1a1a1a;padding:8px;border:1px solid #333">
+                <div class="chart-container" style="height:${Math.max(150, p.team_matchups.length * 28)}px">
                     <canvas id="matchupChart"></canvas>
                 </div></div>`;
         }
 
         document.getElementById('content').innerHTML = html;
 
-        // Render charts after DOM is ready
+        // Render distribution histogram
+        if (p.match_tilt_distribution && p.match_tilt_distribution.length > 3) {
+            const data = p.match_tilt_distribution.map(v => v * 100);
+            const min = Math.min(...data);
+            const max = Math.max(...data);
+            const binCount = Math.min(20, Math.max(8, Math.ceil(Math.sqrt(data.length))));
+            const binWidth = (max - min) / binCount;
+            const bins = Array(binCount).fill(0);
+            const binLabels = [];
+            for (let i = 0; i < binCount; i++) {
+                const lo = min + i * binWidth;
+                binLabels.push(lo.toFixed(1));
+                data.forEach(v => {
+                    if (v >= lo && (i === binCount - 1 ? v <= lo + binWidth : v < lo + binWidth)) bins[i]++;
+                });
+            }
+            const mean = data.reduce((a, b) => a + b, 0) / data.length;
+
+            new Chart(document.getElementById('distChart'), {
+                type: 'bar',
+                data: {
+                    labels: binLabels,
+                    datasets: [{
+                        data: bins,
+                        backgroundColor: bins.map((_, i) => {
+                            const lo = min + i * binWidth;
+                            return lo >= 0 ? 'rgba(74,222,128,0.5)' : 'rgba(248,113,113,0.5)';
+                        }),
+                        borderColor: bins.map((_, i) => {
+                            const lo = min + i * binWidth;
+                            return lo >= 0 ? '#4ade80' : '#f87171';
+                        }),
+                        borderWidth: 1,
+                        borderRadius: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: (items) => {
+                                    const i = items[0].dataIndex;
+                                    const lo = (min + i * binWidth).toFixed(1);
+                                    const hi = (min + (i + 1) * binWidth).toFixed(1);
+                                    return `${lo}% to ${hi}%`;
+                                },
+                                label: (item) => `${item.raw} matches`
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                zeroLine: { type: 'line', xMin: (-min / binWidth), xMax: (-min / binWidth), borderColor: '#666', borderWidth: 1, borderDash: [3, 3] },
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Match TILT %', color: '#6b7280', font: { size: 11 } },
+                            ticks: { color: '#6b7280', font: { size: 10 }, maxRotation: 0 },
+                            grid: { color: '#2a2a2a' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Matches', color: '#6b7280', font: { size: 11 } },
+                            ticks: { color: '#6b7280', font: { size: 10 } },
+                            grid: { color: '#2a2a2a' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render career trend chart
         if (p.career_trend && p.career_trend.length > 1) {
-            const ctx = document.getElementById('careerChart');
-            new Chart(ctx, {
+            new Chart(document.getElementById('careerChart'), {
                 type: 'line',
                 data: {
                     labels: p.career_trend.map(t => t.match),
@@ -236,7 +335,7 @@ async function loadPlayer() {
                         label: 'Cumulative TILT',
                         data: p.career_trend.map(t => +(t.cumulative * 100).toFixed(2)),
                         borderColor: '#4ade80',
-                        backgroundColor: 'rgba(74,222,128,0.1)',
+                        backgroundColor: 'rgba(74,222,128,0.08)',
                         fill: true,
                         tension: 0.3,
                         pointRadius: p.career_trend.length > 50 ? 0 : 2,
@@ -265,26 +364,27 @@ async function loadPlayer() {
                         }
                     },
                     scales: {
-                        x: { title: { display: true, text: 'Match #', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#333' } },
-                        y: { title: { display: true, text: 'Cumulative TILT %', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#333' } }
+                        x: { title: { display: true, text: 'Match #', color: '#6b7280', font: { size: 11 } }, ticks: { color: '#6b7280' }, grid: { color: '#2a2a2a' } },
+                        y: { title: { display: true, text: 'Cumulative TILT %', color: '#6b7280', font: { size: 11 } }, ticks: { color: '#6b7280' }, grid: { color: '#2a2a2a' } }
                     }
                 }
             });
         }
 
+        // Render matchup chart
         if (p.team_matchups && p.team_matchups.length > 0) {
-            const ctx2 = document.getElementById('matchupChart');
             const matchups = p.team_matchups;
-            new Chart(ctx2, {
+            new Chart(document.getElementById('matchupChart'), {
                 type: 'bar',
                 data: {
                     labels: matchups.map(m => m.opponent),
                     datasets: [{
                         label: 'TILT/match',
                         data: matchups.map(m => +(m.tilt_per_match * 100).toFixed(2)),
-                        backgroundColor: matchups.map(m => m.tilt_per_match >= 0 ? 'rgba(74,222,128,0.7)' : 'rgba(248,113,113,0.7)'),
+                        backgroundColor: matchups.map(m => m.tilt_per_match >= 0 ? 'rgba(74,222,128,0.5)' : 'rgba(248,113,113,0.5)'),
                         borderColor: matchups.map(m => m.tilt_per_match >= 0 ? '#4ade80' : '#f87171'),
                         borderWidth: 1,
+                        borderRadius: 2,
                     }]
                 },
                 options: {
@@ -303,8 +403,8 @@ async function loadPlayer() {
                         }
                     },
                     scales: {
-                        x: { title: { display: true, text: 'TILT/match %', color: '#888' }, ticks: { color: '#666' }, grid: { color: '#333' } },
-                        y: { ticks: { color: '#aaa', font: { size: 10 } }, grid: { display: false } }
+                        x: { title: { display: true, text: 'TILT/match %', color: '#6b7280', font: { size: 11 } }, ticks: { color: '#6b7280' }, grid: { color: '#2a2a2a' } },
+                        y: { ticks: { color: '#9ca3af', font: { size: 11 } }, grid: { display: false } }
                     }
                 }
             });

@@ -1,8 +1,9 @@
 # %% Imports
+import json
 import pickle
 import re
 from pathlib import Path
-from typing import Optional
+from typing import Dict, Optional
 
 import lightgbm as lgb
 import numpy as np
@@ -356,6 +357,19 @@ def compute_tilt(
     deltas_df = compute_ball_deltas(model, df)
     player_tilt = aggregate_player_tilt(deltas_df)
     player_tilt = apply_shrinkage(player_tilt, deltas_df)
+
+    # Merge full names from cached Wikidata resolution
+    full_names_path = processed_dir / "full_names.json"
+    if full_names_path.exists():
+        with open(full_names_path, "r") as f:
+            full_names: Dict[str, str] = json.load(f)
+        player_tilt["full_name"] = player_tilt["player_id"].map(full_names)
+        player_tilt["full_name"] = player_tilt["full_name"].fillna(player_tilt["player"])
+        resolved = player_tilt["full_name"].ne(player_tilt["player"]).sum()
+        print(f"\n  Full names resolved: {resolved} / {len(player_tilt)}")
+    else:
+        player_tilt["full_name"] = player_tilt["player"]
+        print("\n  No full_names.json found, using display names")
 
     return deltas_df, player_tilt
 

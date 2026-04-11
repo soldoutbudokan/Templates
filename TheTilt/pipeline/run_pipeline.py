@@ -18,6 +18,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from pipeline.download_data import download_cricsheet_data
+from pipeline.download_people import download_and_resolve
 from pipeline.parse_matches import parse_all_matches
 from pipeline.build_features import build_all_features
 from pipeline.train_win_prob import train_and_evaluate
@@ -35,23 +36,27 @@ def run_pipeline() -> None:
     print("=" * 60)
 
     # Step 1: Download data
-    print("\n[1/6] Downloading Cricsheet IPL data...")
+    print("\n[1/7] Downloading Cricsheet IPL data...")
     download_cricsheet_data()
 
-    # Step 2: Parse matches
-    print("\n[2/6] Parsing ball-by-ball match data...")
+    # Step 2: Download people register + resolve full names
+    print("\n[2/7] Downloading player register + resolving full names...")
+    download_and_resolve()
+
+    # Step 3: Parse matches
+    print("\n[3/7] Parsing ball-by-ball match data...")
     parse_all_matches()
 
-    # Step 3: Build features
-    print("\n[3/6] Building match state features...")
+    # Step 4: Build features
+    print("\n[4/7] Building match state features...")
     build_all_features()
 
-    # Step 4: Train model
-    print("\n[4/6] Training win probability model...")
+    # Step 5: Train model
+    print("\n[5/7] Training win probability model...")
     train_and_evaluate()
 
-    # Step 5: Compute TILT
-    print("\n[5/6] Computing player TILT scores...")
+    # Step 6: Compute TILT
+    print("\n[6/7] Computing player TILT scores...")
     deltas_df, player_tilt = compute_tilt()
 
     # Save intermediate results for later use
@@ -59,8 +64,8 @@ def run_pipeline() -> None:
     deltas_df.to_parquet(processed_dir / "deltas.parquet", index=False)
     player_tilt.to_parquet(processed_dir / "player_tilt.parquet", index=False)
 
-    # Step 6: Export JSON
-    print("\n[6/6] Exporting JSON for website...")
+    # Step 7: Export JSON
+    print("\n[7/7] Exporting JSON for website...")
     export_all(deltas_df, player_tilt)
 
     elapsed = time.time() - start

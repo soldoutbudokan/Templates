@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — Match</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <div class="logo"><a href="index.html">THE TILT</a></div>
+            <div class="nav-links">
+                <a href="index.html">leaderboard</a>
+                <a href="about.html">about</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="content">
+            <div class="loading">loading match...</div>
+        </div>
+
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="index.html">back to leaderboard</a>
+        </div>
+    </div>
+
+<script>
+function formatTilt(val) {
+    const sign = val >= 0 ? '+' : '';
+    const pct = (val * 100).toFixed(2);
+    const cls = val > 0.001 ? 'tilt-positive' : val < -0.001 ? 'tilt-negative' : 'tilt-neutral';
+    return `<span class="${cls}">${sign}${pct}%</span>`;
+}
+
+async function loadMatch() {
+    const params = new URLSearchParams(window.location.search);
+    const matchId = params.get('id');
+
+    if (!matchId) {
+        document.getElementById('content').innerHTML = '<div class="loading">no match specified</div>';
+        return;
+    }
+
+    try {
+        const res = await fetch(`data/matches/${matchId}.json`);
+        if (!res.ok) throw new Error('not found');
+        const m = await res.json();
+
+        document.title = `The TILT — ${m.teams[0]} vs ${m.teams[1]}`;
+
+        let html = `
+            <div class="match-header">
+                <div class="teams">${m.teams[0]} <span class="vs">vs</span> ${m.teams[1]}</div>
+                <div class="match-meta">${m.date} | ${m.venue} | ${m.season}</div>
+                ${m.toss_winner ? `<div class="match-meta">${m.toss_winner} won the toss and chose to ${m.toss_decision}</div>` : ''}
+                ${m.winner ? `<div class="result">${m.winner} won</div>` : ''}
+            </div>
+        `;
+
+        // Win probability chart
+        if (m.balls && m.balls.length > 0) {
+            html += `<div class="section"><h3>win probability</h3>
+                <div class="chart-container" style="height:280px">
+                    <canvas id="wpChart"></canvas>
+                </div>
+                <div style="color:var(--text-dim);font-size:0.65rem;margin-top:6px">Win probability from ${m.teams[0]}'s perspective (batting team in innings 1)</div>
+            </div>`;
+        }
+
+        // Key moments
+        if (m.key_moments && m.key_moments.length > 0) {
+            html += `<div class="section"><h3>key moments</h3>`;
+            for (const km of m.key_moments) {
+                const desc = km.wicket
+                    ? `${km.batter} ${km.wicket_kind} (${km.bowler})`
+                    : `${km.batter} hits ${km.runs} off ${km.bowler}`;
+                const overLabel = `${km.inn === 1 ? '1st' : '2nd'} inn, ${km.over}.${km.ball}`;
+                html += `<div class="key-moment">
+                    <div>
+                        <span style="color:var(--text-dim);font-size:0.75rem;margin-right:8px">${overLabel}</span>
+                        <span class="moment-desc">${desc}</span>
+                    </div>
+                    <div class="moment-delta">${formatTilt(km.delta)}</div>
+                </div>`;
+            }
+            html += '</div>';
+        }
+
+        // Innings scorecards
+        if (m.innings && m.innings.length > 0) {
+            for (const inn of m.innings) {
+                html += `<div class="section"><h3>${inn.batting_team} — ${inn.total} (innings ${inn.innings})</h3>`;
+
+                // Batting card
+                html += `<table class="detail-table">
+                    <tr><th>batter</th><th>runs</th><th>balls</th><th>SR</th><th>TILT</th></tr>`;
+                for (const b of inn.batting) {
+                    const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
+                    html += `<tr>
+                        <td><a href="${playerLink}" style="color:var(--text-primary);text-decoration:none;font-weight:500">${b.player}</a></td>
+                        <td>${b.runs}</td><td>${b.balls}</td><td>${b.sr}</td><td>${formatTilt(b.tilt)}</td>
+                    </tr>`;
+                }
+                html += '</table>';
+
+                // Bowling card
+                html += `<table class="detail-table" style="margin-top:12px">
+                    <tr><th>bowler</th><th>overs</th><th>runs</th><th>wkts</th><th>econ</th><th>TILT</th></tr>`;
+                for (const b of inn.bowling) {
+                    const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
+                    html += `<tr>
+                        <td><a href="${playerLink}" style="color:var(--text-primary);text-decoration:none;font-weight:500">${b.player}</a></td>
+                        <td>${b.overs}</td><td>${b.runs}</td><td>${b.wickets}</td><td>${b.economy}</td><td>${formatTilt(b.tilt)}</td>
+                    </tr>`;
+                }
+                html += '</table></div>';
+            }
+        }
+
+        document.getElementById('content').innerHTML = html;
+
+        // Render WP chart
+        if (m.balls && m.balls.length > 0) {
+            const inn1 = m.balls.filter(b => b.inn === 1);
+            const inn2 = m.balls.filter(b => b.inn === 2);
+
+            // Build continuous WP line: use wp_after for each ball
+            const labels = [];
+            const wpData = [];
+            let idx = 0;
+
+            for (const b of inn1) {
+                labels.push(`${b.over}.${b.ball}`);
+                wpData.push(+(b.wp_after * 100).toFixed(1));
+                idx++;
+            }
+            for (const b of inn2) {
+                labels.push(`${b.over}.${b.ball}`);
+                wpData.push(+(b.wp_after * 100).toFixed(1));
+            }
+
+            const inningsBreak = inn1.length;
+
+            new Chart(document.getElementById('wpChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `${m.teams[0]} Win %`,
+                        data: wpData,
+                        borderColor: wpData.map((_, i) => i < inningsBreak ? '#4ade80' : '#f87171'),
+                        segment: {
+                            borderColor: ctx => ctx.p0DataIndex < inningsBreak - 1 ? '#4ade80' : '#f87171',
+                        },
+                        backgroundColor: 'transparent',
+                        fill: false,
+                        tension: 0.2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: (items) => {
+                                    const i = items[0].dataIndex;
+                                    const b = m.balls[i];
+                                    if (!b) return '';
+                                    return `Inn ${b.inn}, Over ${b.over}.${b.ball}`;
+                                },
+                                label: (item) => {
+                                    const i = item.dataIndex;
+                                    const b = m.balls[i];
+                                    if (!b) return '';
+                                    let line = `${m.teams[0]}: ${item.formattedValue}%`;
+                                    if (b.wicket) line += ` | WICKET`;
+                                    else if (b.runs > 0) line += ` | ${b.runs} runs`;
+                                    return line;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Over.Ball', color: '#6b7280', font: { size: 11 } },
+                            ticks: {
+                                color: '#6b7280',
+                                maxTicksLimit: 20,
+                                callback: function(val, idx) {
+                                    const label = this.getLabelForValue(val);
+                                    return label && label.endsWith('.0') ? label : '';
+                                }
+                            },
+                            grid: { color: '#2a2a2a' }
+                        },
+                        y: {
+                            title: { display: true, text: `${m.teams[0]} Win %`, color: '#6b7280', font: { size: 11 } },
+                            ticks: { color: '#6b7280', callback: v => v + '%' },
+                            grid: { color: '#2a2a2a' },
+                            min: 0,
+                            max: 100,
+                        }
+                    }
+                }
+            });
+        }
+
+    } catch (e) {
+        document.getElementById('content').innerHTML = '<div class="loading">match not found</div>';
+    }
+}
+
+loadMatch();
+</script>
+</body>
+</html>
