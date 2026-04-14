@@ -102,34 +102,52 @@ async function loadPlayer() {
             </div>
         `;
 
-        // Traditional counting stats
-        if (p.batting_stats || p.bowling_stats) {
-            html += '<div class="section"><h3>career statistics</h3>';
+        // Batting statistics by season
+        const seasonsWithBat = (p.seasons || []).filter(s => s.batting_stats);
+        if (p.batting_stats || seasonsWithBat.length > 0) {
+            html += '<div class="section"><h3>batting statistics</h3>';
+            html += `<table class="detail-table">
+                <tr><th>season</th><th>team</th><th>inn</th><th>runs</th><th>avg</th><th>SR</th><th>HS</th><th>50s</th><th>100s</th></tr>`;
+            for (const s of seasonsWithBat) {
+                const b = s.batting_stats;
+                html += `<tr>
+                    <td>${s.season}</td>
+                    <td><span class="season-team">${s.team || ''}</span></td>
+                    <td>${b.innings}</td><td>${b.runs}</td><td>${b.avg}</td><td>${b.sr}</td><td>${b.hs}</td><td>${b.fifties}</td><td>${b.hundreds}</td>
+                </tr>`;
+            }
             if (p.batting_stats) {
-                const s = p.batting_stats;
-                html += `<div style="margin-bottom:12px"><span style="color:var(--text-muted);font-size:0.75rem;font-weight:600">BATTING</span></div>
-                <div class="counting-stats">
-                    <div class="counting-stat"><div class="cs-label">runs</div><div class="cs-value">${s.runs}</div></div>
-                    <div class="counting-stat"><div class="cs-label">innings</div><div class="cs-value">${s.innings}</div></div>
-                    <div class="counting-stat"><div class="cs-label">average</div><div class="cs-value">${s.avg}</div></div>
-                    <div class="counting-stat"><div class="cs-label">SR</div><div class="cs-value">${s.sr}</div></div>
-                    <div class="counting-stat"><div class="cs-label">HS</div><div class="cs-value">${s.hs}</div></div>
-                    <div class="counting-stat"><div class="cs-label">50s / 100s</div><div class="cs-value">${s.fifties} / ${s.hundreds}</div></div>
-                    <div class="counting-stat"><div class="cs-label">not outs</div><div class="cs-value">${s.not_outs}</div></div>
-                </div>`;
+                const b = p.batting_stats;
+                html += `<tr class="career-total">
+                    <td colspan="2">career</td>
+                    <td>${b.innings}</td><td>${b.runs}</td><td>${b.avg}</td><td>${b.sr}</td><td>${b.hs}</td><td>${b.fifties}</td><td>${b.hundreds}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+        }
+
+        // Bowling statistics by season
+        const seasonsWithBowl = (p.seasons || []).filter(s => s.bowling_stats);
+        if (p.bowling_stats || seasonsWithBowl.length > 0) {
+            html += '<div class="section"><h3>bowling statistics</h3>';
+            html += `<table class="detail-table">
+                <tr><th>season</th><th>team</th><th>inn</th><th>wkts</th><th>avg</th><th>econ</th><th>best</th></tr>`;
+            for (const s of seasonsWithBowl) {
+                const b = s.bowling_stats;
+                html += `<tr>
+                    <td>${s.season}</td>
+                    <td><span class="season-team">${s.team || ''}</span></td>
+                    <td>${b.innings}</td><td>${b.wickets}</td><td>${b.avg}</td><td>${b.economy}</td><td>${b.best_figures}</td>
+                </tr>`;
             }
             if (p.bowling_stats) {
-                const s = p.bowling_stats;
-                html += `<div style="margin-bottom:12px;margin-top:16px"><span style="color:var(--text-muted);font-size:0.75rem;font-weight:600">BOWLING</span></div>
-                <div class="counting-stats">
-                    <div class="counting-stat"><div class="cs-label">wickets</div><div class="cs-value">${s.wickets}</div></div>
-                    <div class="counting-stat"><div class="cs-label">innings</div><div class="cs-value">${s.innings}</div></div>
-                    <div class="counting-stat"><div class="cs-label">average</div><div class="cs-value">${s.avg}</div></div>
-                    <div class="counting-stat"><div class="cs-label">economy</div><div class="cs-value">${s.economy}</div></div>
-                    <div class="counting-stat"><div class="cs-label">best</div><div class="cs-value">${s.best_figures}</div></div>
-                </div>`;
+                const b = p.bowling_stats;
+                html += `<tr class="career-total">
+                    <td colspan="2">career</td>
+                    <td>${b.innings}</td><td>${b.wickets}</td><td>${b.avg}</td><td>${b.economy}</td><td>${b.best_figures}</td>
+                </tr>`;
             }
-            html += '</div>';
+            html += '</table></div>';
         }
 
         // Match TILT distribution histogram

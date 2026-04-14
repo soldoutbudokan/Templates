@@ -539,6 +539,17 @@ body {
     color: inherit;
 }
 
+/* Career total row in season stats tables */
+.detail-table tr.career-total td {
+    font-weight: 700;
+    border-top: 2px solid var(--border);
+    color: var(--text-primary);
+}
+.season-team {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
 /* ============================================
    Counting Stats Grid
    ============================================ */

@@ -162,15 +162,74 @@ def export_player_details(
             bowl_matches = int(bowl_s["matches"]) if bowl_s is not None else 0
             bat_balls = int(bat_s["balls"]) if bat_s is not None else 0
             bowl_balls = int(bowl_s["balls"]) if bowl_s is not None else 0
-            merged_seasons.append({
+
+            # Per-season team and counting stats
+            season_team = None
+            season_bat_stats = None
+            season_bowl_stats = None
+
+            # Batting counting stats for this season
+            bat_season_df = bat_df[bat_df["season"] == season]
+            if len(bat_season_df) > 0:
+                season_team = bat_season_df["batting_team"].mode().iloc[0]
+                s_runs = int(bat_season_df["runs_batter"].sum())
+                s_balls = len(bat_season_df)
+                s_innings = bat_season_df["match_id"].nunique()
+                s_dismissals = int(bat_season_df["player_dismissed_id"].eq(player_id).sum()) if player_id else int(bat_season_df["player_dismissed"].eq(player_name).sum())
+                s_match_runs = bat_season_df.groupby("match_id")["runs_batter"].sum()
+                season_bat_stats = {
+                    "runs": s_runs,
+                    "innings": s_innings,
+                    "balls": s_balls,
+                    "avg": round(s_runs / max(s_dismissals, 1), 2),
+                    "sr": round(s_runs / max(s_balls, 1) * 100, 2),
+                    "hs": int(s_match_runs.max()),
+                    "not_outs": s_innings - s_dismissals,
+                    "fifties": int((s_match_runs >= 50).sum()),
+                    "hundreds": int((s_match_runs >= 100).sum()),
+                }
+
+            # Bowling counting stats for this season
+            bowl_season_df = bowl_df[bowl_df["season"] == season]
+            if len(bowl_season_df) > 0:
+                if season_team is None:
+                    season_team = bowl_season_df["bowling_team"].mode().iloc[0]
+                s_wickets = int(bowl_season_df["is_wicket"].sum())
+                s_bowl_balls = len(bowl_season_df)
+                s_runs_conceded = int(bowl_season_df["runs_total"].sum())
+                s_bowl_innings = bowl_season_df["match_id"].nunique()
+                s_bowl_match = bowl_season_df.groupby("match_id").agg(
+                    wickets=("is_wicket", "sum"),
+                    runs=("runs_total", "sum"),
+                )
+                s_best_idx = s_bowl_match["wickets"].idxmax()
+                s_best_w = int(s_bowl_match.loc[s_best_idx, "wickets"])
+                s_best_r = int(s_bowl_match.loc[s_best_idx, "runs"])
+                season_bowl_stats = {
+                    "wickets": s_wickets,
+                    "innings": s_bowl_innings,
+                    "balls": s_bowl_balls,
+                    "runs_conceded": s_runs_conceded,
+                    "avg": round(s_runs_conceded / max(s_wickets, 1), 2),
+                    "economy": round(s_runs_conceded / max(s_bowl_balls, 1) * 6, 2),
+                    "best_figures": f"{s_best_w}/{s_best_r}",
+                }
+
+            season_entry = {
                 "season": str(season),
+                "team": str(season_team) if season_team else None,
                 "batting_tilt_per_match": round(bat_tilt, 5),
                 "bowling_tilt_per_match": round(bowl_tilt, 5),
                 "batting_matches": bat_matches,
                 "bowling_matches": bowl_matches,
                 "batting_balls": bat_balls,
                 "bowling_balls": bowl_balls,
-            })
+            }
+            if season_bat_stats:
+                season_entry["batting_stats"] = season_bat_stats
+            if season_bowl_stats:
+                season_entry["bowling_stats"] = season_bowl_stats
+            merged_seasons.append(season_entry)
 
         # Phase breakdown (batting)
         phase_batting = []
