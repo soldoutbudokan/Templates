@@ -73,6 +73,7 @@ async function loadMatch() {
         const m = await res.json();
 
         document.title = `The TILT — ${m.teams[0]} vs ${m.teams[1]}`;
+        const refTeam = m.innings && m.innings.length > 0 ? m.innings[0].batting_team : m.teams[0];
 
         let html = `
             <div class="match-header">
@@ -89,7 +90,7 @@ async function loadMatch() {
                 <div class="chart-container" style="height:280px">
                     <canvas id="wpChart"></canvas>
                 </div>
-                <div style="color:var(--text-dim);font-size:0.65rem;margin-top:6px">Win probability from ${m.teams[0]}'s perspective (batting team in innings 1)</div>
+                <div style="color:var(--text-dim);font-size:0.65rem;margin-top:6px">Win probability from ${refTeam}'s perspective (batting team in innings 1)</div>
             </div>`;
         }
 
@@ -98,7 +99,9 @@ async function loadMatch() {
             html += `<div class="section"><h3>key moments</h3>`;
             for (const km of m.key_moments) {
                 const desc = km.wicket
-                    ? `${km.batter} ${km.wicket_kind} (${km.bowler})`
+                    ? (km.wicket_kind === 'run out'
+                        ? `${km.player_dismissed || km.batter} run out`
+                        : `${km.player_dismissed || km.batter} ${km.wicket_kind} (${km.bowler})`)
                     : `${km.batter} hits ${km.runs} off ${km.bowler}`;
                 const overLabel = `${km.inn === 1 ? '1st' : '2nd'} inn, ${km.over}.${km.ball}`;
                 html += `<div class="key-moment">
@@ -150,19 +153,18 @@ async function loadMatch() {
             const inn1 = m.balls.filter(b => b.inn === 1);
             const inn2 = m.balls.filter(b => b.inn === 2);
 
-            // Build continuous WP line: use wp_after for each ball
+            // Build continuous WP line from refTeam's perspective
             const labels = [];
             const wpData = [];
-            let idx = 0;
 
             for (const b of inn1) {
                 labels.push(`${b.over}.${b.ball}`);
                 wpData.push(+(b.wp_after * 100).toFixed(1));
-                idx++;
             }
             for (const b of inn2) {
                 labels.push(`${b.over}.${b.ball}`);
-                wpData.push(+(b.wp_after * 100).toFixed(1));
+                // Inn 2 wp_after is from inn 2 batting team's perspective — flip it
+                wpData.push(+((1 - b.wp_after) * 100).toFixed(1));
             }
 
             const inningsBreak = inn1.length;
@@ -172,7 +174,7 @@ async function loadMatch() {
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: `${m.teams[0]} Win %`,
+                        label: `${refTeam} Win %`,
                         data: wpData,
                         borderColor: wpData.map((_, i) => i < inningsBreak ? cssVar('--accent-green') : cssVar('--accent-red')),
                         segment: {
@@ -189,6 +191,7 @@ async function loadMatch() {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
@@ -203,7 +206,8 @@ async function loadMatch() {
                                     const i = item.dataIndex;
                                     const b = m.balls[i];
                                     if (!b) return '';
-                                    let line = `${m.teams[0]}: ${item.formattedValue}%`;
+                                    let line = `${refTeam}: ${item.formattedValue}%`;
+                                    if (b.score) line += ` | Score: ${b.score}`;
                                     if (b.wicket) line += ` | WICKET`;
                                     else if (b.runs > 0) line += ` | ${b.runs} runs`;
                                     return line;
@@ -225,7 +229,7 @@ async function loadMatch() {
                             grid: { color: cssVar('--border') }
                         },
                         y: {
-                            title: { display: true, text: `${m.teams[0]} Win %`, color: cssVar('--text-muted'), font: { size: 11 } },
+                            title: { display: true, text: `${refTeam} Win %`, color: cssVar('--text-muted'), font: { size: 11 } },
                             ticks: { color: cssVar('--text-muted'), callback: v => v + '%' },
                             grid: { color: cssVar('--border') },
                             min: 0,

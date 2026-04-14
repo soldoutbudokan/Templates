@@ -191,26 +191,46 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     combined["total_tilt_per_match"] = combined["total_tilt"] / combined["total_matches"]
 
     # Collect all teams per player (from both batting and bowling sides)
+    sorted_df = deltas_df.sort_values("date")
     bat_teams = (
-        deltas_df.sort_values("date")
-        .groupby("batter_id")["batting_team"]
-        .agg(last_team="last", all_teams=lambda x: list(x.unique()))
+        sorted_df
+        .groupby("batter_id")
+        .agg(
+            bat_last_team=("batting_team", "last"),
+            bat_last_date=("date", "last"),
+            all_teams_bat=("batting_team", lambda x: list(x.unique())),
+        )
         .reset_index()
         .rename(columns={"batter_id": "player_id"})
     )
     bowl_teams = (
-        deltas_df.sort_values("date")
-        .groupby("bowler_id")["bowling_team"]
-        .agg(all_teams=lambda x: list(x.unique()))
+        sorted_df
+        .groupby("bowler_id")
+        .agg(
+            bowl_last_team=("bowling_team", "last"),
+            bowl_last_date=("date", "last"),
+            all_teams_bowl=("bowling_team", lambda x: list(x.unique())),
+        )
         .reset_index()
         .rename(columns={"bowler_id": "player_id"})
     )
     # Merge: union of teams from batting and bowling
-    all_teams = pd.merge(bat_teams, bowl_teams, on="player_id", how="outer", suffixes=("_bat", "_bowl"))
+    all_teams = pd.merge(bat_teams, bowl_teams, on="player_id", how="outer")
     all_teams["all_teams_bat"] = all_teams["all_teams_bat"].apply(lambda x: x if isinstance(x, list) else [])
     all_teams["all_teams_bowl"] = all_teams["all_teams_bowl"].apply(lambda x: x if isinstance(x, list) else [])
     all_teams["teams"] = all_teams.apply(lambda r: sorted(set(r["all_teams_bat"]) | set(r["all_teams_bowl"])), axis=1)
-    all_teams["team"] = all_teams["last_team"].fillna(all_teams["all_teams_bowl"].apply(lambda x: x[-1] if x else "Unknown"))
+    # Current team = whichever appearance (batting or bowling) is most recent
+    def _pick_current_team(r):
+        bat_date = r["bat_last_date"] if pd.notna(r.get("bat_last_date")) else ""
+        bowl_date = r["bowl_last_date"] if pd.notna(r.get("bowl_last_date")) else ""
+        bat_team = r.get("bat_last_team")
+        bowl_team = r.get("bowl_last_team")
+        if pd.notna(bat_team) and (str(bat_date) >= str(bowl_date) or pd.isna(bowl_team)):
+            return bat_team
+        if pd.notna(bowl_team):
+            return bowl_team
+        return "Unknown"
+    all_teams["team"] = all_teams.apply(_pick_current_team, axis=1)
 
     combined = combined.merge(all_teams[["player_id", "team", "teams"]], on="player_id", how="left")
     combined["team"] = combined["team"].fillna("Unknown")

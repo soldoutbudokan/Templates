@@ -592,6 +592,7 @@ def export_match_details(
                 "batter": r["batter"],
                 "bowler": r["bowler"],
                 "runs": int(r["runs_total"]),
+                "score": f"{int(r['runs_scored']) + int(r['runs_total'])}/{int(r['wickets_fallen']) + (1 if r['is_wicket'] else 0)}",
                 "wicket": bool(r["is_wicket"]),
                 "wp": round(r["wp_before"], 4),
                 "wp_after": round(r["wp_after"], 4),
@@ -612,6 +613,7 @@ def export_match_details(
                 "runs": int(r["runs_total"]),
                 "wicket": bool(r["is_wicket"]),
                 "wicket_kind": r["wicket_kind"] if r["is_wicket"] else None,
+                "player_dismissed": r["player_dismissed"] if r["is_wicket"] else None,
                 "delta": round(r["delta_wp"], 5),
                 "wp_after": round(r["wp_after"], 4),
             }
