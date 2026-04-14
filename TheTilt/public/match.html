@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The TILT — Match</title>
     <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -14,9 +15,27 @@
             <div class="nav-links">
                 <a href="index.html">leaderboard</a>
                 <a href="about.html">about</a>
+                <div class="theme-switch">
+                    <span class="theme-icon" id="sunIcon">&#9788;</span>
+                    <button class="theme-toggle" id="themeBtn"></button>
+                    <span class="theme-icon" id="moonIcon">&#9789;</span>
+                </div>
             </div>
         </div>
     </nav>
+    <script>
+        (function() {
+            const t = document.documentElement.getAttribute('data-theme') || 'dark';
+            document.getElementById(t === 'dark' ? 'moonIcon' : 'sunIcon').classList.add('active');
+            document.getElementById('themeBtn').addEventListener('click', () => {
+                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                document.getElementById('sunIcon').classList.toggle('active');
+                document.getElementById('moonIcon').classList.toggle('active');
+            });
+        })();
+    </script>
 
     <div class="container">
         <div id="content">
@@ -30,6 +49,8 @@
     </div>
 
 <script>
+function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
 function formatTilt(val) {
     const sign = val >= 0 ? '+' : '';
     const pct = (val * 100).toFixed(2);
@@ -153,9 +174,9 @@ async function loadMatch() {
                     datasets: [{
                         label: `${m.teams[0]} Win %`,
                         data: wpData,
-                        borderColor: wpData.map((_, i) => i < inningsBreak ? '#4ade80' : '#f87171'),
+                        borderColor: wpData.map((_, i) => i < inningsBreak ? cssVar('--accent-green') : cssVar('--accent-red')),
                         segment: {
-                            borderColor: ctx => ctx.p0DataIndex < inningsBreak - 1 ? '#4ade80' : '#f87171',
+                            borderColor: ctx => ctx.p0DataIndex < inningsBreak - 1 ? cssVar('--accent-green') : cssVar('--accent-red'),
                         },
                         backgroundColor: 'transparent',
                         fill: false,
@@ -192,21 +213,21 @@ async function loadMatch() {
                     },
                     scales: {
                         x: {
-                            title: { display: true, text: 'Over.Ball', color: '#787882', font: { size: 11 } },
+                            title: { display: true, text: 'Over.Ball', color: cssVar('--text-muted'), font: { size: 11 } },
                             ticks: {
-                                color: '#787882',
+                                color: cssVar('--text-muted'),
                                 maxTicksLimit: 20,
                                 callback: function(val, idx) {
                                     const label = this.getLabelForValue(val);
                                     return label && label.endsWith('.0') ? label : '';
                                 }
                             },
-                            grid: { color: '#333333' }
+                            grid: { color: cssVar('--border') }
                         },
                         y: {
-                            title: { display: true, text: `${m.teams[0]} Win %`, color: '#787882', font: { size: 11 } },
-                            ticks: { color: '#787882', callback: v => v + '%' },
-                            grid: { color: '#333333' },
+                            title: { display: true, text: `${m.teams[0]} Win %`, color: cssVar('--text-muted'), font: { size: 11 } },
+                            ticks: { color: cssVar('--text-muted'), callback: v => v + '%' },
+                            grid: { color: cssVar('--border') },
                             min: 0,
                             max: 100,
                         }

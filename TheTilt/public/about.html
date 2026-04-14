@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The TILT — About</title>
     <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <style>
         .about-section { margin-bottom: 28px; }
         .about-section h2 { color: var(--text-primary); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
@@ -20,9 +21,27 @@
             <div class="nav-links">
                 <a href="index.html">leaderboard</a>
                 <a href="about.html" class="active">about</a>
+                <div class="theme-switch">
+                    <span class="theme-icon" id="sunIcon">&#9788;</span>
+                    <button class="theme-toggle" id="themeBtn"></button>
+                    <span class="theme-icon" id="moonIcon">&#9789;</span>
+                </div>
             </div>
         </div>
     </nav>
+    <script>
+        (function() {
+            const t = document.documentElement.getAttribute('data-theme') || 'dark';
+            document.getElementById(t === 'dark' ? 'moonIcon' : 'sunIcon').classList.add('active');
+            document.getElementById('themeBtn').addEventListener('click', () => {
+                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                document.getElementById('sunIcon').classList.toggle('active');
+                document.getElementById('moonIcon').classList.toggle('active');
+            });
+        })();
+    </script>
 
     <div class="container">
         <div class="page-header">

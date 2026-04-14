@@ -27,11 +27,31 @@
     --accent-red: #f87171;
     --accent-red-dim: rgba(248, 113, 113, 0.15);
     --accent-yellow: #fbbf24;
+    --nav-bg: rgba(18, 18, 18, 0.85);
     --radius-sm: 6px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     --max-width: 1200px;
+}
+
+[data-theme="light"] {
+    --bg-primary: #f5f5f5;
+    --bg-surface: #ebebeb;
+    --bg-card: #ffffff;
+    --bg-hover: #e0e0e0;
+    --border: #d4d4d4;
+    --border-light: #e5e5e5;
+    --text-primary: #1a1a1a;
+    --text-secondary: #525252;
+    --text-muted: #737373;
+    --text-dim: #a3a3a3;
+    --accent-green: #16a34a;
+    --accent-green-dim: rgba(22, 163, 74, 0.1);
+    --accent-red: #dc2626;
+    --accent-red-dim: rgba(220, 38, 38, 0.1);
+    --accent-yellow: #d97706;
+    --nav-bg: rgba(245, 245, 245, 0.85);
 }
 
 body {
@@ -50,7 +70,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(18, 18, 18, 0.85);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     padding: 0 24px;
@@ -101,6 +121,66 @@ body {
 .nav-links a.active {
     color: var(--accent-green);
     background: var(--accent-green-dim);
+}
+
+.theme-switch {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 12px;
+}
+
+.theme-switch .theme-icon {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    line-height: 1;
+    transition: color 0.3s;
+}
+
+.theme-switch .theme-icon.active {
+    color: var(--text-secondary);
+}
+
+.theme-toggle {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: var(--bg-hover);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s, border-color 0.3s;
+    flex-shrink: 0;
+}
+
+.theme-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    transition: transform 0.3s, background 0.3s;
+}
+
+[data-theme="light"] .theme-toggle::after {
+    transform: translateX(20px);
+    background: var(--accent-green);
+}
+
+.theme-toggle:hover {
+    border-color: var(--border-light);
+}
+
+.theme-toggle:hover::after {
+    background: var(--text-secondary);
+}
+
+[data-theme="light"] .theme-toggle:hover::after {
+    background: var(--accent-green);
 }
 
 /* ============================================

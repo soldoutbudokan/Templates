@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The TILT</title>
     <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
 </head>
 <body>
     <nav class="top-nav">
@@ -13,9 +14,27 @@
             <div class="nav-links">
                 <a href="index.html" class="active">leaderboard</a>
                 <a href="about.html">about</a>
+                <div class="theme-switch">
+                    <span class="theme-icon" id="sunIcon">&#9788;</span>
+                    <button class="theme-toggle" id="themeBtn"></button>
+                    <span class="theme-icon" id="moonIcon">&#9789;</span>
+                </div>
             </div>
         </div>
     </nav>
+    <script>
+        (function() {
+            const t = document.documentElement.getAttribute('data-theme') || 'dark';
+            document.getElementById(t === 'dark' ? 'moonIcon' : 'sunIcon').classList.add('active');
+            document.getElementById('themeBtn').addEventListener('click', () => {
+                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                document.getElementById('sunIcon').classList.toggle('active');
+                document.getElementById('moonIcon').classList.toggle('active');
+            });
+        })();
+    </script>
 
     <div class="container">
         <div class="page-header">
@@ -147,7 +166,8 @@ function render() {
             <tbody>
     `;
 
-    const confColor = { high: '#4ade80', medium: '#fbbf24', low: '#6b7280' };
+    const cs = getComputedStyle(document.documentElement);
+    const confColor = { high: cs.getPropertyValue('--accent-green').trim(), medium: cs.getPropertyValue('--accent-yellow').trim(), low: cs.getPropertyValue('--text-muted').trim() };
 
     players.forEach((p, i) => {
         const tilt = p[tiltKey] || p.total_tilt_per_match;
