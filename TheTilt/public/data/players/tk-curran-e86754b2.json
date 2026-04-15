@@ -5,20 +5,22 @@
   "slug": "tk-curran-e86754b2",
   "team": "Delhi Capitals",
   "teams": [
-    "Delhi Capitals"
+    "Delhi Capitals",
+    "Kolkata Knight Riders",
+    "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.12404,
-  "batting_tilt_per_match": -0.01319,
-  "bowling_tilt_per_match": -0.1139,
-  "shrunk_total_tilt_per_match": -0.09217,
-  "shrunk_batting_tilt_per_match": -0.01178,
-  "shrunk_bowling_tilt_per_match": -0.08115,
-  "tilt_ci_lower": -0.1777,
-  "tilt_ci_upper": -0.00664,
-  "tilt_ci_lower_90": -0.16396,
-  "tilt_ci_upper_90": -0.02039,
+  "total_tilt_per_match": -0.08647,
+  "batting_tilt_per_match": -0.00463,
+  "bowling_tilt_per_match": -0.08291,
+  "shrunk_total_tilt_per_match": -0.06864,
+  "shrunk_batting_tilt_per_match": -0.00681,
+  "shrunk_bowling_tilt_per_match": -0.06207,
+  "tilt_ci_lower": -0.12423,
+  "tilt_ci_upper": -0.01305,
+  "tilt_ci_lower_90": -0.1153,
+  "tilt_ci_upper_90": -0.02198,
   "confidence": "low",
-  "total_tilt": -1.61256,
+  "total_tilt": -1.12413,
   "total_matches": 13,
   "batting_balls": 108,
   "bowling_balls": 252,
@@ -26,8 +28,8 @@
     {
       "season": "2018",
       "team": "Kolkata Knight Riders",
-      "batting_tilt_per_match": -0.00417,
-      "bowling_tilt_per_match": -0.02952,
+      "batting_tilt_per_match": -0.00655,
+      "bowling_tilt_per_match": -0.02502,
       "batting_matches": 4,
       "bowling_matches": 5,
       "batting_balls": 28,
@@ -56,8 +58,8 @@
     {
       "season": "2020/21",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.0169,
-      "bowling_tilt_per_match": -0.10094,
+      "batting_tilt_per_match": -0.00173,
+      "bowling_tilt_per_match": -0.07802,
       "batting_matches": 4,
       "bowling_matches": 5,
       "batting_balls": 63,
@@ -86,8 +88,8 @@
     {
       "season": "2021",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": -0.02379,
-      "bowling_tilt_per_match": -0.27614,
+      "batting_tilt_per_match": -0.00657,
+      "bowling_tilt_per_match": -0.18755,
       "batting_matches": 2,
       "bowling_matches": 3,
       "batting_balls": 17,
@@ -117,35 +119,35 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.03874,
+      "tilt": -0.09345,
       "balls": 58,
-      "avg_delta": -0.000668
+      "avg_delta": -0.001611
     },
     {
       "phase": "death",
-      "tilt": -0.09312,
+      "tilt": 0.04717,
       "balls": 50,
-      "avg_delta": -0.001862
+      "avg_delta": 0.000943
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.15768,
+      "tilt": -0.10101,
       "balls": 44,
-      "avg_delta": -0.003584
+      "avg_delta": -0.002296
     },
     {
       "phase": "middle",
-      "tilt": 0.1953,
+      "tilt": 0.1237,
       "balls": 89,
-      "avg_delta": 0.002194
+      "avg_delta": 0.00139
     },
     {
       "phase": "death",
-      "tilt": -1.51832,
+      "tilt": -1.10054,
       "balls": 119,
-      "avg_delta": -0.012759
+      "avg_delta": -0.009248
     }
   ],
   "best_matches": [
@@ -153,31 +155,15 @@
       "match_id": "1216527",
       "date": "2020-09-27",
       "vs": "Kings XI Punjab",
-      "tilt": 0.03998,
+      "tilt": 0.16002,
       "runs": 4,
       "balls": 1
-    },
-    {
-      "match_id": "1136565",
-      "date": "2018-04-10",
-      "vs": "Chennai Super Kings",
-      "tilt": 0.00779,
-      "runs": 2,
-      "balls": 5
-    },
-    {
-      "match_id": "1136601",
-      "date": "2018-05-09",
-      "vs": "Mumbai Indians",
-      "tilt": -0.00223,
-      "runs": 18,
-      "balls": 17
     },
     {
       "match_id": "1254114",
       "date": "2021-10-10",
       "vs": "Chennai Super Kings",
-      "tilt": -0.00258,
+      "tilt": 0.0,
       "runs": 0,
       "balls": 1
     },
@@ -185,8 +171,24 @@
       "match_id": "1136573",
       "date": "2018-04-16",
       "vs": "Delhi Daredevils",
-      "tilt": -0.00462,
+      "tilt": -0.00183,
       "runs": 2,
+      "balls": 3
+    },
+    {
+      "match_id": "1136601",
+      "date": "2018-05-09",
+      "vs": "Mumbai Indians",
+      "tilt": -0.00474,
+      "runs": 18,
+      "balls": 17
+    },
+    {
+      "match_id": "1136578",
+      "date": "2018-04-21",
+      "vs": "Kings XI Punjab",
+      "tilt": -0.0094,
+      "runs": 1,
       "balls": 3
     }
   ],
@@ -195,41 +197,41 @@
       "match_id": "1216496",
       "date": "2020-09-22",
       "vs": "Chennai Super Kings",
-      "tilt": -0.07007,
+      "tilt": -0.07358,
       "runs": 10,
       "balls": 9
-    },
-    {
-      "match_id": "1254064",
-      "date": "2021-04-15",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.04499,
-      "runs": 21,
-      "balls": 16
     },
     {
       "match_id": "1216511",
       "date": "2020-10-06",
       "vs": "Mumbai Indians",
-      "tilt": -0.02029,
+      "tilt": -0.06581,
       "runs": 15,
       "balls": 17
-    },
-    {
-      "match_id": "1136578",
-      "date": "2018-04-21",
-      "vs": "Kings XI Punjab",
-      "tilt": -0.01762,
-      "runs": 1,
-      "balls": 3
     },
     {
       "match_id": "1216504",
       "date": "2020-09-30",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.01721,
+      "tilt": -0.02756,
       "runs": 54,
       "balls": 36
+    },
+    {
+      "match_id": "1254064",
+      "date": "2021-04-15",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.01315,
+      "runs": 21,
+      "balls": 16
+    },
+    {
+      "match_id": "1136565",
+      "date": "2018-04-10",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.01024,
+      "runs": 2,
+      "balls": 5
     }
   ],
   "bowling_best_matches": [
@@ -237,7 +239,7 @@
       "match_id": "1136575",
       "date": "2018-04-18",
       "vs": "Rajasthan Royals",
-      "tilt": 0.11777,
+      "tilt": 0.13349,
       "wickets": 2,
       "balls": 13
     },
@@ -245,33 +247,33 @@
       "match_id": "1136573",
       "date": "2018-04-16",
       "vs": "Delhi Daredevils",
-      "tilt": -0.01781,
+      "tilt": 0.03142,
       "wickets": 1,
       "balls": 12
     },
     {
-      "match_id": "1216527",
-      "date": "2020-09-27",
-      "vs": "Kings XI Punjab",
-      "tilt": -0.02872,
+      "match_id": "1216504",
+      "date": "2020-09-30",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.02331,
       "wickets": 1,
-      "balls": 25
+      "balls": 28
     },
     {
       "match_id": "1136578",
       "date": "2018-04-21",
       "vs": "Kings XI Punjab",
-      "tilt": -0.03857,
+      "tilt": -0.04623,
       "wickets": 0,
       "balls": 1
     },
     {
-      "match_id": "1136565",
-      "date": "2018-04-10",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.06394,
-      "wickets": 2,
-      "balls": 18
+      "match_id": "1216527",
+      "date": "2020-09-27",
+      "vs": "Kings XI Punjab",
+      "tilt": -0.05894,
+      "wickets": 1,
+      "balls": 25
     }
   ],
   "bowling_worst_matches": [
@@ -279,153 +281,153 @@
       "match_id": "1254064",
       "date": "2021-04-15",
       "vs": "Rajasthan Royals",
-      "tilt": -0.48301,
+      "tilt": -0.25559,
       "wickets": 0,
       "balls": 23
-    },
-    {
-      "match_id": "1216496",
-      "date": "2020-09-22",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.21213,
-      "wickets": 1,
-      "balls": 25
     },
     {
       "match_id": "1254114",
       "date": "2021-10-10",
       "vs": "Chennai Super Kings",
-      "tilt": -0.19994,
+      "tilt": -0.19511,
       "wickets": 3,
       "balls": 24
+    },
+    {
+      "match_id": "1136565",
+      "date": "2018-04-10",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.16226,
+      "wickets": 2,
+      "balls": 18
+    },
+    {
+      "match_id": "1216496",
+      "date": "2020-09-22",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.1512,
+      "wickets": 1,
+      "balls": 25
     },
     {
       "match_id": "1254059",
       "date": "2021-04-10",
       "vs": "Chennai Super Kings",
-      "tilt": -0.14546,
+      "tilt": -0.11194,
       "wickets": 1,
       "balls": 25
-    },
-    {
-      "match_id": "1136601",
-      "date": "2018-05-09",
-      "vs": "Mumbai Indians",
-      "tilt": -0.14505,
-      "wickets": 1,
-      "balls": 20
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2018-04-10",
-      "tilt": -0.05615,
-      "cumulative": -0.05615
+      "tilt": -0.1725,
+      "cumulative": -0.1725
     },
     {
       "match": 2,
       "date": "2018-04-16",
-      "tilt": -0.02243,
-      "cumulative": -0.07858
+      "tilt": 0.0296,
+      "cumulative": -0.1429
     },
     {
       "match": 3,
       "date": "2018-04-18",
-      "tilt": 0.11777,
-      "cumulative": 0.03918
+      "tilt": 0.13349,
+      "cumulative": -0.00941
     },
     {
       "match": 4,
       "date": "2018-04-21",
-      "tilt": -0.0562,
-      "cumulative": -0.01701
+      "tilt": -0.05562,
+      "cumulative": -0.06503
     },
     {
       "match": 5,
       "date": "2018-05-09",
-      "tilt": -0.14728,
-      "cumulative": -0.16429
+      "tilt": -0.08628,
+      "cumulative": -0.15131
     },
     {
       "match": 6,
       "date": "2020-09-22",
-      "tilt": -0.2822,
-      "cumulative": -0.44648
+      "tilt": -0.22478,
+      "cumulative": -0.37609
     },
     {
       "match": 7,
       "date": "2020-09-27",
-      "tilt": 0.01126,
-      "cumulative": -0.43522
+      "tilt": 0.10108,
+      "cumulative": -0.27502
     },
     {
       "match": 8,
       "date": "2020-09-30",
-      "tilt": -0.08611,
-      "cumulative": -0.52133
+      "tilt": -0.05087,
+      "cumulative": -0.32588
     },
     {
       "match": 9,
       "date": "2020-10-03",
-      "tilt": -0.06632,
-      "cumulative": -0.58765
+      "tilt": -0.09762,
+      "cumulative": -0.4235
     },
     {
       "match": 10,
       "date": "2020-10-06",
-      "tilt": -0.14893,
-      "cumulative": -0.73658
+      "tilt": -0.12485,
+      "cumulative": -0.54835
     },
     {
       "match": 11,
       "date": "2021-04-10",
-      "tilt": -0.14546,
-      "cumulative": -0.88204
+      "tilt": -0.11194,
+      "cumulative": -0.66028
     },
     {
       "match": 12,
       "date": "2021-04-15",
-      "tilt": -0.528,
-      "cumulative": -1.41004
+      "tilt": -0.26873,
+      "cumulative": -0.92902
     },
     {
       "match": 13,
       "date": "2021-10-10",
-      "tilt": -0.20252,
-      "cumulative": -1.61256
+      "tilt": -0.19511,
+      "cumulative": -1.12413
     }
   ],
   "team_matchups": [
     {
       "opponent": "Kings XI Punjab",
-      "tilt_per_match": 0.01118,
+      "tilt_per_match": 0.07531,
       "matches": 2
     },
     {
       "opponent": "Delhi Daredevils",
-      "tilt_per_match": -0.00462,
+      "tilt_per_match": -0.00183,
       "matches": 1
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.01126,
-      "matches": 2
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.01315,
+      "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.01721,
+      "tilt_per_match": -0.02756,
       "matches": 1
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.02162,
+      "tilt_per_match": -0.02794,
       "matches": 3
     },
     {
-      "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.04499,
-      "matches": 1
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.03527,
+      "matches": 2
     }
   ],
   "batting_stats": {
@@ -450,18 +452,18 @@
     "best_figures": "3/29"
   },
   "match_tilt_distribution": [
-    -0.05615,
-    -0.02243,
-    0.11777,
-    -0.0562,
-    -0.14728,
-    -0.2822,
-    0.01126,
-    -0.08611,
-    -0.06632,
-    -0.14893,
-    -0.14546,
-    -0.528,
-    -0.20252
+    -0.1725,
+    0.0296,
+    0.13349,
+    -0.05562,
+    -0.08628,
+    -0.22478,
+    0.10108,
+    -0.05087,
+    -0.09762,
+    -0.12485,
+    -0.11194,
+    -0.26873,
+    -0.19511
   ]
 }

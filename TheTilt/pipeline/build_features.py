@@ -108,6 +108,33 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
     # Add binary target: did the batting team win this match?
     result["batting_team_won"] = (result["batting_team"] == result["winner"]).astype(int)
 
+    # Deduplicate venue names (same ground, different strings)
+    venue_map = {
+        "Wankhede Stadium, Mumbai": "Wankhede Stadium",
+        "M Chinnaswamy Stadium, Bengaluru": "M Chinnaswamy Stadium",
+        "M.Chinnaswamy Stadium": "M Chinnaswamy Stadium",
+        "Feroz Shah Kotla": "Arun Jaitley Stadium",
+        "Arun Jaitley Stadium, Delhi": "Arun Jaitley Stadium",
+        "MA Chidambaram Stadium, Chepauk, Chennai": "MA Chidambaram Stadium, Chepauk",
+        "MA Chidambaram Stadium": "MA Chidambaram Stadium, Chepauk",
+        "Eden Gardens, Kolkata": "Eden Gardens",
+        "Rajiv Gandhi International Stadium, Uppal, Hyderabad": "Rajiv Gandhi International Stadium, Uppal",
+        "Rajiv Gandhi International Stadium": "Rajiv Gandhi International Stadium, Uppal",
+        "Sawai Mansingh Stadium, Jaipur": "Sawai Mansingh Stadium",
+        "Dr DY Patil Sports Academy, Mumbai": "Dr DY Patil Sports Academy",
+        "Maharashtra Cricket Association Stadium, Pune": "Maharashtra Cricket Association Stadium",
+        "Brabourne Stadium, Mumbai": "Brabourne Stadium",
+        "Punjab Cricket Association Stadium, Mohali": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+        "Punjab Cricket Association IS Bindra Stadium": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+        "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+        "Sardar Patel Stadium, Motera": "Narendra Modi Stadium, Ahmedabad",
+        "Himachal Pradesh Cricket Association Stadium, Dharamsala": "Himachal Pradesh Cricket Association Stadium",
+        "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium, Visakhapatnam": "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium",
+        "Maharaja Yadavindra Singh International Cricket Stadium, New Chandigarh": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+    }
+    result["venue"] = result["venue"].replace(venue_map)
+    print(f"  Venues after deduplication: {result['venue'].nunique()}")
+
     # Categorical features (LightGBM handles natively)
     result["venue"] = result["venue"].astype("category")
     result["over"] = result["over"].astype("category")

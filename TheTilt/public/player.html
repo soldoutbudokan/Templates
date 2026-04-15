@@ -86,6 +86,7 @@ async function loadPlayer() {
                 <div class="stat-card">
                     <div class="label">total TILT/match</div>
                     <div class="value">${formatTilt(p.shrunk_total_tilt_per_match || p.total_tilt_per_match)}</div>
+                    <div style="color:var(--text-dim);font-size:0.7rem;margin-top:4px">shifts win probability by ${Math.abs((p.shrunk_total_tilt_per_match || p.total_tilt_per_match) * 100).toFixed(1)} percentage points per match</div>
                     ${p.tilt_ci_lower_90 != null && p.tilt_ci_upper_90 != null ? `<div style="color:var(--text-dim);font-size:0.7rem;margin-top:4px">90% CI: ${formatTilt(p.tilt_ci_lower_90)} to ${formatTilt(p.tilt_ci_upper_90)}</div>` : ''}
                     ${p.shrunk_total_tilt_per_match != null ? `<div style="color:var(--text-dim);font-size:0.65rem;margin-top:2px">raw: ${formatTilt(p.total_tilt_per_match)} | ${p.confidence || 'low'} confidence</div>` : ''}
                 </div>

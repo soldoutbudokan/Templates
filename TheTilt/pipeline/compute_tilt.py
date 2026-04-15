@@ -313,7 +313,11 @@ def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataF
     bowl_player_match = bowl_match.copy()
     combined, k_bowl = _compute_shrinkage(combined, "bowling_tilt_per_match", bowl_player_match)
 
-    # Confidence intervals (match-level std dev / sqrt(n))
+    # Bayesian posterior confidence intervals
+    # The shrinkage formula is: shrunk = (n/(n+k)) * observed + (k/(n+k)) * pop_mean
+    # The posterior variance is: var_posterior = within_var / (n + k)
+    # This is narrower than the frequentist SE^2 = within_var / n because
+    # shrinkage itself reduces uncertainty (we're borrowing strength from the population)
     player_std = total_match.groupby("player_id")["match_tilt"].std().fillna(0)
     combined = combined.merge(
         player_std.rename("match_tilt_std").reset_index(),
@@ -322,11 +326,21 @@ def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataF
     )
     combined["match_tilt_std"] = combined["match_tilt_std"].fillna(0)
     n = combined["total_matches"]
-    se = combined["match_tilt_std"] / np.sqrt(n.clip(lower=1))
-    combined["tilt_ci_lower"] = combined["shrunk_total_tilt_per_match"] - 1.96 * se
-    combined["tilt_ci_upper"] = combined["shrunk_total_tilt_per_match"] + 1.96 * se
-    combined["tilt_ci_lower_90"] = combined["shrunk_total_tilt_per_match"] - 1.645 * se
-    combined["tilt_ci_upper_90"] = combined["shrunk_total_tilt_per_match"] + 1.645 * se
+    # Use within_var (average match-to-match variance) for posterior, not per-player std
+    # This is more stable and consistent with the shrinkage model
+    player_var = total_match.groupby("player_id")["match_tilt"].var().fillna(0)
+    combined = combined.merge(
+        player_var.rename("match_tilt_var").reset_index(),
+        on="player_id",
+        how="left",
+    )
+    combined["match_tilt_var"] = combined["match_tilt_var"].fillna(0)
+    # Posterior SE: sqrt(within_var / (n + k)) — accounts for shrinkage reducing uncertainty
+    posterior_se = np.sqrt(combined["match_tilt_var"] / (n + k_total).clip(lower=1))
+    combined["tilt_ci_lower"] = combined["shrunk_total_tilt_per_match"] - 1.96 * posterior_se
+    combined["tilt_ci_upper"] = combined["shrunk_total_tilt_per_match"] + 1.96 * posterior_se
+    combined["tilt_ci_lower_90"] = combined["shrunk_total_tilt_per_match"] - 1.645 * posterior_se
+    combined["tilt_ci_upper_90"] = combined["shrunk_total_tilt_per_match"] + 1.645 * posterior_se
 
     # Confidence level
     combined["confidence"] = "low"

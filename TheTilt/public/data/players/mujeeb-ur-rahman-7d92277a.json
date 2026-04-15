@@ -5,20 +5,22 @@
   "slug": "mujeeb-ur-rahman-7d92277a",
   "team": "Mumbai Indians",
   "teams": [
-    "Mumbai Indians"
+    "Kings XI Punjab",
+    "Mumbai Indians",
+    "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.03282,
+  "total_tilt_per_match": 0.00958,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.0378,
-  "shrunk_total_tilt_per_match": 0.02101,
+  "bowling_tilt_per_match": 0.00975,
+  "shrunk_total_tilt_per_match": 0.00342,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.02469,
-  "tilt_ci_lower": -0.05211,
-  "tilt_ci_upper": 0.09414,
-  "tilt_ci_lower_90": -0.04036,
-  "tilt_ci_upper_90": 0.08238,
+  "shrunk_bowling_tilt_per_match": 0.00434,
+  "tilt_ci_lower": -0.04312,
+  "tilt_ci_upper": 0.04996,
+  "tilt_ci_lower_90": -0.03564,
+  "tilt_ci_upper_90": 0.04248,
   "confidence": "low",
-  "total_tilt": 0.65632,
+  "total_tilt": 0.19161,
   "total_matches": 20,
   "batting_balls": 15,
   "bowling_balls": 465,
@@ -26,8 +28,8 @@
     {
       "season": "2018",
       "team": "Kings XI Punjab",
-      "batting_tilt_per_match": -0.0093,
-      "bowling_tilt_per_match": 0.06847,
+      "batting_tilt_per_match": 0.01994,
+      "bowling_tilt_per_match": 0.04128,
       "batting_matches": 2,
       "bowling_matches": 11,
       "batting_balls": 7,
@@ -56,8 +58,8 @@
     {
       "season": "2019",
       "team": "Kings XI Punjab",
-      "batting_tilt_per_match": -0.00011,
-      "bowling_tilt_per_match": 0.04474,
+      "batting_tilt_per_match": -0.00143,
+      "bowling_tilt_per_match": -0.0246,
       "batting_matches": 2,
       "bowling_matches": 5,
       "batting_balls": 4,
@@ -86,8 +88,8 @@
     {
       "season": "2020/21",
       "team": "Kings XI Punjab",
-      "batting_tilt_per_match": -0.0808,
-      "bowling_tilt_per_match": 0.02474,
+      "batting_tilt_per_match": -0.04188,
+      "bowling_tilt_per_match": 0.02342,
       "batting_matches": 1,
       "bowling_matches": 2,
       "batting_balls": 3,
@@ -116,8 +118,8 @@
     {
       "season": "2021",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.01445,
+      "batting_tilt_per_match": 0.0014,
+      "bowling_tilt_per_match": 0.02757,
       "batting_matches": 1,
       "bowling_matches": 1,
       "batting_balls": 1,
@@ -147,7 +149,7 @@
       "season": "2025",
       "team": "Mumbai Indians",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.28484,
+      "bowling_tilt_per_match": -0.21044,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -166,35 +168,35 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.0808,
+      "tilt": -0.04188,
       "balls": 3,
-      "avg_delta": -0.026932
+      "avg_delta": -0.01396
     },
     {
       "phase": "death",
-      "tilt": -0.01882,
+      "tilt": 0.03842,
       "balls": 12,
-      "avg_delta": -0.001568
+      "avg_delta": 0.003201
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.34484,
+      "tilt": 0.18107,
       "balls": 148,
-      "avg_delta": 0.00233
+      "avg_delta": 0.001223
     },
     {
       "phase": "middle",
-      "tilt": 0.55799,
+      "tilt": 0.22129,
       "balls": 240,
-      "avg_delta": 0.002325
+      "avg_delta": 0.000922
     },
     {
       "phase": "death",
-      "tilt": -0.1469,
+      "tilt": -0.2073,
       "balls": 77,
-      "avg_delta": -0.001908
+      "avg_delta": -0.002692
     }
   ],
   "best_matches": [
@@ -202,9 +204,25 @@
       "match_id": "1136585",
       "date": "2018-04-26",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.00093,
+      "tilt": 0.03988,
       "runs": 10,
       "balls": 5
+    },
+    {
+      "match_id": "1254066",
+      "date": "2021-04-17",
+      "vs": "Mumbai Indians",
+      "tilt": 0.0014,
+      "runs": 1,
+      "balls": 1
+    },
+    {
+      "match_id": "1136568",
+      "date": "2018-04-13",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": 0.0,
+      "runs": 0,
+      "balls": 2
     },
     {
       "match_id": "1178407",
@@ -215,28 +233,12 @@
       "balls": 1
     },
     {
-      "match_id": "1254066",
-      "date": "2021-04-17",
-      "vs": "Mumbai Indians",
-      "tilt": 0.0,
-      "runs": 1,
-      "balls": 1
-    },
-    {
       "match_id": "1178423",
       "date": "2019-04-29",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.00022,
+      "tilt": -0.00286,
       "runs": 0,
       "balls": 3
-    },
-    {
-      "match_id": "1136568",
-      "date": "2018-04-13",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.01953,
-      "runs": 0,
-      "balls": 2
     }
   ],
   "worst_matches": [
@@ -244,25 +246,25 @@
       "match_id": "1216542",
       "date": "2020-10-08",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.0808,
+      "tilt": -0.04188,
       "runs": 1,
+      "balls": 3
+    },
+    {
+      "match_id": "1178423",
+      "date": "2019-04-29",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.00286,
+      "runs": 0,
       "balls": 3
     },
     {
       "match_id": "1136568",
       "date": "2018-04-13",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.01953,
+      "tilt": 0.0,
       "runs": 0,
       "balls": 2
-    },
-    {
-      "match_id": "1178423",
-      "date": "2019-04-29",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.00022,
-      "runs": 0,
-      "balls": 3
     },
     {
       "match_id": "1178407",
@@ -276,7 +278,7 @@
       "match_id": "1254066",
       "date": "2021-04-17",
       "vs": "Mumbai Indians",
-      "tilt": 0.0,
+      "tilt": 0.0014,
       "runs": 1,
       "balls": 1
     }
@@ -286,82 +288,82 @@
       "match_id": "1175359",
       "date": "2019-03-25",
       "vs": "Rajasthan Royals",
-      "tilt": 0.34245,
+      "tilt": 0.25992,
       "wickets": 2,
+      "balls": 25
+    },
+    {
+      "match_id": "1136585",
+      "date": "2018-04-26",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.12868,
+      "wickets": 1,
+      "balls": 25
+    },
+    {
+      "match_id": "1136572",
+      "date": "2018-04-15",
+      "vs": "Chennai Super Kings",
+      "tilt": 0.1154,
+      "wickets": 0,
+      "balls": 18
+    },
+    {
+      "match_id": "1216542",
+      "date": "2020-10-08",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.0977,
+      "wickets": 0,
+      "balls": 24
+    },
+    {
+      "match_id": "1136598",
+      "date": "2018-05-06",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.09058,
+      "wickets": 3,
+      "balls": 25
+    }
+  ],
+  "bowling_worst_matches": [
+    {
+      "match_id": "1178423",
+      "date": "2019-04-29",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.23514,
+      "wickets": 0,
+      "balls": 27
+    },
+    {
+      "match_id": "1473446",
+      "date": "2025-03-29",
+      "vs": "Gujarat Titans",
+      "tilt": -0.21044,
+      "wickets": 1,
+      "balls": 13
+    },
+    {
+      "match_id": "1175368",
+      "date": "2019-04-01",
+      "vs": "Delhi Capitals",
+      "tilt": -0.14927,
+      "wickets": 0,
       "balls": 25
     },
     {
       "match_id": "1136582",
       "date": "2018-04-23",
       "vs": "Delhi Daredevils",
-      "tilt": 0.28902,
+      "tilt": -0.07391,
       "wickets": 2,
       "balls": 24
     },
     {
-      "match_id": "1178407",
-      "date": "2019-04-16",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.24655,
+      "match_id": "1216523",
+      "date": "2020-10-10",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.05086,
       "wickets": 0,
-      "balls": 20
-    },
-    {
-      "match_id": "1136600",
-      "date": "2018-05-08",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.24117,
-      "wickets": 2,
-      "balls": 24
-    },
-    {
-      "match_id": "1136562",
-      "date": "2018-04-08",
-      "vs": "Delhi Daredevils",
-      "tilt": 0.11013,
-      "wickets": 2,
-      "balls": 25
-    }
-  ],
-  "bowling_worst_matches": [
-    {
-      "match_id": "1473446",
-      "date": "2025-03-29",
-      "vs": "Gujarat Titans",
-      "tilt": -0.28484,
-      "wickets": 1,
-      "balls": 13
-    },
-    {
-      "match_id": "1178423",
-      "date": "2019-04-29",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.21718,
-      "wickets": 0,
-      "balls": 27
-    },
-    {
-      "match_id": "1175368",
-      "date": "2019-04-01",
-      "vs": "Delhi Capitals",
-      "tilt": -0.18611,
-      "wickets": 0,
-      "balls": 25
-    },
-    {
-      "match_id": "1136568",
-      "date": "2018-04-13",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.13787,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
-      "match_id": "1136594",
-      "date": "2018-05-04",
-      "vs": "Mumbai Indians",
-      "tilt": -0.03924,
-      "wickets": 2,
       "balls": 25
     }
   ],
@@ -369,128 +371,128 @@
     {
       "match": 1,
       "date": "2018-04-08",
-      "tilt": 0.11013,
-      "cumulative": 0.11013
+      "tilt": -0.0081,
+      "cumulative": -0.0081
     },
     {
       "match": 2,
       "date": "2018-04-13",
-      "tilt": -0.15741,
-      "cumulative": -0.04727
+      "tilt": -0.04897,
+      "cumulative": -0.05707
     },
     {
       "match": 3,
       "date": "2018-04-15",
-      "tilt": 0.07484,
-      "cumulative": 0.02757
+      "tilt": 0.1154,
+      "cumulative": 0.05833
     },
     {
       "match": 4,
       "date": "2018-04-19",
-      "tilt": 0.00481,
-      "cumulative": 0.03238
+      "tilt": 0.04506,
+      "cumulative": 0.10339
     },
     {
       "match": 5,
       "date": "2018-04-21",
-      "tilt": 0.00886,
-      "cumulative": 0.04124
+      "tilt": 0.05899,
+      "cumulative": 0.16238
     },
     {
       "match": 6,
       "date": "2018-04-23",
-      "tilt": 0.28902,
-      "cumulative": 0.33026
+      "tilt": -0.07391,
+      "cumulative": 0.08847
     },
     {
       "match": 7,
       "date": "2018-04-26",
-      "tilt": 0.10536,
-      "cumulative": 0.43562
+      "tilt": 0.16856,
+      "cumulative": 0.25703
     },
     {
       "match": 8,
       "date": "2018-05-04",
-      "tilt": -0.03924,
-      "cumulative": 0.39639
+      "tilt": 0.04483,
+      "cumulative": 0.30186
     },
     {
       "match": 9,
       "date": "2018-05-06",
-      "tilt": 0.10012,
-      "cumulative": 0.4965
+      "tilt": 0.09058,
+      "cumulative": 0.39244
     },
     {
       "match": 10,
       "date": "2018-05-08",
-      "tilt": 0.24117,
-      "cumulative": 0.73767
+      "tilt": 0.04442,
+      "cumulative": 0.43687
     },
     {
       "match": 11,
       "date": "2018-05-12",
-      "tilt": -0.00313,
-      "cumulative": 0.73454
+      "tilt": 0.0571,
+      "cumulative": 0.49396
     },
     {
       "match": 12,
       "date": "2019-03-25",
-      "tilt": 0.34245,
-      "cumulative": 1.07699
+      "tilt": 0.25992,
+      "cumulative": 0.75388
     },
     {
       "match": 13,
       "date": "2019-04-01",
-      "tilt": -0.18611,
-      "cumulative": 0.89088
+      "tilt": -0.14927,
+      "cumulative": 0.60461
     },
     {
       "match": 14,
       "date": "2019-04-08",
-      "tilt": 0.03801,
-      "cumulative": 0.9289
+      "tilt": -0.02039,
+      "cumulative": 0.58422
     },
     {
       "match": 15,
       "date": "2019-04-16",
-      "tilt": 0.24655,
-      "cumulative": 1.17545
+      "tilt": 0.0219,
+      "cumulative": 0.60611
     },
     {
       "match": 16,
       "date": "2019-04-29",
-      "tilt": -0.21741,
-      "cumulative": 0.95804
+      "tilt": -0.238,
+      "cumulative": 0.36811
     },
     {
       "match": 17,
       "date": "2020-10-08",
-      "tilt": -0.00481,
-      "cumulative": 0.95323
+      "tilt": 0.05582,
+      "cumulative": 0.42393
     },
     {
       "match": 18,
       "date": "2020-10-10",
-      "tilt": -0.02651,
-      "cumulative": 0.92672
+      "tilt": -0.05086,
+      "cumulative": 0.37307
     },
     {
       "match": 19,
       "date": "2021-04-17",
-      "tilt": 0.01445,
-      "cumulative": 0.94116
+      "tilt": 0.02897,
+      "cumulative": 0.40204
     },
     {
       "match": 20,
       "date": "2025-03-29",
-      "tilt": -0.28484,
-      "cumulative": 0.65632
+      "tilt": -0.21044,
+      "cumulative": 0.19161
     }
   ],
   "team_matchups": [
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.0,
+      "tilt_per_match": 0.0014,
       "matches": 1
     },
     {
@@ -500,12 +502,12 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.01953,
+      "tilt_per_match": 0.0,
       "matches": 1
     },
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.0267,
+      "tilt_per_match": -0.00162,
       "matches": 3
     }
   ],
@@ -531,25 +533,25 @@
     "best_figures": "3/28"
   },
   "match_tilt_distribution": [
-    0.11013,
-    -0.15741,
-    0.07484,
-    0.00481,
-    0.00886,
-    0.28902,
-    0.10536,
-    -0.03924,
-    0.10012,
-    0.24117,
-    -0.00313,
-    0.34245,
-    -0.18611,
-    0.03801,
-    0.24655,
-    -0.21741,
-    -0.00481,
-    -0.02651,
-    0.01445,
-    -0.28484
+    -0.0081,
+    -0.04897,
+    0.1154,
+    0.04506,
+    0.05899,
+    -0.07391,
+    0.16856,
+    0.04483,
+    0.09058,
+    0.04442,
+    0.0571,
+    0.25992,
+    -0.14927,
+    -0.02039,
+    0.0219,
+    -0.238,
+    0.05582,
+    -0.05086,
+    0.02897,
+    -0.21044
   ]
 }

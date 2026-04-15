@@ -8,7 +8,7 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import yaml
-from sklearn.calibration import CalibratedClassifierCV, calibration_curve
+from sklearn.calibration import calibration_curve
 from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
 from sklearn.model_selection import GroupShuffleSplit
 
@@ -42,6 +42,8 @@ class WinProbModelConfig:
     learning_rate: float = 0.05
     max_depth: int = 6
     min_child_samples: int = 100
+    num_leaves: int = 31
+    reg_lambda: float = 0.0
     test_size: float = 0.2
     random_state: int = 42
 
@@ -87,6 +89,8 @@ def train_win_prob_model(
         learning_rate=config.learning_rate,
         max_depth=config.max_depth,
         min_child_samples=config.min_child_samples,
+        num_leaves=config.num_leaves,
+        reg_lambda=config.reg_lambda,
         random_state=config.random_state,
         objective="binary",
         metric="binary_logloss",
@@ -252,6 +256,8 @@ def train_and_evaluate(featured_balls_path: Optional[str] = None) -> lgb.LGBMCla
         learning_rate=config_dict["model"]["learning_rate"],
         max_depth=config_dict["model"]["max_depth"],
         min_child_samples=config_dict["model"]["min_child_samples"],
+        num_leaves=config_dict["model"].get("num_leaves", 31),
+        reg_lambda=config_dict["model"].get("reg_lambda", 0.0),
         test_size=config_dict["model"]["test_size"],
         random_state=config_dict["model"]["random_state"],
     )
@@ -273,33 +279,13 @@ def train_and_evaluate(featured_balls_path: Optional[str] = None) -> lgb.LGBMCla
 
     model, train_df, test_df = train_win_prob_model(df, model_config)
 
-    # Apply Platt scaling to fix calibration at extremes
-    # Split test set: half for calibration, half for evaluation
-    cal_splitter = GroupShuffleSplit(n_splits=1, test_size=0.5, random_state=model_config.random_state)
-    cal_idx, eval_idx = next(cal_splitter.split(test_df, groups=test_df["match_id"]))
-    cal_df = test_df.iloc[cal_idx]
-    eval_df = test_df.iloc[eval_idx]
+    # Evaluate model (with strong regularization, raw model is well-calibrated
+    # without Platt scaling, which amplifies mid-range deltas and increases volatility)
+    metrics = evaluate_model(model, test_df, model_config)
+    sanity_check(model, model_config)
+    save_model(model)
 
-    X_cal = cal_df[model_config.features].copy()
-    y_cal = cal_df[model_config.target]
-    for col in model_config.categorical_features:
-        if col in X_cal.columns:
-            X_cal[col] = X_cal[col].astype("category")
-
-    print("\nApplying Platt scaling for calibration...")
-    calibrated_model = CalibratedClassifierCV(model, method="sigmoid", cv="prefit")
-    calibrated_model.fit(X_cal, y_cal)
-    print(f"  Calibrated on {len(cal_df):,} balls from {cal_df['match_id'].nunique()} matches")
-
-    # Evaluate both raw and calibrated models
-    print("\n--- Raw Model ---")
-    evaluate_model(model, eval_df, model_config)
-    print("\n--- Calibrated Model ---")
-    metrics = evaluate_model(calibrated_model, eval_df, model_config)
-    sanity_check(calibrated_model, model_config)
-    save_model(calibrated_model)
-
-    return calibrated_model
+    return model
 
 
 # %% Script entry
