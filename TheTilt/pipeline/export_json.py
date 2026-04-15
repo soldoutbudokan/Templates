@@ -680,6 +680,190 @@ def export_meta(
     return meta_path
 
 
+# %% Export GOAT performances
+def export_goats(
+    deltas_df: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """Export top single-match and single-season performances by TILT."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+
+    # Build slug lookup
+    slug_lookup = {}
+    for _, row in player_tilt.iterrows():
+        pid = row.get("player_id", "")
+        slug_lookup[pid] = make_slug(row["player"], pid if pid else None)
+
+    # Full name lookup
+    name_lookup = {}
+    for _, row in player_tilt.iterrows():
+        pid = row.get("player_id", "")
+        name_lookup[pid] = row.get("full_name", row["player"])
+
+    # --- Single-match batting ---
+    bat_match = (
+        deltas_df.groupby(["batter_id", "batter", "match_id", "date", "season", "batting_team"])
+        .agg(tilt=("delta_wp", "sum"), runs=("runs_batter", "sum"), balls=("delta_wp", "count"))
+        .reset_index()
+    )
+    top_bat_match = bat_match.nlargest(50, "tilt")
+    goat_bat_match = [
+        {
+            "player": name_lookup.get(r["batter_id"], r["batter"]),
+            "slug": slug_lookup.get(r["batter_id"], ""),
+            "team": r["batting_team"],
+            "season": str(r["season"]),
+            "date": str(r["date"]),
+            "match_id": str(r["match_id"]),
+            "tilt": round(r["tilt"], 5),
+            "runs": int(r["runs"]),
+            "balls": int(r["balls"]),
+        }
+        for _, r in top_bat_match.iterrows()
+    ]
+
+    # --- Single-match bowling ---
+    bowl_match = (
+        deltas_df.groupby(["bowler_id", "bowler", "match_id", "date", "season", "bowling_team"])
+        .agg(
+            tilt=("delta_wp", lambda x: -x.sum()),
+            wickets=("is_wicket", "sum"),
+            runs_conceded=("runs_total", "sum"),
+            balls=("delta_wp", "count"),
+        )
+        .reset_index()
+    )
+    top_bowl_match = bowl_match.nlargest(50, "tilt")
+    goat_bowl_match = [
+        {
+            "player": name_lookup.get(r["bowler_id"], r["bowler"]),
+            "slug": slug_lookup.get(r["bowler_id"], ""),
+            "team": r["bowling_team"],
+            "season": str(r["season"]),
+            "date": str(r["date"]),
+            "match_id": str(r["match_id"]),
+            "tilt": round(r["tilt"], 5),
+            "wickets": int(r["wickets"]),
+            "runs_conceded": int(r["runs_conceded"]),
+            "balls": int(r["balls"]),
+        }
+        for _, r in top_bowl_match.iterrows()
+    ]
+
+    # --- Single-match all-around (batting + bowling combined in same match) ---
+    bat_by_match = bat_match[["batter_id", "match_id", "tilt"]].rename(
+        columns={"batter_id": "player_id", "tilt": "bat_tilt"}
+    )
+    bowl_by_match = bowl_match[["bowler_id", "match_id", "tilt"]].rename(
+        columns={"bowler_id": "player_id", "tilt": "bowl_tilt"}
+    )
+    combined_match = pd.merge(bat_by_match, bowl_by_match, on=["player_id", "match_id"], how="inner")
+    combined_match["total_tilt"] = combined_match["bat_tilt"] + combined_match["bowl_tilt"]
+    # Merge back match info
+    match_info = deltas_df.groupby("match_id").first()[["date", "season"]].reset_index()
+    combined_match = combined_match.merge(match_info, on="match_id", how="left")
+    # Get player name and team
+    player_names = deltas_df.groupby("batter_id").agg(player=("batter", "last")).reset_index().rename(
+        columns={"batter_id": "player_id"}
+    )
+    combined_match = combined_match.merge(player_names, on="player_id", how="left")
+    # Get team from batting data
+    bat_teams = bat_match[["batter_id", "match_id", "batting_team"]].rename(
+        columns={"batter_id": "player_id", "batting_team": "team"}
+    )
+    combined_match = combined_match.merge(bat_teams, on=["player_id", "match_id"], how="left")
+
+    top_allround_match = combined_match.nlargest(50, "total_tilt")
+    goat_allround_match = [
+        {
+            "player": name_lookup.get(r["player_id"], r.get("player", "")),
+            "slug": slug_lookup.get(r["player_id"], ""),
+            "team": r.get("team", ""),
+            "season": str(r["season"]),
+            "date": str(r["date"]),
+            "match_id": str(r["match_id"]),
+            "tilt": round(r["total_tilt"], 5),
+            "bat_tilt": round(r["bat_tilt"], 5),
+            "bowl_tilt": round(r["bowl_tilt"], 5),
+        }
+        for _, r in top_allround_match.iterrows()
+    ]
+
+    # --- Season batting ---
+    bat_season = bat_match.groupby(["batter_id", "batter", "season"]).agg(
+        total_tilt=("tilt", "sum"),
+        matches=("match_id", "nunique"),
+        runs=("runs", "sum"),
+    ).reset_index()
+    bat_season["tilt_per_match"] = bat_season["total_tilt"] / bat_season["matches"]
+    # Get team for each season
+    bat_season_teams = bat_match.groupby(["batter_id", "season"])["batting_team"].last().reset_index()
+    bat_season = bat_season.merge(
+        bat_season_teams.rename(columns={"batter_id": "batter_id", "batting_team": "team"}),
+        on=["batter_id", "season"], how="left",
+    )
+    top_bat_season = bat_season[bat_season["matches"] >= 5].nlargest(50, "tilt_per_match")
+    goat_bat_season = [
+        {
+            "player": name_lookup.get(r["batter_id"], r["batter"]),
+            "slug": slug_lookup.get(r["batter_id"], ""),
+            "team": r.get("team", ""),
+            "season": str(r["season"]),
+            "tilt_per_match": round(r["tilt_per_match"], 5),
+            "total_tilt": round(r["total_tilt"], 5),
+            "matches": int(r["matches"]),
+            "runs": int(r["runs"]),
+        }
+        for _, r in top_bat_season.iterrows()
+    ]
+
+    # --- Season bowling ---
+    bowl_season = bowl_match.groupby(["bowler_id", "bowler", "season"]).agg(
+        total_tilt=("tilt", "sum"),
+        matches=("match_id", "nunique"),
+        wickets=("wickets", "sum"),
+        runs_conceded=("runs_conceded", "sum"),
+    ).reset_index()
+    bowl_season["tilt_per_match"] = bowl_season["total_tilt"] / bowl_season["matches"]
+    bowl_season_teams = bowl_match.groupby(["bowler_id", "season"])["bowling_team"].last().reset_index()
+    bowl_season = bowl_season.merge(
+        bowl_season_teams.rename(columns={"bowler_id": "bowler_id", "bowling_team": "team"}),
+        on=["bowler_id", "season"], how="left",
+    )
+    top_bowl_season = bowl_season[bowl_season["matches"] >= 5].nlargest(50, "tilt_per_match")
+    goat_bowl_season = [
+        {
+            "player": name_lookup.get(r["bowler_id"], r["bowler"]),
+            "slug": slug_lookup.get(r["bowler_id"], ""),
+            "team": r.get("team", ""),
+            "season": str(r["season"]),
+            "tilt_per_match": round(r["tilt_per_match"], 5),
+            "total_tilt": round(r["total_tilt"], 5),
+            "matches": int(r["matches"]),
+            "wickets": int(r["wickets"]),
+            "runs_conceded": int(r["runs_conceded"]),
+        }
+        for _, r in top_bowl_season.iterrows()
+    ]
+
+    goats = {
+        "match_batting": goat_bat_match,
+        "match_bowling": goat_bowl_match,
+        "match_allround": goat_allround_match,
+        "season_batting": goat_bat_season,
+        "season_bowling": goat_bowl_season,
+    }
+
+    goats_path = output_dir / "goats.json"
+    with open(goats_path, "w") as f:
+        json.dump(goats, f, indent=2)
+
+    print(f"  Exported GOAT performances to {goats_path}")
+    return goats_path
+
+
 # %% Main
 def export_all(
     deltas_df: pd.DataFrame,
@@ -690,6 +874,7 @@ def export_all(
     export_rankings(player_tilt)
     export_player_details(deltas_df, player_tilt)
     export_match_details(deltas_df, player_tilt)
+    export_goats(deltas_df, player_tilt)
     export_meta(deltas_df)
     print("  Done!")
 

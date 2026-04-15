@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — GOATs</title>
+    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <div class="logo"><a href="index.html">THE TILT</a></div>
+            <div class="nav-links">
+                <a href="index.html">leaderboard</a>
+                <a href="goats.html" class="active">GOATs</a>
+                <a href="about.html">about</a>
+                <div class="theme-switch">
+                    <span class="theme-icon" id="sunIcon">&#9788;</span>
+                    <button class="theme-toggle" id="themeBtn"></button>
+                    <span class="theme-icon" id="moonIcon">&#9789;</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        (function() {
+            const t = document.documentElement.getAttribute('data-theme') || 'dark';
+            document.getElementById(t === 'dark' ? 'moonIcon' : 'sunIcon').classList.add('active');
+            document.getElementById('themeBtn').addEventListener('click', () => {
+                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                document.getElementById('sunIcon').classList.toggle('active');
+                document.getElementById('moonIcon').classList.toggle('active');
+            });
+        })();
+    </script>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>GOAT Performances</h1>
+            <div class="subtitle">greatest single-match and single-season performances by TILT</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-section="match_batting">match batting</button>
+            <button class="tab" data-section="match_bowling">match bowling</button>
+            <button class="tab" data-section="match_allround">match all-around</button>
+            <button class="tab" data-section="season_batting">season batting</button>
+            <button class="tab" data-section="season_bowling">season bowling</button>
+        </div>
+
+        <div id="content">
+            <div class="loading">loading GOAT performances...</div>
+        </div>
+
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="about.html">methodology</a>
+        </div>
+    </div>
+
+<script>
+let goats = {};
+let currentSection = 'match_batting';
+
+function formatTilt(val) {
+    const sign = val >= 0 ? '+' : '';
+    const pct = (val * 100).toFixed(2);
+    const cls = val > 0.001 ? 'tilt-positive' : val < -0.001 ? 'tilt-negative' : 'tilt-neutral';
+    return `<span class="${cls}">${sign}${pct}%</span>`;
+}
+
+function render() {
+    const data = goats[currentSection] || [];
+    let html = '';
+
+    if (currentSection === 'match_batting') {
+        html = `<table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th><th>TILT</th>
+                <th class="hide-mobile">runs</th><th class="hide-mobile">balls</th>
+                <th class="hide-mobile">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${r.team}</span>
+                    </a>
+                </td>
+                <td>${formatTilt(r.tilt)}</td>
+                <td class="hide-mobile">${r.runs}</td>
+                <td class="hide-mobile">${r.balls}</td>
+                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+    }
+
+    else if (currentSection === 'match_bowling') {
+        html = `<table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th><th>TILT</th>
+                <th class="hide-mobile">figures</th><th class="hide-mobile">balls</th>
+                <th class="hide-mobile">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${r.team}</span>
+                    </a>
+                </td>
+                <td>${formatTilt(r.tilt)}</td>
+                <td class="hide-mobile">${r.wickets}/${r.runs_conceded}</td>
+                <td class="hide-mobile">${r.balls}</td>
+                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+    }
+
+    else if (currentSection === 'match_allround') {
+        html = `<table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th><th>total TILT</th>
+                <th class="hide-mobile">bat TILT</th><th class="hide-mobile">bowl TILT</th>
+                <th class="hide-mobile">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${r.team}</span>
+                    </a>
+                </td>
+                <td>${formatTilt(r.tilt)}</td>
+                <td class="hide-mobile">${formatTilt(r.bat_tilt)}</td>
+                <td class="hide-mobile">${formatTilt(r.bowl_tilt)}</td>
+                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+    }
+
+    else if (currentSection === 'season_batting') {
+        html = `<table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th><th>TILT/match</th>
+                <th class="hide-mobile">total TILT</th><th class="hide-mobile">runs</th>
+                <th class="hide-mobile">matches</th><th class="hide-mobile">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${r.team}</span>
+                    </a>
+                </td>
+                <td>${formatTilt(r.tilt_per_match)}</td>
+                <td class="hide-mobile">${formatTilt(r.total_tilt)}</td>
+                <td class="hide-mobile">${r.runs}</td>
+                <td class="hide-mobile">${r.matches}</td>
+                <td class="hide-mobile">${r.season}</td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+    }
+
+    else if (currentSection === 'season_bowling') {
+        html = `<table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th><th>TILT/match</th>
+                <th class="hide-mobile">total TILT</th><th class="hide-mobile">wickets</th>
+                <th class="hide-mobile">matches</th><th class="hide-mobile">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${r.team}</span>
+                    </a>
+                </td>
+                <td>${formatTilt(r.tilt_per_match)}</td>
+                <td class="hide-mobile">${formatTilt(r.total_tilt)}</td>
+                <td class="hide-mobile">${r.wickets}</td>
+                <td class="hide-mobile">${r.matches}</td>
+                <td class="hide-mobile">${r.season}</td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+    }
+
+    if (data.length === 0) {
+        html = '<div class="loading">no data available</div>';
+    }
+
+    document.getElementById('content').innerHTML = html;
+}
+
+async function load() {
+    try {
+        const res = await fetch('data/goats.json');
+        goats = await res.json();
+        render();
+    } catch (e) {
+        document.getElementById('content').innerHTML = '<div class="loading">failed to load data</div>';
+    }
+}
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentSection = btn.dataset.section;
+        render();
+    });
+});
+
+load();
+</script>
+</body>
+</html>
