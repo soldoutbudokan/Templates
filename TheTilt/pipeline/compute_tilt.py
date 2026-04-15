@@ -22,12 +22,12 @@ FEATURE_COLS = [
     "target",
     "runs_needed",
     "over",
-    "recent_run_rate",
     "recent_wickets",
     "venue",
     "batting_team_chose_to_bat",
     "season_numeric",
     "opponent_bowler_economy",
+    "batting_team_nrr",
 ]
 
 
@@ -62,15 +62,6 @@ def compute_state_after(row: pd.Series) -> dict:
         after["runs_needed"] = 0
         after["required_run_rate"] = 0.0
 
-    # Recalculate recent stats after this ball (improved approximation)
-    # recent_run_rate covers last 18 balls (3 overs). Adding this ball's runs
-    # and recomputing is more accurate than copying the pre-ball value.
-    recent_balls = min(row.get("ball_number", 18), 18)
-    recent_overs_before = max((recent_balls - 1) / 6, 1 / 6)
-    recent_overs_after = recent_balls / 6
-    after["recent_run_rate"] = (
-        row["recent_run_rate"] * recent_overs_before + row["runs_total"]
-    ) / max(recent_overs_after, 1 / 6)
     after["recent_wickets"] = row["recent_wickets"] + (1 if row["is_wicket"] else 0)
 
     # Carry forward context features (unchanged within a ball)
@@ -78,6 +69,7 @@ def compute_state_after(row: pd.Series) -> dict:
     after["batting_team_chose_to_bat"] = row["batting_team_chose_to_bat"]
     after["season_numeric"] = row["season_numeric"]
     after["opponent_bowler_economy"] = row["opponent_bowler_economy"]
+    after["batting_team_nrr"] = row["batting_team_nrr"]
 
     return after
 
@@ -93,8 +85,6 @@ def compute_ball_deltas(
     # Ensure categorical features for LightGBM
     if "venue" in df.columns:
         df["venue"] = df["venue"].astype("category")
-    if "over" in df.columns:
-        df["over"] = df["over"].astype("category")
 
     # Win prob BEFORE each ball
     X_before = df[FEATURE_COLS].copy()
@@ -107,8 +97,6 @@ def compute_ball_deltas(
     # Restore categorical dtypes for after states
     if "venue" in X_after.columns:
         X_after["venue"] = X_after["venue"].astype("category")
-    if "over" in X_after.columns:
-        X_after["over"] = X_after["over"].astype("category")
     wp_after = model.predict_proba(X_after)[:, 1]
 
     # Delta (from batting team's perspective)

@@ -7,18 +7,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": 0.02417,
-  "batting_tilt_per_match": 0.02417,
+  "total_tilt_per_match": 0.01925,
+  "batting_tilt_per_match": 0.01925,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.01159,
-  "shrunk_batting_tilt_per_match": 0.01335,
+  "shrunk_total_tilt_per_match": 0.00823,
+  "shrunk_batting_tilt_per_match": 0.01,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.03235,
-  "tilt_ci_upper": 0.05553,
-  "tilt_ci_lower_90": -0.02529,
-  "tilt_ci_upper_90": 0.04847,
+  "tilt_ci_lower": -0.04044,
+  "tilt_ci_upper": 0.0569,
+  "tilt_ci_lower_90": -0.03261,
+  "tilt_ci_upper_90": 0.04908,
   "confidence": "low",
-  "total_tilt": 0.31415,
+  "total_tilt": 0.25019,
   "total_matches": 13,
   "batting_balls": 201,
   "bowling_balls": 0,
@@ -26,7 +26,7 @@
     {
       "season": "2022",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": 0.04367,
+      "batting_tilt_per_match": 0.04133,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 9,
       "bowling_matches": 0,
@@ -47,7 +47,7 @@
     {
       "season": "2023",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": -0.01972,
+      "batting_tilt_per_match": -0.03044,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 4,
       "bowling_matches": 0,
@@ -69,21 +69,21 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.09798,
+      "tilt": -0.1641,
       "balls": 52,
-      "avg_delta": -0.001884
+      "avg_delta": -0.003156
     },
     {
       "phase": "middle",
-      "tilt": 0.44351,
+      "tilt": 0.44019,
       "balls": 141,
-      "avg_delta": 0.003145
+      "avg_delta": 0.003122
     },
     {
       "phase": "death",
-      "tilt": -0.03139,
+      "tilt": -0.0259,
       "balls": 8,
-      "avg_delta": -0.003924
+      "avg_delta": -0.003238
     }
   ],
   "bowling_phases": [],
@@ -92,7 +92,7 @@
       "match_id": "1304049",
       "date": "2022-03-27",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.19246,
+      "tilt": 0.20154,
       "runs": 43,
       "balls": 23
     },
@@ -100,7 +100,7 @@
       "match_id": "1304054",
       "date": "2022-04-01",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.17591,
+      "tilt": 0.17504,
       "runs": 31,
       "balls": 9
     },
@@ -108,49 +108,49 @@
       "match_id": "1304094",
       "date": "2022-05-03",
       "vs": "Gujarat Titans",
-      "tilt": 0.15199,
+      "tilt": 0.17129,
       "runs": 40,
       "balls": 29
-    },
-    {
-      "match_id": "1304098",
-      "date": "2022-05-07",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.04277,
-      "runs": 27,
-      "balls": 18
     },
     {
       "match_id": "1359476",
       "date": "2023-04-01",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.04117,
+      "tilt": 0.04068,
       "runs": 50,
       "balls": 32
+    },
+    {
+      "match_id": "1304098",
+      "date": "2022-05-07",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.03779,
+      "runs": 27,
+      "balls": 18
     }
   ],
   "worst_matches": [
     {
-      "match_id": "1359527",
-      "date": "2023-05-08",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.09203,
-      "runs": 0,
-      "balls": 3
-    },
-    {
       "match_id": "1304110",
       "date": "2022-05-16",
       "vs": "Delhi Capitals",
-      "tilt": -0.09107,
+      "tilt": -0.12538,
       "runs": 4,
       "balls": 6
+    },
+    {
+      "match_id": "1359527",
+      "date": "2023-05-08",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.11238,
+      "runs": 0,
+      "balls": 3
     },
     {
       "match_id": "1304057",
       "date": "2022-04-03",
       "vs": "Chennai Super Kings",
-      "tilt": -0.04666,
+      "tilt": -0.05931,
       "runs": 9,
       "balls": 6
     },
@@ -158,17 +158,17 @@
       "match_id": "1359482",
       "date": "2023-04-05",
       "vs": "Rajasthan Royals",
-      "tilt": -0.03743,
+      "tilt": -0.03106,
       "runs": 1,
       "balls": 1
     },
     {
-      "match_id": "1304088",
-      "date": "2022-04-29",
-      "vs": "Lucknow Super Giants",
-      "tilt": -0.02056,
-      "runs": 9,
-      "balls": 8
+      "match_id": "1359492",
+      "date": "2023-04-13",
+      "vs": "Gujarat Titans",
+      "tilt": -0.01899,
+      "runs": 20,
+      "balls": 28
     }
   ],
   "bowling_best_matches": [],
@@ -177,116 +177,116 @@
     {
       "match": 1,
       "date": "2022-03-27",
-      "tilt": 0.19246,
-      "cumulative": 0.19246
+      "tilt": 0.20154,
+      "cumulative": 0.20154
     },
     {
       "match": 2,
       "date": "2022-04-01",
-      "tilt": 0.17591,
-      "cumulative": 0.36838
+      "tilt": 0.17504,
+      "cumulative": 0.37657
     },
     {
       "match": 3,
       "date": "2022-04-03",
-      "tilt": -0.04666,
-      "cumulative": 0.32172
+      "tilt": -0.05931,
+      "cumulative": 0.31726
     },
     {
       "match": 4,
       "date": "2022-04-25",
-      "tilt": 0.00317,
-      "cumulative": 0.32489
+      "tilt": 0.00024,
+      "cumulative": 0.3175
     },
     {
       "match": 5,
       "date": "2022-04-29",
-      "tilt": -0.02056,
-      "cumulative": 0.30433
+      "tilt": -0.01438,
+      "cumulative": 0.30311
     },
     {
       "match": 6,
       "date": "2022-05-03",
-      "tilt": 0.15199,
-      "cumulative": 0.45631
+      "tilt": 0.17129,
+      "cumulative": 0.4744
     },
     {
       "match": 7,
       "date": "2022-05-07",
-      "tilt": 0.04277,
-      "cumulative": 0.49908
+      "tilt": 0.03779,
+      "cumulative": 0.51219
     },
     {
       "match": 8,
       "date": "2022-05-13",
-      "tilt": -0.015,
-      "cumulative": 0.48408
+      "tilt": -0.01487,
+      "cumulative": 0.49733
     },
     {
       "match": 9,
       "date": "2022-05-16",
-      "tilt": -0.09107,
-      "cumulative": 0.39301
+      "tilt": -0.12538,
+      "cumulative": 0.37194
     },
     {
       "match": 10,
       "date": "2023-04-01",
-      "tilt": 0.04117,
-      "cumulative": 0.43418
+      "tilt": 0.04068,
+      "cumulative": 0.41262
     },
     {
       "match": 11,
       "date": "2023-04-05",
-      "tilt": -0.03743,
-      "cumulative": 0.39675
+      "tilt": -0.03106,
+      "cumulative": 0.38156
     },
     {
       "match": 12,
       "date": "2023-04-13",
-      "tilt": 0.00943,
-      "cumulative": 0.40618
+      "tilt": -0.01899,
+      "cumulative": 0.36257
     },
     {
       "match": 13,
       "date": "2023-05-08",
-      "tilt": -0.09203,
-      "cumulative": 0.31415
+      "tilt": -0.11238,
+      "cumulative": 0.25019
     }
   ],
   "team_matchups": [
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.08873,
+      "tilt_per_match": 0.09333,
       "matches": 2
     },
     {
       "opponent": "Gujarat Titans",
-      "tilt_per_match": 0.08071,
+      "tilt_per_match": 0.07615,
       "matches": 2
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.04168,
+      "tilt_per_match": 0.03444,
       "matches": 3
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.00267,
+      "tilt_per_match": 0.00336,
       "matches": 2
     },
     {
       "opponent": "Lucknow Super Giants",
-      "tilt_per_match": -0.02056,
+      "tilt_per_match": -0.01438,
       "matches": 1
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.02174,
+      "tilt_per_match": -0.02954,
       "matches": 2
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.09107,
+      "tilt_per_match": -0.12538,
       "matches": 1
     }
   ],
@@ -304,18 +304,18 @@
   },
   "bowling_stats": null,
   "match_tilt_distribution": [
-    0.19246,
-    0.17591,
-    -0.04666,
-    0.00317,
-    -0.02056,
-    0.15199,
-    0.04277,
-    -0.015,
-    -0.09107,
-    0.04117,
-    -0.03743,
-    0.00943,
-    -0.09203
+    0.20154,
+    0.17504,
+    -0.05931,
+    0.00024,
+    -0.01438,
+    0.17129,
+    0.03779,
+    -0.01487,
+    -0.12538,
+    0.04068,
+    -0.03106,
+    -0.01899,
+    -0.11238
   ]
 }

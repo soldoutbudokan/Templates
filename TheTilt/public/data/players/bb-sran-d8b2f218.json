@@ -5,20 +5,23 @@
   "slug": "bb-sran-d8b2f218",
   "team": "Mumbai Indians",
   "teams": [
-    "Mumbai Indians"
+    "Kings XI Punjab",
+    "Mumbai Indians",
+    "Rajasthan Royals",
+    "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.01969,
+  "total_tilt_per_match": -0.02441,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.01265,
-  "shrunk_total_tilt_per_match": -0.02003,
+  "bowling_tilt_per_match": -0.01599,
+  "shrunk_total_tilt_per_match": -0.0238,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01304,
-  "tilt_ci_lower": -0.06427,
-  "tilt_ci_upper": 0.02422,
-  "tilt_ci_lower_90": -0.05716,
-  "tilt_ci_upper_90": 0.0171,
+  "shrunk_bowling_tilt_per_match": -0.01567,
+  "tilt_ci_lower": -0.06897,
+  "tilt_ci_upper": 0.02137,
+  "tilt_ci_lower_90": -0.06171,
+  "tilt_ci_upper_90": 0.01411,
   "confidence": "low",
-  "total_tilt": -0.45297,
+  "total_tilt": -0.56134,
   "total_matches": 23,
   "batting_balls": 14,
   "bowling_balls": 503,
@@ -27,7 +30,7 @@
       "season": "2015",
       "team": "Rajasthan Royals",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.10425,
+      "bowling_tilt_per_match": -0.10767,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -45,8 +48,8 @@
     {
       "season": "2016",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.00012,
-      "bowling_tilt_per_match": 0.01897,
+      "batting_tilt_per_match": -0.00034,
+      "bowling_tilt_per_match": 0.01621,
       "batting_matches": 3,
       "bowling_matches": 14,
       "batting_balls": 4,
@@ -76,7 +79,7 @@
       "season": "2017",
       "team": "Sunrisers Hyderabad",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.13478,
+      "bowling_tilt_per_match": -0.14941,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -94,8 +97,8 @@
     {
       "season": "2018",
       "team": "Kings XI Punjab",
-      "batting_tilt_per_match": -0.05669,
-      "bowling_tilt_per_match": -0.02853,
+      "batting_tilt_per_match": -0.066,
+      "bowling_tilt_per_match": -0.03396,
       "batting_matches": 3,
       "bowling_matches": 6,
       "batting_balls": 7,
@@ -124,8 +127,8 @@
     {
       "season": "2019",
       "team": "Mumbai Indians",
-      "batting_tilt_per_match": 0.00777,
-      "bowling_tilt_per_match": -0.14634,
+      "batting_tilt_per_match": 0.00553,
+      "bowling_tilt_per_match": -0.13393,
       "batting_matches": 1,
       "bowling_matches": 1,
       "batting_balls": 3,
@@ -155,29 +158,29 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.16196,
+      "tilt": -0.1935,
       "balls": 14,
-      "avg_delta": -0.011569
+      "avg_delta": -0.013821
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.00638,
+      "tilt": -0.12258,
       "balls": 229,
-      "avg_delta": -2.8e-05
+      "avg_delta": -0.000535
     },
     {
       "phase": "middle",
-      "tilt": -0.09349,
+      "tilt": -0.06288,
       "balls": 178,
-      "avg_delta": -0.000525
+      "avg_delta": -0.000353
     },
     {
       "phase": "death",
-      "tilt": -0.19114,
+      "tilt": -0.18238,
       "balls": 96,
-      "avg_delta": -0.001991
+      "avg_delta": -0.0019
     }
   ],
   "best_matches": [
@@ -185,51 +188,9 @@
       "match_id": "1178422",
       "date": "2019-04-28",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.00777,
+      "tilt": 0.00553,
       "runs": 3,
       "balls": 3
-    },
-    {
-      "match_id": "981009",
-      "date": "2016-05-22",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.00035,
-      "runs": 2,
-      "balls": 2
-    },
-    {
-      "match_id": "1136582",
-      "date": "2018-04-23",
-      "vs": "Delhi Daredevils",
-      "tilt": 0.0,
-      "runs": 0,
-      "balls": 1
-    },
-    {
-      "match_id": "1136604",
-      "date": "2018-05-12",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.0,
-      "runs": 1,
-      "balls": 1
-    },
-    {
-      "match_id": "980979",
-      "date": "2016-05-10",
-      "vs": "Rising Pune Supergiants",
-      "tilt": 0.0,
-      "runs": 1,
-      "balls": 1
-    }
-  ],
-  "worst_matches": [
-    {
-      "match_id": "1136585",
-      "date": "2018-04-26",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.17008,
-      "runs": 2,
-      "balls": 5
     },
     {
       "match_id": "1136582",
@@ -264,12 +225,54 @@
       "balls": 1
     }
   ],
+  "worst_matches": [
+    {
+      "match_id": "1136585",
+      "date": "2018-04-26",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.19801,
+      "runs": 2,
+      "balls": 5
+    },
+    {
+      "match_id": "981009",
+      "date": "2016-05-22",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.00101,
+      "runs": 2,
+      "balls": 2
+    },
+    {
+      "match_id": "1136604",
+      "date": "2018-05-12",
+      "vs": "Kolkata Knight Riders",
+      "tilt": 0.0,
+      "runs": 1,
+      "balls": 1
+    },
+    {
+      "match_id": "980979",
+      "date": "2016-05-10",
+      "vs": "Rising Pune Supergiants",
+      "tilt": 0.0,
+      "runs": 1,
+      "balls": 1
+    },
+    {
+      "match_id": "980983",
+      "date": "2016-05-12",
+      "vs": "Delhi Daredevils",
+      "tilt": 0.0,
+      "runs": 1,
+      "balls": 1
+    }
+  ],
   "bowling_best_matches": [
     {
       "match_id": "980923",
       "date": "2016-04-18",
       "vs": "Mumbai Indians",
-      "tilt": 0.237,
+      "tilt": 0.22609,
       "wickets": 3,
       "balls": 28
     },
@@ -277,7 +280,7 @@
       "match_id": "1136576",
       "date": "2018-04-19",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.20653,
+      "tilt": 0.2124,
       "wickets": 1,
       "balls": 28
     },
@@ -285,7 +288,7 @@
       "match_id": "981009",
       "date": "2016-05-22",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.16447,
+      "tilt": 0.14007,
       "wickets": 1,
       "balls": 25
     },
@@ -293,17 +296,17 @@
       "match_id": "980979",
       "date": "2016-05-10",
       "vs": "Rising Pune Supergiants",
-      "tilt": 0.11044,
+      "tilt": 0.11364,
       "wickets": 1,
       "balls": 24
     },
     {
-      "match_id": "980973",
-      "date": "2016-05-08",
-      "vs": "Mumbai Indians",
-      "tilt": 0.05842,
-      "wickets": 2,
-      "balls": 22
+      "match_id": "980935",
+      "date": "2016-04-23",
+      "vs": "Kings XI Punjab",
+      "tilt": 0.06398,
+      "wickets": 0,
+      "balls": 24
     }
   ],
   "bowling_worst_matches": [
@@ -311,7 +314,7 @@
       "match_id": "1136582",
       "date": "2018-04-23",
       "vs": "Delhi Daredevils",
-      "tilt": -0.17663,
+      "tilt": -0.2158,
       "wickets": 1,
       "balls": 27
     },
@@ -319,31 +322,31 @@
       "match_id": "981015",
       "date": "2016-05-25",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.16509,
+      "tilt": -0.15522,
       "wickets": 1,
       "balls": 18
-    },
-    {
-      "match_id": "1178422",
-      "date": "2019-04-28",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.14634,
-      "wickets": 0,
-      "balls": 12
     },
     {
       "match_id": "1082609",
       "date": "2017-04-17",
       "vs": "Kings XI Punjab",
-      "tilt": -0.13478,
+      "tilt": -0.14941,
       "wickets": 0,
       "balls": 13
+    },
+    {
+      "match_id": "1178422",
+      "date": "2019-04-28",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.13393,
+      "wickets": 0,
+      "balls": 12
     },
     {
       "match_id": "1136604",
       "date": "2018-05-12",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.12336,
+      "tilt": -0.11757,
       "wickets": 1,
       "balls": 18
     }
@@ -352,146 +355,146 @@
     {
       "match": 1,
       "date": "2015-05-16",
-      "tilt": -0.10425,
-      "cumulative": -0.10425
+      "tilt": -0.10767,
+      "cumulative": -0.10767
     },
     {
       "match": 2,
       "date": "2016-04-16",
-      "tilt": 0.01918,
-      "cumulative": -0.08507
+      "tilt": 0.00898,
+      "cumulative": -0.09869
     },
     {
       "match": 3,
       "date": "2016-04-18",
-      "tilt": 0.237,
-      "cumulative": 0.15193
+      "tilt": 0.22609,
+      "cumulative": 0.1274
     },
     {
       "match": 4,
       "date": "2016-04-21",
-      "tilt": 0.03935,
-      "cumulative": 0.19128
+      "tilt": 0.02338,
+      "cumulative": 0.15078
     },
     {
       "match": 5,
       "date": "2016-04-23",
-      "tilt": 0.05007,
-      "cumulative": 0.24135
+      "tilt": 0.06398,
+      "cumulative": 0.21475
     },
     {
       "match": 6,
       "date": "2016-04-30",
-      "tilt": 0.0217,
-      "cumulative": 0.26305
+      "tilt": 0.00801,
+      "cumulative": 0.22277
     },
     {
       "match": 7,
       "date": "2016-05-06",
-      "tilt": 0.02183,
-      "cumulative": 0.28488
+      "tilt": 0.01227,
+      "cumulative": 0.23504
     },
     {
       "match": 8,
       "date": "2016-05-08",
-      "tilt": 0.05842,
-      "cumulative": 0.3433
+      "tilt": 0.04255,
+      "cumulative": 0.27758
     },
     {
       "match": 9,
       "date": "2016-05-10",
-      "tilt": 0.11044,
-      "cumulative": 0.45374
+      "tilt": 0.11364,
+      "cumulative": 0.39123
     },
     {
       "match": 10,
       "date": "2016-05-12",
-      "tilt": -0.07303,
-      "cumulative": 0.38071
+      "tilt": -0.07729,
+      "cumulative": 0.31393
     },
     {
       "match": 11,
       "date": "2016-05-20",
-      "tilt": -0.0585,
-      "cumulative": 0.32221
+      "tilt": -0.02215,
+      "cumulative": 0.29178
     },
     {
       "match": 12,
       "date": "2016-05-22",
-      "tilt": 0.16482,
-      "cumulative": 0.48703
+      "tilt": 0.13906,
+      "cumulative": 0.43084
     },
     {
       "match": 13,
       "date": "2016-05-25",
-      "tilt": -0.16509,
-      "cumulative": 0.32194
+      "tilt": -0.15522,
+      "cumulative": 0.27562
     },
     {
       "match": 14,
       "date": "2016-05-27",
-      "tilt": -0.07038,
-      "cumulative": 0.25156
+      "tilt": -0.06575,
+      "cumulative": 0.20987
     },
     {
       "match": 15,
       "date": "2016-05-29",
-      "tilt": -0.08994,
-      "cumulative": 0.16162
+      "tilt": -0.09163,
+      "cumulative": 0.11824
     },
     {
       "match": 16,
       "date": "2017-04-17",
-      "tilt": -0.13478,
-      "cumulative": 0.02685
+      "tilt": -0.14941,
+      "cumulative": -0.03117
     },
     {
       "match": 17,
       "date": "2018-04-15",
-      "tilt": -0.02283,
-      "cumulative": 0.00401
+      "tilt": -0.00493,
+      "cumulative": -0.0361
     },
     {
       "match": 18,
       "date": "2018-04-19",
-      "tilt": 0.20653,
-      "cumulative": 0.21055
+      "tilt": 0.2124,
+      "cumulative": 0.1763
     },
     {
       "match": 19,
       "date": "2018-04-21",
-      "tilt": -0.06008,
-      "cumulative": 0.15047
+      "tilt": -0.05924,
+      "cumulative": 0.11706
     },
     {
       "match": 20,
       "date": "2018-04-23",
-      "tilt": -0.17663,
-      "cumulative": -0.02616
+      "tilt": -0.2158,
+      "cumulative": -0.09874
     },
     {
       "match": 21,
       "date": "2018-04-26",
-      "tilt": -0.16488,
-      "cumulative": -0.19104
+      "tilt": -0.21663,
+      "cumulative": -0.31537
     },
     {
       "match": 22,
       "date": "2018-05-12",
-      "tilt": -0.12336,
-      "cumulative": -0.31441
+      "tilt": -0.11757,
+      "cumulative": -0.43294
     },
     {
       "match": 23,
       "date": "2019-04-28",
-      "tilt": -0.13857,
-      "cumulative": -0.45297
+      "tilt": -0.1284,
+      "cumulative": -0.56134
     }
   ],
   "team_matchups": [
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.00271,
+      "tilt_per_match": 0.00151,
       "matches": 3
     },
     {
@@ -506,7 +509,7 @@
     },
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.17008,
+      "tilt_per_match": -0.19801,
       "matches": 1
     }
   ],
@@ -532,28 +535,28 @@
     "best_figures": "3/29"
   },
   "match_tilt_distribution": [
-    -0.10425,
-    0.01918,
-    0.237,
-    0.03935,
-    0.05007,
-    0.0217,
-    0.02183,
-    0.05842,
-    0.11044,
-    -0.07303,
-    -0.0585,
-    0.16482,
-    -0.16509,
-    -0.07038,
-    -0.08994,
-    -0.13478,
-    -0.02283,
-    0.20653,
-    -0.06008,
-    -0.17663,
-    -0.16488,
-    -0.12336,
-    -0.13857
+    -0.10767,
+    0.00898,
+    0.22609,
+    0.02338,
+    0.06398,
+    0.00801,
+    0.01227,
+    0.04255,
+    0.11364,
+    -0.07729,
+    -0.02215,
+    0.13906,
+    -0.15522,
+    -0.06575,
+    -0.09163,
+    -0.14941,
+    -0.00493,
+    0.2124,
+    -0.05924,
+    -0.2158,
+    -0.21663,
+    -0.11757,
+    -0.1284
   ]
 }

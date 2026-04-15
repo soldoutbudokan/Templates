@@ -5,20 +5,22 @@
   "slug": "basil-thampi-871e9faf",
   "team": "Mumbai Indians",
   "teams": [
-    "Mumbai Indians"
+    "Gujarat Lions",
+    "Mumbai Indians",
+    "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.02798,
+  "total_tilt_per_match": -0.02384,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.02855,
-  "shrunk_total_tilt_per_match": -0.02681,
+  "bowling_tilt_per_match": -0.02411,
+  "shrunk_total_tilt_per_match": -0.02332,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.02568,
-  "tilt_ci_lower": -0.07378,
-  "tilt_ci_upper": 0.02016,
-  "tilt_ci_lower_90": -0.06623,
-  "tilt_ci_upper_90": 0.01261,
+  "shrunk_bowling_tilt_per_match": -0.0221,
+  "tilt_ci_lower": -0.07059,
+  "tilt_ci_upper": 0.02396,
+  "tilt_ci_lower_90": -0.06299,
+  "tilt_ci_upper_90": 0.01636,
   "confidence": "low",
-  "total_tilt": -0.61564,
+  "total_tilt": -0.52459,
   "total_matches": 22,
   "batting_balls": 33,
   "bowling_balls": 466,
@@ -26,8 +28,8 @@
     {
       "season": "2017",
       "team": "Gujarat Lions",
-      "batting_tilt_per_match": 0.00036,
-      "bowling_tilt_per_match": -0.01937,
+      "batting_tilt_per_match": -0.00349,
+      "bowling_tilt_per_match": -0.01401,
       "batting_matches": 4,
       "bowling_matches": 11,
       "batting_balls": 26,
@@ -56,8 +58,8 @@
     {
       "season": "2018",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": -0.00031,
-      "bowling_tilt_per_match": -0.01951,
+      "batting_tilt_per_match": 0.01217,
+      "bowling_tilt_per_match": -0.01355,
       "batting_matches": 1,
       "bowling_matches": 4,
       "batting_balls": 6,
@@ -86,8 +88,8 @@
     {
       "season": "2019",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.0114,
-      "bowling_tilt_per_match": -0.08852,
+      "batting_tilt_per_match": 0.00754,
+      "bowling_tilt_per_match": -0.10495,
       "batting_matches": 1,
       "bowling_matches": 2,
       "batting_balls": 1,
@@ -117,7 +119,7 @@
       "season": "2022",
       "team": "Mumbai Indians",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.03199,
+      "bowling_tilt_per_match": -0.02241,
       "batting_matches": 0,
       "bowling_matches": 5,
       "batting_balls": 0,
@@ -136,43 +138,59 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": 0.00455,
+      "tilt": 0.02254,
       "balls": 5,
-      "avg_delta": 0.00091
+      "avg_delta": 0.004509
     },
     {
       "phase": "death",
-      "tilt": 0.00796,
+      "tilt": -0.01679,
       "balls": 28,
-      "avg_delta": 0.000284
+      "avg_delta": -0.0006
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.41944,
+      "tilt": -0.40715,
       "balls": 149,
-      "avg_delta": -0.002815
+      "avg_delta": -0.002733
     },
     {
       "phase": "middle",
-      "tilt": 0.03138,
+      "tilt": 0.01373,
       "balls": 168,
-      "avg_delta": 0.000187
+      "avg_delta": 8.2e-05
     },
     {
       "phase": "death",
-      "tilt": -0.24009,
+      "tilt": -0.13692,
       "balls": 149,
-      "avg_delta": -0.001611
+      "avg_delta": -0.000919
     }
   ],
   "best_matches": [
     {
+      "match_id": "1136583",
+      "date": "2018-04-24",
+      "vs": "Mumbai Indians",
+      "tilt": 0.01217,
+      "runs": 3,
+      "balls": 6
+    },
+    {
+      "match_id": "1082596",
+      "date": "2017-04-09",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.01093,
+      "runs": 13,
+      "balls": 8
+    },
+    {
       "match_id": "1082629",
       "date": "2017-05-01",
       "vs": "Rising Pune Supergiant",
-      "tilt": 0.02063,
+      "tilt": 0.01051,
       "runs": 2,
       "balls": 5
     },
@@ -180,33 +198,17 @@
       "match_id": "1181766",
       "date": "2019-05-08",
       "vs": "Delhi Capitals",
-      "tilt": 0.0114,
+      "tilt": 0.00754,
       "runs": 1,
       "balls": 1
-    },
-    {
-      "match_id": "1082596",
-      "date": "2017-04-09",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.0096,
-      "runs": 13,
-      "balls": 8
     },
     {
       "match_id": "1082610",
       "date": "2017-04-18",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.0,
+      "tilt": -0.00076,
       "runs": 0,
       "balls": 1
-    },
-    {
-      "match_id": "1136583",
-      "date": "2018-04-24",
-      "vs": "Mumbai Indians",
-      "tilt": -0.00031,
-      "runs": 3,
-      "balls": 6
     }
   ],
   "worst_matches": [
@@ -214,41 +216,41 @@
       "match_id": "1082616",
       "date": "2017-04-23",
       "vs": "Kings XI Punjab",
-      "tilt": -0.02879,
+      "tilt": -0.03463,
       "runs": 11,
       "balls": 12
-    },
-    {
-      "match_id": "1136583",
-      "date": "2018-04-24",
-      "vs": "Mumbai Indians",
-      "tilt": -0.00031,
-      "runs": 3,
-      "balls": 6
     },
     {
       "match_id": "1082610",
       "date": "2017-04-18",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.0,
+      "tilt": -0.00076,
       "runs": 0,
       "balls": 1
-    },
-    {
-      "match_id": "1082596",
-      "date": "2017-04-09",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.0096,
-      "runs": 13,
-      "balls": 8
     },
     {
       "match_id": "1181766",
       "date": "2019-05-08",
       "vs": "Delhi Capitals",
-      "tilt": 0.0114,
+      "tilt": 0.00754,
       "runs": 1,
       "balls": 1
+    },
+    {
+      "match_id": "1082629",
+      "date": "2017-05-01",
+      "vs": "Rising Pune Supergiant",
+      "tilt": 0.01051,
+      "runs": 2,
+      "balls": 5
+    },
+    {
+      "match_id": "1082596",
+      "date": "2017-04-09",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.01093,
+      "runs": 13,
+      "balls": 8
     }
   ],
   "bowling_best_matches": [
@@ -256,7 +258,7 @@
       "match_id": "1304048",
       "date": "2022-03-27",
       "vs": "Delhi Capitals",
-      "tilt": 0.24637,
+      "tilt": 0.23351,
       "wickets": 3,
       "balls": 27
     },
@@ -264,23 +266,15 @@
       "match_id": "1136583",
       "date": "2018-04-24",
       "vs": "Mumbai Indians",
-      "tilt": 0.15325,
+      "tilt": 0.16989,
       "wickets": 2,
       "balls": 11
-    },
-    {
-      "match_id": "1082632",
-      "date": "2017-05-04",
-      "vs": "Delhi Daredevils",
-      "tilt": 0.08627,
-      "wickets": 1,
-      "balls": 27
     },
     {
       "match_id": "1082629",
       "date": "2017-05-01",
       "vs": "Rising Pune Supergiant",
-      "tilt": 0.05645,
+      "tilt": 0.10031,
       "wickets": 2,
       "balls": 25
     },
@@ -288,9 +282,17 @@
       "match_id": "1082610",
       "date": "2017-04-18",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.04725,
+      "tilt": 0.07948,
       "wickets": 1,
       "balls": 24
+    },
+    {
+      "match_id": "1082632",
+      "date": "2017-05-04",
+      "vs": "Delhi Daredevils",
+      "tilt": 0.06758,
+      "wickets": 1,
+      "balls": 27
     }
   ],
   "bowling_worst_matches": [
@@ -298,206 +300,206 @@
       "match_id": "1136611",
       "date": "2018-05-17",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.28221,
+      "tilt": -0.26065,
       "wickets": 0,
       "balls": 25
-    },
-    {
-      "match_id": "1082640",
-      "date": "2017-05-10",
-      "vs": "Delhi Daredevils",
-      "tilt": -0.18857,
-      "wickets": 2,
-      "balls": 23
     },
     {
       "match_id": "1181766",
       "date": "2019-05-08",
       "vs": "Delhi Capitals",
-      "tilt": -0.18639,
+      "tilt": -0.19994,
       "wickets": 0,
       "balls": 24
     },
     {
-      "match_id": "1304055",
-      "date": "2022-04-02",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.17637,
-      "wickets": 0,
-      "balls": 6
+      "match_id": "1082640",
+      "date": "2017-05-10",
+      "vs": "Delhi Daredevils",
+      "tilt": -0.19807,
+      "wickets": 2,
+      "balls": 23
     },
     {
       "match_id": "1304069",
       "date": "2022-04-13",
       "vs": "Punjab Kings",
-      "tilt": -0.16765,
+      "tilt": -0.17643,
       "wickets": 2,
       "balls": 26
+    },
+    {
+      "match_id": "1082606",
+      "date": "2017-04-16",
+      "vs": "Mumbai Indians",
+      "tilt": -0.13334,
+      "wickets": 0,
+      "balls": 25
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2017-04-09",
-      "tilt": -0.01347,
-      "cumulative": -0.01347
+      "tilt": -0.01696,
+      "cumulative": -0.01696
     },
     {
       "match": 2,
       "date": "2017-04-14",
-      "tilt": 0.04036,
-      "cumulative": 0.0269
+      "tilt": 0.04841,
+      "cumulative": 0.03145
     },
     {
       "match": 3,
       "date": "2017-04-16",
-      "tilt": -0.13829,
-      "cumulative": -0.11139
+      "tilt": -0.13334,
+      "cumulative": -0.10188
     },
     {
       "match": 4,
       "date": "2017-04-18",
-      "tilt": 0.04725,
-      "cumulative": -0.06414
+      "tilt": 0.07871,
+      "cumulative": -0.02317
     },
     {
       "match": 5,
       "date": "2017-04-21",
-      "tilt": -0.00845,
-      "cumulative": -0.07259
+      "tilt": 0.01422,
+      "cumulative": -0.00896
     },
     {
       "match": 6,
       "date": "2017-04-23",
-      "tilt": -0.09393,
-      "cumulative": -0.16652
+      "tilt": -0.11545,
+      "cumulative": -0.1244
     },
     {
       "match": 7,
       "date": "2017-04-27",
-      "tilt": 0.02034,
-      "cumulative": -0.14619
+      "tilt": 0.01892,
+      "cumulative": -0.10548
     },
     {
       "match": 8,
       "date": "2017-05-01",
-      "tilt": 0.07708,
-      "cumulative": -0.06911
+      "tilt": 0.11082,
+      "cumulative": 0.00534
     },
     {
       "match": 9,
       "date": "2017-05-04",
-      "tilt": 0.08627,
-      "cumulative": 0.01716
+      "tilt": 0.06758,
+      "cumulative": 0.07292
     },
     {
       "match": 10,
       "date": "2017-05-07",
-      "tilt": -0.04026,
-      "cumulative": -0.0231
+      "tilt": -0.04296,
+      "cumulative": 0.02995
     },
     {
       "match": 11,
       "date": "2017-05-10",
-      "tilt": -0.18857,
-      "cumulative": -0.21167
+      "tilt": -0.19807,
+      "cumulative": -0.16811
     },
     {
       "match": 12,
       "date": "2018-04-24",
-      "tilt": 0.15294,
-      "cumulative": -0.05874
+      "tilt": 0.18206,
+      "cumulative": 0.01395
     },
     {
       "match": 13,
       "date": "2018-04-26",
-      "tilt": 0.02934,
-      "cumulative": -0.0294
+      "tilt": 0.02718,
+      "cumulative": 0.04113
     },
     {
       "match": 14,
       "date": "2018-04-29",
-      "tilt": 0.02158,
-      "cumulative": -0.00781
+      "tilt": 0.00936,
+      "cumulative": 0.05049
     },
     {
       "match": 15,
       "date": "2018-05-17",
-      "tilt": -0.28221,
-      "cumulative": -0.29003
+      "tilt": -0.26065,
+      "cumulative": -0.21016
     },
     {
       "match": 16,
       "date": "2019-05-04",
-      "tilt": 0.00935,
-      "cumulative": -0.28068
+      "tilt": -0.00997,
+      "cumulative": -0.22013
     },
     {
       "match": 17,
       "date": "2019-05-08",
-      "tilt": -0.17499,
-      "cumulative": -0.45567
+      "tilt": -0.1924,
+      "cumulative": -0.41253
     },
     {
       "match": 18,
       "date": "2022-03-27",
-      "tilt": 0.24637,
-      "cumulative": -0.2093
+      "tilt": 0.23351,
+      "cumulative": -0.17901
     },
     {
       "match": 19,
       "date": "2022-04-02",
-      "tilt": -0.17637,
-      "cumulative": -0.38567
+      "tilt": -0.12424,
+      "cumulative": -0.30326
     },
     {
       "match": 20,
       "date": "2022-04-06",
-      "tilt": 0.00043,
-      "cumulative": -0.38524
+      "tilt": 0.00692,
+      "cumulative": -0.29634
     },
     {
       "match": 21,
       "date": "2022-04-09",
-      "tilt": -0.06275,
-      "cumulative": -0.44799
+      "tilt": -0.05182,
+      "cumulative": -0.34816
     },
     {
       "match": 22,
       "date": "2022-04-13",
-      "tilt": -0.16765,
-      "cumulative": -0.61564
+      "tilt": -0.17643,
+      "cumulative": -0.52459
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Rising Pune Supergiant",
-      "tilt_per_match": 0.02063,
-      "matches": 1
-    },
-    {
-      "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.0114,
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": 0.01217,
       "matches": 1
     },
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": 0.0096,
+      "tilt_per_match": 0.01093,
+      "matches": 1
+    },
+    {
+      "opponent": "Rising Pune Supergiant",
+      "tilt_per_match": 0.01051,
+      "matches": 1
+    },
+    {
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": 0.00754,
       "matches": 1
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.0,
-      "matches": 1
-    },
-    {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.00031,
+      "tilt_per_match": -0.00076,
       "matches": 1
     },
     {
       "opponent": "Kings XI Punjab",
-      "tilt_per_match": -0.02879,
+      "tilt_per_match": -0.03463,
       "matches": 1
     }
   ],
@@ -523,27 +525,27 @@
     "best_figures": "3/39"
   },
   "match_tilt_distribution": [
-    -0.01347,
-    0.04036,
-    -0.13829,
-    0.04725,
-    -0.00845,
-    -0.09393,
-    0.02034,
-    0.07708,
-    0.08627,
-    -0.04026,
-    -0.18857,
-    0.15294,
-    0.02934,
-    0.02158,
-    -0.28221,
-    0.00935,
-    -0.17499,
-    0.24637,
-    -0.17637,
-    0.00043,
-    -0.06275,
-    -0.16765
+    -0.01696,
+    0.04841,
+    -0.13334,
+    0.07871,
+    0.01422,
+    -0.11545,
+    0.01892,
+    0.11082,
+    0.06758,
+    -0.04296,
+    -0.19807,
+    0.18206,
+    0.02718,
+    0.00936,
+    -0.26065,
+    -0.00997,
+    -0.1924,
+    0.23351,
+    -0.12424,
+    0.00692,
+    -0.05182,
+    -0.17643
   ]
 }

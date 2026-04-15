@@ -7,18 +7,18 @@
   "teams": [
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.03281,
+  "total_tilt_per_match": 0.02833,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.03267,
-  "shrunk_total_tilt_per_match": 0.01786,
+  "bowling_tilt_per_match": 0.02802,
+  "shrunk_total_tilt_per_match": 0.01483,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.01824,
-  "tilt_ci_lower": -0.03862,
-  "tilt_ci_upper": 0.07433,
-  "tilt_ci_lower_90": -0.02954,
-  "tilt_ci_upper_90": 0.06526,
+  "shrunk_bowling_tilt_per_match": 0.0151,
+  "tilt_ci_lower": -0.04157,
+  "tilt_ci_upper": 0.07122,
+  "tilt_ci_lower_90": -0.03251,
+  "tilt_ci_upper_90": 0.06216,
   "confidence": "low",
-  "total_tilt": 0.42649,
+  "total_tilt": 0.36826,
   "total_matches": 13,
   "batting_balls": 4,
   "bowling_balls": 222,
@@ -27,7 +27,7 @@
       "season": "2009",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.00205,
+      "bowling_tilt_per_match": -0.00012,
       "batting_matches": 1,
       "bowling_matches": 5,
       "batting_balls": 1,
@@ -56,8 +56,8 @@
     {
       "season": "2009/10",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": 0.00089,
-      "bowling_tilt_per_match": 0.09578,
+      "batting_tilt_per_match": 0.00199,
+      "bowling_tilt_per_match": 0.09456,
       "batting_matches": 2,
       "bowling_matches": 2,
       "batting_balls": 3,
@@ -87,7 +87,7 @@
       "season": "2012",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.04056,
+      "bowling_tilt_per_match": 0.02929,
       "batting_matches": 0,
       "bowling_matches": 6,
       "batting_balls": 0,
@@ -106,29 +106,29 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": 0.00178,
+      "tilt": 0.00397,
       "balls": 4,
-      "avg_delta": 0.000444
+      "avg_delta": 0.000993
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.03809,
+      "tilt": -0.04679,
       "balls": 20,
-      "avg_delta": -0.001905
+      "avg_delta": -0.00234
     },
     {
       "phase": "middle",
-      "tilt": 0.50867,
+      "tilt": 0.44055,
       "balls": 189,
-      "avg_delta": 0.002691
+      "avg_delta": 0.002331
     },
     {
       "phase": "death",
-      "tilt": -0.04586,
+      "tilt": -0.02946,
       "balls": 13,
-      "avg_delta": -0.003528
+      "avg_delta": -0.002267
     }
   ],
   "best_matches": [
@@ -136,9 +136,17 @@
       "match_id": "419151",
       "date": "2010-04-12",
       "vs": "Deccan Chargers",
-      "tilt": 0.00178,
+      "tilt": 0.00343,
       "runs": 1,
       "balls": 1
+    },
+    {
+      "match_id": "419140",
+      "date": "2010-04-04",
+      "vs": "Delhi Daredevils",
+      "tilt": 0.00054,
+      "runs": 1,
+      "balls": 2
     },
     {
       "match_id": "392204",
@@ -147,14 +155,6 @@
       "tilt": 0.0,
       "runs": 0,
       "balls": 1
-    },
-    {
-      "match_id": "419140",
-      "date": "2010-04-04",
-      "vs": "Delhi Daredevils",
-      "tilt": 0.0,
-      "runs": 1,
-      "balls": 2
     }
   ],
   "worst_matches": [
@@ -170,7 +170,7 @@
       "match_id": "419140",
       "date": "2010-04-04",
       "vs": "Delhi Daredevils",
-      "tilt": 0.0,
+      "tilt": 0.00054,
       "runs": 1,
       "balls": 2
     },
@@ -178,7 +178,7 @@
       "match_id": "419151",
       "date": "2010-04-12",
       "vs": "Deccan Chargers",
-      "tilt": 0.00178,
+      "tilt": 0.00343,
       "runs": 1,
       "balls": 1
     }
@@ -188,7 +188,7 @@
       "match_id": "548336",
       "date": "2012-04-23",
       "vs": "Rajasthan Royals",
-      "tilt": 0.36516,
+      "tilt": 0.36189,
       "wickets": 4,
       "balls": 25
     },
@@ -196,7 +196,7 @@
       "match_id": "419140",
       "date": "2010-04-04",
       "vs": "Delhi Daredevils",
-      "tilt": 0.15752,
+      "tilt": 0.14966,
       "wickets": 2,
       "balls": 24
     },
@@ -204,7 +204,7 @@
       "match_id": "548362",
       "date": "2012-05-11",
       "vs": "Pune Warriors",
-      "tilt": 0.10137,
+      "tilt": 0.06249,
       "wickets": 1,
       "balls": 25
     },
@@ -212,7 +212,7 @@
       "match_id": "392194",
       "date": "2009-04-26",
       "vs": "Delhi Daredevils",
-      "tilt": 0.0499,
+      "tilt": 0.05984,
       "wickets": 1,
       "balls": 24
     },
@@ -220,7 +220,7 @@
       "match_id": "419151",
       "date": "2010-04-12",
       "vs": "Deccan Chargers",
-      "tilt": 0.03404,
+      "tilt": 0.03947,
       "wickets": 1,
       "balls": 19
     }
@@ -230,7 +230,7 @@
       "match_id": "548350",
       "date": "2012-05-02",
       "vs": "Kings XI Punjab",
-      "tilt": -0.09663,
+      "tilt": -0.11978,
       "wickets": 1,
       "balls": 18
     },
@@ -238,124 +238,124 @@
       "match_id": "548327",
       "date": "2012-04-17",
       "vs": "Pune Warriors",
-      "tilt": -0.09067,
+      "tilt": -0.08823,
       "wickets": 0,
       "balls": 13
-    },
-    {
-      "match_id": "392204",
-      "date": "2009-05-01",
-      "vs": "Kings XI Punjab",
-      "tilt": -0.0381,
-      "wickets": 0,
-      "balls": 12
     },
     {
       "match_id": "548367",
       "date": "2012-05-14",
       "vs": "Mumbai Indians",
-      "tilt": -0.03225,
+      "tilt": -0.03961,
       "wickets": 0,
       "balls": 6
     },
     {
-      "match_id": "392218",
-      "date": "2009-05-10",
-      "vs": "Mumbai Indians",
-      "tilt": -0.01404,
+      "match_id": "392204",
+      "date": "2009-05-01",
+      "vs": "Kings XI Punjab",
+      "tilt": -0.03477,
       "wickets": 0,
       "balls": 12
+    },
+    {
+      "match_id": "392221",
+      "date": "2009-05-12",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.01719,
+      "wickets": 0,
+      "balls": 6
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2009-04-26",
-      "tilt": 0.0499,
-      "cumulative": 0.0499
+      "tilt": 0.05984,
+      "cumulative": 0.05984
     },
     {
       "match": 2,
       "date": "2009-04-29",
-      "tilt": 0.00281,
-      "cumulative": 0.0527
+      "tilt": 0.00665,
+      "cumulative": 0.06649
     },
     {
       "match": 3,
       "date": "2009-05-01",
-      "tilt": -0.0381,
-      "cumulative": 0.0146
+      "tilt": -0.03477,
+      "cumulative": 0.03172
     },
     {
       "match": 4,
       "date": "2009-05-10",
-      "tilt": -0.01404,
-      "cumulative": 0.00056
+      "tilt": -0.01511,
+      "cumulative": 0.01661
     },
     {
       "match": 5,
       "date": "2009-05-12",
-      "tilt": -0.0108,
-      "cumulative": -0.01024
+      "tilt": -0.01719,
+      "cumulative": -0.00058
     },
     {
       "match": 6,
       "date": "2010-04-04",
-      "tilt": 0.15752,
-      "cumulative": 0.14728
+      "tilt": 0.1502,
+      "cumulative": 0.14962
     },
     {
       "match": 7,
       "date": "2010-04-12",
-      "tilt": 0.03582,
-      "cumulative": 0.1831
+      "tilt": 0.0429,
+      "cumulative": 0.19252
     },
     {
       "match": 8,
       "date": "2012-04-17",
-      "tilt": -0.09067,
-      "cumulative": 0.09243
+      "tilt": -0.08823,
+      "cumulative": 0.1043
     },
     {
       "match": 9,
       "date": "2012-04-23",
-      "tilt": 0.36516,
-      "cumulative": 0.45759
+      "tilt": 0.36189,
+      "cumulative": 0.46618
     },
     {
       "match": 10,
       "date": "2012-04-28",
-      "tilt": -0.00358,
-      "cumulative": 0.45401
+      "tilt": -0.00102,
+      "cumulative": 0.46517
     },
     {
       "match": 11,
       "date": "2012-05-02",
-      "tilt": -0.09663,
-      "cumulative": 0.35737
+      "tilt": -0.11978,
+      "cumulative": 0.34539
     },
     {
       "match": 12,
       "date": "2012-05-11",
-      "tilt": 0.10137,
-      "cumulative": 0.45874
+      "tilt": 0.06249,
+      "cumulative": 0.40788
     },
     {
       "match": 13,
       "date": "2012-05-14",
-      "tilt": -0.03225,
-      "cumulative": 0.42649
+      "tilt": -0.03961,
+      "cumulative": 0.36826
     }
   ],
   "team_matchups": [
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": 0.00178,
+      "tilt_per_match": 0.00343,
       "matches": 1
     },
     {
       "opponent": "Delhi Daredevils",
-      "tilt_per_match": 0.0,
+      "tilt_per_match": 0.00054,
       "matches": 1
     },
     {
@@ -386,18 +386,18 @@
     "best_figures": "4/19"
   },
   "match_tilt_distribution": [
-    0.0499,
-    0.00281,
-    -0.0381,
-    -0.01404,
-    -0.0108,
-    0.15752,
-    0.03582,
-    -0.09067,
-    0.36516,
-    -0.00358,
-    -0.09663,
-    0.10137,
-    -0.03225
+    0.05984,
+    0.00665,
+    -0.03477,
+    -0.01511,
+    -0.01719,
+    0.1502,
+    0.0429,
+    -0.08823,
+    0.36189,
+    -0.00102,
+    -0.11978,
+    0.06249,
+    -0.03961
   ]
 }

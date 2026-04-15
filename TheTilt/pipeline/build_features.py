@@ -58,12 +58,9 @@ def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = Non
         df["runs_needed"] = 0
         df["required_run_rate"] = 0.0
 
-    # Recent form: run rate and wickets in last 18 balls (3 overs)
+    # Recent form: wickets in last 18 balls (3 overs)
     window = 18
-    df["recent_runs"] = df["runs_total"].rolling(window=window, min_periods=1).sum().shift(1, fill_value=0)
     df["recent_wickets"] = df["is_wicket"].astype(int).rolling(window=window, min_periods=1).sum().shift(1, fill_value=0)
-    recent_overs = df["runs_total"].rolling(window=window, min_periods=1).count().shift(1, fill_value=1) / 6
-    df["recent_run_rate"] = df["recent_runs"] / recent_overs.replace(0, 0.1)
 
     return df
 
@@ -137,7 +134,9 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
 
     # Categorical features (LightGBM handles natively)
     result["venue"] = result["venue"].astype("category")
-    result["over"] = result["over"].astype("category")
+    # Over as continuous integer (0-19) — gives LightGBM more granular split points
+    # than the 3 coarse phase dummies
+    result["over"] = result["over"].astype(int)
 
     # Toss-derived feature: did the batting team choose to bat?
     if "toss_winner" in result.columns and "toss_decision" in result.columns:
@@ -167,6 +166,49 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
     result["opponent_bowler_economy"] = result["bowler_id"].map(bowler_economy_map).fillna(league_avg_economy)
     print(f"  Opponent bowler economy: mean={result['opponent_bowler_economy'].mean():.2f}, std={result['opponent_bowler_economy'].std():.2f}")
 
+    # Team strength proxy: rolling season NRR (net run rate) from prior matches
+    # NRR = (runs scored per over) - (runs conceded per over) across season so far
+    # Computed per team per season using only matches BEFORE the current one (no leakage)
+    print("  Computing team season NRR...")
+    match_summary = (
+        result.groupby(["match_id", "date", "season", "innings", "batting_team", "bowling_team"])
+        .agg(runs=("runs_total", "sum"), balls=("runs_total", "count"))
+        .reset_index()
+    )
+
+    # Each match has two innings: team bats in one, bowls in the other
+    # For batting: runs scored and overs faced
+    # For bowling: runs conceded and overs bowled
+    bat_side = match_summary.rename(columns={
+        "batting_team": "team", "runs": "runs_scored", "balls": "balls_faced"
+    })[["match_id", "date", "season", "team", "runs_scored", "balls_faced"]]
+
+    bowl_side = match_summary.rename(columns={
+        "bowling_team": "team", "runs": "runs_conceded", "balls": "balls_bowled"
+    })[["match_id", "date", "season", "team", "runs_conceded", "balls_bowled"]]
+
+    team_match = bat_side.merge(bowl_side, on=["match_id", "season", "team"], suffixes=("", "_bowl"))
+    team_match = team_match.sort_values(["team", "date_bowl"]).rename(columns={"date": "date"})
+
+    # Rolling cumulative NRR from prior matches (exclude current match)
+    team_match = team_match.sort_values(["season", "team", "date"])
+    team_nrr = {}
+    for (season, team), group in team_match.groupby(["season", "team"]):
+        cum_scored = group["runs_scored"].cumsum().shift(1, fill_value=0)
+        cum_faced = group["balls_faced"].cumsum().shift(1, fill_value=0)
+        cum_conceded = group["runs_conceded"].cumsum().shift(1, fill_value=0)
+        cum_bowled = group["balls_bowled"].cumsum().shift(1, fill_value=0)
+        overs_faced = (cum_faced / 6).clip(lower=1)
+        overs_bowled = (cum_bowled / 6).clip(lower=1)
+        nrr = (cum_scored / overs_faced) - (cum_conceded / overs_bowled)
+        for match_id, val in zip(group["match_id"], nrr):
+            team_nrr[(match_id, team)] = val
+
+    result["batting_team_nrr"] = result.apply(
+        lambda r: team_nrr.get((r["match_id"], r["batting_team"]), 0.0), axis=1
+    )
+    print(f"  Team NRR: mean={result['batting_team_nrr'].mean():.2f}, std={result['batting_team_nrr'].std():.2f}")
+
     # Select feature columns + identifiers
     feature_cols = [
         # Identifiers
@@ -183,10 +225,10 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         "runs_scored", "wickets_fallen", "run_rate",
         "is_powerplay", "is_middle", "is_death",
         "target", "runs_needed", "required_run_rate",
-        "recent_runs", "recent_wickets", "recent_run_rate",
-        # New features (venue, toss, era, opponent quality)
+        "recent_wickets",
+        # New features (venue, toss, era, opponent quality, team strength)
         "batting_team_chose_to_bat", "season_numeric",
-        "opponent_bowler_economy",
+        "opponent_bowler_economy", "batting_team_nrr",
         # Target
         "batting_team_won",
     ]
@@ -213,4 +255,4 @@ if __name__ == "__main__":
     print(f"\nShape: {df.shape}")
     print(f"\nFeature stats:")
     print(df[["balls_remaining", "wickets_in_hand", "runs_scored", "run_rate",
-              "required_run_rate", "recent_run_rate"]].describe())
+              "required_run_rate", "batting_team_nrr"]].describe())
