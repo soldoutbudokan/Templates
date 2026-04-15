@@ -282,10 +282,8 @@ TheTilt/
 
 ### Future Work
 
-- **Batting hand / bowling type display** — scraper written (`scrape_player_meta.py`), partial data collected from ESPNcricinfo
-- **Bowler type as model feature** — PaceOrSpin x Venue interactions (pending bowler type data)
-- Expand to all T20 internationals (21,000+ matches on Cricsheet)
-- Player comparison tool
+- **Batting hand / bowling type display** — scraper written (`scrape_player_meta.py`), 80/780 players scraped from ESPNcricinfo before hitting Akamai rate limits. The scraper is resumable — run `python pipeline/scrape_player_meta.py` after the rate limit clears (typically a few hours). Once `data/processed/player_meta.json` is complete, the data needs to be wired into the player JSON export and displayed on player pages.
+- **Bowler type as model feature** — PaceOrSpin x Venue interactions (pending bowler type data from above)
 - Impact sub analysis (data parsed, analysis pending)
 
 ---
