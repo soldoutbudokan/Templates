@@ -64,6 +64,16 @@
 <script>
 let goats = {};
 let currentSection = 'match_batting';
+let currentSort = { key: 'tilt', desc: true };
+
+// Default sort key per section
+const defaultSortKeys = {
+    match_batting: 'tilt',
+    match_bowling: 'tilt',
+    match_allround: 'tilt',
+    season_batting: 'total_tilt',
+    season_bowling: 'total_tilt',
+};
 
 function formatTilt(val) {
     const sign = val >= 0 ? '+' : '';
@@ -72,16 +82,33 @@ function formatTilt(val) {
     return `<span class="${cls}">${sign}${pct}%</span>`;
 }
 
+function sortData(data) {
+    const sorted = [...data];
+    sorted.sort((a, b) => {
+        const va = a[currentSort.key];
+        const vb = b[currentSort.key];
+        if (typeof va === 'string') {
+            return currentSort.desc ? vb.localeCompare(va) : va.localeCompare(vb);
+        }
+        return currentSort.desc ? vb - va : va - vb;
+    });
+    return sorted;
+}
+
+function sortCls(key) {
+    return currentSort.key === key ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : '';
+}
+
 function render() {
-    const data = goats[currentSection] || [];
+    const data = sortData(goats[currentSection] || []);
     let html = '';
 
     if (currentSection === 'match_batting') {
         html = `<table class="rankings-table">
             <thead><tr>
-                <th>#</th><th>player</th><th>TILT</th>
-                <th class="hide-mobile">runs</th><th class="hide-mobile">balls</th>
-                <th class="hide-mobile">season</th>
+                <th>#</th><th>player</th><th data-sort="tilt" class="${sortCls('tilt')}">TILT</th>
+                <th data-sort="runs" class="hide-mobile ${sortCls('runs')}">runs</th><th data-sort="balls" class="hide-mobile ${sortCls('balls')}">balls</th>
+                <th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
             </tr></thead><tbody>`;
         data.forEach((r, i) => {
             html += `<tr>
@@ -104,9 +131,9 @@ function render() {
     else if (currentSection === 'match_bowling') {
         html = `<table class="rankings-table">
             <thead><tr>
-                <th>#</th><th>player</th><th>TILT</th>
-                <th class="hide-mobile">figures</th><th class="hide-mobile">balls</th>
-                <th class="hide-mobile">season</th>
+                <th>#</th><th>player</th><th data-sort="tilt" class="${sortCls('tilt')}">TILT</th>
+                <th data-sort="wickets" class="hide-mobile ${sortCls('wickets')}">figures</th><th data-sort="balls" class="hide-mobile ${sortCls('balls')}">balls</th>
+                <th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
             </tr></thead><tbody>`;
         data.forEach((r, i) => {
             html += `<tr>
@@ -129,9 +156,9 @@ function render() {
     else if (currentSection === 'match_allround') {
         html = `<table class="rankings-table">
             <thead><tr>
-                <th>#</th><th>player</th><th>total TILT</th>
-                <th class="hide-mobile">bat TILT</th><th class="hide-mobile">bowl TILT</th>
-                <th class="hide-mobile">season</th>
+                <th>#</th><th>player</th><th data-sort="tilt" class="${sortCls('tilt')}">total TILT</th>
+                <th data-sort="bat_tilt" class="hide-mobile ${sortCls('bat_tilt')}">bat TILT</th><th data-sort="bowl_tilt" class="hide-mobile ${sortCls('bowl_tilt')}">bowl TILT</th>
+                <th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
             </tr></thead><tbody>`;
         data.forEach((r, i) => {
             html += `<tr>
@@ -154,9 +181,9 @@ function render() {
     else if (currentSection === 'season_batting') {
         html = `<table class="rankings-table">
             <thead><tr>
-                <th>#</th><th>player</th><th>TILT/match</th>
-                <th class="hide-mobile">total TILT</th><th class="hide-mobile">runs</th>
-                <th class="hide-mobile">matches</th><th class="hide-mobile">season</th>
+                <th>#</th><th>player</th><th data-sort="total_tilt" class="${sortCls('total_tilt')}">total TILT</th>
+                <th data-sort="tilt_per_match" class="hide-mobile ${sortCls('tilt_per_match')}">TILT/match</th><th data-sort="runs" class="hide-mobile ${sortCls('runs')}">runs</th>
+                <th data-sort="matches" class="hide-mobile ${sortCls('matches')}">matches</th><th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
             </tr></thead><tbody>`;
         data.forEach((r, i) => {
             html += `<tr>
@@ -167,8 +194,8 @@ function render() {
                         <span class="player-team">${r.team}</span>
                     </a>
                 </td>
-                <td>${formatTilt(r.tilt_per_match)}</td>
-                <td class="hide-mobile">${formatTilt(r.total_tilt)}</td>
+                <td>${formatTilt(r.total_tilt)}</td>
+                <td class="hide-mobile">${formatTilt(r.tilt_per_match)}</td>
                 <td class="hide-mobile">${r.runs}</td>
                 <td class="hide-mobile">${r.matches}</td>
                 <td class="hide-mobile">${r.season}</td>
@@ -180,9 +207,9 @@ function render() {
     else if (currentSection === 'season_bowling') {
         html = `<table class="rankings-table">
             <thead><tr>
-                <th>#</th><th>player</th><th>TILT/match</th>
-                <th class="hide-mobile">total TILT</th><th class="hide-mobile">wickets</th>
-                <th class="hide-mobile">matches</th><th class="hide-mobile">season</th>
+                <th>#</th><th>player</th><th data-sort="total_tilt" class="${sortCls('total_tilt')}">total TILT</th>
+                <th data-sort="tilt_per_match" class="hide-mobile ${sortCls('tilt_per_match')}">TILT/match</th><th data-sort="wickets" class="hide-mobile ${sortCls('wickets')}">wickets</th>
+                <th data-sort="matches" class="hide-mobile ${sortCls('matches')}">matches</th><th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
             </tr></thead><tbody>`;
         data.forEach((r, i) => {
             html += `<tr>
@@ -193,8 +220,8 @@ function render() {
                         <span class="player-team">${r.team}</span>
                     </a>
                 </td>
-                <td>${formatTilt(r.tilt_per_match)}</td>
-                <td class="hide-mobile">${formatTilt(r.total_tilt)}</td>
+                <td>${formatTilt(r.total_tilt)}</td>
+                <td class="hide-mobile">${formatTilt(r.tilt_per_match)}</td>
                 <td class="hide-mobile">${r.wickets}</td>
                 <td class="hide-mobile">${r.matches}</td>
                 <td class="hide-mobile">${r.season}</td>
@@ -208,6 +235,20 @@ function render() {
     }
 
     document.getElementById('content').innerHTML = html;
+
+    // Attach sort handlers
+    document.querySelectorAll('[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+            const key = th.dataset.sort;
+            if (currentSort.key === key) {
+                currentSort.desc = !currentSort.desc;
+            } else {
+                currentSort.key = key;
+                currentSort.desc = key !== 'player' && key !== 'season';
+            }
+            render();
+        });
+    });
 }
 
 async function load() {
@@ -226,6 +267,7 @@ document.querySelectorAll('.tab').forEach(btn => {
         document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentSection = btn.dataset.section;
+        currentSort = { key: defaultSortKeys[currentSection], desc: true };
         render();
     });
 });
