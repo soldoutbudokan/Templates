@@ -115,6 +115,26 @@ def export_player_details(
 
     qualified = player_tilt[player_tilt["total_matches"] >= min_matches]
 
+    # Pre-compute match info cache (team scores, winner, venue) for all matches
+    match_info_cache = {}
+    for mid in deltas_df["match_id"].unique():
+        mdf = deltas_df[deltas_df["match_id"] == mid]
+        first = mdf.iloc[0]
+        scores = {}
+        for inn_num in sorted(mdf["innings"].unique()):
+            inn_df = mdf[mdf["innings"] == inn_num]
+            last_ball = inn_df.iloc[-1]
+            total_r = int(last_ball["runs_scored"]) + int(last_ball["runs_total"])
+            total_w = int(last_ball["wickets_fallen"]) + (1 if last_ball["is_wicket"] else 0)
+            scores[str(inn_df.iloc[0]["batting_team"])] = f"{total_r}/{total_w}"
+        match_info_cache[mid] = {
+            "date": str(first["date"]),
+            "venue": str(first["venue"]),
+            "winner": str(first["winner"]) if pd.notna(first["winner"]) else None,
+            "teams": list(mdf["batting_team"].unique()),
+            "scores": scores,
+        }
+
     exported = 0
     for _, row in qualified.iterrows():
         player_name = row["player"]
@@ -215,6 +235,66 @@ def export_player_details(
                     "best_figures": f"{s_best_w}/{s_best_r}",
                 }
 
+            # Per-match breakdown for this season
+            bat_match_ids = set(bat_season_df["match_id"].unique()) if len(bat_season_df) > 0 else set()
+            bowl_match_ids = set(bowl_season_df["match_id"].unique()) if len(bowl_season_df) > 0 else set()
+            all_match_ids = bat_match_ids | bowl_match_ids
+
+            season_matches = []
+            for mid in all_match_ids:
+                mi = match_info_cache.get(mid)
+                if mi is None:
+                    continue
+
+                # Determine player's team and opponent
+                if mid in bat_match_ids:
+                    player_team = str(bat_season_df[bat_season_df["match_id"] == mid]["batting_team"].iloc[0])
+                else:
+                    player_team = str(bowl_season_df[bowl_season_df["match_id"] == mid]["bowling_team"].iloc[0])
+                opponent = [t for t in mi["teams"] if t != player_team]
+                opponent = opponent[0] if opponent else player_team
+
+                team_score = mi["scores"].get(player_team)
+                opp_score = mi["scores"].get(opponent)
+
+                # Batting stats for this match
+                bat_m = bat_season_df[bat_season_df["match_id"] == mid] if mid in bat_match_ids else pd.DataFrame()
+                bat_runs_val = int(bat_m["runs_batter"].sum()) if len(bat_m) > 0 else None
+                bat_balls_val = len(bat_m) if len(bat_m) > 0 else None
+                bat_sr_val = round(bat_runs_val / max(bat_balls_val, 1) * 100, 1) if bat_runs_val is not None else None
+                bat_tilt_val = round(float(bat_m["delta_wp"].sum()), 5) if len(bat_m) > 0 else None
+
+                # Bowling stats for this match
+                bowl_m = bowl_season_df[bowl_season_df["match_id"] == mid] if mid in bowl_match_ids else pd.DataFrame()
+                bowl_wkts_val = int(bowl_m["is_wicket"].sum()) if len(bowl_m) > 0 else None
+                bowl_balls_val = len(bowl_m) if len(bowl_m) > 0 else None
+                bowl_runs_val = int(bowl_m["runs_total"].sum()) if len(bowl_m) > 0 else None
+                bowl_econ_val = round(bowl_runs_val / max(bowl_balls_val, 1) * 6, 2) if bowl_runs_val is not None else None
+                bowl_tilt_val = round(-float(bowl_m["delta_wp"].sum()), 5) if len(bowl_m) > 0 else None
+
+                total_tilt_val = round((bat_tilt_val or 0) + (bowl_tilt_val or 0), 5)
+
+                season_matches.append({
+                    "match_id": str(mid),
+                    "date": mi["date"],
+                    "opponent": opponent,
+                    "venue": mi["venue"],
+                    "team_score": team_score,
+                    "opponent_score": opp_score,
+                    "winner": mi["winner"],
+                    "bat_runs": bat_runs_val,
+                    "bat_balls": bat_balls_val,
+                    "bat_sr": bat_sr_val,
+                    "bat_tilt": bat_tilt_val,
+                    "bowl_wkts": bowl_wkts_val,
+                    "bowl_balls": bowl_balls_val,
+                    "bowl_runs": bowl_runs_val,
+                    "bowl_econ": bowl_econ_val,
+                    "bowl_tilt": bowl_tilt_val,
+                    "total_tilt": total_tilt_val,
+                })
+            season_matches.sort(key=lambda x: x["date"])
+
             season_entry = {
                 "season": str(season),
                 "team": str(season_team) if season_team else None,
@@ -224,6 +304,7 @@ def export_player_details(
                 "bowling_matches": bowl_matches,
                 "batting_balls": bat_balls,
                 "bowling_balls": bowl_balls,
+                "matches": season_matches,
             }
             if season_bat_stats:
                 season_entry["batting_stats"] = season_bat_stats
