@@ -15,6 +15,7 @@
             <div class="nav-links">
                 <a href="index.html">leaderboard</a>
                 <a href="goats.html">🐐 GOATs</a>
+                <a href="notes.html">notes</a>
                 <a href="about.html">about</a>
                 <div class="theme-switch">
                     <span class="theme-icon" id="sunIcon">&#9788;</span>
@@ -57,6 +58,18 @@ function formatTilt(val) {
     const pct = (val * 100).toFixed(2);
     const cls = val > 0.001 ? 'tilt-positive' : val < -0.001 ? 'tilt-negative' : 'tilt-neutral';
     return `<span class="${cls}">${sign}${pct}%</span>`;
+}
+
+function toggleSeason(id) {
+    const row = document.getElementById(id);
+    const chev = document.getElementById('chev-' + id);
+    if (row.style.display === 'none') {
+        row.style.display = '';
+        chev.classList.add('open');
+    } else {
+        row.style.display = 'none';
+        chev.classList.remove('open');
+    }
 }
 
 async function loadPlayer() {
@@ -178,14 +191,55 @@ async function loadPlayer() {
                 const totalTilt = batTilt + bowlTilt;
                 const barW = Math.abs(totalTilt) / maxSeasonTilt * 80;
                 const barCls = totalTilt >= 0 ? 'positive' : 'negative';
-                html += `<tr>
-                    <td>${s.season}</td>
+                const hasMatches = s.matches && s.matches.length > 0;
+                const seasonId = 'season-' + s.season.replace(/[^a-z0-9]/gi, '');
+                html += `<tr class="${hasMatches ? 'season-row-expandable' : ''}"
+                    ${hasMatches ? `onclick="toggleSeason('${seasonId}')" style="cursor:pointer"` : ''}>
+                    <td>
+                        ${hasMatches ? `<span class="season-chevron" id="chev-${seasonId}">&#9654;</span>` : ''}
+                        ${s.season}
+                    </td>
                     <td>${formatTilt(batTilt)}</td>
                     <td>${formatTilt(bowlTilt)}</td>
                     <td><div class="bar-container"><div class="bar-fill ${barCls}" style="width:${Math.min(barW, 80)}px"></div></div></td>
                     <td>${s.batting_matches || 0}</td>
                     <td>${s.bowling_matches || 0}</td>
                 </tr>`;
+                if (hasMatches) {
+                    html += `<tr class="season-detail-row" id="${seasonId}" style="display:none">
+                        <td colspan="6" style="padding:0">
+                            <div class="season-matches">
+                                <table class="match-sub-table">
+                                    <tr>
+                                        <th>date</th><th>vs</th><th>result</th>
+                                        <th>runs</th><th>balls</th><th class="hide-mobile">SR</th>
+                                        <th>wkts</th><th>overs</th><th class="hide-mobile">econ</th>
+                                        <th class="hide-mobile">bat TILT</th><th class="hide-mobile">bowl TILT</th><th>total</th>
+                                    </tr>
+                                    ${s.matches.map(m => {
+                                        const won = m.winner == null ? 'NR' :
+                                                    (m.winner !== m.opponent ? 'W' : 'L');
+                                        const resultCls = won === 'W' ? 'result-win' : won === 'L' ? 'result-loss' : 'result-nr';
+                                        return `<tr>
+                                            <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
+                                            <td>${m.opponent}</td>
+                                            <td><span class="${resultCls}">${won}</span> <span class="match-scores">${m.team_score || ''} v ${m.opponent_score || ''}</span></td>
+                                            <td>${m.bat_runs != null ? m.bat_runs : '-'}</td>
+                                            <td>${m.bat_balls != null ? m.bat_balls : '-'}</td>
+                                            <td class="hide-mobile">${m.bat_sr != null ? m.bat_sr : '-'}</td>
+                                            <td>${m.bowl_wkts != null ? m.bowl_wkts : '-'}</td>
+                                            <td>${m.bowl_balls != null ? Math.floor(m.bowl_balls/6) + '.' + (m.bowl_balls%6) : '-'}</td>
+                                            <td class="hide-mobile">${m.bowl_econ != null ? m.bowl_econ : '-'}</td>
+                                            <td class="hide-mobile">${m.bat_tilt != null ? formatTilt(m.bat_tilt) : '-'}</td>
+                                            <td class="hide-mobile">${m.bowl_tilt != null ? formatTilt(m.bowl_tilt) : '-'}</td>
+                                            <td>${formatTilt(m.total_tilt)}</td>
+                                        </tr>`;
+                                    }).join('')}
+                                </table>
+                            </div>
+                        </td>
+                    </tr>`;
+                }
             }
             html += '</table></div>';
         }

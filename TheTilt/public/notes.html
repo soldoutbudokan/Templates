@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — Notes</title>
+    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Notes listing */
+        .notes-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+        .note-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);
+            padding: 20px 24px; cursor: pointer; transition: all 0.15s;
+        }
+        .note-card:hover { border-color: var(--accent-green); background: var(--bg-hover); }
+        .note-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
+        .note-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+        .note-card .note-meta { font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; }
+        .note-tag {
+            display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px;
+            background: var(--accent-green-dim); color: var(--accent-green); margin-right: 6px;
+        }
+
+        /* Back button */
+        .back-link {
+            display: inline-block; font-size: 0.8rem; color: var(--text-muted);
+            text-decoration: none; margin-bottom: 16px;
+        }
+        .back-link:hover { color: var(--accent-green); }
+
+        /* Rendered markdown article */
+        .note-article { max-width: 800px; margin: 0 auto; }
+        .note-article h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .note-article h2 { font-size: 1.15rem; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: var(--text-primary); }
+        .note-article h3 { font-size: 0.95rem; font-weight: 600; margin-top: 24px; margin-bottom: 8px; color: var(--text-primary); }
+        .note-article p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px; }
+        .note-article strong { color: var(--text-primary); }
+        .note-article em { color: var(--text-secondary); }
+        .note-article a { color: var(--accent-green); text-decoration: none; }
+        .note-article a:hover { text-decoration: underline; }
+        .note-article hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+        .note-article img {
+            max-width: 100%; border-radius: var(--radius-md); margin: 16px 0;
+            border: 1px solid var(--border);
+        }
+        .note-article blockquote {
+            border-left: 3px solid var(--accent-green); padding: 8px 16px; margin: 12px 0;
+            background: var(--bg-card); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+        .note-article blockquote p { color: var(--text-muted); margin: 0; }
+        .note-article code {
+            font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem;
+            background: var(--bg-card); padding: 2px 6px; border-radius: 3px; color: var(--accent-green);
+        }
+        .note-article pre {
+            background: var(--bg-card); padding: 14px 18px; border-radius: var(--radius-sm);
+            overflow-x: auto; margin: 12px 0; border: 1px solid var(--border);
+        }
+        .note-article pre code { background: none; padding: 0; }
+        .note-article table {
+            width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 16px 0;
+        }
+        .note-article th {
+            text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border);
+            color: var(--text-muted); font-weight: 600; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .note-article td {
+            padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary);
+        }
+        .note-article tr:hover td { background: var(--bg-hover); }
+        .note-article ul, .note-article ol { margin: 8px 0 12px 24px; }
+        .note-article li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <div class="logo"><a href="index.html">THE TILT</a></div>
+            <div class="nav-links">
+                <a href="index.html">leaderboard</a>
+                <a href="goats.html">&#x1F410; GOATs</a>
+                <a href="notes.html" class="active">notes</a>
+                <a href="about.html">about</a>
+                <div class="theme-switch">
+                    <span class="theme-icon" id="sunIcon">&#9788;</span>
+                    <button class="theme-toggle" id="themeBtn"></button>
+                    <span class="theme-icon" id="moonIcon">&#9789;</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        (function() {
+            const t = document.documentElement.getAttribute('data-theme') || 'dark';
+            document.getElementById(t === 'dark' ? 'moonIcon' : 'sunIcon').classList.add('active');
+            document.getElementById('themeBtn').addEventListener('click', () => {
+                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                document.getElementById('sunIcon').classList.toggle('active');
+                document.getElementById('moonIcon').classList.toggle('active');
+            });
+        })();
+    </script>
+
+    <div class="container">
+        <div id="listing">
+            <div class="page-header">
+                <h1>Why Is My Favourite Player Rated So Low?</h1>
+                <div class="subtitle">deep dives into how TILT works, where it disagrees with conventional wisdom, and why</div>
+            </div>
+            <div class="notes-list" id="notesList"></div>
+        </div>
+
+        <div id="article" style="display:none">
+            <a href="#" class="back-link" id="backLink">&larr; back to notes</a>
+            <div class="note-article" id="noteContent"></div>
+        </div>
+
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="index.html">back to leaderboard</a>
+        </div>
+    </div>
+
+<script>
+const NOTES = [
+    {
+        id: 'kohli-2016-paradox',
+        title: "The 2016 Kohli Dilemma: Why His Greatest Season Isn't His Best TILT Season",
+        summary: '973 runs at 148 strike rate. Four centuries. But a TILT of just +4.31% per match. How the best individual season in IPL history gets undercut by credit sharing, dot ball penalties, and first-innings ceiling effects.',
+        tags: ['batting', 'case study'],
+        date: '2026-04-15',
+    },
+    {
+        id: 'innings-bias',
+        title: 'The Second Innings Problem',
+        summary: '94% of the top-50 batting GOATs are from the 2nd innings. Win probability swings are 1.54x larger when chasing, rising to 2.66x in the death overs. How this affects rankings and what we do about it.',
+        tags: ['methodology', 'model'],
+        date: '2026-04-15',
+    },
+];
+
+function renderListing() {
+    const list = document.getElementById('notesList');
+    list.innerHTML = NOTES.map(n => `
+        <div class="note-card" data-id="${n.id}">
+            <h3>${n.title}</h3>
+            <p>${n.summary}</p>
+            <div class="note-meta">
+                ${n.tags.map(t => `<span class="note-tag">${t}</span>`).join('')}
+                <span>${n.date}</span>
+            </div>
+        </div>
+    `).join('');
+
+    list.querySelectorAll('.note-card').forEach(card => {
+        card.addEventListener('click', () => loadNote(card.dataset.id));
+    });
+}
+
+async function loadNote(id) {
+    try {
+        const res = await fetch(`notes/${id}.md`);
+        if (!res.ok) throw new Error('not found');
+        const md = await res.text();
+
+        document.getElementById('listing').style.display = 'none';
+        document.getElementById('article').style.display = '';
+
+        // Rebase relative image paths from notes/ context to page context
+        const renderer = new marked.Renderer();
+        const defaultImage = renderer.image.bind(renderer);
+        renderer.image = function({ href, title, text }) {
+            if (href && !href.startsWith('http') && !href.startsWith('/')) {
+                href = 'notes/' + href;
+            }
+            return defaultImage({ href, title, text });
+        };
+        const html = marked.parse(md, { renderer });
+        document.getElementById('noteContent').innerHTML = html;
+
+        // Update page title
+        const note = NOTES.find(n => n.id === id);
+        if (note) document.title = `The TILT — ${note.title}`;
+
+        // Update URL without reload
+        history.pushState({ note: id }, '', `notes.html?note=${id}`);
+
+        window.scrollTo(0, 0);
+    } catch (e) {
+        document.getElementById('noteContent').innerHTML = '<div class="loading">note not found</div>';
+    }
+}
+
+function showListing() {
+    document.getElementById('listing').style.display = '';
+    document.getElementById('article').style.display = 'none';
+    document.title = 'The TILT — Notes';
+    history.pushState({}, '', 'notes.html');
+}
+
+document.getElementById('backLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    showListing();
+});
+
+window.addEventListener('popstate', (e) => {
+    if (e.state && e.state.note) {
+        loadNote(e.state.note);
+    } else {
+        showListing();
+    }
+});
+
+// Check URL params on load
+const params = new URLSearchParams(window.location.search);
+const noteParam = params.get('note');
+if (noteParam) {
+    loadNote(noteParam);
+} else {
+    renderListing();
+}
+if (!noteParam) renderListing();
+</script>
+</body>
+</html>

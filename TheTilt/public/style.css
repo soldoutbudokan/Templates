@@ -611,6 +611,98 @@ body {
 }
 
 /* ============================================
+   Expandable Season Rows
+   ============================================ */
+.season-row-expandable:hover {
+    background: var(--bg-hover);
+}
+
+.season-chevron {
+    display: inline-block;
+    font-size: 0.6rem;
+    margin-right: 6px;
+    transition: transform 0.2s ease;
+    color: var(--text-dim);
+}
+
+.season-chevron.open {
+    transform: rotate(90deg);
+}
+
+.season-detail-row td {
+    border-bottom: 1px solid var(--border);
+}
+
+.season-matches {
+    background: var(--bg-surface);
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    margin: 4px 0;
+    overflow-x: auto;
+}
+
+.match-sub-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+}
+
+.match-sub-table th {
+    text-align: left;
+    padding: 4px 6px;
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--border);
+}
+
+.match-sub-table td {
+    padding: 4px 6px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.match-sub-table tr:last-child td {
+    border-bottom: none;
+}
+
+.match-sub-table tr:hover {
+    background: var(--bg-hover);
+}
+
+.match-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--text-dim);
+}
+
+.match-link:hover {
+    color: var(--accent-green);
+    border-bottom-color: var(--accent-green);
+}
+
+.match-scores {
+    color: var(--text-dim);
+    font-size: 0.7rem;
+}
+
+.result-win {
+    color: var(--accent-green);
+    font-weight: 600;
+}
+
+.result-loss {
+    color: var(--accent-red);
+    font-weight: 600;
+}
+
+.result-nr {
+    color: var(--text-dim);
+}
+
+/* ============================================
    Counting Stats Grid
    ============================================ */
 .counting-stats {
@@ -838,6 +930,19 @@ body {
     }
 
     .hide-mobile {
+        display: none;
+    }
+
+    .match-sub-table {
+        font-size: 0.7rem;
+    }
+
+    .match-sub-table th,
+    .match-sub-table td {
+        padding: 3px 4px;
+    }
+
+    .match-scores {
         display: none;
     }
 
