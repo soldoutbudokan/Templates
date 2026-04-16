@@ -6,8 +6,6 @@ Live site: [thetilt-rust.vercel.app](https://thetilt-rust.vercel.app)
 
 TILT measures **Win Probability Added (WPA)** per ball in IPL cricket. For every single delivery bowled in the IPL's history, we calculate how much the win probability shifted and attribute that shift to the batter and bowler involved. Aggregate across all matches and you get each player's impact rating — their TILT.
 
-Inspired by basketball analytics like [EPM](https://dunksandthrees.com/epm) and [RAPTOR](https://projects.fivethirtyeight.com/nba-player-ratings/), adapted for cricket's unique ball-by-ball structure.
-
 ---
 
 ## Quick Start
