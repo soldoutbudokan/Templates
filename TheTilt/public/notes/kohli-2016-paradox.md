@@ -1,6 +1,6 @@
 # The 2016 Kohli Dilemma: Why His Greatest Season Isn't His Best TILT Season
 
-**973 runs at 148 strike rate. Four centuries. Eleven fifties. And a TILT of +4.31% per match.**
+**973 runs at 148 strike rate. Four centuries. Seven fifties. And a TILT of +4.31% per match.**
 
 Virat Kohli's 2016 IPL season is widely considered the greatest individual batting season in tournament history. The counting stats are staggering. But his TILT ranks it below his 2019 season (+6.63%), where he scored less than half the runs at a lower strike rate.
 

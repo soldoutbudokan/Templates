@@ -11,6 +11,7 @@
         /* Notes listing */
         .notes-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
         .note-card {
+            display: block; text-decoration: none; color: inherit;
             background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);
             padding: 20px 24px; cursor: pointer; transition: all 0.15s;
         }
@@ -147,18 +148,21 @@ const NOTES = [
 function renderListing() {
     const list = document.getElementById('notesList');
     list.innerHTML = NOTES.map(n => `
-        <div class="note-card" data-id="${n.id}">
+        <a href="notes.html?note=${n.id}" class="note-card" data-id="${n.id}">
             <h3>${n.title}</h3>
             <p>${n.summary}</p>
             <div class="note-meta">
                 ${n.tags.map(t => `<span class="note-tag">${t}</span>`).join('')}
                 <span>${n.date}</span>
             </div>
-        </div>
+        </a>
     `).join('');
 
     list.querySelectorAll('.note-card').forEach(card => {
-        card.addEventListener('click', () => loadNote(card.dataset.id));
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            loadNote(card.dataset.id);
+        });
     });
 }
 
