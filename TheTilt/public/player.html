@@ -182,7 +182,7 @@ async function loadPlayer() {
                 ...p.seasons.map(s => Math.abs(s.bowling_tilt_per_match)),
                 0.01
             );
-            html += `<div class="section"><h3>by season</h3><table class="detail-table">
+            html += `<div class="section"><h3>season by season game log</h3><table class="detail-table">
                 <tr><th>season</th><th>bat TILT/m</th><th>bowl TILT/m</th><th></th><th>bat m</th><th>bowl m</th></tr>`;
             p.seasons.sort((a, b) => a.season.localeCompare(b.season));
             for (const s of p.seasons) {
