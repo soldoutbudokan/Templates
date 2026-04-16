@@ -263,6 +263,7 @@ TheTilt/
 2. **No batting position context** — An opener facing the new ball operates in a different context than a #6 batter.
 3. **No bowler type classification** — The model doesn't know if a bowler is pace or spin. PaceOrSpin × Venue interactions could improve predictions. This requires external data or manual classification.
 4. **Opponent quality is approximate** — We use career bowling economy as a proxy, but a full iterative system (using TILT-derived quality) would be more accurate.
+5. **Second innings TILT asymmetry** — Win probability swings are inherently larger in the 2nd innings because the target is known and the match resolves ball by ball. On average, 2nd innings balls produce **1.54x** larger |delta_wp| than 1st innings balls. The effect is concentrated in death overs (2.5x) while powerplay overs are nearly equal (1.07x). This inflates single-match TILT for 2nd innings performances — 94% of the top-50 batting and 98% of the top-50 bowling GOAT performances come from the 2nd innings. The GOAT page now provides innings-filtered views to enable fair within-innings comparisons. Career-level rankings are largely unaffected (Spearman ρ = 0.99 between raw and innings-normalized career TILT). See `notebooks/innings_bias_analysis.py` for the full diagnostic.
 
 ### What's Been Addressed
 
@@ -277,6 +278,7 @@ TheTilt/
 - ~~Manual data refresh~~ → GitHub Actions weekly cron job
 - ~~Run-out attribution~~ → Key moments now show the correct dismissed player
 - ~~Win prob chart flipped~~ → Consistent perspective from innings 1 batting team
+- ~~GOAT page innings bias~~ → **Innings-filtered views** on match batting/bowling tabs with explanatory note
 
 ### Future Work
 

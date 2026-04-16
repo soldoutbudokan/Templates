@@ -704,13 +704,13 @@ def export_goats(
 
     # --- Single-match batting ---
     bat_match = (
-        deltas_df.groupby(["batter_id", "batter", "match_id", "date", "season", "batting_team"])
+        deltas_df.groupby(["batter_id", "batter", "match_id", "date", "season", "batting_team", "innings"])
         .agg(tilt=("delta_wp", "sum"), runs=("runs_batter", "sum"), balls=("delta_wp", "count"))
         .reset_index()
     )
-    top_bat_match = bat_match.nlargest(50, "tilt")
-    goat_bat_match = [
-        {
+
+    def _bat_match_row(r):
+        return {
             "player": name_lookup.get(r["batter_id"], r["batter"]),
             "slug": slug_lookup.get(r["batter_id"], ""),
             "team": r["batting_team"],
@@ -720,13 +720,26 @@ def export_goats(
             "tilt": round(r["tilt"], 5),
             "runs": int(r["runs"]),
             "balls": int(r["balls"]),
+            "innings": int(r["innings"]),
         }
-        for _, r in top_bat_match.iterrows()
-    ]
+
+    # Top 50 per innings to populate filtered views, then top 50 overall for combined view
+    top_bat_inn1 = bat_match[bat_match["innings"] == 1].nlargest(50, "tilt")
+    top_bat_inn2 = bat_match[bat_match["innings"] == 2].nlargest(50, "tilt")
+    top_bat_combined = pd.concat([top_bat_inn1, top_bat_inn2]).drop_duplicates(
+        subset=["batter_id", "match_id"]
+    )
+    # Also include any top-50 overall entries not already covered
+    top_bat_overall = bat_match.nlargest(50, "tilt")
+    top_bat_match = pd.concat([top_bat_combined, top_bat_overall]).drop_duplicates(
+        subset=["batter_id", "match_id"]
+    ).nlargest(100, "tilt")
+
+    goat_bat_match = [_bat_match_row(r) for _, r in top_bat_match.iterrows()]
 
     # --- Single-match bowling ---
     bowl_match = (
-        deltas_df.groupby(["bowler_id", "bowler", "match_id", "date", "season", "bowling_team"])
+        deltas_df.groupby(["bowler_id", "bowler", "match_id", "date", "season", "bowling_team", "innings"])
         .agg(
             tilt=("delta_wp", lambda x: -x.sum()),
             wickets=("is_wicket", "sum"),
@@ -735,9 +748,9 @@ def export_goats(
         )
         .reset_index()
     )
-    top_bowl_match = bowl_match.nlargest(50, "tilt")
-    goat_bowl_match = [
-        {
+
+    def _bowl_match_row(r):
+        return {
             "player": name_lookup.get(r["bowler_id"], r["bowler"]),
             "slug": slug_lookup.get(r["bowler_id"], ""),
             "team": r["bowling_team"],
@@ -748,9 +761,20 @@ def export_goats(
             "wickets": int(r["wickets"]),
             "runs_conceded": int(r["runs_conceded"]),
             "balls": int(r["balls"]),
+            "innings": int(r["innings"]),
         }
-        for _, r in top_bowl_match.iterrows()
-    ]
+
+    top_bowl_inn1 = bowl_match[bowl_match["innings"] == 1].nlargest(50, "tilt")
+    top_bowl_inn2 = bowl_match[bowl_match["innings"] == 2].nlargest(50, "tilt")
+    top_bowl_combined = pd.concat([top_bowl_inn1, top_bowl_inn2]).drop_duplicates(
+        subset=["bowler_id", "match_id"]
+    )
+    top_bowl_overall = bowl_match.nlargest(50, "tilt")
+    top_bowl_match = pd.concat([top_bowl_combined, top_bowl_overall]).drop_duplicates(
+        subset=["bowler_id", "match_id"]
+    ).nlargest(100, "tilt")
+
+    goat_bowl_match = [_bowl_match_row(r) for _, r in top_bowl_match.iterrows()]
 
     # --- Single-match all-around (batting + bowling combined in same match) ---
     bat_by_match = bat_match[["batter_id", "match_id", "tilt"]].rename(
@@ -770,7 +794,9 @@ def export_goats(
     )
     combined_match = combined_match.merge(player_names, on="player_id", how="left")
     # Get team from batting data
-    bat_teams = bat_match[["batter_id", "match_id", "batting_team"]].rename(
+    bat_teams = bat_match[["batter_id", "match_id", "batting_team"]].drop_duplicates(
+        subset=["batter_id", "match_id"]
+    ).rename(
         columns={"batter_id": "player_id", "batting_team": "team"}
     )
     combined_match = combined_match.merge(bat_teams, on=["player_id", "match_id"], how="left")

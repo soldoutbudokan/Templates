@@ -283,6 +283,50 @@ body {
 }
 
 /* ============================================
+   Innings Filter (GOAT page)
+   ============================================ */
+.innings-filter {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.innings-btn {
+    padding: 4px 10px;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 500;
+    font-family: var(--font-sans);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: all 0.2s;
+}
+
+.innings-btn:hover {
+    color: var(--text-secondary);
+    border-color: var(--border-light);
+}
+
+.innings-btn.active {
+    color: var(--text-primary);
+    border-color: var(--text-muted);
+    background: var(--bg-hover);
+}
+
+.innings-note {
+    margin-bottom: 16px;
+}
+
+.innings-note p {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* ============================================
    Rank Toggle
    ============================================ */
 .rank-toggle {

@@ -13,7 +13,7 @@
             <div class="logo"><a href="index.html">THE TILT</a></div>
             <div class="nav-links">
                 <a href="index.html">leaderboard</a>
-                <a href="goats.html" class="active">GOATs</a>
+                <a href="goats.html" class="active">🐐 GOATs</a>
                 <a href="about.html">about</a>
                 <div class="theme-switch">
                     <span class="theme-icon" id="sunIcon">&#9788;</span>
@@ -51,6 +51,16 @@
             <button class="tab" data-section="season_bowling">season bowling</button>
         </div>
 
+        <div class="innings-filter" id="inningsFilter" style="display:none">
+            <button class="innings-btn active" data-innings="all">all</button>
+            <button class="innings-btn" data-innings="1">1st innings</button>
+            <button class="innings-btn" data-innings="2">2nd innings</button>
+        </div>
+
+        <div class="innings-note" id="inningsNote" style="display:none">
+            <p>Win probability swings are naturally larger in the 2nd innings — the target is known and the match resolves ball by ball. This means 2nd innings performances dominate the combined rankings. Use the innings filter to compare within each innings fairly.</p>
+        </div>
+
         <div id="content">
             <div class="loading">loading GOAT performances...</div>
         </div>
@@ -65,6 +75,9 @@
 let goats = {};
 let currentSection = 'match_batting';
 let currentSort = { key: 'tilt', desc: true };
+let currentInnings = 'all';
+
+const matchSections = ['match_batting', 'match_bowling'];
 
 // Default sort key per section
 const defaultSortKeys = {
@@ -100,7 +113,15 @@ function sortCls(key) {
 }
 
 function render() {
-    const data = sortData(goats[currentSection] || []);
+    const isMatchSection = matchSections.includes(currentSection);
+    document.getElementById('inningsFilter').style.display = isMatchSection ? '' : 'none';
+    document.getElementById('inningsNote').style.display = isMatchSection ? '' : 'none';
+
+    let raw = goats[currentSection] || [];
+    if (isMatchSection && currentInnings !== 'all') {
+        raw = raw.filter(r => r.innings === parseInt(currentInnings));
+    }
+    const data = sortData(raw).slice(0, 50);
     let html = '';
 
     if (currentSection === 'match_batting') {
@@ -268,6 +289,19 @@ document.querySelectorAll('.tab').forEach(btn => {
         btn.classList.add('active');
         currentSection = btn.dataset.section;
         currentSort = { key: defaultSortKeys[currentSection], desc: true };
+        currentInnings = 'all';
+        document.querySelectorAll('.innings-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.innings-btn[data-innings="all"]').classList.add('active');
+        render();
+    });
+});
+
+// Innings filter
+document.querySelectorAll('.innings-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.innings-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentInnings = btn.dataset.innings;
         render();
     });
 });
