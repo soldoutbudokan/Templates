@@ -370,6 +370,22 @@ body {
     background: var(--accent-green-dim);
 }
 
+.confidence-legend {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.confidence-legend .confidence-dot {
+    margin-left: 8px;
+    font-size: 0.6rem;
+    vertical-align: middle;
+}
+
+.confidence-legend .confidence-dot:first-child {
+    margin-left: 0;
+}
+
 /* ============================================
    Rankings Table
    ============================================ */
