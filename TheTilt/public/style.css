@@ -768,6 +768,10 @@ body {
     padding: 16px;
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* ============================================
@@ -905,11 +909,47 @@ body {
 }
 
 /* ============================================
+   Shared utilities
+   ============================================ */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================
    Responsive Design
    ============================================ */
+@media (max-width: 900px) {
+    .stat-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .top-nav-inner {
         height: 48px;
+        padding: 0 12px;
+    }
+
+    .nav-links {
+        gap: 0;
+    }
+
+    .nav-links a {
+        padding: 6px 8px;
+        font-size: 0.72rem;
+    }
+
+    /* The long "Why is my Favourite Player Rated so Low?" nav link is replaced
+       with a short label on mobile to keep the nav from overflowing. */
+    .nav-links a[href="notes.html"] {
+        font-size: 0;
+    }
+
+    .nav-links a[href="notes.html"]::after {
+        content: "notes";
+        font-size: 0.72rem;
     }
 
     .container {
@@ -959,9 +999,51 @@ body {
     }
 }
 
+@media (max-width: 600px) {
+    .container {
+        padding: 12px 12px 40px;
+    }
+
+    .page-header h1 {
+        font-size: 1.1rem;
+    }
+
+    .rankings-table {
+        font-size: 0.72rem;
+    }
+
+    .rankings-table th,
+    .rankings-table td {
+        padding: 6px 4px;
+    }
+
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Leave charts a bit shorter on phones */
+    .chart-container {
+        padding: 12px;
+        height: 220px !important;
+    }
+}
+
 @media (max-width: 480px) {
     .tabs {
         flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        padding: 5px 6px;
+        font-size: 0.68rem;
+    }
+
+    .logo {
+        font-size: 0.85rem;
+    }
+
+    .theme-switch {
+        gap: 2px;
     }
 
     .stat-grid {
@@ -975,4 +1057,14 @@ body {
     .search-bar input {
         max-width: 100%;
     }
+
+    .chart-container {
+        padding: 10px;
+        height: 200px !important;
+    }
+}
+
+/* Images and pre blocks never force horizontal scroll */
+img, pre, code {
+    max-width: 100%;
 }

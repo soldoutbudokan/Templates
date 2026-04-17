@@ -126,7 +126,7 @@ function render() {
     let html = '';
 
     if (currentSection === 'match_batting') {
-        html = `<table class="rankings-table">
+        html = `<div class="table-wrap"><table class="rankings-table">
             <thead><tr>
                 <th>#</th><th>player</th><th data-sort="tilt" class="${sortCls('tilt')}">TILT</th>
                 <th data-sort="runs" class="hide-mobile ${sortCls('runs')}">runs</th><th data-sort="balls" class="hide-mobile ${sortCls('balls')}">balls</th>
@@ -147,11 +147,11 @@ function render() {
                 <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
             </tr>`;
         });
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
     }
 
     else if (currentSection === 'match_bowling') {
-        html = `<table class="rankings-table">
+        html = `<div class="table-wrap"><table class="rankings-table">
             <thead><tr>
                 <th>#</th><th>player</th><th data-sort="tilt" class="${sortCls('tilt')}">TILT</th>
                 <th data-sort="wickets" class="hide-mobile ${sortCls('wickets')}">figures</th><th data-sort="balls" class="hide-mobile ${sortCls('balls')}">balls</th>
@@ -172,11 +172,11 @@ function render() {
                 <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
             </tr>`;
         });
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
     }
 
     else if (currentSection === 'match_allround') {
-        html = `<table class="rankings-table">
+        html = `<div class="table-wrap"><table class="rankings-table">
             <thead><tr>
                 <th>#</th><th>player</th><th data-sort="tilt" class="${sortCls('tilt')}">total TILT</th>
                 <th data-sort="bat_tilt" class="hide-mobile ${sortCls('bat_tilt')}">bat TILT</th><th data-sort="bowl_tilt" class="hide-mobile ${sortCls('bowl_tilt')}">bowl TILT</th>
@@ -197,11 +197,11 @@ function render() {
                 <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
             </tr>`;
         });
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
     }
 
     else if (currentSection === 'season_batting') {
-        html = `<table class="rankings-table">
+        html = `<div class="table-wrap"><table class="rankings-table">
             <thead><tr>
                 <th>#</th><th>player</th><th data-sort="total_tilt" class="${sortCls('total_tilt')}">total TILT</th>
                 <th data-sort="tilt_per_match" class="hide-mobile ${sortCls('tilt_per_match')}">TILT/match</th><th data-sort="runs" class="hide-mobile ${sortCls('runs')}">runs</th>
@@ -223,11 +223,11 @@ function render() {
                 <td class="hide-mobile">${r.season}</td>
             </tr>`;
         });
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
     }
 
     else if (currentSection === 'season_bowling') {
-        html = `<table class="rankings-table">
+        html = `<div class="table-wrap"><table class="rankings-table">
             <thead><tr>
                 <th>#</th><th>player</th><th data-sort="total_tilt" class="${sortCls('total_tilt')}">total TILT</th>
                 <th data-sort="tilt_per_match" class="hide-mobile ${sortCls('tilt_per_match')}">TILT/match</th><th data-sort="wickets" class="hide-mobile ${sortCls('wickets')}">wickets</th>
@@ -249,7 +249,7 @@ function render() {
                 <td class="hide-mobile">${r.season}</td>
             </tr>`;
         });
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
     }
 
     if (data.length === 0) {

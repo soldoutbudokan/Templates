@@ -159,6 +159,7 @@ function render() {
     }
 
     let html = `
+        <div class="table-wrap">
         <table class="rankings-table">
             <thead>
                 <tr>
@@ -207,7 +208,7 @@ function render() {
         `;
     });
 
-    html += '</tbody></table>';
+    html += '</tbody></table></div>';
 
     if (players.length === 0) {
         html = '<div class="loading">no players found</div>';

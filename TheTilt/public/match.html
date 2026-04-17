@@ -123,7 +123,7 @@ async function loadMatch() {
                 html += `<div class="section"><h3>${inn.batting_team} — ${inn.total} (innings ${inn.innings})</h3>`;
 
                 // Batting card
-                html += `<table class="detail-table">
+                html += `<div class="table-wrap"><table class="detail-table">
                     <tr><th>batter</th><th>runs</th><th>balls</th><th>SR</th><th>TILT</th></tr>`;
                 for (const b of inn.batting) {
                     const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
@@ -132,10 +132,10 @@ async function loadMatch() {
                         <td>${b.runs}</td><td>${b.balls}</td><td>${b.sr}</td><td>${formatTilt(b.tilt)}</td>
                     </tr>`;
                 }
-                html += '</table>';
+                html += '</table></div>';
 
                 // Bowling card
-                html += `<table class="detail-table" style="margin-top:12px">
+                html += `<div class="table-wrap"><table class="detail-table" style="margin-top:12px">
                     <tr><th>bowler</th><th>overs</th><th>runs</th><th>wkts</th><th>econ</th><th>TILT</th></tr>`;
                 for (const b of inn.bowling) {
                     const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
@@ -144,7 +144,7 @@ async function loadMatch() {
                         <td>${b.overs}</td><td>${b.runs}</td><td>${b.wickets}</td><td>${b.economy}</td><td>${formatTilt(b.tilt)}</td>
                     </tr>`;
                 }
-                html += '</table></div>';
+                html += '</table></div></div>';
             }
         }
 

@@ -121,7 +121,7 @@ async function loadPlayer() {
         const seasonsWithBat = (p.seasons || []).filter(s => s.batting_stats);
         if (p.batting_stats || seasonsWithBat.length > 0) {
             html += '<div class="section"><h3>batting statistics</h3>';
-            html += `<table class="detail-table">
+            html += `<div class="table-wrap"><table class="detail-table">
                 <tr><th>season</th><th>team</th><th>inn</th><th>runs</th><th>avg</th><th>SR</th><th>HS</th><th>50s</th><th>100s</th></tr>`;
             for (const s of seasonsWithBat) {
                 const b = s.batting_stats;
@@ -138,14 +138,14 @@ async function loadPlayer() {
                     <td>${b.innings}</td><td>${b.runs}</td><td>${b.avg}</td><td>${b.sr}</td><td>${b.hs}</td><td>${b.fifties}</td><td>${b.hundreds}</td>
                 </tr>`;
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         // Bowling statistics by season
         const seasonsWithBowl = (p.seasons || []).filter(s => s.bowling_stats);
         if (p.bowling_stats || seasonsWithBowl.length > 0) {
             html += '<div class="section"><h3>bowling statistics</h3>';
-            html += `<table class="detail-table">
+            html += `<div class="table-wrap"><table class="detail-table">
                 <tr><th>season</th><th>team</th><th>inn</th><th>wkts</th><th>avg</th><th>econ</th><th>best</th></tr>`;
             for (const s of seasonsWithBowl) {
                 const b = s.bowling_stats;
@@ -162,7 +162,7 @@ async function loadPlayer() {
                     <td>${b.innings}</td><td>${b.wickets}</td><td>${b.avg}</td><td>${b.economy}</td><td>${b.best_figures}</td>
                 </tr>`;
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         // Match TILT distribution histogram
@@ -182,7 +182,7 @@ async function loadPlayer() {
                 ...p.seasons.map(s => Math.abs(s.bowling_tilt_per_match)),
                 0.01
             );
-            html += `<div class="section"><h3>season by season game log</h3><table class="detail-table">
+            html += `<div class="section"><h3>season by season game log</h3><div class="table-wrap"><table class="detail-table">
                 <tr><th>season</th><th>bat TILT/m</th><th>bowl TILT/m</th><th></th><th>bat m</th><th>bowl m</th></tr>`;
             p.seasons.sort((a, b) => a.season.localeCompare(b.season));
             for (const s of p.seasons) {
@@ -241,7 +241,7 @@ async function loadPlayer() {
                     </tr>`;
                 }
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         // Phase breakdown (batting)
@@ -256,7 +256,7 @@ async function loadPlayer() {
                     <td>${ph.balls}</td>
                 </tr>`;
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         // Phase breakdown (bowling)
@@ -271,7 +271,7 @@ async function loadPlayer() {
                     <td>${ph.balls}</td>
                 </tr>`;
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         // Best/worst batting performances (with match links)
@@ -285,7 +285,7 @@ async function loadPlayer() {
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
                 </tr>`;
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         if (p.worst_matches && p.worst_matches.length > 0) {
@@ -298,7 +298,7 @@ async function loadPlayer() {
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
                 </tr>`;
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         // Best/worst bowling performances (with match links)
@@ -312,7 +312,7 @@ async function loadPlayer() {
                     <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         if (p.bowling_worst_matches && p.bowling_worst_matches.length > 0) {
@@ -325,7 +325,7 @@ async function loadPlayer() {
                     <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
-            html += '</table></div>';
+            html += '</table></div></div>';
         }
 
         // Career trend chart
