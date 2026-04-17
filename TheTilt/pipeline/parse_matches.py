@@ -40,6 +40,19 @@ class BallEvent:
     is_impact_sub_match: bool
 
 
+# %% Team name normalization
+# Same franchise, different name — map all to one canonical form.
+TEAM_NAME_MAP = {
+    "Royal Challengers Bengaluru": "Royal Challengers Bangalore",
+}
+
+
+def normalize_team(name: Optional[str]) -> Optional[str]:
+    if name is None:
+        return None
+    return TEAM_NAME_MAP.get(name, name)
+
+
 # %% Configuration
 def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
     with open(config_path, "r") as f:
@@ -93,13 +106,13 @@ def parse_match(filepath: Path) -> List[BallEvent]:
     dates = info.get("dates", ["unknown"])
     date = dates[0] if dates else "unknown"
     venue = info.get("venue", "unknown")
-    winner = outcome.get("winner")
-    teams = info.get("teams", [])
+    winner = normalize_team(outcome.get("winner"))
+    teams = [normalize_team(t) for t in info.get("teams", [])]
     season = str(info.get("season", "unknown"))
 
     # Toss info
     toss = info.get("toss", {})
-    toss_winner = toss.get("winner")
+    toss_winner = normalize_team(toss.get("winner"))
     toss_decision = toss.get("decision")
 
     # DLS method
@@ -115,7 +128,7 @@ def parse_match(filepath: Path) -> List[BallEvent]:
     events: List[BallEvent] = []
 
     for innings_idx, innings_data in enumerate(data.get("innings", []), start=1):
-        batting_team = innings_data.get("team", "")
+        batting_team = normalize_team(innings_data.get("team", ""))
         bowling_team = [t for t in teams if t != batting_team]
         bowling_team = bowling_team[0] if bowling_team else "unknown"
 
