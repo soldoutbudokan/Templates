@@ -10,6 +10,8 @@ import numpy as np
 import pandas as pd
 import yaml
 
+from pipeline.build_features import shrunk_run_rate
+
 
 # %% Configuration
 FEATURE_COLS = [
@@ -46,8 +48,8 @@ def compute_state_after(row: pd.Series) -> dict:
     after["wickets_in_hand"] = 10 - after["wickets_fallen"]
     after["balls_remaining"] = max(row["balls_remaining"] - 1, 1)
 
-    overs_bowled = (row["ball_number"]) / 6  # After this ball
-    after["run_rate"] = after["runs_scored"] / max(overs_bowled, 0.1)
+    balls_bowled_after = row["ball_number"]  # ball_number is 1-indexed, equals balls bowled after this delivery
+    after["run_rate"] = shrunk_run_rate(after["runs_scored"], balls_bowled_after)
 
     after["over"] = row["over"]
 

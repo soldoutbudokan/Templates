@@ -7,6 +7,21 @@ import yaml
 
 
 # %% Configuration
+# Shrinkage prior for `run_rate`. The raw formula runs/overs explodes at tiny
+# denominators (e.g. a 4-run ball 1 reads as 24 rpo), which shows up in the
+# trained model as implausible early-innings WP swings. Shrinking toward the
+# league-average 1st-innings rpo with ~3 overs of prior weight keeps the
+# feature in-distribution early and drowns in real data after a few overs.
+PRIOR_BALLS = 18
+PRIOR_RPO = 8.4
+PRIOR_RUNS = PRIOR_BALLS * PRIOR_RPO / 6  # 25.2
+
+
+def shrunk_run_rate(runs_scored: float, balls_bowled: float) -> float:
+    """Empirical-Bayes shrunk run rate. Mirrors compute_tilt.compute_state_after."""
+    return (runs_scored + PRIOR_RUNS) / ((balls_bowled + PRIOR_BALLS) / 6)
+
+
 def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
     with open(config_path, "r") as f:
         return yaml.safe_load(f)
@@ -39,9 +54,8 @@ def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = Non
     # Wickets in hand
     df["wickets_in_hand"] = 10 - df["wickets_fallen"]
 
-    # Run rate (runs per over so far)
-    overs_bowled = df["balls_bowled"] / 6
-    df["run_rate"] = df["runs_scored"] / overs_bowled.replace(0, 0.1)
+    # Run rate (shrunk toward league-average prior — see PRIOR_* constants).
+    df["run_rate"] = shrunk_run_rate(df["runs_scored"], df["balls_bowled"])
 
     # Phase flags (over is 0-indexed: 0 = first over, 19 = last over)
     df["is_powerplay"] = (df["over"] <= 5).astype(int)  # Overs 0-5 (cricket overs 1-6)

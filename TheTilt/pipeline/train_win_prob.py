@@ -83,6 +83,16 @@ def train_win_prob_model(
     X_test = test_df[config.features].copy()
     y_test = test_df[config.target]
 
+    # Monotone constraints guard against pathological splits. Applied only to
+    # features whose direction is unambiguous from the batting team's point of
+    # view: +1 = more is better, -1 = more is worse, 0 = context-dependent.
+    direction = {
+        "wickets_in_hand": 1,
+        "runs_needed": -1,
+        "required_run_rate": -1,
+    }
+    monotone_constraints = [direction.get(f, 0) for f in config.features]
+
     model = lgb.LGBMClassifier(
         n_estimators=config.n_estimators,
         learning_rate=config.learning_rate,
@@ -93,6 +103,7 @@ def train_win_prob_model(
         random_state=config.random_state,
         objective="binary",
         metric="binary_logloss",
+        monotone_constraints=monotone_constraints,
         verbose=-1,
     )
 
