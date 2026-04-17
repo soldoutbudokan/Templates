@@ -1,13 +1,13 @@
-name: Refresh Tilt Data
+name: Retrain Tilt Model
 
 on:
   schedule:
-    # Twice daily (02:00 and 14:00 UTC) — covers the window after IPL evening matches
-    - cron: '0 2,14 * * *'
+    # March 1st at 06:00 UTC — pre-IPL season retrain
+    - cron: '0 6 1 3 *'
   workflow_dispatch:
 
 jobs:
-  refresh:
+  retrain:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -26,13 +26,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run data-only refresh (no retrain)
-        run: python -c "from pipeline.run_pipeline import refresh_tilt_data_only; refresh_tilt_data_only()"
+      - name: Run full pipeline (with model training)
+        run: python pipeline/run_pipeline.py
 
       - name: Check for changes
         id: changes
         run: |
-          git diff --quiet public/data/ && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+          git add -A
+          git diff --cached --quiet public/data/ models/win_prob_lgbm.pkl && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+          git reset
 
       - name: Commit and push
         if: steps.changes.outputs.changed == 'true'
@@ -40,6 +42,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase origin master
-          git add public/data/
-          git commit -m "chore: refresh Tilt data ($(date -u +%Y-%m-%d-%H%MZ))"
+          git add public/data/ models/win_prob_lgbm.pkl
+          git commit -m "chore: retrain Tilt model and refresh data ($(date -u +%Y-%m-%d))"
           git push
