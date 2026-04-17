@@ -11,8 +11,8 @@ build/
 data/raw/
 data/processed/
 
-# Models (large binary files)
-models/*.pkl
+# Models — the win-prob pickle is committed so the data-refresh workflow
+# can load it without retraining. joblib and any other formats stay ignored.
 models/*.joblib
 
 # Vercel

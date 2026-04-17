@@ -232,11 +232,12 @@ TheTilt/
 │       ├── goats.json         # Top match/season performances
 │       └── meta.json          # Data coverage metadata
 ├── .github/workflows/
-│   └── refresh-tilt-data.yml  # Weekly automated data refresh
+│   ├── refresh-tilt-data.yml  # 2×/day data-only refresh (no retrain)
+│   └── retrain-tilt-model.yml # Seasonal (Mar 1) + manual full retrain
 ├── config/
 │   └── pipeline_config.yaml   # Model hyperparameters, paths
 ├── data/                      # Raw + processed (gitignored)
-├── models/                    # Saved model (gitignored)
+├── models/                    # win_prob_lgbm.pkl is committed; others ignored
 └── vercel.json                # Deployment config
 ```
 
@@ -245,7 +246,7 @@ TheTilt/
 2. Outputs static JSON to `public/data/`
 3. Website serves JSON directly — no computation at request time
 4. Deployed to Vercel (Python Flask for routing + static file serving)
-5. GitHub Actions runs the pipeline weekly and auto-commits updated data
+5. GitHub Actions refreshes data twice daily (02:00 / 14:00 UTC) reusing the committed model pickle; full retrains happen on March 1 or on-demand via `workflow_dispatch`
 
 ---
 
@@ -304,6 +305,11 @@ All ball-by-ball data from [Cricsheet](https://cricsheet.org) under their open d
 ### Full pipeline (download + train + export):
 ```bash
 python pipeline/run_pipeline.py
+```
+
+### Data-only refresh (skip training, reuse committed pickle):
+```bash
+python -c "from pipeline.run_pipeline import refresh_tilt_data_only; refresh_tilt_data_only()"
 ```
 
 ### Individual steps:

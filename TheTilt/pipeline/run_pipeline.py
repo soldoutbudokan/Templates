@@ -26,6 +26,63 @@ from pipeline.compute_tilt import compute_tilt
 from pipeline.export_json import export_all
 
 
+# %% Data-only refresh (skips training, reuses committed pickle)
+def refresh_tilt_data_only() -> None:
+    """Refresh data and recompute TILT without retraining the model.
+
+    Steps run: 1 (download, force), 2 (people), 3 (parse), 4 (features),
+               6 (compute TILT using existing pickle), 7 (export JSON).
+    Skips step 5 (training). Use the `retrain-tilt-model` workflow when
+    features or data-coverage assumptions change.
+    """
+    import yaml
+
+    project_root = Path(__file__).parent.parent
+
+    # Fail loudly if the committed pickle is missing — the refresh workflow
+    # has nothing to fall back to.
+    with open(project_root / "config/pipeline_config.yaml") as f:
+        cfg = yaml.safe_load(f)
+    model_path = project_root / cfg["model"]["save_path"]
+    if not model_path.exists():
+        raise FileNotFoundError(
+            f"{model_path} is missing. Run the retrain-tilt-model workflow "
+            "(or `python pipeline/run_pipeline.py` locally) to generate it."
+        )
+
+    start = time.time()
+    print("=" * 60)
+    print("  THE TILT — Data-only refresh (skipping model training)")
+    print("=" * 60)
+
+    print("\n[1/6] Downloading Cricsheet IPL data (force=True)...")
+    download_cricsheet_data(force=True)
+
+    print("\n[2/6] Downloading player register + resolving full names...")
+    download_and_resolve()
+
+    print("\n[3/6] Parsing ball-by-ball match data...")
+    parse_all_matches()
+
+    print("\n[4/6] Building match state features...")
+    build_all_features()
+
+    print("\n[5/6] Computing player TILT scores with existing model...")
+    deltas_df, player_tilt = compute_tilt()
+
+    processed_dir = Path("data/processed")
+    deltas_df.to_parquet(processed_dir / "deltas.parquet", index=False)
+    player_tilt.to_parquet(processed_dir / "player_tilt.parquet", index=False)
+
+    print("\n[6/6] Exporting JSON for website...")
+    export_all(deltas_df, player_tilt)
+
+    elapsed = time.time() - start
+    print(f"\n{'=' * 60}")
+    print(f"  Refresh complete in {elapsed:.0f}s")
+    print(f"{'=' * 60}")
+
+
 # %% Run pipeline
 def run_pipeline() -> None:
     """Run the full TILT pipeline."""
