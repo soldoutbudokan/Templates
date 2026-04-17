@@ -45,9 +45,10 @@ The stat is denominated in **win probability percentage points per match**. A TI
 
 All data comes from [Cricsheet](https://cricsheet.org), an open cricket data project that provides ball-by-ball JSON files for every IPL match ever played.
 
-- **1,183 matches** parsed (2008-2026)
-- **280,000+ individual deliveries** with batter, bowler, runs, wickets, and match outcome
+- **1,159 matches** parsed (2008-2026)
+- **276,500+ individual deliveries** with batter, bowler, runs, wickets, and match outcome
 - Each delivery becomes a row with full match context
+- Team-name aliases normalized (e.g. "Royal Challengers Bengaluru" → "Royal Challengers Bangalore")
 
 ### Step 2: Feature Engineering
 
@@ -63,15 +64,13 @@ For each ball, we compute the **match state before the delivery is bowled**:
 | `target` | Chase target (innings 2 only, 0 for innings 1) |
 | `runs_needed` | Runs still required (innings 2 only) |
 | `required_run_rate` | Needed scoring rate to win (innings 2 only) |
-| `is_powerplay` | Overs 1-6 (fielding restrictions) |
-| `is_middle` | Overs 7-15 |
-| `is_death` | Overs 16-20 (final phase) |
-| `recent_run_rate` | Scoring rate over the last 3 overs |
-| `recent_wickets` | Wickets fallen in the last 3 overs |
+| `over` | Over number 0-19 (continuous — lets LightGBM learn phase effects more granularly than dummies) |
+| `recent_wickets` | Wickets fallen in the last 18 balls (3 overs) |
 | `venue` | Match venue (categorical — LightGBM native handling) |
 | `batting_team_chose_to_bat` | 1 if batting team won toss and chose to bat |
 | `season_numeric` | IPL season year (2008-2026) for era adjustment |
 | `opponent_bowler_economy` | Career bowling economy of the bowler (opponent quality proxy) |
+| `batting_team_nrr` | Season-to-date net run rate of the batting team (prior matches only — no leakage) |
 
 **Key design decision:** We use a single model for both innings. For innings 1, the target/required run rate features are set to 0. This lets the model learn that innings 1 is about *setting a total* while innings 2 is about *chasing*. The `innings` feature acts as a switch.
 
@@ -80,7 +79,7 @@ For each ball, we compute the **match state before the delivery is bowled**:
 We train a **LightGBM gradient-boosted classifier** to predict: *will the team currently batting win this match?*
 
 ```
-Input:  17 match-state features (before each ball)
+Input:  15 match-state features (before each ball)
 Output: P(batting team wins) ∈ [0, 1]
 ```
 
@@ -103,24 +102,29 @@ Output: P(batting team wins) ∈ [0, 1]
 | Metric | Value |
 |--------|-------|
 | Brier Score | 0.198 (lower is better, perfect = 0) |
-| AUC | 0.756 |
+| AUC | 0.761 |
 
 **Feature importances** (what matters most for predicting the winner):
 
 ```
-venue                  ████████████████████████████████  (1022)
-required_run_rate      ████████████                     ( 422)
-wickets_in_hand        ████████████                     ( 413)
-target                 ███████████                      ( 402)
-runs_needed            █████████                        ( 337)
-run_rate               ████████                         ( 305)
-runs_scored            ███████                          ( 259)
-season_numeric         █████                            ( 179)
-innings                █████                            ( 170)
-opponent_bowler_econ   ██                               (  94)
+venue                        ████████████████████████████████  (711)
+batting_team_nrr             ██████████████                    (325)
+required_run_rate            ████████████                      (270)
+wickets_in_hand              ███████████                       (258)
+target                       ███████████                       (254)
+run_rate                     █████████                         (206)
+runs_needed                  █████████                         (205)
+runs_scored                  ████████                          (191)
+innings                      ██████                            (153)
+season_numeric               ██                                ( 54)
+opponent_bowler_economy      ██                                ( 46)
+recent_wickets               █                                 ( 26)
+batting_team_chose_to_bat    █                                 ( 19)
+over                         █                                 ( 16)
+balls_remaining              ▏                                 ( 11)
 ```
 
-Venue is the most important feature — confirming that ground conditions significantly affect win probability. Season captures era effects.
+Venue dominates — ground conditions significantly affect win probability. Team-strength (batting_team_nrr) is the #2 signal, followed by chase-state features (required run rate, wickets, target). Season captures era effects.
 
 ### Step 4: Computing TILT
 
@@ -279,6 +283,7 @@ TheTilt/
 - ~~Run-out attribution~~ → Key moments now show the correct dismissed player
 - ~~Win prob chart flipped~~ → Consistent perspective from innings 1 batting team
 - ~~GOAT page innings bias~~ → **Innings-filtered views** on match batting/bowling tabs with explanatory note
+- ~~"Royal Challengers Bengaluru" split from "Royal Challengers Bangalore"~~ → Normalized to a single canonical name at parse time
 
 ### Future Work
 
