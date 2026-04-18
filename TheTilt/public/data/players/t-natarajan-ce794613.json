@@ -9,21 +9,21 @@
     "Kings XI Punjab",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.00869,
+  "total_tilt_per_match": -0.01192,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.00856,
-  "shrunk_total_tilt_per_match": -0.00966,
+  "bowling_tilt_per_match": -0.0118,
+  "shrunk_total_tilt_per_match": -0.01267,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.00878,
-  "tilt_ci_lower": -0.03408,
-  "tilt_ci_upper": 0.01477,
-  "tilt_ci_lower_90": -0.03015,
-  "tilt_ci_upper_90": 0.01084,
+  "shrunk_bowling_tilt_per_match": -0.01177,
+  "tilt_ci_lower": -0.03746,
+  "tilt_ci_upper": 0.01212,
+  "tilt_ci_lower_90": -0.03348,
+  "tilt_ci_upper_90": 0.00813,
   "confidence": "medium",
-  "total_tilt": -0.55597,
-  "total_matches": 64,
-  "batting_balls": 5,
-  "bowling_balls": 1397,
+  "total_tilt": -0.77464,
+  "total_matches": 65,
+  "batting_balls": 7,
+  "bowling_balls": 1421,
   "seasons": [
     {
       "season": "2017",
@@ -1346,11 +1346,11 @@
       "season": "2026",
       "team": "Delhi Capitals",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.03586,
-      "batting_matches": 0,
-      "bowling_matches": 3,
-      "batting_balls": 0,
-      "bowling_balls": 66,
+      "bowling_tilt_per_match": -0.02777,
+      "batting_matches": 1,
+      "bowling_matches": 4,
+      "batting_balls": 2,
+      "bowling_balls": 90,
       "matches": [
         {
           "match_id": "1527678",
@@ -1408,15 +1408,45 @@
           "bowl_econ": 8.5,
           "bowl_tilt": 0.05014,
           "total_tilt": 0.05014
+        },
+        {
+          "match_id": "1527691",
+          "date": "2026-04-11",
+          "opponent": "Chennai Super Kings",
+          "venue": "MA Chidambaram Stadium, Chepauk",
+          "team_score": "189/10",
+          "opponent_score": "212/2",
+          "winner": "Chennai Super Kings",
+          "bat_runs": 1,
+          "bat_balls": 2,
+          "bat_sr": 50.0,
+          "bat_tilt": 0.0,
+          "bowl_wkts": 1,
+          "bowl_balls": 24,
+          "bowl_runs": 54,
+          "bowl_econ": 13.5,
+          "bowl_tilt": -0.21867,
+          "total_tilt": -0.21867
         }
       ],
+      "batting_stats": {
+        "runs": 1,
+        "innings": 1,
+        "balls": 2,
+        "avg": 1.0,
+        "sr": 50.0,
+        "hs": 1,
+        "not_outs": 1,
+        "fifties": 0,
+        "hundreds": 0
+      },
       "bowling_stats": {
-        "wickets": 4,
-        "innings": 3,
-        "balls": 66,
-        "runs_conceded": 87,
-        "avg": 21.75,
-        "economy": 7.91,
+        "wickets": 5,
+        "innings": 4,
+        "balls": 90,
+        "runs_conceded": 141,
+        "avg": 28.2,
+        "economy": 9.4,
         "best_figures": "3/29"
       }
     }
@@ -1425,28 +1455,28 @@
     {
       "phase": "death",
       "tilt": -0.00796,
-      "balls": 5,
-      "avg_delta": -0.001592
+      "balls": 7,
+      "avg_delta": -0.001137
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.10891,
-      "balls": 360,
-      "avg_delta": 0.000294
+      "tilt": 0.10092,
+      "balls": 366,
+      "avg_delta": 0.000268
     },
     {
       "phase": "middle",
-      "tilt": -0.08182,
-      "balls": 456,
-      "avg_delta": -0.000171
+      "tilt": -0.25764,
+      "balls": 468,
+      "avg_delta": -0.000525
     },
     {
       "phase": "death",
-      "tilt": -0.57511,
-      "balls": 581,
-      "avg_delta": -0.000941
+      "tilt": -0.60996,
+      "balls": 587,
+      "avg_delta": -0.000989
     }
   ],
   "best_matches": [
@@ -1457,6 +1487,14 @@
       "tilt": 0.0,
       "runs": 0,
       "balls": 1
+    },
+    {
+      "match_id": "1527691",
+      "date": "2026-04-11",
+      "vs": "Chennai Super Kings",
+      "tilt": 0.0,
+      "runs": 1,
+      "balls": 2
     },
     {
       "match_id": "1216534",
@@ -1483,6 +1521,14 @@
       "tilt": 0.0,
       "runs": 0,
       "balls": 1
+    },
+    {
+      "match_id": "1527691",
+      "date": "2026-04-11",
+      "vs": "Chennai Super Kings",
+      "tilt": 0.0,
+      "runs": 1,
+      "balls": 2
     }
   ],
   "bowling_best_matches": [
@@ -1553,19 +1599,19 @@
       "balls": 16
     },
     {
+      "match_id": "1527691",
+      "date": "2026-04-11",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.21867,
+      "wickets": 1,
+      "balls": 24
+    },
+    {
       "match_id": "1304086",
       "date": "2022-04-27",
       "vs": "Gujarat Titans",
       "tilt": -0.18215,
       "wickets": 0,
-      "balls": 24
-    },
-    {
-      "match_id": "1359499",
-      "date": "2023-04-18",
-      "vs": "Mumbai Indians",
-      "tilt": -0.15335,
-      "wickets": 2,
       "balls": 24
     }
   ],
@@ -1953,13 +1999,19 @@
       "date": "2026-04-08",
       "tilt": 0.05014,
       "cumulative": -0.55597
+    },
+    {
+      "match": 65,
+      "date": "2026-04-11",
+      "tilt": -0.21867,
+      "cumulative": -0.77464
     }
   ],
   "team_matchups": [
     {
       "opponent": "Chennai Super Kings",
       "tilt_per_match": 0.0,
-      "matches": 1
+      "matches": 2
     },
     {
       "opponent": "Royal Challengers Bangalore",
@@ -1968,24 +2020,24 @@
     }
   ],
   "batting_stats": {
-    "runs": 3,
-    "innings": 2,
-    "balls": 5,
-    "avg": 3.0,
-    "sr": 60.0,
+    "runs": 4,
+    "innings": 3,
+    "balls": 7,
+    "avg": 4.0,
+    "sr": 57.14,
     "hs": 3,
     "dismissals": 0,
-    "not_outs": 2,
+    "not_outs": 3,
     "fifties": 0,
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 78,
-    "innings": 64,
-    "balls": 1397,
-    "runs_conceded": 2095,
-    "avg": 26.86,
-    "economy": 9.0,
+    "wickets": 79,
+    "innings": 65,
+    "balls": 1421,
+    "runs_conceded": 2149,
+    "avg": 27.2,
+    "economy": 9.07,
     "best_figures": "4/19"
   },
   "match_tilt_distribution": [
@@ -2052,6 +2104,7 @@
     -0.42011,
     0.05945,
     -0.00199,
-    0.05014
+    0.05014,
+    -0.21867
   ]
 }

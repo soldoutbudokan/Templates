@@ -10,21 +10,21 @@
     "Punjab Kings",
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": 0.00768,
-  "batting_tilt_per_match": 0.00334,
-  "bowling_tilt_per_match": 0.00699,
-  "shrunk_total_tilt_per_match": 0.00589,
-  "shrunk_batting_tilt_per_match": 0.00193,
-  "shrunk_bowling_tilt_per_match": 0.00583,
-  "tilt_ci_lower": -0.0203,
-  "tilt_ci_upper": 0.03207,
-  "tilt_ci_lower_90": -0.01609,
-  "tilt_ci_upper_90": 0.02786,
+  "total_tilt_per_match": 0.00565,
+  "batting_tilt_per_match": 0.00314,
+  "bowling_tilt_per_match": 0.00498,
+  "shrunk_total_tilt_per_match": 0.00396,
+  "shrunk_batting_tilt_per_match": 0.00172,
+  "shrunk_bowling_tilt_per_match": 0.00395,
+  "tilt_ci_lower": -0.02217,
+  "tilt_ci_upper": 0.0301,
+  "tilt_ci_lower_90": -0.01797,
+  "tilt_ci_upper_90": 0.0259,
   "confidence": "medium",
-  "total_tilt": 0.59151,
-  "total_matches": 77,
-  "batting_balls": 66,
-  "bowling_balls": 1651,
+  "total_tilt": 0.44651,
+  "total_matches": 79,
+  "batting_balls": 67,
+  "bowling_balls": 1693,
   "seasons": [
     {
       "season": "2020/21",
@@ -1575,13 +1575,13 @@
           "bat_runs": 13,
           "bat_balls": 14,
           "bat_sr": 92.9,
-          "bat_tilt": -0.00536,
+          "bat_tilt": -0.00535,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 41,
           "bowl_econ": 10.25,
           "bowl_tilt": 0.01193,
-          "total_tilt": 0.00657
+          "total_tilt": 0.00658
         },
         {
           "match_id": "1473499",
@@ -1627,12 +1627,12 @@
     {
       "season": "2026",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.06069,
-      "batting_matches": 0,
-      "bowling_matches": 3,
-      "batting_balls": 0,
-      "bowling_balls": 54,
+      "batting_tilt_per_match": -6e-05,
+      "bowling_tilt_per_match": 0.00743,
+      "batting_matches": 1,
+      "bowling_matches": 5,
+      "batting_balls": 1,
+      "bowling_balls": 96,
       "matches": [
         {
           "match_id": "1527676",
@@ -1690,15 +1690,64 @@
           "bowl_econ": 12.5,
           "bowl_tilt": -0.09353,
           "total_tilt": -0.09353
+        },
+        {
+          "match_id": "1527689",
+          "date": "2026-04-10",
+          "opponent": "Royal Challengers Bangalore",
+          "venue": "Barsapara Cricket Stadium, Guwahati",
+          "team_score": "202/4",
+          "opponent_score": "201/8",
+          "winner": "Rajasthan Royals",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 2,
+          "bowl_balls": 24,
+          "bowl_runs": 33,
+          "bowl_econ": 8.25,
+          "bowl_tilt": 0.07368,
+          "total_tilt": 0.07368
+        },
+        {
+          "match_id": "1529264",
+          "date": "2026-04-13",
+          "opponent": "Sunrisers Hyderabad",
+          "venue": "Rajiv Gandhi International Stadium, Uppal",
+          "team_score": "159/10",
+          "opponent_score": "216/6",
+          "winner": "Sunrisers Hyderabad",
+          "bat_runs": 0,
+          "bat_balls": 1,
+          "bat_sr": 0.0,
+          "bat_tilt": -6e-05,
+          "bowl_wkts": 0,
+          "bowl_balls": 18,
+          "bowl_runs": 35,
+          "bowl_econ": 11.67,
+          "bowl_tilt": -0.21862,
+          "total_tilt": -0.21868
         }
       ],
+      "batting_stats": {
+        "runs": 0,
+        "innings": 1,
+        "balls": 1,
+        "avg": 0.0,
+        "sr": 0.0,
+        "hs": 0,
+        "not_outs": 0,
+        "fifties": 0,
+        "hundreds": 0
+      },
       "bowling_stats": {
-        "wickets": 8,
-        "innings": 3,
-        "balls": 54,
-        "runs_conceded": 82,
-        "avg": 10.25,
-        "economy": 9.11,
+        "wickets": 10,
+        "innings": 5,
+        "balls": 96,
+        "runs_conceded": 150,
+        "avg": 15.0,
+        "economy": 9.38,
         "best_figures": "5/41"
       }
     }
@@ -1712,29 +1761,29 @@
     },
     {
       "phase": "death",
-      "tilt": 0.28743,
-      "balls": 48,
-      "avg_delta": 0.005749
+      "tilt": 0.28737,
+      "balls": 49,
+      "avg_delta": 0.005635
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.00846,
-      "balls": 126,
-      "avg_delta": 6.3e-05
+      "tilt": 0.12393,
+      "balls": 132,
+      "avg_delta": 0.000879
     },
     {
       "phase": "middle",
-      "tilt": 0.81358,
-      "balls": 1278,
-      "avg_delta": 0.000614
+      "tilt": 0.65431,
+      "balls": 1308,
+      "avg_delta": 0.000483
     },
     {
       "phase": "death",
-      "tilt": -0.28394,
-      "balls": 247,
-      "avg_delta": -0.001122
+      "tilt": -0.38508,
+      "balls": 253,
+      "avg_delta": -0.001487
     }
   ],
   "best_matches": [
@@ -1755,12 +1804,12 @@
       "balls": 1
     },
     {
-      "match_id": "1304077",
-      "date": "2022-04-19",
-      "vs": "Royal Challengers Bangalore",
+      "match_id": "1359525",
+      "date": "2023-05-07",
+      "vs": "Gujarat Titans",
       "tilt": 0.0,
-      "runs": 0,
-      "balls": 1
+      "runs": 4,
+      "balls": 5
     },
     {
       "match_id": "1359504",
@@ -1771,12 +1820,12 @@
       "balls": 1
     },
     {
-      "match_id": "1359525",
-      "date": "2023-05-07",
-      "vs": "Gujarat Titans",
+      "match_id": "1426292",
+      "date": "2024-05-05",
+      "vs": "Kolkata Knight Riders",
       "tilt": 0.0,
-      "runs": 4,
-      "balls": 5
+      "runs": 2,
+      "balls": 3
     }
   ],
   "worst_matches": [
@@ -1865,6 +1914,14 @@
   ],
   "bowling_worst_matches": [
     {
+      "match_id": "1529264",
+      "date": "2026-04-13",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.21862,
+      "wickets": 0,
+      "balls": 18
+    },
+    {
       "match_id": "1473450",
       "date": "2025-04-01",
       "vs": "Punjab Kings",
@@ -1893,14 +1950,6 @@
       "date": "2024-04-27",
       "vs": "Rajasthan Royals",
       "tilt": -0.17367,
-      "wickets": 0,
-      "balls": 6
-    },
-    {
-      "match_id": "1473499",
-      "date": "2025-05-19",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.15358,
       "wickets": 0,
       "balls": 6
     }
@@ -2341,8 +2390,8 @@
     {
       "match": 73,
       "date": "2025-04-27",
-      "tilt": 0.00657,
-      "cumulative": 0.56301
+      "tilt": 0.00658,
+      "cumulative": 0.56302
     },
     {
       "match": 74,
@@ -2367,6 +2416,18 @@
       "date": "2026-04-07",
       "tilt": -0.09353,
       "cumulative": 0.59151
+    },
+    {
+      "match": 78,
+      "date": "2026-04-10",
+      "tilt": 0.07368,
+      "cumulative": 0.66519
+    },
+    {
+      "match": 79,
+      "date": "2026-04-13",
+      "tilt": -0.21867,
+      "cumulative": 0.44651
     }
   ],
   "team_matchups": [
@@ -2386,14 +2447,14 @@
       "matches": 3
     },
     {
-      "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.02078,
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": -0.0114,
       "matches": 2
     },
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.02274,
-      "matches": 1
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": -0.02078,
+      "matches": 2
     },
     {
       "opponent": "Kolkata Knight Riders",
@@ -2408,23 +2469,23 @@
   ],
   "batting_stats": {
     "runs": 45,
-    "innings": 16,
-    "balls": 66,
-    "avg": 5.0,
-    "sr": 68.18,
+    "innings": 17,
+    "balls": 67,
+    "avg": 4.5,
+    "sr": 67.16,
     "hs": 13,
-    "dismissals": 9,
+    "dismissals": 10,
     "not_outs": 7,
     "fifties": 0,
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 83,
-    "innings": 77,
-    "balls": 1651,
-    "runs_conceded": 2311,
-    "avg": 27.84,
-    "economy": 8.4,
+    "wickets": 85,
+    "innings": 79,
+    "balls": 1693,
+    "runs_conceded": 2379,
+    "avg": 27.99,
+    "economy": 8.43,
     "best_figures": "5/41"
   },
   "match_tilt_distribution": [
@@ -2500,10 +2561,12 @@
     0.13984,
     0.02142,
     -0.17714,
-    0.00657,
+    0.00658,
     -0.15358,
     -0.01553,
     0.29113,
-    -0.09353
+    -0.09353,
+    0.07368,
+    -0.21867
   ]
 }

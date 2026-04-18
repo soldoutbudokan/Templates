@@ -7,18 +7,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": 0.02274,
-  "batting_tilt_per_match": 0.02274,
+  "total_tilt_per_match": 0.02233,
+  "batting_tilt_per_match": 0.02233,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.00792,
-  "shrunk_batting_tilt_per_match": 0.00822,
+  "shrunk_total_tilt_per_match": 0.0073,
+  "shrunk_batting_tilt_per_match": 0.00757,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.081,
-  "tilt_ci_upper": 0.09685,
-  "tilt_ci_lower_90": -0.06671,
-  "tilt_ci_upper_90": 0.08256,
+  "tilt_ci_lower": -0.08097,
+  "tilt_ci_upper": 0.09556,
+  "tilt_ci_lower_90": -0.06678,
+  "tilt_ci_upper_90": 0.08138,
   "confidence": "low",
-  "total_tilt": 0.22743,
+  "total_tilt": 0.22334,
   "total_matches": 10,
   "batting_balls": 165,
   "bowling_balls": 0,
@@ -26,7 +26,7 @@
     {
       "season": "2025",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": 0.02274,
+      "batting_tilt_per_match": 0.02233,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 10,
       "bowling_matches": 0,
@@ -63,13 +63,13 @@
           "bat_runs": 14,
           "bat_balls": 17,
           "bat_sr": 82.4,
-          "bat_tilt": -0.09036,
+          "bat_tilt": -0.09047,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.09036
+          "total_tilt": -0.09047
         },
         {
           "match_id": "1473474",
@@ -82,13 +82,13 @@
           "bat_runs": 29,
           "bat_balls": 17,
           "bat_sr": 170.6,
-          "bat_tilt": -0.00955,
+          "bat_tilt": -0.00935,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.00955
+          "total_tilt": -0.00935
         },
         {
           "match_id": "1473486",
@@ -158,13 +158,13 @@
           "bat_runs": 73,
           "bat_balls": 42,
           "bat_sr": 173.8,
-          "bat_tilt": 0.32922,
+          "bat_tilt": 0.32889,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.32922
+          "total_tilt": 0.32889
         },
         {
           "match_id": "1473508",
@@ -196,13 +196,13 @@
           "bat_runs": 38,
           "bat_balls": 21,
           "bat_sr": 181.0,
-          "bat_tilt": 0.10406,
+          "bat_tilt": 0.10412,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.10406
+          "total_tilt": 0.10412
         },
         {
           "match_id": "1473511",
@@ -215,13 +215,13 @@
           "bat_runs": 39,
           "bat_balls": 23,
           "bat_sr": 169.6,
-          "bat_tilt": 0.12345,
+          "bat_tilt": 0.11953,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.12345
+          "total_tilt": 0.11953
         }
       ],
       "batting_stats": {
@@ -240,21 +240,21 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.16154,
+      "tilt": 0.16144,
       "balls": 77,
-      "avg_delta": 0.002045
+      "avg_delta": 0.002044
     },
     {
       "phase": "middle",
-      "tilt": 0.00849,
+      "tilt": 0.00471,
       "balls": 76,
-      "avg_delta": 0.000107
+      "avg_delta": 6e-05
     },
     {
       "phase": "death",
-      "tilt": 0.0574,
+      "tilt": 0.05719,
       "balls": 12,
-      "avg_delta": 0.004416
+      "avg_delta": 0.004399
     }
   ],
   "bowling_phases": [],
@@ -263,7 +263,7 @@
       "match_id": "1473506",
       "date": "2025-05-26",
       "vs": "Mumbai Indians",
-      "tilt": 0.32922,
+      "tilt": 0.32889,
       "runs": 73,
       "balls": 42
     },
@@ -279,7 +279,7 @@
       "match_id": "1473511",
       "date": "2025-06-03",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.12345,
+      "tilt": 0.11953,
       "runs": 39,
       "balls": 23
     },
@@ -287,7 +287,7 @@
       "match_id": "1473510",
       "date": "2025-06-01",
       "vs": "Mumbai Indians",
-      "tilt": 0.10406,
+      "tilt": 0.10412,
       "runs": 38,
       "balls": 21
     },
@@ -321,16 +321,8 @@
       "match_id": "1473471",
       "date": "2025-04-18",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.09036,
+      "tilt": -0.09047,
       "runs": 14,
-      "balls": 17
-    },
-    {
-      "match_id": "1473474",
-      "date": "2025-04-20",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.00955,
-      "runs": 29,
       "balls": 17
     },
     {
@@ -340,6 +332,14 @@
       "tilt": -0.00947,
       "runs": 6,
       "balls": 6
+    },
+    {
+      "match_id": "1473474",
+      "date": "2025-04-20",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.00935,
+      "runs": 29,
+      "balls": 17
     }
   ],
   "bowling_best_matches": [],
@@ -354,62 +354,62 @@
     {
       "match": 2,
       "date": "2025-04-18",
-      "tilt": -0.09036,
-      "cumulative": -0.39402
+      "tilt": -0.09047,
+      "cumulative": -0.39413
     },
     {
       "match": 3,
       "date": "2025-04-20",
-      "tilt": -0.00955,
-      "cumulative": -0.40358
+      "tilt": -0.00935,
+      "cumulative": -0.40348
     },
     {
       "match": 4,
       "date": "2025-04-30",
       "tilt": -0.00947,
-      "cumulative": -0.41305
+      "cumulative": -0.41296
     },
     {
       "match": 5,
       "date": "2025-05-04",
       "tilt": 0.15975,
-      "cumulative": -0.2533
+      "cumulative": -0.25321
     },
     {
       "match": 6,
       "date": "2025-05-24",
       "tilt": 0.05647,
-      "cumulative": -0.19683
+      "cumulative": -0.19674
     },
     {
       "match": 7,
       "date": "2025-05-26",
-      "tilt": 0.32922,
-      "cumulative": 0.13238
+      "tilt": 0.32889,
+      "cumulative": 0.13215
     },
     {
       "match": 8,
       "date": "2025-05-29",
       "tilt": -0.13246,
-      "cumulative": -8e-05
+      "cumulative": -0.00031
     },
     {
       "match": 9,
       "date": "2025-06-01",
-      "tilt": 0.10406,
-      "cumulative": 0.10398
+      "tilt": 0.10412,
+      "cumulative": 0.10381
     },
     {
       "match": 10,
       "date": "2025-06-03",
-      "tilt": 0.12345,
-      "cumulative": 0.22743
+      "tilt": 0.11953,
+      "cumulative": 0.22334
     }
   ],
   "team_matchups": [
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.21664,
+      "tilt_per_match": 0.21651,
       "matches": 2
     },
     {
@@ -429,7 +429,7 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.02723,
+      "tilt_per_match": -0.02819,
       "matches": 4
     },
     {
@@ -453,14 +453,14 @@
   "bowling_stats": null,
   "match_tilt_distribution": [
     -0.30366,
-    -0.09036,
-    -0.00955,
+    -0.09047,
+    -0.00935,
     -0.00947,
     0.15975,
     0.05647,
-    0.32922,
+    0.32889,
     -0.13246,
-    0.10406,
-    0.12345
+    0.10412,
+    0.11953
   ]
 }

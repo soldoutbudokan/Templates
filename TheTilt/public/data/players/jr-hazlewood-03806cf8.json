@@ -8,21 +8,21 @@
     "Chennai Super Kings",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.04069,
+  "total_tilt_per_match": 0.04059,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.04093,
+  "bowling_tilt_per_match": 0.04082,
   "shrunk_total_tilt_per_match": 0.03366,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.03478,
-  "tilt_ci_lower": -0.02186,
-  "tilt_ci_upper": 0.08917,
-  "tilt_ci_lower_90": -0.01294,
-  "tilt_ci_upper_90": 0.08025,
+  "shrunk_bowling_tilt_per_match": 0.03485,
+  "tilt_ci_lower": -0.02,
+  "tilt_ci_upper": 0.08731,
+  "tilt_ci_lower_90": -0.01138,
+  "tilt_ci_upper_90": 0.07869,
   "confidence": "medium",
-  "total_tilt": 1.58697,
-  "total_matches": 39,
+  "total_tilt": 1.66408,
+  "total_matches": 41,
   "batting_balls": 29,
-  "bowling_balls": 867,
+  "bowling_balls": 915,
   "seasons": [
     {
       "season": "2020/21",
@@ -902,6 +902,65 @@
         "economy": 8.84,
         "best_figures": "4/33"
       }
+    },
+    {
+      "season": "2026",
+      "team": "Royal Challengers Bangalore",
+      "batting_tilt_per_match": 0.0,
+      "bowling_tilt_per_match": 0.03856,
+      "batting_matches": 0,
+      "bowling_matches": 2,
+      "batting_balls": 0,
+      "bowling_balls": 48,
+      "matches": [
+        {
+          "match_id": "1527689",
+          "date": "2026-04-10",
+          "opponent": "Rajasthan Royals",
+          "venue": "Barsapara Cricket Stadium, Guwahati",
+          "team_score": "201/8",
+          "opponent_score": "202/4",
+          "winner": "Rajasthan Royals",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 2,
+          "bowl_balls": 24,
+          "bowl_runs": 45,
+          "bowl_econ": 11.25,
+          "bowl_tilt": -0.10786,
+          "total_tilt": -0.10786
+        },
+        {
+          "match_id": "1529266",
+          "date": "2026-04-15",
+          "opponent": "Lucknow Super Giants",
+          "venue": "M Chinnaswamy Stadium",
+          "team_score": "149/5",
+          "opponent_score": "146/10",
+          "winner": "Royal Challengers Bangalore",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 1,
+          "bowl_balls": 24,
+          "bowl_runs": 22,
+          "bowl_econ": 5.5,
+          "bowl_tilt": 0.18497,
+          "total_tilt": 0.18497
+        }
+      ],
+      "bowling_stats": {
+        "wickets": 3,
+        "innings": 2,
+        "balls": 48,
+        "runs_conceded": 67,
+        "avg": 22.33,
+        "economy": 8.38,
+        "best_figures": "2/45"
+      }
     }
   ],
   "batting_phases": [
@@ -921,21 +980,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 1.10828,
-      "balls": 486,
-      "avg_delta": 0.002257
+      "tilt": 1.12646,
+      "balls": 510,
+      "avg_delta": 0.002187
     },
     {
       "phase": "middle",
-      "tilt": 0.23942,
-      "balls": 133,
-      "avg_delta": 0.001722
+      "tilt": 0.30835,
+      "balls": 151,
+      "avg_delta": 0.001964
     },
     {
       "phase": "death",
-      "tilt": 0.24865,
-      "balls": 248,
-      "avg_delta": 0.000949
+      "tilt": 0.23865,
+      "balls": 254,
+      "avg_delta": 0.000887
     }
   ],
   "best_matches": [
@@ -1340,6 +1399,18 @@
       "date": "2025-06-03",
       "tilt": -0.22233,
       "cumulative": 1.58697
+    },
+    {
+      "match": 40,
+      "date": "2026-04-10",
+      "tilt": -0.10786,
+      "cumulative": 1.47911
+    },
+    {
+      "match": 41,
+      "date": "2026-04-15",
+      "tilt": 0.18497,
+      "cumulative": 1.66408
     }
   ],
   "team_matchups": [
@@ -1382,12 +1453,12 @@
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 58,
-    "innings": 39,
-    "balls": 867,
-    "runs_conceded": 1219,
-    "avg": 21.02,
-    "economy": 8.44,
+    "wickets": 61,
+    "innings": 41,
+    "balls": 915,
+    "runs_conceded": 1286,
+    "avg": 21.08,
+    "economy": 8.43,
     "best_figures": "4/25"
   },
   "match_tilt_distribution": [
@@ -1429,6 +1500,8 @@
     0.52506,
     0.11359,
     0.15435,
-    -0.22233
+    -0.22233,
+    -0.10786,
+    0.18497
   ]
 }
