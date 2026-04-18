@@ -28,6 +28,8 @@ class BallEvent:
     runs_batter: int
     runs_extras: int
     runs_total: int
+    is_wide: bool
+    is_noball: bool
     is_wicket: bool
     wicket_kind: Optional[str]
     player_dismissed: Optional[str]
@@ -138,8 +140,11 @@ def parse_match(filepath: Path) -> List[BallEvent]:
             for ball_idx, delivery in enumerate(over_data.get("deliveries", [])):
                 runs = delivery.get("runs", {})
                 wickets = delivery.get("wickets", [])
+                extras = delivery.get("extras", {})
 
                 is_wicket = len(wickets) > 0
+                is_wide = "wides" in extras
+                is_noball = "noballs" in extras
                 wicket_kind = wickets[0].get("kind") if is_wicket else None
                 player_dismissed = wickets[0].get("player_out") if is_wicket else None
 
@@ -165,6 +170,8 @@ def parse_match(filepath: Path) -> List[BallEvent]:
                     runs_batter=runs.get("batter", 0),
                     runs_extras=runs.get("extras", 0),
                     runs_total=runs.get("total", 0),
+                    is_wide=is_wide,
+                    is_noball=is_noball,
                     is_wicket=is_wicket,
                     wicket_kind=wicket_kind,
                     player_dismissed=player_dismissed,

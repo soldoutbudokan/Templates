@@ -16,6 +16,16 @@ def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
         return yaml.safe_load(f)
 
 
+# %% Legal-delivery flags
+# A batter "faces" legal deliveries + no-balls (wides don't count — re-bowled, batter not credited).
+# A bowler's over counts only legal deliveries (both wides and no-balls are re-bowled).
+def _add_legal_flags(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+    df["legal_bat"] = (~df["is_wide"]).astype(int)
+    df["legal_bowl"] = (~df["is_wide"] & ~df["is_noball"]).astype(int)
+    return df
+
+
 # %% Export rankings
 def export_rankings(
     player_tilt: pd.DataFrame,
@@ -115,6 +125,8 @@ def export_player_details(
 
     qualified = player_tilt[player_tilt["total_matches"] >= min_matches]
 
+    deltas_df = _add_legal_flags(deltas_df)
+
     # Pre-compute match info cache (team scores, winner, venue) for all matches
     match_info_cache = {}
     for mid in deltas_df["match_id"].unique():
@@ -152,7 +164,7 @@ def export_player_details(
         # Season breakdown (batting)
         season_batting = (
             bat_df.groupby("season")
-            .agg(tilt=("delta_wp", "sum"), balls=("delta_wp", "count"), matches=("match_id", "nunique"))
+            .agg(tilt=("delta_wp", "sum"), balls=("legal_bat", "sum"), matches=("match_id", "nunique"))
             .reset_index()
         )
         season_batting["tilt_per_match"] = season_batting["tilt"] / season_batting["matches"]
@@ -162,7 +174,7 @@ def export_player_details(
         bowl_df_copy["bowling_delta"] = -bowl_df_copy["delta_wp"]
         season_bowling = (
             bowl_df_copy.groupby("season")
-            .agg(tilt=("bowling_delta", "sum"), balls=("bowling_delta", "count"), matches=("match_id", "nunique"))
+            .agg(tilt=("bowling_delta", "sum"), balls=("legal_bowl", "sum"), matches=("match_id", "nunique"))
             .reset_index()
         )
         season_bowling["tilt_per_match"] = season_bowling["tilt"] / season_bowling["matches"]
@@ -193,7 +205,7 @@ def export_player_details(
             if len(bat_season_df) > 0:
                 season_team = bat_season_df["batting_team"].mode().iloc[0]
                 s_runs = int(bat_season_df["runs_batter"].sum())
-                s_balls = len(bat_season_df)
+                s_balls = int(bat_season_df["legal_bat"].sum())
                 s_innings = bat_season_df["match_id"].nunique()
                 s_dismissals = int(bat_season_df["player_dismissed_id"].eq(player_id).sum()) if player_id else int(bat_season_df["player_dismissed"].eq(player_name).sum())
                 s_match_runs = bat_season_df.groupby("match_id")["runs_batter"].sum()
@@ -215,7 +227,7 @@ def export_player_details(
                 if season_team is None:
                     season_team = bowl_season_df["bowling_team"].mode().iloc[0]
                 s_wickets = int(bowl_season_df["is_wicket"].sum())
-                s_bowl_balls = len(bowl_season_df)
+                s_bowl_balls = int(bowl_season_df["legal_bowl"].sum())
                 s_runs_conceded = int(bowl_season_df["runs_total"].sum())
                 s_bowl_innings = bowl_season_df["match_id"].nunique()
                 s_bowl_match = bowl_season_df.groupby("match_id").agg(
@@ -260,14 +272,14 @@ def export_player_details(
                 # Batting stats for this match
                 bat_m = bat_season_df[bat_season_df["match_id"] == mid] if mid in bat_match_ids else pd.DataFrame()
                 bat_runs_val = int(bat_m["runs_batter"].sum()) if len(bat_m) > 0 else None
-                bat_balls_val = len(bat_m) if len(bat_m) > 0 else None
+                bat_balls_val = int(bat_m["legal_bat"].sum()) if len(bat_m) > 0 else None
                 bat_sr_val = round(bat_runs_val / max(bat_balls_val, 1) * 100, 1) if bat_runs_val is not None else None
                 bat_tilt_val = round(float(bat_m["delta_wp"].sum()), 5) if len(bat_m) > 0 else None
 
                 # Bowling stats for this match
                 bowl_m = bowl_season_df[bowl_season_df["match_id"] == mid] if mid in bowl_match_ids else pd.DataFrame()
                 bowl_wkts_val = int(bowl_m["is_wicket"].sum()) if len(bowl_m) > 0 else None
-                bowl_balls_val = len(bowl_m) if len(bowl_m) > 0 else None
+                bowl_balls_val = int(bowl_m["legal_bowl"].sum()) if len(bowl_m) > 0 else None
                 bowl_runs_val = int(bowl_m["runs_total"].sum()) if len(bowl_m) > 0 else None
                 bowl_econ_val = round(bowl_runs_val / max(bowl_balls_val, 1) * 6, 2) if bowl_runs_val is not None else None
                 bowl_tilt_val = round(-float(bowl_m["delta_wp"].sum()), 5) if len(bowl_m) > 0 else None
@@ -320,7 +332,7 @@ def export_player_details(
                 phase_batting.append({
                     "phase": phase_name,
                     "tilt": round(phase_df["delta_wp"].sum(), 5),
-                    "balls": len(phase_df),
+                    "balls": int(phase_df["legal_bat"].sum()),
                     "avg_delta": round(phase_df["delta_wp"].mean(), 6),
                 })
 
@@ -332,14 +344,14 @@ def export_player_details(
                 phase_bowling.append({
                     "phase": phase_name,
                     "tilt": round(phase_df["bowling_delta"].sum(), 5),
-                    "balls": len(phase_df),
+                    "balls": int(phase_df["legal_bowl"].sum()),
                     "avg_delta": round(phase_df["bowling_delta"].mean(), 6),
                 })
 
         # Best/worst match performances (batting)
         match_perf = (
             bat_df.groupby(["match_id", "date", "bowling_team"])
-            .agg(tilt=("delta_wp", "sum"), balls=("delta_wp", "count"), runs=("runs_batter", "sum"))
+            .agg(tilt=("delta_wp", "sum"), balls=("legal_bat", "sum"), runs=("runs_batter", "sum"))
             .reset_index()
             .sort_values("tilt", ascending=False)
         )
@@ -350,7 +362,7 @@ def export_player_details(
         if len(bowl_df_copy) > 0:
             bowl_match_perf = (
                 bowl_df_copy.groupby(["match_id", "date", "batting_team"])
-                .agg(tilt=("bowling_delta", "sum"), balls=("bowling_delta", "count"), wickets=("is_wicket", "sum"))
+                .agg(tilt=("bowling_delta", "sum"), balls=("legal_bowl", "sum"), wickets=("is_wicket", "sum"))
                 .reset_index()
                 .sort_values("tilt", ascending=False)
             )
@@ -402,7 +414,7 @@ def export_player_details(
         batting_stats = None
         if len(bat_df) > 0:
             total_runs = int(bat_df["runs_batter"].sum())
-            balls_faced = len(bat_df)
+            balls_faced = int(bat_df["legal_bat"].sum())
             batting_innings = bat_df["match_id"].nunique()
             # Dismissals: count balls where this player was dismissed
             dismissals = int(bat_df["player_dismissed_id"].eq(player_id).sum()) if player_id else int(bat_df["player_dismissed"].eq(player_name).sum())
@@ -425,7 +437,7 @@ def export_player_details(
         bowling_stats = None
         if len(bowl_df) > 0:
             total_wickets = int(bowl_df["is_wicket"].sum())
-            bowling_balls_total = len(bowl_df)
+            bowling_balls_total = int(bowl_df["legal_bowl"].sum())
             runs_conceded = int(bowl_df["runs_total"].sum())
             bowling_innings = bowl_df["match_id"].nunique()
             # Best figures per match
@@ -563,6 +575,8 @@ def export_match_details(
             if pid:
                 slug_lookup[pid] = make_slug(row["player"], pid)
 
+    deltas_df = _add_legal_flags(deltas_df)
+
     match_ids = deltas_df["match_id"].unique()
     print(f"  Exporting {len(match_ids)} match detail files...")
 
@@ -594,12 +608,13 @@ def export_match_details(
             batting_team = str(inn_df.iloc[0]["batting_team"])
             bowling_team = str(inn_df.iloc[0]["bowling_team"])
 
-            # Batting scorecard — sorted by order of appearance
+            # Batting scorecard — sorted by order of appearance.
+            # `balls` = legal_bat sum (excludes wides; no-balls still count — batter faced them).
             bat_card = (
                 inn_df.groupby(["batter_id", "batter"])
                 .agg(
                     runs=("runs_batter", "sum"),
-                    balls=("runs_batter", "count"),
+                    balls=("legal_bat", "sum"),
                     tilt=("delta_wp", "sum"),
                     first_ball=("ball_number", "min"),
                 )
@@ -618,13 +633,12 @@ def export_match_details(
                 for _, r in bat_card.iterrows()
             ]
 
-            # Bowling scorecard — compute legal deliveries (exclude extras overflow)
-            # In Cricsheet, wides/no-balls add extra rows beyond 6 per over
+            # Bowling scorecard — `legal_balls` excludes both wides and no-balls.
             bowl_card = (
                 inn_df.groupby(["bowler_id", "bowler"])
                 .agg(
                     runs=("runs_total", "sum"),
-                    total_deliveries=("runs_total", "count"),
+                    legal_balls=("legal_bowl", "sum"),
                     wickets=("is_wicket", "sum"),
                     tilt=("delta_wp", lambda x: -x.sum()),
                     first_ball=("ball_number", "min"),
@@ -632,11 +646,6 @@ def export_match_details(
                 .reset_index()
                 .sort_values("first_ball")
             )
-            # Count legal deliveries per bowler: for each over, min(balls_in_over, 6)
-            for idx, row in bowl_card.iterrows():
-                bowler_balls = inn_df[inn_df["bowler_id"] == row["bowler_id"]]
-                legal = sum(min(len(g), 6) for _, g in bowler_balls.groupby("over"))
-                bowl_card.at[idx, "legal_balls"] = legal
 
             bowling_scorecard = [
                 {
@@ -783,10 +792,12 @@ def export_goats(
         pid = row.get("player_id", "")
         name_lookup[pid] = row.get("full_name", row["player"])
 
+    deltas_df = _add_legal_flags(deltas_df)
+
     # --- Single-match batting ---
     bat_match = (
         deltas_df.groupby(["batter_id", "batter", "match_id", "date", "season", "batting_team", "innings"])
-        .agg(tilt=("delta_wp", "sum"), runs=("runs_batter", "sum"), balls=("delta_wp", "count"))
+        .agg(tilt=("delta_wp", "sum"), runs=("runs_batter", "sum"), balls=("legal_bat", "sum"))
         .reset_index()
     )
 
@@ -825,7 +836,7 @@ def export_goats(
             tilt=("delta_wp", lambda x: -x.sum()),
             wickets=("is_wicket", "sum"),
             runs_conceded=("runs_total", "sum"),
-            balls=("delta_wp", "count"),
+            balls=("legal_bowl", "sum"),
         )
         .reset_index()
     )

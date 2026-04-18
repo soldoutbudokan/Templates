@@ -233,6 +233,7 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         "batter_id", "bowler_id", "non_striker_id",
         # Raw event data
         "runs_batter", "runs_extras", "runs_total",
+        "is_wide", "is_noball",
         "is_wicket", "wicket_kind", "player_dismissed", "player_dismissed_id",
         # Features (state before delivery)
         "ball_number", "balls_remaining", "wickets_in_hand",

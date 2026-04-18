@@ -119,13 +119,18 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate ball-level deltas into per-player TILT scores."""
     print("\nAggregating per-player TILT scores...")
 
+    # Legal-delivery flags: batting excludes wides; bowling excludes wides + no-balls.
+    deltas_df = deltas_df.copy()
+    deltas_df["legal_bat"] = (~deltas_df["is_wide"]).astype(int)
+    deltas_df["legal_bowl"] = (~deltas_df["is_wide"] & ~deltas_df["is_noball"]).astype(int)
+
     # Batting TILT: delta_wp credited to batter (grouped by player ID)
     batting = (
         deltas_df.groupby("batter_id")
         .agg(
             player=("batter", "last"),
             batting_total_tilt=("delta_wp", "sum"),
-            batting_balls=("delta_wp", "count"),
+            batting_balls=("legal_bat", "sum"),
             batting_matches=("match_id", "nunique"),
             batting_avg_delta=("delta_wp", "mean"),
         )
@@ -134,7 +139,6 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     batting["batting_tilt_per_match"] = batting["batting_total_tilt"] / batting["batting_matches"]
 
     # Bowling TILT: -delta_wp credited to bowler (positive = good for bowler)
-    deltas_df = deltas_df.copy()
     deltas_df["bowling_delta"] = -deltas_df["delta_wp"]
 
     bowling = (
@@ -142,7 +146,7 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
         .agg(
             player=("bowler", "last"),
             bowling_total_tilt=("bowling_delta", "sum"),
-            bowling_balls=("bowling_delta", "count"),
+            bowling_balls=("legal_bowl", "sum"),
             bowling_matches=("match_id", "nunique"),
             bowling_avg_delta=("bowling_delta", "mean"),
         )
