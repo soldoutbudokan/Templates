@@ -41,7 +41,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin master
+          # --autostash: the pipeline leaves regenerated public/data/ and model
+          # pickle unstaged, which blocks plain `pull --rebase`.
+          git pull --rebase --autostash origin master
           git add public/data/ models/win_prob_lgbm.pkl
           git commit -m "chore: retrain Tilt model and refresh data ($(date -u +%Y-%m-%d))"
           git push

@@ -39,7 +39,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin master
+          # --autostash: the pipeline leaves regenerated public/data/ files unstaged,
+          # which blocks plain `pull --rebase`. Stash → rebase → pop handles it.
+          git pull --rebase --autostash origin master
           git add public/data/
           git commit -m "chore: refresh Tilt data ($(date -u +%Y-%m-%d-%H%MZ))"
           git push
