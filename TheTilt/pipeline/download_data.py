@@ -1,10 +1,16 @@
 # %% Imports
+import time
 import zipfile
 from pathlib import Path
 from typing import Optional
 
 import requests
 import yaml
+
+DOWNLOAD_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; TheTiltBot/1.0; +https://github.com/soldoutbudokan/Templates)",
+    "Accept": "application/zip, application/octet-stream, */*",
+}
 
 
 # %% Configuration
@@ -34,10 +40,21 @@ def download_cricsheet_data(
         print("Use force=True to re-download.")
         return output_dir
 
-    # Download
+    # Download (with retries — cricsheet's CDN occasionally 415s bare requests)
     print(f"Downloading IPL data from {url}...")
-    response = requests.get(url, stream=True)
-    response.raise_for_status()
+    last_err: Optional[Exception] = None
+    response = None
+    for attempt in range(1, 4):
+        try:
+            response = requests.get(url, stream=True, headers=DOWNLOAD_HEADERS, timeout=60)
+            response.raise_for_status()
+            break
+        except requests.exceptions.RequestException as e:
+            last_err = e
+            print(f"  Attempt {attempt} failed ({e}); retrying in {attempt * 5}s...")
+            time.sleep(attempt * 5)
+    else:
+        raise RuntimeError(f"Failed to download {url} after 3 attempts") from last_err
 
     total_size = int(response.headers.get("content-length", 0))
     downloaded = 0
