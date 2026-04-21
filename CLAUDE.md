@@ -141,3 +141,10 @@ project/
 
 - Use `/statusline` to show context usage and current git branch
 - Use voice dictation (fn x2 on macOS) - you speak 3x faster than you type
+
+## Project-Specific Notes
+
+### TheTilt
+- **Before changing anything under `TheTilt/`, read `TheTilt/dependencies.md`.** It maps which artifacts auto-refresh from the pipeline (model, JSON exports) and which are hand-maintained content with embedded numbers (`public/about.md`, `public/notes/*.md`, `README.md`) that go stale silently when the model or data changes.
+- The reverse "if you change X, refresh Y" tables in that file tell you which hand-maintained files need their numbers updated in the same commit as a pipeline/model change.
+- When adding a new blog post or any new file with embedded numbers, add a row to the **Hand-maintained content registry** in `TheTilt/dependencies.md`.
