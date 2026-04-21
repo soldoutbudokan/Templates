@@ -6,12 +6,52 @@
     <title>The TILT — About</title>
     <link rel="stylesheet" href="style.css">
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        .about-section { margin-bottom: 28px; }
-        .about-section h2 { color: var(--text-primary); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-        .about-section p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; line-height: 1.7; }
-        .formula { background: var(--bg-card); padding: 14px 18px; border-left: 3px solid var(--accent-green); margin: 12px 0; font-size: 0.85rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-        .formula code { color: var(--accent-green); font-family: 'SF Mono', 'Fira Code', monospace; }
+        /* Rendered markdown article — mirrors notes.html so the about page reads the same */
+        .note-article { max-width: 800px; margin: 0 auto; }
+        .note-article h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .note-article h2 { font-size: 1.15rem; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: var(--text-primary); }
+        .note-article h3 { font-size: 0.95rem; font-weight: 600; margin-top: 24px; margin-bottom: 8px; color: var(--text-primary); }
+        .note-article p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px; }
+        .note-article strong { color: var(--text-primary); }
+        .note-article em { color: var(--text-secondary); }
+        .note-article a { color: var(--accent-green); text-decoration: none; }
+        .note-article a:hover { text-decoration: underline; }
+        .note-article hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+        .note-article img {
+            max-width: 100%; border-radius: var(--radius-md); margin: 16px 0;
+            border: 1px solid var(--border);
+        }
+        .note-article blockquote {
+            border-left: 3px solid var(--accent-green); padding: 8px 16px; margin: 12px 0;
+            background: var(--bg-card); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+        .note-article blockquote p { color: var(--text-muted); margin: 0; }
+        .note-article code {
+            font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem;
+            background: var(--bg-card); padding: 2px 6px; border-radius: 3px; color: var(--accent-green);
+        }
+        .note-article pre {
+            background: var(--bg-card); padding: 14px 18px; border-radius: var(--radius-sm);
+            overflow-x: auto; margin: 12px 0; border: 1px solid var(--border);
+        }
+        .note-article pre code { background: none; padding: 0; }
+        .note-article table {
+            width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 16px 0;
+        }
+        .note-article th {
+            text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border);
+            color: var(--text-muted); font-weight: 600; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .note-article td {
+            padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary);
+        }
+        .note-article tr:hover td { background: var(--bg-hover); }
+        .note-article ul, .note-article ol { margin: 8px 0 12px 24px; }
+        .note-article li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 4px; }
+        .loading { text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -20,7 +60,7 @@
             <div class="logo"><a href="index.html">THE TILT</a></div>
             <div class="nav-links">
                 <a href="index.html">leaderboard</a>
-                <a href="goats.html">🐐 GOATs</a>
+                <a href="goats.html">&#x1F410; GOATs</a>
                 <a href="notes.html">Why is my Favourite Player Rated so Low?</a>
                 <a href="about.html" class="active">about</a>
                 <div class="theme-switch">
@@ -46,80 +86,8 @@
     </script>
 
     <div class="container">
-        <div class="page-header">
-            <h1>About TILT</h1>
-            <div class="subtitle">win probability added for IPL cricket</div>
-        </div>
-
-        <div class="about-section">
-            <h2>what is TILT?</h2>
-            <p>
-                TILT measures how much a player tilts the game in their team's favour.
-                For every ball bowled in the IPL, we calculate the change in win probability
-                and attribute it to the batter and bowler involved.
-            </p>
-            <p>
-                A player's TILT score is their average total win probability added per match.
-                A TILT of +5.00% means the player adds 5 percentage points of win probability
-                to their team every match they play.
-            </p>
-        </div>
-
-        <div class="about-section">
-            <h2>how it works</h2>
-            <div class="formula">
-                For each ball:<br>
-                <code>delta = win_prob_after - win_prob_before</code><br><br>
-                Batter credit: <code>+delta</code> (positive = helped batting team)<br>
-                Bowler credit: <code>-delta</code> (positive = helped bowling team)
-            </div>
-            <p>
-                The win probability model is a LightGBM classifier trained on all historical
-                IPL ball-by-ball data. Features include: balls remaining, wickets in hand,
-                current run rate, required run rate, per-over effects, venue, and recent form.
-            </p>
-        </div>
-
-        <div class="about-section">
-            <h2>ranking methodology</h2>
-            <p>
-                <strong>Bayesian shrinkage</strong>: Raw TILT estimates are shrunk toward the population mean
-                using empirical Bayes (James-Stein). This stabilizes rankings for players with fewer matches.
-            </p>
-            <p>
-                <strong>90% confidence interval</strong>: The default ranking uses the lower bound of each player's
-                90% confidence interval. This naturally penalizes small samples — a player needs consistent
-                performance over many matches to rank highly.
-            </p>
-            <p>
-                <strong>Minimum thresholds</strong>: Players need 10+ matches to appear in rankings. Per-role stats
-                (batting/bowling TILT) require 50+ balls in that role.
-            </p>
-        </div>
-
-        <div class="about-section">
-            <h2>interpreting the numbers</h2>
-            <p>
-                <strong>Batting TILT</strong>: How much a batter shifts win probability when at the crease.
-                Big positive = consistently scores runs when it matters.
-            </p>
-            <p>
-                <strong>Bowling TILT</strong>: How much a bowler shifts win probability in their team's favour.
-                Big positive = takes wickets and contains runs at key moments.
-            </p>
-            <p>
-                <strong>Total TILT</strong>: Combined batting + bowling impact per match.
-                The best all-rounders dominate this ranking.
-            </p>
-        </div>
-
-        <div class="about-section">
-            <h2>data source</h2>
-            <p>
-                All ball-by-ball data from <a href="https://cricsheet.org" style="color:var(--accent-green)">Cricsheet</a>,
-                an open cricket data project. IPL matches only. Player full names resolved via
-                <a href="https://www.wikidata.org" style="color:var(--accent-green)">Wikidata</a>.
-            </p>
+        <div class="note-article" id="aboutContent">
+            <div class="loading">loading…</div>
         </div>
 
         <div class="footer">
@@ -127,5 +95,20 @@
             <a href="index.html">back to leaderboard</a>
         </div>
     </div>
+
+<script>
+async function loadAbout() {
+    try {
+        const res = await fetch('about.md');
+        if (!res.ok) throw new Error('not found');
+        const md = await res.text();
+        const html = marked.parse(md);
+        document.getElementById('aboutContent').innerHTML = html;
+    } catch (e) {
+        document.getElementById('aboutContent').innerHTML = '<div class="loading">about page failed to load</div>';
+    }
+}
+loadAbout();
+</script>
 </body>
 </html>
