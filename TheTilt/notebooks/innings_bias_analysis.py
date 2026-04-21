@@ -15,9 +15,9 @@ import seaborn as sns
 from pathlib import Path
 from scipy import stats
 
-sns.set_theme(style="darkgrid", palette="muted")
-PLOTS_DIR = Path(__file__).resolve().parent / "plots"
-PLOTS_DIR.mkdir(exist_ok=True)
+sns.set_theme(style="white", palette="muted")
+PLOTS_DIR = Path(__file__).resolve().parents[1] / "public" / "notes" / "plots"
+PLOTS_DIR.mkdir(parents=True, exist_ok=True)
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 deltas = pd.read_parquet(DATA_DIR / "deltas.parquet")
@@ -75,10 +75,11 @@ ax.set_xscale("log")
 ax.set_xlabel("|delta_wp|")
 ax.set_ylabel("Density")
 ax.set_title("Distribution of |delta_wp| by Innings")
+ax.grid(False)
 ax.legend()
 fig.tight_layout()
-fig.savefig(PLOTS_DIR / "1_innings_bias_density.png", dpi=150)
-print(f"\nSaved: {PLOTS_DIR / '1_innings_bias_density.png'}")
+fig.savefig(PLOTS_DIR / "innings_delta_density.png", dpi=150)
+print(f"\nSaved: {PLOTS_DIR / 'innings_delta_density.png'}")
 
 
 # %% 2. Distribution Deep-Dive
@@ -106,10 +107,10 @@ ax.plot([0, max_val], [0, max_val], "r--", alpha=0.5, label="y = x (no bias)")
 ax.set_xlabel("Innings 1 quantiles |delta_wp|")
 ax.set_ylabel("Innings 2 quantiles |delta_wp|")
 ax.set_title("QQ Plot: Innings 2 vs Innings 1 |delta_wp|")
+ax.grid(False)
 ax.legend()
 fig.tight_layout()
-fig.savefig(PLOTS_DIR / "2_qq_plot.png", dpi=150)
-print(f"Saved: {PLOTS_DIR / '2_qq_plot.png'}")
+# QQ plot is a diagnostic; not embedded in the blog. Skipping save.
 
 
 # %% 3. Top-N Performance Innings Breakdown
@@ -151,10 +152,11 @@ ax.set_xlabel("Top N performances")
 ax.set_ylabel("% from Innings 2")
 ax.set_title("Innings 2 Dominance in Top-N Performances")
 ax.set_ylim(0, 105)
+ax.grid(False)
 ax.legend()
 fig.tight_layout()
-fig.savefig(PLOTS_DIR / "3_topn_innings_breakdown.png", dpi=150)
-print(f"\nSaved: {PLOTS_DIR / '3_topn_innings_breakdown.png'}")
+fig.savefig(PLOTS_DIR / "innings_topn_share.png", dpi=150)
+print(f"\nSaved: {PLOTS_DIR / 'innings_topn_share.png'}")
 
 
 # %% 4. Win Probability Trajectory by Over
@@ -187,9 +189,9 @@ for i, inn in enumerate([1, 2]):
     ax.set_xlim(1, 20)
     ax.set_ylim(0, 1)
     ax.axhline(0.5, color="gray", linestyle="--", alpha=0.3)
+    ax.grid(False)
 fig.tight_layout()
-fig.savefig(PLOTS_DIR / "4a_wp_trajectory.png", dpi=150)
-print(f"Saved: {PLOTS_DIR / '4a_wp_trajectory.png'}")
+# WP trajectory is a diagnostic; not embedded in the blog. Skipping save.
 
 # Plot 2: Mean |delta_wp| by over
 fig, ax = plt.subplots(figsize=(8, 5))
@@ -200,10 +202,11 @@ ax.set_xlabel("Over")
 ax.set_ylabel("Mean |delta_wp|")
 ax.set_title("Mean Win Probability Swing per Ball by Over")
 ax.set_xlim(1, 20)
+ax.grid(False)
 ax.legend()
 fig.tight_layout()
-fig.savefig(PLOTS_DIR / "4b_delta_by_over.png", dpi=150)
-print(f"Saved: {PLOTS_DIR / '4b_delta_by_over.png'}")
+fig.savefig(PLOTS_DIR / "innings_volatility_by_over.png", dpi=150)
+print(f"Saved: {PLOTS_DIR / 'innings_volatility_by_over.png'}")
 
 
 # %% 5. Phase-Level Bias
@@ -225,13 +228,14 @@ sns.barplot(data=phase_plot, x="phase", y="mean", hue="innings", ax=ax)
 ax.set_xlabel("Match Phase")
 ax.set_ylabel("Mean |delta_wp|")
 ax.set_title("Mean Win Probability Swing by Phase and Innings")
+ax.grid(False)
 # Annotate ratios
 for i, phase in enumerate(phase_pivot.index):
     r = phase_pivot.loc[phase, "Ratio (2/1)"]
     ax.text(i, phase_pivot.loc[phase, 2] + 0.0005, f"{r:.1f}x", ha="center", fontsize=10, fontweight="bold")
 fig.tight_layout()
-fig.savefig(PLOTS_DIR / "5_phase_bias.png", dpi=150)
-print(f"Saved: {PLOTS_DIR / '5_phase_bias.png'}")
+fig.savefig(PLOTS_DIR / "innings_phase_ratio.png", dpi=150)
+print(f"Saved: {PLOTS_DIR / 'innings_phase_ratio.png'}")
 
 
 # %% 6. Career-Level Impact
@@ -273,10 +277,11 @@ ax.plot(x_line, np.polyval(z, x_line), "r-", alpha=0.7, label=f"r={r_pearson:.3f
 ax.set_xlabel("% of career balls in Innings 2")
 ax.set_ylabel("Batting TILT per match")
 ax.set_title("Career Batting TILT vs Innings 2 Exposure (30+ matches)")
+ax.grid(False)
 ax.legend()
 fig.tight_layout()
-fig.savefig(PLOTS_DIR / "6_career_inn2_correlation.png", dpi=150)
-print(f"Saved: {PLOTS_DIR / '6_career_inn2_correlation.png'}")
+fig.savefig(PLOTS_DIR / "innings_career_correlation.png", dpi=150)
+print(f"Saved: {PLOTS_DIR / 'innings_career_correlation.png'}")
 
 
 # %% 7. Simulated Normalization
