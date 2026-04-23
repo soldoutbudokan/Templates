@@ -7,21 +7,21 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": -0.05403,
+  "total_tilt_per_match": -0.05174,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.05481,
-  "shrunk_total_tilt_per_match": -0.0464,
+  "bowling_tilt_per_match": -0.05247,
+  "shrunk_total_tilt_per_match": -0.04518,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.04403,
-  "tilt_ci_lower": -0.13381,
-  "tilt_ci_upper": 0.04101,
-  "tilt_ci_lower_90": -0.11976,
-  "tilt_ci_upper_90": 0.02696,
+  "shrunk_bowling_tilt_per_match": -0.0428,
+  "tilt_ci_lower": -0.1281,
+  "tilt_ci_upper": 0.03774,
+  "tilt_ci_lower_90": -0.11477,
+  "tilt_ci_upper_90": 0.02441,
   "confidence": "low",
-  "total_tilt": -0.86455,
-  "total_matches": 16,
+  "total_tilt": -0.87953,
+  "total_matches": 17,
   "batting_balls": 6,
-  "bowling_balls": 315,
+  "bowling_balls": 327,
   "seasons": [
     {
       "season": "2022",
@@ -400,6 +400,46 @@
         "economy": 11.83,
         "best_figures": "1/21"
       }
+    },
+    {
+      "season": "2026",
+      "team": "Chennai Super Kings",
+      "batting_tilt_per_match": 0.0,
+      "bowling_tilt_per_match": -0.01499,
+      "batting_matches": 0,
+      "bowling_matches": 1,
+      "batting_balls": 0,
+      "bowling_balls": 12,
+      "matches": [
+        {
+          "match_id": "1529270",
+          "date": "2026-04-18",
+          "opponent": "Sunrisers Hyderabad",
+          "venue": "Rajiv Gandhi International Stadium, Uppal",
+          "team_score": "184/8",
+          "opponent_score": "194/9",
+          "winner": "Sunrisers Hyderabad",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 2,
+          "bowl_balls": 12,
+          "bowl_runs": 22,
+          "bowl_econ": 11.0,
+          "bowl_tilt": -0.01499,
+          "total_tilt": -0.01499
+        }
+      ],
+      "bowling_stats": {
+        "wickets": 2,
+        "innings": 1,
+        "balls": 12,
+        "runs_conceded": 22,
+        "avg": 11.0,
+        "economy": 11.0,
+        "best_figures": "2/22"
+      }
     }
   ],
   "batting_phases": [
@@ -419,9 +459,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.26449,
-      "balls": 222,
-      "avg_delta": -0.00114
+      "tilt": -0.27948,
+      "balls": 234,
+      "avg_delta": -0.001145
     },
     {
       "phase": "middle",
@@ -652,6 +692,12 @@
       "date": "2025-04-08",
       "tilt": -0.04197,
       "cumulative": -0.86455
+    },
+    {
+      "match": 17,
+      "date": "2026-04-18",
+      "tilt": -0.01499,
+      "cumulative": -0.87953
     }
   ],
   "team_matchups": [
@@ -679,12 +725,12 @@
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 17,
-    "innings": 16,
-    "balls": 315,
-    "runs_conceded": 523,
-    "avg": 30.76,
-    "economy": 9.96,
+    "wickets": 19,
+    "innings": 17,
+    "balls": 327,
+    "runs_conceded": 545,
+    "avg": 28.68,
+    "economy": 10.0,
     "best_figures": "4/46"
   },
   "match_tilt_distribution": [
@@ -703,6 +749,7 @@
     -0.07241,
     -0.28174,
     -0.19221,
-    -0.04197
+    -0.04197,
+    -0.01499
   ]
 }
