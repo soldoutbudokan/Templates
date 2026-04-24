@@ -144,7 +144,7 @@ function render() {
                 <td>${formatTilt(r.tilt)}</td>
                 <td class="hide-mobile">${r.runs}</td>
                 <td class="hide-mobile">${r.balls}</td>
-                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
+                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" class="match-link">${r.season}</a></td>
             </tr>`;
         });
         html += '</tbody></table></div>';
@@ -169,7 +169,7 @@ function render() {
                 <td>${formatTilt(r.tilt)}</td>
                 <td class="hide-mobile">${r.wickets}/${r.runs_conceded}</td>
                 <td class="hide-mobile">${r.balls}</td>
-                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
+                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" class="match-link">${r.season}</a></td>
             </tr>`;
         });
         html += '</tbody></table></div>';
@@ -194,7 +194,7 @@ function render() {
                 <td>${formatTilt(r.tilt)}</td>
                 <td class="hide-mobile">${formatTilt(r.bat_tilt)}</td>
                 <td class="hide-mobile">${formatTilt(r.bowl_tilt)}</td>
-                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" style="color:var(--text-dim);text-decoration:none">${r.season}</a></td>
+                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" class="match-link">${r.season}</a></td>
             </tr>`;
         });
         html += '</tbody></table></div>';
