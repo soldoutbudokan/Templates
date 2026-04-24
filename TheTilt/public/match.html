@@ -171,6 +171,33 @@ async function loadMatch() {
 
             const inningsBreak = inn1.length;
 
+            const inningsBreakLine = {
+                id: 'inningsBreakLine',
+                afterDatasetsDraw(chart) {
+                    if (inningsBreak <= 0 || inningsBreak >= chart.data.labels.length) return;
+                    const xScale = chart.scales.x;
+                    const yScale = chart.scales.y;
+                    const x0 = xScale.getPixelForValue(inningsBreak - 1);
+                    const x1 = xScale.getPixelForValue(inningsBreak);
+                    const x = (x0 + x1) / 2;
+                    const ctx = chart.ctx;
+                    ctx.save();
+                    ctx.setLineDash([4, 4]);
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = cssVar('--text-muted');
+                    ctx.beginPath();
+                    ctx.moveTo(x, yScale.top);
+                    ctx.lineTo(x, yScale.bottom);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = cssVar('--text-muted');
+                    ctx.font = '10px system-ui, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('innings break', x, yScale.top - 4);
+                    ctx.restore();
+                }
+            };
+
             new Chart(document.getElementById('wpChart'), {
                 type: 'line',
                 data: {
@@ -180,7 +207,9 @@ async function loadMatch() {
                         data: wpData,
                         borderColor: wpData.map((_, i) => i < inningsBreak ? cssVar('--accent-green') : cssVar('--accent-red')),
                         segment: {
-                            borderColor: ctx => ctx.p0DataIndex < inningsBreak - 1 ? cssVar('--accent-green') : cssVar('--accent-red'),
+                            borderColor: ctx => ctx.p0DataIndex === inningsBreak - 1
+                                ? 'transparent'
+                                : (ctx.p0DataIndex < inningsBreak - 1 ? cssVar('--accent-green') : cssVar('--accent-red')),
                         },
                         backgroundColor: 'transparent',
                         fill: false,
@@ -190,6 +219,7 @@ async function loadMatch() {
                         borderWidth: 2,
                     }]
                 },
+                plugins: [inningsBreakLine],
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,

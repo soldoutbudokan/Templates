@@ -361,6 +361,20 @@ The effect on **career** rankings is small. The Spearman rank correlation betwee
 
 The full diagnostic, including per-phase breakdowns and the qq-plot above, is at: [The Second Innings Problem](notes.html?note=innings-bias).
 
+### The innings-boundary recalibration
+
+The match-page win-probability chart shows a visible **jump** between the last ball of innings 1 and the first ball of innings 2, even though no ball has been bowled between them. This isn't a rendering bug — it's the model honestly re-pricing the game state once the chase target is locked in.
+
+Several features restructure at the boundary in one step: `target`, `runs_needed`, and `required_run_rate` go from 0 (innings 1 placeholder) to concrete values; `balls_remaining` resets from ~1 back to 120; `wickets_in_hand` resets to 10; the `innings` switch flips from 1 to 2. The model has learned that innings 1 ending at state *S* and innings 2 starting with the corresponding target are two different distributions of match outcomes.
+
+Across all 1,169 matches with both innings, from the batting-first team's perspective:
+
+- **Median |jump|** is **8.4 pp** and 42% of matches jump by at least 10 pp.
+- **Mean signed jump is −5.1 pp** (one-sample t-test p ≈ 10⁻⁴⁶) — the model systematically favors the chasing side at the switch, most strongly when innings 1 ended with lots of wickets still in hand.
+- The bias has shrunk over seasons: it was ~−8 pp in the early 2010s and is near zero for 2025–2026.
+
+The match chart marks the boundary with a dashed vertical line and breaks the line into two segments so the jump is visible-as-a-jump rather than a sloped connector that reads like continuous play. The per-ball TILT deltas inside each innings are unaffected — TILT is a within-innings `wp_after − wp_before` sum, so the boundary re-pricing never gets credited to any player. A structural fix (continuous features across the boundary, full retrain) is a candidate for the next model revision.
+
 ### What the model can't see
 
 | Blind spot | Consequence |
