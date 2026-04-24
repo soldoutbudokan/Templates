@@ -8,21 +8,21 @@
     "Chennai Super Kings",
     "Gujarat Titans"
   ],
-  "total_tilt_per_match": 0.00727,
+  "total_tilt_per_match": 0.008,
   "batting_tilt_per_match": -0.01388,
-  "bowling_tilt_per_match": 0.01179,
-  "shrunk_total_tilt_per_match": 0.00412,
+  "bowling_tilt_per_match": 0.01241,
+  "shrunk_total_tilt_per_match": 0.00483,
   "shrunk_batting_tilt_per_match": -0.01427,
-  "shrunk_bowling_tilt_per_match": 0.00921,
-  "tilt_ci_lower": -0.03824,
-  "tilt_ci_upper": 0.04648,
-  "tilt_ci_lower_90": -0.03143,
-  "tilt_ci_upper_90": 0.03968,
+  "shrunk_bowling_tilt_per_match": 0.00981,
+  "tilt_ci_lower": -0.03662,
+  "tilt_ci_upper": 0.04628,
+  "tilt_ci_lower_90": -0.02996,
+  "tilt_ci_upper_90": 0.03962,
   "confidence": "medium",
-  "total_tilt": 0.31269,
-  "total_matches": 43,
+  "total_tilt": 0.35182,
+  "total_matches": 44,
   "batting_balls": 53,
-  "bowling_balls": 918,
+  "bowling_balls": 942,
   "seasons": [
     {
       "season": "2023",
@@ -827,11 +827,11 @@
       "season": "2026",
       "team": "Chennai Super Kings",
       "batting_tilt_per_match": -0.01171,
-      "bowling_tilt_per_match": -0.02381,
+      "bowling_tilt_per_match": -0.01482,
       "batting_matches": 3,
-      "bowling_matches": 6,
+      "bowling_matches": 7,
       "batting_balls": 18,
-      "bowling_balls": 126,
+      "bowling_balls": 150,
       "matches": [
         {
           "match_id": "1527676",
@@ -946,6 +946,25 @@
           "bowl_econ": 9.5,
           "bowl_tilt": -0.03587,
           "total_tilt": -0.02419
+        },
+        {
+          "match_id": "1529276",
+          "date": "2026-04-23",
+          "opponent": "Mumbai Indians",
+          "venue": "Wankhede Stadium",
+          "team_score": "207/6",
+          "opponent_score": "104/10",
+          "winner": "Chennai Super Kings",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 2,
+          "bowl_balls": 24,
+          "bowl_runs": 25,
+          "bowl_econ": 6.25,
+          "bowl_tilt": 0.03913,
+          "total_tilt": 0.03913
         }
       ],
       "batting_stats": {
@@ -960,12 +979,12 @@
         "hundreds": 0
       },
       "bowling_stats": {
-        "wickets": 5,
-        "innings": 6,
-        "balls": 126,
-        "runs_conceded": 213,
-        "avg": 42.6,
-        "economy": 10.14,
+        "wickets": 7,
+        "innings": 7,
+        "balls": 150,
+        "runs_conceded": 238,
+        "avg": 34.0,
+        "economy": 9.52,
         "best_figures": "3/22"
       }
     }
@@ -993,9 +1012,9 @@
     },
     {
       "phase": "middle",
-      "tilt": 0.60469,
-      "balls": 719,
-      "avg_delta": 0.000809
+      "tilt": 0.64381,
+      "balls": 743,
+      "avg_delta": 0.000834
     },
     {
       "phase": "death",
@@ -1430,6 +1449,12 @@
       "date": "2026-04-18",
       "tilt": -0.02419,
       "cumulative": 0.31269
+    },
+    {
+      "match": 44,
+      "date": "2026-04-23",
+      "tilt": 0.03913,
+      "cumulative": 0.35182
     }
   ],
   "team_matchups": [
@@ -1492,12 +1517,12 @@
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 53,
-    "innings": 43,
-    "balls": 918,
-    "runs_conceded": 1301,
-    "avg": 24.55,
-    "economy": 8.5,
+    "wickets": 55,
+    "innings": 44,
+    "balls": 942,
+    "runs_conceded": 1326,
+    "avg": 24.11,
+    "economy": 8.45,
     "best_figures": "4/22"
   },
   "match_tilt_distribution": [
@@ -1543,6 +1568,7 @@
     -0.19328,
     -0.0459,
     0.21026,
-    -0.02419
+    -0.02419,
+    0.03913
   ]
 }
