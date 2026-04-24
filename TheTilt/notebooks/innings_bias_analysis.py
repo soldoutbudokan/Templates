@@ -16,6 +16,15 @@ from pathlib import Path
 from scipy import stats
 
 sns.set_theme(style="white", palette="muted")
+
+# Site palette — matches public/notes/kohli-2016-paradox.md plots.
+# Keep in sync across notebooks: venue_importance_analysis.py,
+# innings_boundary_analysis.py, kohli_2016_analysis.py.
+COLOR_POS = "#4ade80"     # green-400 — positive TILT
+COLOR_NEG = "#f87171"     # red-400   — negative TILT
+COLOR_BLUE = "#60a5fa"    # blue-400  — primary categorical (e.g. Innings 1)
+COLOR_AMBER = "#fbbf24"   # amber-400 — secondary categorical (e.g. Innings 2)
+
 PLOTS_DIR = Path(__file__).resolve().parents[1] / "public" / "notes" / "plots"
 PLOTS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -66,11 +75,14 @@ print(f"Cohen's d: {cohens_d:.3f}")
 
 # Plot: density of |delta_wp| by innings
 fig, ax = plt.subplots(figsize=(8, 5))
+inn_colors = {1: COLOR_BLUE, 2: COLOR_AMBER}
 for inn in [1, 2]:
     data = deltas.loc[deltas["innings"] == inn, "abs_delta_wp"]
     data_clipped = data[data > 0.001]  # avoid log(0) issues
-    ax.hist(data_clipped, bins=100, alpha=0.5, density=True, label=f"Innings {inn}")
-    ax.axvline(data.mean(), linestyle="--", alpha=0.8, label=f"Inn {inn} mean={data.mean():.4f}")
+    ax.hist(data_clipped, bins=100, alpha=0.5, density=True,
+            color=inn_colors[inn], label=f"Innings {inn}")
+    ax.axvline(data.mean(), linestyle="--", alpha=0.8,
+               color=inn_colors[inn], label=f"Inn {inn} mean={data.mean():.4f}")
 ax.set_xscale("log")
 ax.set_xlabel("|delta_wp|")
 ax.set_ylabel("Density")
@@ -101,9 +113,9 @@ print(pct_table.to_string(float_format="{:.5f}".format))
 fig, ax = plt.subplots(figsize=(6, 6))
 q1 = np.quantile(inn1, np.linspace(0, 1, 200))
 q2 = np.quantile(inn2, np.linspace(0, 1, 200))
-ax.scatter(q1, q2, s=10, alpha=0.6)
+ax.scatter(q1, q2, s=10, alpha=0.6, color=COLOR_BLUE)
 max_val = max(q1.max(), q2.max())
-ax.plot([0, max_val], [0, max_val], "r--", alpha=0.5, label="y = x (no bias)")
+ax.plot([0, max_val], [0, max_val], "--", color=COLOR_NEG, alpha=0.7, label="y = x (no bias)")
 ax.set_xlabel("Innings 1 quantiles |delta_wp|")
 ax.set_ylabel("Innings 2 quantiles |delta_wp|")
 ax.set_title("QQ Plot: Innings 2 vs Innings 1 |delta_wp|")
@@ -145,8 +157,10 @@ for n in ns:
 results_df = pd.DataFrame(results)
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(results_df["N"], results_df["Batting % Inn 2"], "o-", label="Batting")
-ax.plot(results_df["N"], results_df["Bowling % Inn 2"], "s-", label="Bowling")
+ax.plot(results_df["N"], results_df["Batting % Inn 2"], "o-",
+        color=COLOR_BLUE, label="Batting")
+ax.plot(results_df["N"], results_df["Bowling % Inn 2"], "s-",
+        color=COLOR_AMBER, label="Bowling")
 ax.axhline(50, color="gray", linestyle="--", alpha=0.5, label="50% (no bias)")
 ax.set_xlabel("Top N performances")
 ax.set_ylabel("% from Innings 2")
@@ -176,11 +190,13 @@ fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
 for i, inn in enumerate([1, 2]):
     d = over_stats[over_stats["innings"] == inn]
     ax = axes[i]
-    ax.plot(d["over"] + 1, d["wp_mean"], "b-", linewidth=2)
+    c = COLOR_BLUE if inn == 1 else COLOR_AMBER
+    ax.plot(d["over"] + 1, d["wp_mean"], "-", color=c, linewidth=2)
     ax.fill_between(
         d["over"] + 1,
         (d["wp_mean"] - d["wp_std"]).clip(0, 1),
         (d["wp_mean"] + d["wp_std"]).clip(0, 1),
+        color=c,
         alpha=0.3,
     )
     ax.set_xlabel("Over")
@@ -197,7 +213,8 @@ fig.tight_layout()
 fig, ax = plt.subplots(figsize=(8, 5))
 for inn in [1, 2]:
     d = over_stats[over_stats["innings"] == inn]
-    ax.plot(d["over"] + 1, d["abs_delta_mean"], "o-", label=f"Innings {inn}", markersize=5)
+    ax.plot(d["over"] + 1, d["abs_delta_mean"], "o-",
+            color=inn_colors[inn], label=f"Innings {inn}", markersize=5)
 ax.set_xlabel("Over")
 ax.set_ylabel("Mean |delta_wp|")
 ax.set_title("Mean Win Probability Swing per Ball by Over")
@@ -224,7 +241,8 @@ print(phase_pivot.to_string(float_format="{:.5f}".format))
 fig, ax = plt.subplots(figsize=(8, 5))
 phase_plot = phase_stats.copy()
 phase_plot["innings"] = phase_plot["innings"].map({1: "Innings 1", 2: "Innings 2"})
-sns.barplot(data=phase_plot, x="phase", y="mean", hue="innings", ax=ax)
+sns.barplot(data=phase_plot, x="phase", y="mean", hue="innings", ax=ax,
+            palette={"Innings 1": COLOR_BLUE, "Innings 2": COLOR_AMBER})
 ax.set_xlabel("Match Phase")
 ax.set_ylabel("Mean |delta_wp|")
 ax.set_title("Mean Win Probability Swing by Phase and Innings")
@@ -269,11 +287,12 @@ print(f"  Pearson:  r={r_pearson:.3f}, p={p_pearson:.3e}")
 print(f"  Spearman: r={r_spearman:.3f}, p={p_spearman:.3e}")
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.scatter(career_30["pct_inn2"], career_30["batting_tilt_per_match"], alpha=0.5, s=20)
+ax.scatter(career_30["pct_inn2"], career_30["batting_tilt_per_match"],
+           alpha=0.5, s=20, color=COLOR_BLUE)
 # Regression line
 z = np.polyfit(career_30["pct_inn2"], career_30["batting_tilt_per_match"], 1)
 x_line = np.linspace(career_30["pct_inn2"].min(), career_30["pct_inn2"].max(), 100)
-ax.plot(x_line, np.polyval(z, x_line), "r-", alpha=0.7, label=f"r={r_pearson:.3f}")
+ax.plot(x_line, np.polyval(z, x_line), "-", color=COLOR_NEG, alpha=0.8, label=f"r={r_pearson:.3f}")
 ax.set_xlabel("% of career balls in Innings 2")
 ax.set_ylabel("Batting TILT per match")
 ax.set_title("Career Batting TILT vs Innings 2 Exposure (30+ matches)")

@@ -33,6 +33,14 @@ from pipeline.compute_tilt import compute_ball_deltas
 
 sns.set_theme(style="white", palette="muted")
 
+# Site palette — matches public/notes/kohli-2016-paradox.md plots.
+# Keep in sync across notebooks: innings_bias_analysis.py,
+# innings_boundary_analysis.py, kohli_2016_analysis.py.
+COLOR_POS = "#4ade80"     # green-400 — positive TILT
+COLOR_NEG = "#f87171"     # red-400   — negative TILT
+COLOR_BLUE = "#60a5fa"    # blue-400  — primary categorical
+COLOR_AMBER = "#fbbf24"   # amber-400 — secondary categorical
+
 DATA_DIR = REPO_ROOT / "data" / "processed"
 MODELS_DIR = REPO_ROOT / "models"
 PLOTS_DIR = REPO_ROOT / "public" / "notes" / "plots"
@@ -316,9 +324,9 @@ def plot_match_by_match(paired_df, title, outfile):
     swap_pct = paired_df["swap_bat_tilt"].values * 100
 
     b1 = ax.bar(x - width / 2, real_pct, width, label="Real (Chinnaswamy)",
-                color="#60a5fa", edgecolor="none")
+                color=COLOR_BLUE, edgecolor="none")
     b2 = ax.bar(x + width / 2, swap_pct, width, label="Swapped to Chepauk",
-                color="#f59e0b", edgecolor="none")
+                color=COLOR_AMBER, edgecolor="none")
 
     for xi, r, s, runs, balls in zip(x, real_pct, swap_pct,
                                        paired_df["runs"], paired_df["balls"]):
@@ -362,8 +370,8 @@ def plot_abd_vs_kohli(abd_df, kohli_df, outfile):
 
     for ax, (df, label, color_real, color_swap) in zip(
         axes,
-        [(abd_df, "AB de Villiers", "#60a5fa", "#f59e0b"),
-         (kohli_df, "Virat Kohli", "#60a5fa", "#f59e0b")],
+        [(abd_df, "AB de Villiers", COLOR_BLUE, COLOR_AMBER),
+         (kohli_df, "Virat Kohli", COLOR_BLUE, COLOR_AMBER)],
     ):
         x = np.arange(len(df))
         width = 0.38
@@ -550,11 +558,11 @@ def plot_dumbbell(cohorts_with_pick, outfile):
     swap_vals = np.array([c["swap_tilt"] for c in cdata])
 
     for yi, h, s in zip(y, home_vals, swap_vals):
-        color = "#dc2626" if s < h else "#16a34a"
+        color = COLOR_NEG if s < h else COLOR_POS
         ax.plot([h, s], [yi, yi], color=color, linewidth=2.2, zorder=1)
-    ax.scatter(home_vals, y, s=90, color="#60a5fa", zorder=2, label="Home (real)",
+    ax.scatter(home_vals, y, s=90, color=COLOR_BLUE, zorder=2, label="Home (real)",
                edgecolor="white", linewidth=1.0)
-    ax.scatter(swap_vals, y, s=90, color="#f59e0b", zorder=2, label="Swapped venue",
+    ax.scatter(swap_vals, y, s=90, color=COLOR_AMBER, zorder=2, label="Swapped venue",
                edgecolor="white", linewidth=1.0)
 
     for yi, h, s in zip(y, home_vals, swap_vals):
