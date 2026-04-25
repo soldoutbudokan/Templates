@@ -18,7 +18,7 @@
         </div>
         <div class="footer">
             data from <a href="https://cricsheet.org">cricsheet.org</a> |
-            <a href="index.html">back to leaderboard</a>
+            <a href="index.html">back to TILT</a>
         </div>
     </div>
 
@@ -61,8 +61,8 @@ function ancillaryColumns(stat, row) {
     if (stat === 'wickets') return `<td>${(row.balls / 6).toFixed(1)} ov</td><td>${row.economy.toFixed(2)}</td><td>${row.innings}</td>`;
     if (stat === 'sr') return `<td>${row.runs}</td><td>${row.balls}</td>`;
     if (stat === 'economy') return `<td>${row.wickets}</td><td>${(row.balls / 6).toFixed(1)} ov</td>`;
-    if (stat === 'batting_tilt' || stat === 'bowling_tilt') return `<td>${formatTilt(row.raw)}</td><td>${row.matches}</td><td>${row.balls}</td>`;
-    if (stat === 'total_tilt') return `<td>${formatTilt(row.raw)}</td><td>${row.matches}</td>`;
+    if (stat === 'batting_tilt' || stat === 'bowling_tilt') return `<td>${formatTilt(row.per_match)}</td><td>${row.matches}</td><td>${row.balls}</td>`;
+    if (stat === 'total_tilt') return `<td>${formatTilt(row.per_match)}</td><td>${row.matches}</td>`;
     if (stat === 'fifties') return `<td>${row.hundreds}</td><td>${row.innings}</td>`;
     if (stat === 'hundreds') return `<td>${row.fifties}</td><td>${row.innings}</td>`;
     if (stat === 'fours' || stat === 'sixes') return `<td>${row.runs}</td><td>${row.balls}</td>`;
@@ -70,15 +70,15 @@ function ancillaryColumns(stat, row) {
 }
 
 function ancillaryHeaders(stat) {
-    if (stat === 'runs') return '<th>balls</th><th>SR</th><th>inn</th>';
-    if (stat === 'wickets') return '<th>overs</th><th>econ</th><th>inn</th>';
-    if (stat === 'sr') return '<th>runs</th><th>balls</th>';
-    if (stat === 'economy') return '<th>wkts</th><th>overs</th>';
-    if (stat === 'batting_tilt' || stat === 'bowling_tilt') return '<th>raw</th><th>matches</th><th>balls</th>';
-    if (stat === 'total_tilt') return '<th>raw</th><th>matches</th>';
-    if (stat === 'fifties') return '<th>100s</th><th>inn</th>';
-    if (stat === 'hundreds') return '<th>50s</th><th>inn</th>';
-    if (stat === 'fours' || stat === 'sixes') return '<th>runs</th><th>balls</th>';
+    if (stat === 'runs') return '<th>Balls</th><th>SR</th><th>Inn</th>';
+    if (stat === 'wickets') return '<th>Overs</th><th>Econ</th><th>Inn</th>';
+    if (stat === 'sr') return '<th>Runs</th><th>Balls</th>';
+    if (stat === 'economy') return '<th>Wkts</th><th>Overs</th>';
+    if (stat === 'batting_tilt' || stat === 'bowling_tilt') return '<th>Per Match</th><th>Matches</th><th>Balls</th>';
+    if (stat === 'total_tilt') return '<th>Per Match</th><th>Matches</th>';
+    if (stat === 'fifties') return '<th>100s</th><th>Inn</th>';
+    if (stat === 'hundreds') return '<th>50s</th><th>Inn</th>';
+    if (stat === 'fours' || stat === 'sixes') return '<th>Runs</th><th>Balls</th>';
     return '';
 }
 
@@ -134,7 +134,7 @@ async function loadLeaders() {
 
     const html = `
         <div class="page-header">
-            <h1>${STAT_LABELS[stat]} leaders — IPL ${data.season}</h1>
+            <h1>${STAT_LABELS[stat]} Leaders — IPL ${data.season}</h1>
             <div class="subtitle">${directionNote}${threshold ? ` ${threshold}` : ''}</div>
         </div>
 
@@ -152,8 +152,8 @@ async function loadLeaders() {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>player</th>
-                        <th>team</th>
+                        <th>Player</th>
+                        <th>Team</th>
                         <th>${STAT_LABELS[stat]}</th>
                         ${ancillaryHeaders(stat)}
                     </tr>

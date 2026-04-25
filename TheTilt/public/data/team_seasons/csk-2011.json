@@ -9,8 +9,9 @@
     "wins": 11,
     "losses": 5,
     "win_pct": 0.6875,
-    "team_total_tilt": 3.12568,
-    "team_tilt_per_match": 0.19535,
+    "nrr": 0.525,
+    "team_total_tilt": 3.61728,
+    "team_tilt_per_match": 0.22608,
     "position_est": 1
   },
   "batting_stats": {
@@ -28,6 +29,25 @@
     "economy": 7.62
   },
   "roster": [
+    {
+      "player": "Tim Southee",
+      "slug": "tg-southee-13c35c9e",
+      "matches": 5,
+      "batting_stats": null,
+      "bowling_stats": {
+        "wickets": 4,
+        "innings": 5,
+        "balls": 114,
+        "runs_conceded": 167,
+        "avg": 41.75,
+        "economy": 8.79,
+        "best_figures": "1/31"
+      },
+      "batting_tilt_per_match": null,
+      "bowling_tilt_per_match": 0.10375,
+      "shrunk_total_tilt_per_match": 0.05443,
+      "total_tilt": 0.51875
+    },
     {
       "player": "Ravichandran Ashwin",
       "slug": "r-ashwin-495d42a5",
@@ -53,9 +73,9 @@
         "best_figures": "3/24"
       },
       "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.1006,
-      "shrunk_total_tilt_per_match": 0.0699,
-      "total_tilt": 1.42907
+      "bowling_tilt_per_match": 0.10499,
+      "shrunk_total_tilt_per_match": 0.07441,
+      "total_tilt": 1.50756
     },
     {
       "player": "Doug Bollinger",
@@ -82,68 +102,9 @@
         "best_figures": "3/22"
       },
       "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.06601,
-      "shrunk_total_tilt_per_match": 0.04816,
-      "total_tilt": 0.85811
-    },
-    {
-      "player": "Tim Southee",
-      "slug": "tg-southee-13c35c9e",
-      "matches": 5,
-      "batting_stats": null,
-      "bowling_stats": {
-        "wickets": 4,
-        "innings": 5,
-        "balls": 114,
-        "runs_conceded": 167,
-        "avg": 41.75,
-        "economy": 8.79,
-        "best_figures": "1/31"
-      },
-      "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.06299,
-      "shrunk_total_tilt_per_match": 0.02985,
-      "total_tilt": 0.31495
-    },
-    {
-      "player": "Wriddhiman Saha",
-      "slug": "wp-saha-fe11caa6",
-      "matches": 2,
-      "batting_stats": {
-        "runs": 68,
-        "innings": 2,
-        "balls": 63,
-        "avg": 68.0,
-        "sr": 107.94,
-        "hs": 46,
-        "not_outs": 1,
-        "fifties": 0,
-        "hundreds": 0
-      },
-      "bowling_stats": null,
-      "batting_tilt_per_match": 0.05733,
-      "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": 0.01016,
-      "total_tilt": 0.11465
-    },
-    {
-      "player": "Nuwan Kulasekara",
-      "slug": "kmdn-kulasekara-469ea22b",
-      "matches": 1,
-      "batting_stats": null,
-      "bowling_stats": {
-        "wickets": 1,
-        "innings": 1,
-        "balls": 18,
-        "runs_conceded": 26,
-        "avg": 26.0,
-        "economy": 8.67,
-        "best_figures": "1/26"
-      },
-      "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.00055,
-      "total_tilt": 0.05501
+      "bowling_tilt_per_match": 0.08453,
+      "shrunk_total_tilt_per_match": 0.06319,
+      "total_tilt": 1.09894
     },
     {
       "player": "Mahendra Singh Dhoni",
@@ -161,10 +122,10 @@
         "hundreds": 0
       },
       "bowling_stats": null,
-      "batting_tilt_per_match": 0.04162,
+      "batting_tilt_per_match": 0.05136,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": 0.02909,
-      "total_tilt": 0.54109
+      "shrunk_total_tilt_per_match": 0.0371,
+      "total_tilt": 0.66767
     },
     {
       "player": "Suresh Raina",
@@ -190,10 +151,50 @@
         "economy": 7.6,
         "best_figures": "2/3"
       },
-      "batting_tilt_per_match": 0.01863,
-      "bowling_tilt_per_match": 0.02482,
-      "shrunk_total_tilt_per_match": 0.02744,
-      "total_tilt": 0.59593
+      "batting_tilt_per_match": 0.03412,
+      "bowling_tilt_per_match": 0.02259,
+      "shrunk_total_tilt_per_match": 0.03904,
+      "total_tilt": 0.81701
+    },
+    {
+      "player": "Nuwan Kulasekara",
+      "slug": "kmdn-kulasekara-469ea22b",
+      "matches": 1,
+      "batting_stats": null,
+      "bowling_stats": {
+        "wickets": 1,
+        "innings": 1,
+        "balls": 18,
+        "runs_conceded": 26,
+        "avg": 26.0,
+        "economy": 8.67,
+        "best_figures": "1/26"
+      },
+      "batting_tilt_per_match": null,
+      "bowling_tilt_per_match": null,
+      "shrunk_total_tilt_per_match": -0.00233,
+      "total_tilt": 0.04398
+    },
+    {
+      "player": "Wriddhiman Saha",
+      "slug": "wp-saha-fe11caa6",
+      "matches": 2,
+      "batting_stats": {
+        "runs": 68,
+        "innings": 2,
+        "balls": 63,
+        "avg": 68.0,
+        "sr": 107.94,
+        "hs": 46,
+        "not_outs": 1,
+        "fifties": 0,
+        "hundreds": 0
+      },
+      "bowling_stats": null,
+      "batting_tilt_per_match": 0.03801,
+      "bowling_tilt_per_match": null,
+      "shrunk_total_tilt_per_match": 0.00389,
+      "total_tilt": 0.07602
     },
     {
       "player": "Dwayne Bravo",
@@ -220,9 +221,9 @@
         "best_figures": "2/21"
       },
       "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.03368,
-      "shrunk_total_tilt_per_match": 0.00893,
-      "total_tilt": 0.14349
+      "bowling_tilt_per_match": 0.04148,
+      "shrunk_total_tilt_per_match": 0.01486,
+      "total_tilt": 0.19608
     },
     {
       "player": "Albie Morkel",
@@ -248,10 +249,29 @@
         "economy": 8.67,
         "best_figures": "4/30"
       },
-      "batting_tilt_per_match": 0.01738,
-      "bowling_tilt_per_match": -0.00139,
-      "shrunk_total_tilt_per_match": 0.00706,
-      "total_tilt": 0.18907
+      "batting_tilt_per_match": 0.01736,
+      "bowling_tilt_per_match": -0.01174,
+      "shrunk_total_tilt_per_match": -0.00057,
+      "total_tilt": 0.04388
+    },
+    {
+      "player": "Shadab Jakati",
+      "slug": "sb-jakati-c8179c68",
+      "matches": 14,
+      "batting_stats": null,
+      "bowling_stats": {
+        "wickets": 10,
+        "innings": 14,
+        "balls": 265,
+        "runs_conceded": 338,
+        "avg": 33.8,
+        "economy": 7.65,
+        "best_figures": "2/23"
+      },
+      "batting_tilt_per_match": null,
+      "bowling_tilt_per_match": 0.00249,
+      "shrunk_total_tilt_per_match": -0.00112,
+      "total_tilt": 0.03492
     },
     {
       "player": "Subramaniam Badrinath",
@@ -269,29 +289,10 @@
         "hundreds": 0
       },
       "bowling_stats": null,
-      "batting_tilt_per_match": 0.00371,
+      "batting_tilt_per_match": -0.00671,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.00083,
-      "total_tilt": 0.04456
-    },
-    {
-      "player": "Shadab Jakati",
-      "slug": "sb-jakati-c8179c68",
-      "matches": 14,
-      "batting_stats": null,
-      "bowling_stats": {
-        "wickets": 10,
-        "innings": 14,
-        "balls": 265,
-        "runs_conceded": 338,
-        "avg": 33.8,
-        "economy": 7.65,
-        "best_figures": "2/23"
-      },
-      "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": -0.00904,
-      "shrunk_total_tilt_per_match": -0.01045,
-      "total_tilt": -0.12655
+      "shrunk_total_tilt_per_match": -0.0087,
+      "total_tilt": -0.08056
     },
     {
       "player": "Suraj Randiv",
@@ -318,9 +319,9 @@
         "best_figures": "2/33"
       },
       "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": -0.01272,
-      "shrunk_total_tilt_per_match": -0.01481,
-      "total_tilt": -0.11456
+      "bowling_tilt_per_match": -0.00742,
+      "shrunk_total_tilt_per_match": -0.0107,
+      "total_tilt": -0.06882
     },
     {
       "player": "Michael Hussey",
@@ -338,31 +339,10 @@
         "hundreds": 0
       },
       "bowling_stats": null,
-      "batting_tilt_per_match": -0.01445,
+      "batting_tilt_per_match": -0.01575,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.01475,
-      "total_tilt": -0.20235
-    },
-    {
-      "player": "Murali Vijay",
-      "slug": "m-vijay-4b57e452",
-      "matches": 16,
-      "batting_stats": {
-        "runs": 434,
-        "innings": 16,
-        "balls": 339,
-        "avg": 27.12,
-        "sr": 128.02,
-        "hs": 95,
-        "not_outs": 0,
-        "fifties": 3,
-        "hundreds": 0
-      },
-      "bowling_stats": null,
-      "batting_tilt_per_match": -0.02271,
-      "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.02145,
-      "total_tilt": -0.36331
+      "shrunk_total_tilt_per_match": -0.01569,
+      "total_tilt": -0.22046
     },
     {
       "player": "Scott Styris",
@@ -390,8 +370,50 @@
       },
       "batting_tilt_per_match": null,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.01884,
-      "total_tilt": -0.04835
+      "shrunk_total_tilt_per_match": -0.01559,
+      "total_tilt": -0.03163
+    },
+    {
+      "player": "Murali Vijay",
+      "slug": "m-vijay-4b57e452",
+      "matches": 16,
+      "batting_stats": {
+        "runs": 434,
+        "innings": 16,
+        "balls": 339,
+        "avg": 27.12,
+        "sr": 128.02,
+        "hs": 95,
+        "not_outs": 0,
+        "fifties": 3,
+        "hundreds": 0
+      },
+      "bowling_stats": null,
+      "batting_tilt_per_match": -0.04145,
+      "bowling_tilt_per_match": null,
+      "shrunk_total_tilt_per_match": -0.03676,
+      "total_tilt": -0.66327
+    },
+    {
+      "player": "Anirudha Srikkanth",
+      "slug": "s-anirudha-95a2ea61",
+      "matches": 5,
+      "batting_stats": {
+        "runs": 83,
+        "innings": 5,
+        "balls": 74,
+        "avg": 20.75,
+        "sr": 112.16,
+        "hs": 64,
+        "not_outs": 1,
+        "fifties": 1,
+        "hundreds": 0
+      },
+      "bowling_stats": null,
+      "batting_tilt_per_match": -0.05308,
+      "bowling_tilt_per_match": null,
+      "shrunk_total_tilt_per_match": -0.03751,
+      "total_tilt": -0.2654
     },
     {
       "player": "Joginder Sharma",
@@ -419,29 +441,8 @@
       },
       "batting_tilt_per_match": null,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.02257,
-      "total_tilt": -0.04677
-    },
-    {
-      "player": "Anirudha Srikkanth",
-      "slug": "s-anirudha-95a2ea61",
-      "matches": 5,
-      "batting_stats": {
-        "runs": 83,
-        "innings": 5,
-        "balls": 74,
-        "avg": 20.75,
-        "sr": 112.16,
-        "hs": 64,
-        "not_outs": 1,
-        "fifties": 1,
-        "hundreds": 0
-      },
-      "bowling_stats": null,
-      "batting_tilt_per_match": -0.05167,
-      "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.03664,
-      "total_tilt": -0.25837
+      "shrunk_total_tilt_per_match": -0.02472,
+      "total_tilt": -0.0574
     }
   ],
   "matches": [
@@ -452,7 +453,7 @@
       "team_score": "153/4",
       "opponent_score": "151/7",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.20702
+      "team_total_tilt": 0.3
     },
     {
       "match_id": "501206",
@@ -461,7 +462,7 @@
       "team_score": "188/4",
       "opponent_score": "193/4",
       "winner": "Punjab Kings",
-      "team_total_tilt": -0.31312
+      "team_total_tilt": -0.25321
     },
     {
       "match_id": "501211",
@@ -470,7 +471,7 @@
       "team_score": "183/5",
       "opponent_score": "162/7",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.47935
+      "team_total_tilt": 0.53206
     },
     {
       "match_id": "501215",
@@ -479,7 +480,7 @@
       "team_score": "131/4",
       "opponent_score": "135/3",
       "winner": "Kochi Tuskers Kerala",
-      "team_total_tilt": -0.19908
+      "team_total_tilt": -0.09279
     },
     {
       "match_id": "501221",
@@ -488,7 +489,7 @@
       "team_score": "156/9",
       "opponent_score": "164/4",
       "winner": "Mumbai Indians",
-      "team_total_tilt": -0.35796
+      "team_total_tilt": -0.3692
     },
     {
       "match_id": "501226",
@@ -497,7 +498,7 @@
       "team_score": "142/6",
       "opponent_score": "117/9",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.60326
+      "team_total_tilt": 0.54174
     },
     {
       "match_id": "501228",
@@ -506,7 +507,7 @@
       "team_score": "145/2",
       "opponent_score": "141/6",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.31542
+      "team_total_tilt": 0.31479
     },
     {
       "match_id": "501236",
@@ -515,7 +516,7 @@
       "team_score": "165/5",
       "opponent_score": "146/8",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.45579
+      "team_total_tilt": 0.54794
     },
     {
       "match_id": "501240",
@@ -524,7 +525,7 @@
       "team_score": "149/2",
       "opponent_score": "147/6",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.37297
+      "team_total_tilt": 0.33724
     },
     {
       "match_id": "501245",
@@ -533,7 +534,7 @@
       "team_score": "114/4",
       "opponent_score": "61/2",
       "winner": "Kolkata Knight Riders",
-      "team_total_tilt": -0.14832
+      "team_total_tilt": -0.11915
     },
     {
       "match_id": "501249",
@@ -542,7 +543,7 @@
       "team_score": "196/3",
       "opponent_score": "133/10",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.84935
+      "team_total_tilt": 0.7936
     },
     {
       "match_id": "501253",
@@ -551,7 +552,7 @@
       "team_score": "176/4",
       "opponent_score": "158/6",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.2759
+      "team_total_tilt": 0.34801
     },
     {
       "match_id": "501261",
@@ -560,7 +561,7 @@
       "team_score": "152/5",
       "opponent_score": "141/5",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.19857
+      "team_total_tilt": 0.29797
     },
     {
       "match_id": "501266",
@@ -569,7 +570,7 @@
       "team_score": "128/8",
       "opponent_score": "129/2",
       "winner": "Royal Challengers Bangalore",
-      "team_total_tilt": -0.51297
+      "team_total_tilt": -0.52608
     },
     {
       "match_id": "501268",
@@ -578,7 +579,7 @@
       "team_score": "177/4",
       "opponent_score": "175/4",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.32152
+      "team_total_tilt": 0.2208
     },
     {
       "match_id": "501271",
@@ -587,7 +588,7 @@
       "team_score": "205/5",
       "opponent_score": "147/8",
       "winner": "Chennai Super Kings",
-      "team_total_tilt": 0.57797
+      "team_total_tilt": 0.74355
     }
   ]
 }

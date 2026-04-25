@@ -4,13 +4,13 @@
 
 (function () {
     const NAV_ITEMS = [
-        { href: 'index.html', key: 'leaderboard', label: 'leaderboard' },
-        { href: 'season.html', key: 'season', label: 'seasons' },
-        { href: 'team.html', key: 'team', label: 'teams' },
-        { href: 'leaders.html', key: 'leaders', label: 'leaders' },
+        { href: 'index.html', key: 'leaderboard', label: 'TILT' },
+        { href: 'season.html', key: 'season', label: 'Seasons' },
+        { href: 'team.html', key: 'team', label: 'Teams' },
+        { href: 'leaders.html', key: 'leaders', label: 'Leaders' },
         { href: 'goats.html', key: 'goats', label: '\u{1F410} GOATs' },
-        { href: 'notes.html', key: 'notes', label: 'notes' },
-        { href: 'about.html', key: 'about', label: 'about' },
+        { href: 'notes.html', key: 'notes', label: 'Notes' },
+        { href: 'about.html', key: 'about', label: 'About' },
     ];
 
     function initNav(activeKey) {

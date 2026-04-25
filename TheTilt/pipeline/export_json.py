@@ -17,6 +17,38 @@ def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
         return yaml.safe_load(f)
 
 
+def load_completed_seasons(config_path: str = "config/seasons.yaml") -> set:
+    """Hand-maintained list of seasons whose final has been played.
+
+    Seasons not in this set are treated as in-progress: champion is exported
+    as null even if the underlying data has a "last match winner" placeholder.
+    """
+    try:
+        with open(config_path, "r") as f:
+            doc = yaml.safe_load(f) or {}
+        return set(str(s) for s in (doc.get("completed_seasons") or []))
+    except FileNotFoundError:
+        return set()
+
+
+def _compute_team_season_nrr(deltas_df: pd.DataFrame, team: str, season: str) -> Optional[float]:
+    """Season-final NRR for a (team, season): runs/over scored minus runs/over conceded.
+
+    Uses every legal-or-extras delivery as one ball (matches build_features.py
+    NRR feature so the model and the website tell the same story). Returns
+    None if the team didn't play (avoids division by zero on empty slices).
+    """
+    bat = deltas_df[(deltas_df["batting_team"] == team) & (deltas_df["season"] == season)]
+    bowl = deltas_df[(deltas_df["bowling_team"] == team) & (deltas_df["season"] == season)]
+    if len(bat) == 0 or len(bowl) == 0:
+        return None
+    overs_faced = len(bat) / 6.0
+    overs_bowled = len(bowl) / 6.0
+    runs_scored = float(bat["runs_total"].sum())
+    runs_conceded = float(bowl["runs_total"].sum())
+    return round((runs_scored / overs_faced) - (runs_conceded / overs_bowled), 3)
+
+
 # %% Legal-delivery flags
 # A batter "faces" legal deliveries + no-balls (wides don't count — re-bowled, batter not credited).
 # A bowler's over counts only legal deliveries (both wides and no-balls are re-bowled).
@@ -1022,6 +1054,7 @@ def export_team_details(
     deltas_df = _add_legal_flags(deltas_df)
     slug_lookup = _build_player_slug_lookup(player_tilt)
     name_lookup = _build_player_name_lookup(player_tilt)
+    match_info = _build_match_info_cache(deltas_df)
 
     exported = 0
     for canonical, slug in TEAM_SLUG.items():
@@ -1040,17 +1073,42 @@ def export_team_details(
         ts_rows = ts_rows.sort_values("season_year")
         seasons = []
         for _, r in ts_rows.iterrows():
+            season_str = str(r["season"])
+            # Match log for this team-season (drives the team-page season dropdown)
+            season_bat = bat_slice[bat_slice["season"] == season_str]
+            season_bowl = bowl_slice[bowl_slice["season"] == season_str]
+            season_match_ids = sorted(set(season_bat["match_id"].unique()) | set(season_bowl["match_id"].unique()))
+            season_matches = []
+            for mid in season_match_ids:
+                mi = match_info.get(mid)
+                if mi is None:
+                    continue
+                opponent = next((t for t in mi["teams"] if t != canonical), None)
+                team_tilt_for_match = float(deltas_df[(deltas_df["match_id"] == mid) & (deltas_df["batting_team"] == canonical)]["delta_wp"].sum())
+                team_tilt_for_match += float(-deltas_df[(deltas_df["match_id"] == mid) & (deltas_df["bowling_team"] == canonical)]["delta_wp"].sum())
+                season_matches.append({
+                    "match_id": str(mid),
+                    "date": mi["date"],
+                    "opponent": opponent,
+                    "team_score": mi["scores"].get(canonical),
+                    "opponent_score": mi["scores"].get(opponent) if opponent else None,
+                    "winner": mi["winner"],
+                    "team_total_tilt": round(team_tilt_for_match, 5),
+                })
+            season_matches.sort(key=lambda x: x["date"])
             seasons.append({
-                "season": str(r["season"]),
+                "season": season_str,
                 "season_year": int(r["season_year"]),
                 "label": season_team_label(canonical, int(r["season_year"])),
                 "matches": int(r["matches"]),
                 "wins": int(r["wins"]),
                 "losses": int(r["losses"]),
                 "win_pct": float(round(r["win_pct"], 4)),
+                "nrr": _compute_team_season_nrr(deltas_df, canonical, season_str),
                 "team_total_tilt": round(float(r["team_total_tilt"]), 5),
                 "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
                 "position_est": int(r["position_est"]),
+                "match_log": season_matches,
             })
 
         # All-time roster: each player who appeared (batted or bowled) for this team
@@ -1226,6 +1284,7 @@ def export_team_season_details(
                 "wins": int(ts["wins"]),
                 "losses": int(ts["losses"]),
                 "win_pct": float(round(ts["win_pct"], 4)),
+                "nrr": _compute_team_season_nrr(deltas_df, canonical, season),
                 "team_total_tilt": round(float(ts["team_total_tilt"]), 5),
                 "team_tilt_per_match": round(float(ts["team_tilt_per_match"]), 5),
                 "position_est": int(ts["position_est"]),
@@ -1367,7 +1426,9 @@ def _build_player_season_leaders(
         for _, r in econ_qual.nsmallest(50, "economy").iterrows()
     ]
 
-    # TILT-based: use shrunk_*_per_match and require min balls
+    # TILT-based: rank season leaders by *total* season TILT (not per-match), so
+    # the season/leaders pages reward volume of impact over rate. Min-balls
+    # qualification still applies. Per-match value is preserved as ancillary.
     if len(ps) > 0:
         ps_bat = ps[ps["batting_balls"] >= min_balls].copy()
         ps_bowl = ps[ps["bowling_balls"] >= min_balls].copy()
@@ -1384,19 +1445,19 @@ def _build_player_season_leaders(
             }
 
         leaders["batting_tilt"] = [
-            _ps_row(r, round(float(r["shrunk_batting_tilt_per_match"]), 5),
-                    {"raw": round(float(r["batting_tilt_per_match"]), 5), "matches": int(r["batting_matches"]), "balls": int(r["batting_balls"])})
-            for _, r in ps_bat.sort_values("shrunk_batting_tilt_per_match", ascending=False).head(50).iterrows()
+            _ps_row(r, round(float(r["batting_total_tilt"]), 5),
+                    {"per_match": round(float(r["batting_tilt_per_match"]), 5), "matches": int(r["batting_matches"]), "balls": int(r["batting_balls"])})
+            for _, r in ps_bat.sort_values("batting_total_tilt", ascending=False).head(50).iterrows()
         ]
         leaders["bowling_tilt"] = [
-            _ps_row(r, round(float(r["shrunk_bowling_tilt_per_match"]), 5),
-                    {"raw": round(float(r["bowling_tilt_per_match"]), 5), "matches": int(r["bowling_matches"]), "balls": int(r["bowling_balls"])})
-            for _, r in ps_bowl.sort_values("shrunk_bowling_tilt_per_match", ascending=False).head(50).iterrows()
+            _ps_row(r, round(float(r["bowling_total_tilt"]), 5),
+                    {"per_match": round(float(r["bowling_tilt_per_match"]), 5), "matches": int(r["bowling_matches"]), "balls": int(r["bowling_balls"])})
+            for _, r in ps_bowl.sort_values("bowling_total_tilt", ascending=False).head(50).iterrows()
         ]
         leaders["total_tilt"] = [
-            _ps_row(r, round(float(r["shrunk_total_tilt_per_match"]), 5),
-                    {"raw": round(float(r["total_tilt_per_match"]), 5), "matches": int(r["total_matches"])})
-            for _, r in ps_total.sort_values("shrunk_total_tilt_per_match", ascending=False).head(50).iterrows()
+            _ps_row(r, round(float(r["total_tilt"]), 5),
+                    {"per_match": round(float(r["total_tilt_per_match"]), 5), "matches": int(r["total_matches"])})
+            for _, r in ps_total.sort_values("total_tilt", ascending=False).head(50).iterrows()
         ]
     else:
         leaders["batting_tilt"] = []
@@ -1422,6 +1483,7 @@ def export_seasons(
 
     deltas_df = _add_legal_flags(deltas_df)
     match_info = _build_match_info_cache(deltas_df)
+    completed_seasons = load_completed_seasons()
 
     exported = 0
     for season in sorted(deltas_df["season"].unique(), key=str):
@@ -1440,16 +1502,21 @@ def export_seasons(
                 "wins": int(r["wins"]),
                 "losses": int(r["losses"]),
                 "win_pct": float(round(r["win_pct"], 4)),
+                "nrr": _compute_team_season_nrr(deltas_df, canonical, season),
                 "team_total_tilt": round(float(r["team_total_tilt"]), 5),
                 "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
                 "position_est": int(r["position_est"]),
             })
 
-        # Champion: team that won the final / the most matches in the playoffs is unknown without
-        # finals tags from cricsheet. Use the season's last match's winner as a placeholder hint.
+        # Champion: only populated for seasons listed in config/seasons.yaml.
+        # In-progress seasons (where the final hasn't been played yet) get null
+        # so the website doesn't crown a winner mid-tournament.
         season_matches_df = deltas_df[deltas_df["season"] == season]
-        last_match_id = season_matches_df.sort_values("date").iloc[-1]["match_id"]
-        champion = match_info.get(last_match_id, {}).get("winner")
+        if season in completed_seasons:
+            last_match_id = season_matches_df.sort_values("date").iloc[-1]["match_id"]
+            champion = match_info.get(last_match_id, {}).get("winner")
+        else:
+            champion = None
 
         # Leaders: top 5 by each stat (full ranked list lives in /leaders/)
         full_leaders = _build_player_season_leaders(deltas_df, player_season_tilt, player_tilt, season)

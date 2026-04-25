@@ -1076,14 +1076,12 @@ img, pre, code {
     font-weight: 600;
     color: var(--text-primary);
     margin: 28px 0 10px;
-    text-transform: lowercase;
     letter-spacing: 0.02em;
 }
 
 .stat-card-label {
     color: var(--text-muted);
     font-size: 0.7rem;
-    text-transform: lowercase;
     letter-spacing: 0.04em;
     margin-bottom: 4px;
 }
@@ -1309,6 +1307,20 @@ img, pre, code {
 
 .team-link:hover,
 .team-link-subtle:hover {
+    color: var(--accent-green);
+    border-bottom-color: var(--accent-green);
+}
+
+/* Unify link styling on reference-page tables (Standings, Season-by-Season,
+   All-Time Roster, Leaders) with the match-link / team-link convention used
+   elsewhere on the site: dotted underline that turns accent-green on hover. */
+.detail-table tbody a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--text-dim);
+}
+
+.detail-table tbody a:hover {
     color: var(--accent-green);
     border-bottom-color: var(--accent-green);
 }

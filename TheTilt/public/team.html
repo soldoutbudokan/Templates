@@ -19,11 +19,24 @@
         </div>
         <div class="footer">
             data from <a href="https://cricsheet.org">cricsheet.org</a> |
-            <a href="index.html">back to leaderboard</a>
+            <a href="index.html">back to TILT</a>
         </div>
     </div>
 
 <script>
+function toggleSeason(id) {
+    const row = document.getElementById(id);
+    const chev = document.getElementById(id + '-chev');
+    if (!row) return;
+    if (row.style.display === 'none') {
+        row.style.display = '';
+        if (chev) chev.classList.add('open');
+    } else {
+        row.style.display = 'none';
+        if (chev) chev.classList.remove('open');
+    }
+}
+
 async function load() {
     const params = new URLSearchParams(window.location.search);
     const slug = params.get('team');
@@ -77,6 +90,8 @@ async function renderTeamCareer(slug) {
         return;
     }
 
+    const teamIndex = await loadTeamIndex();
+
     const aliasNote = team.aliases.length > 1
         ? `<div class="meta">aka ${team.aliases.filter((a) => a !== team.team).join(', ')}</div>`
         : '';
@@ -90,6 +105,10 @@ async function renderTeamCareer(slug) {
 
         <div class="stat-grid">
             <div class="stat-card">
+                <div class="stat-card-label" style="text-transform: uppercase">W–L</div>
+                <div class="stat-card-value">${team.career.wins}–${team.career.losses}</div>
+            </div>
+            <div class="stat-card">
                 <div class="stat-card-label">Team TILT/match</div>
                 <div class="stat-card-value">${formatTilt(team.career.team_tilt_per_match)}</div>
             </div>
@@ -101,64 +120,55 @@ async function renderTeamCareer(slug) {
                 <div class="stat-card-label">Bowling TILT/m</div>
                 <div class="stat-card-value">${formatTilt(team.career.bowling_tilt_per_match)}</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-card-label">W–L</div>
-                <div class="stat-card-value">${team.career.wins}–${team.career.losses}</div>
-            </div>
         </div>
 
-        <h2 class="section-title">Career batting</h2>
+        <h2 class="section-title">Season-By-Season</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th>runs</th><th>balls</th><th>SR</th><th>4s</th><th>6s</th><th>dots</th></tr></thead>
-                <tbody><tr>
-                    <td>${team.career.batting_stats.runs}</td>
-                    <td>${team.career.batting_stats.balls}</td>
-                    <td>${team.career.batting_stats.sr.toFixed(2)}</td>
-                    <td>${team.career.batting_stats.fours}</td>
-                    <td>${team.career.batting_stats.sixes}</td>
-                    <td>${team.career.batting_stats.dots}</td>
-                </tr></tbody>
-            </table>
-        </div>
-
-        <h2 class="section-title">Career bowling</h2>
-        <div class="table-wrap">
-            <table class="detail-table">
-                <thead><tr><th>wickets</th><th>balls</th><th>runs</th><th>economy</th></tr></thead>
-                <tbody><tr>
-                    <td>${team.career.bowling_stats.wickets}</td>
-                    <td>${team.career.bowling_stats.balls}</td>
-                    <td>${team.career.bowling_stats.runs_conceded}</td>
-                    <td>${team.career.bowling_stats.economy.toFixed(2)}</td>
-                </tr></tbody>
-            </table>
-        </div>
-
-        <h2 class="section-title">Season-by-season</h2>
-        <div class="table-wrap">
-            <table class="detail-table sortable">
-                <thead><tr><th>season</th><th>label</th><th>W</th><th>L</th><th>win%</th><th>TILT/m</th><th>position</th></tr></thead>
+                <thead><tr><th></th><th>Season</th><th>Team Name</th><th>W</th><th>L</th><th>Win%</th><th>NRR</th><th>TILT/m</th><th>Position</th></tr></thead>
                 <tbody>
-                    ${team.seasons.slice().reverse().map((s) => `
-                        <tr>
-                            <td><a href="team.html?team=${team.slug}&season=${encodeURIComponent(s.season)}">${s.season}</a></td>
-                            <td>${s.label}</td>
-                            <td>${s.wins}</td>
-                            <td>${s.losses}</td>
-                            <td>${(s.win_pct * 100).toFixed(1)}%</td>
-                            <td>${formatTilt(s.team_tilt_per_match)}</td>
-                            <td>${s.position_est}</td>
-                        </tr>
-                    `).join('')}
+                    ${team.seasons.slice().reverse().map((s) => {
+                        const seasonId = `team-season-${team.slug}-${String(s.season).replace('/', '-')}`;
+                        const hasMatches = Array.isArray(s.match_log) && s.match_log.length > 0;
+                        const summaryRow = `
+                            <tr class="${hasMatches ? 'season-row-expandable' : ''}" ${hasMatches ? `onclick="toggleSeason('${seasonId}')"` : ''}>
+                                <td>${hasMatches ? `<span class="season-chevron" id="${seasonId}-chev">&#9654;</span>` : ''}</td>
+                                <td><a href="team.html?team=${team.slug}&season=${encodeURIComponent(s.season)}" onclick="event.stopPropagation()">${s.season}</a></td>
+                                <td>${s.label}</td>
+                                <td>${s.wins}</td>
+                                <td>${s.losses}</td>
+                                <td>${(s.win_pct * 100).toFixed(1)}%</td>
+                                <td>${s.nrr != null ? (s.nrr > 0 ? '+' : '') + s.nrr.toFixed(2) : '—'}</td>
+                                <td>${formatTilt(s.team_tilt_per_match)}</td>
+                                <td>${s.position_est}</td>
+                            </tr>`;
+                        if (!hasMatches) return summaryRow;
+                        const matchRows = s.match_log.map((m) => `
+                            <tr>
+                                <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
+                                <td>${teamLink(m.opponent, s.season, teamIndex)}</td>
+                                <td>${m.team_score || '—'} vs ${m.opponent_score || '—'}</td>
+                                <td>${m.winner ? (m.winner === team.team ? '<span class="result-win">won</span>' : '<span class="result-loss">lost</span>') : '<span class="result-nr">—</span>'}</td>
+                                <td>${formatTilt(m.team_total_tilt)}</td>
+                            </tr>`).join('');
+                        return summaryRow + `
+                            <tr class="season-detail-row" id="${seasonId}" style="display:none">
+                                <td colspan="9">
+                                    <table class="match-sub-table">
+                                        <thead><tr><th>Date</th><th>Opponent</th><th>Scores</th><th>Result</th><th>Team TILT</th></tr></thead>
+                                        <tbody>${matchRows}</tbody>
+                                    </table>
+                                </td>
+                            </tr>`;
+                    }).join('')}
                 </tbody>
             </table>
         </div>
 
-        <h2 class="section-title">All-time roster</h2>
+        <h2 class="section-title">All-Time Roster</h2>
         <div class="table-wrap">
             <table class="detail-table sortable">
-                <thead><tr><th>player</th><th>matches</th><th>runs</th><th>wickets</th><th>bat TILT/m</th><th>bowl TILT/m</th></tr></thead>
+                <thead><tr><th>Player</th><th>Matches</th><th>Runs</th><th>Wickets</th><th>Bat TILT/m</th><th>Bowl TILT/m</th></tr></thead>
                 <tbody>
                     ${team.all_time_roster.map((r) => `
                         <tr>
@@ -174,7 +184,7 @@ async function renderTeamCareer(slug) {
             </table>
         </div>
 
-        <h2 class="section-title">Season TILT/m trend</h2>
+        <h2 class="section-title">Season TILT/m Trend</h2>
         <div class="chart-container"><canvas id="trendChart" height="120"></canvas></div>
     `;
     document.getElementById('content').innerHTML = html;
@@ -240,12 +250,16 @@ async function renderTeamSeason(slug, season) {
                 <div class="stat-card-label">Total TILT</div>
                 <div class="stat-card-value">${formatTilt(ts.header.team_total_tilt)}</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-card-label">NRR</div>
+                <div class="stat-card-value">${ts.header.nrr != null ? (ts.header.nrr > 0 ? '+' : '') + ts.header.nrr.toFixed(2) : '—'}</div>
+            </div>
         </div>
 
-        <h2 class="section-title">Season batting</h2>
+        <h2 class="section-title">Season Batting</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th>runs</th><th>balls</th><th>SR</th><th>4s</th><th>6s</th><th>dots</th></tr></thead>
+                <thead><tr><th>Runs</th><th>Balls</th><th>SR</th><th>4s</th><th>6s</th><th>Dots</th></tr></thead>
                 <tbody><tr>
                     <td>${ts.batting_stats.runs}</td>
                     <td>${ts.batting_stats.balls}</td>
@@ -257,10 +271,10 @@ async function renderTeamSeason(slug, season) {
             </table>
         </div>
 
-        <h2 class="section-title">Season bowling</h2>
+        <h2 class="section-title">Season Bowling</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th>wickets</th><th>balls</th><th>runs</th><th>economy</th></tr></thead>
+                <thead><tr><th>Wickets</th><th>Balls</th><th>Runs</th><th>Economy</th></tr></thead>
                 <tbody><tr>
                     <td>${ts.bowling_stats.wickets}</td>
                     <td>${ts.bowling_stats.balls}</td>
@@ -270,10 +284,10 @@ async function renderTeamSeason(slug, season) {
             </table>
         </div>
 
-        <h2 class="section-title">Season roster</h2>
+        <h2 class="section-title">Season Roster</h2>
         <div class="table-wrap">
             <table class="detail-table sortable">
-                <thead><tr><th>player</th><th>matches</th><th>runs</th><th>balls</th><th>SR</th><th>wkts</th><th>econ</th><th>bat TILT/m</th><th>bowl TILT/m</th><th>total TILT</th></tr></thead>
+                <thead><tr><th>Player</th><th>Matches</th><th>Runs</th><th>Balls</th><th>SR</th><th>Wkts</th><th>Econ</th><th>Bat TILT/m</th><th>Bowl TILT/m</th><th>Total TILT</th></tr></thead>
                 <tbody>
                     ${ts.roster.map((r) => `
                         <tr>
@@ -293,10 +307,10 @@ async function renderTeamSeason(slug, season) {
             </table>
         </div>
 
-        <h2 class="section-title">Match log</h2>
+        <h2 class="section-title">Match Log</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th>date</th><th>opponent</th><th>scores</th><th>winner</th><th>team TILT</th></tr></thead>
+                <thead><tr><th>Date</th><th>Opponent</th><th>Scores</th><th>Winner</th><th>Team TILT</th></tr></thead>
                 <tbody>
                     ${ts.matches.map((m) => `
                         <tr>

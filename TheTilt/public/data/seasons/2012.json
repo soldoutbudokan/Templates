@@ -12,8 +12,9 @@
       "wins": 12,
       "losses": 5,
       "win_pct": 0.7059,
-      "team_total_tilt": 3.01459,
-      "team_tilt_per_match": 0.17733,
+      "nrr": 0.451,
+      "team_total_tilt": 3.34944,
+      "team_tilt_per_match": 0.19703,
       "position_est": 1
     },
     {
@@ -24,8 +25,9 @@
       "wins": 11,
       "losses": 7,
       "win_pct": 0.6111,
-      "team_total_tilt": 0.89297,
-      "team_tilt_per_match": 0.04961,
+      "nrr": 0.298,
+      "team_total_tilt": 0.95582,
+      "team_tilt_per_match": 0.0531,
       "position_est": 2
     },
     {
@@ -36,8 +38,9 @@
       "wins": 10,
       "losses": 7,
       "win_pct": 0.5882,
-      "team_total_tilt": 0.1753,
-      "team_tilt_per_match": 0.01031,
+      "nrr": -0.131,
+      "team_total_tilt": 0.45724,
+      "team_tilt_per_match": 0.0269,
       "position_est": 3
     },
     {
@@ -48,8 +51,9 @@
       "wins": 10,
       "losses": 8,
       "win_pct": 0.5556,
-      "team_total_tilt": 0.58809,
-      "team_tilt_per_match": 0.03267,
+      "nrr": 0.335,
+      "team_total_tilt": 0.46467,
+      "team_tilt_per_match": 0.02581,
       "position_est": 4
     },
     {
@@ -60,8 +64,9 @@
       "wins": 8,
       "losses": 7,
       "win_pct": 0.5333,
-      "team_total_tilt": -0.26322,
-      "team_tilt_per_match": -0.01755,
+      "nrr": -0.147,
+      "team_total_tilt": -0.30951,
+      "team_tilt_per_match": -0.02063,
       "position_est": 5
     },
     {
@@ -72,8 +77,9 @@
       "wins": 8,
       "losses": 8,
       "win_pct": 0.5,
-      "team_total_tilt": -0.67626,
-      "team_tilt_per_match": -0.04227,
+      "nrr": -0.187,
+      "team_total_tilt": -0.37287,
+      "team_tilt_per_match": -0.0233,
       "position_est": 6
     },
     {
@@ -84,8 +90,9 @@
       "wins": 7,
       "losses": 9,
       "win_pct": 0.4375,
-      "team_total_tilt": 1.01717,
-      "team_tilt_per_match": 0.06357,
+      "nrr": 0.196,
+      "team_total_tilt": 0.91411,
+      "team_tilt_per_match": 0.05713,
       "position_est": 7
     },
     {
@@ -96,8 +103,9 @@
       "wins": 4,
       "losses": 11,
       "win_pct": 0.2667,
-      "team_total_tilt": -1.67106,
-      "team_tilt_per_match": -0.1114,
+      "nrr": -0.303,
+      "team_total_tilt": -1.91334,
+      "team_tilt_per_match": -0.12756,
       "position_est": 8
     },
     {
@@ -108,8 +116,9 @@
       "wins": 4,
       "losses": 12,
       "win_pct": 0.25,
-      "team_total_tilt": -3.07758,
-      "team_tilt_per_match": -0.19235,
+      "nrr": -0.584,
+      "team_total_tilt": -3.54555,
+      "team_tilt_per_match": -0.2216,
       "position_est": 9
     }
   ],
@@ -502,54 +511,54 @@
     ],
     "batting_tilt": [
       {
-        "player": "Gurkeerat Singh",
-        "slug": "gurkeerat-singh-6eb146d2",
-        "team": "Punjab Kings",
-        "team_slug": "pbks",
-        "value": 0.0777,
-        "raw": 0.17729,
-        "matches": 4,
-        "balls": 52
-      },
-      {
-        "player": "Dwayne Smith",
-        "slug": "dr-smith-35205dfc",
-        "team": "Mumbai Indians",
-        "team_slug": "mi",
-        "value": 0.07423,
-        "raw": 0.12895,
-        "matches": 6,
-        "balls": 98
-      },
-      {
         "player": "Chris Gayle",
         "slug": "ch-gayle-db584dad",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 0.0534,
-        "raw": 0.07417,
+        "value": 1.09465,
+        "per_match": 0.07819,
         "matches": 14,
         "balls": 456
       },
       {
-        "player": "Kevin Pietersen",
-        "slug": "kp-pietersen-39f01cdb",
-        "team": "Delhi Capitals",
-        "team_slug": "dc",
-        "value": 0.04186,
-        "raw": 0.07181,
-        "matches": 8,
-        "balls": 207
+        "player": "Gurkeerat Singh",
+        "slug": "gurkeerat-singh-6eb146d2",
+        "team": "Punjab Kings",
+        "team_slug": "pbks",
+        "value": 0.8342,
+        "per_match": 0.20855,
+        "matches": 4,
+        "balls": 52
+      },
+      {
+        "player": "AB de Villiers",
+        "slug": "ab-de-villiers-c4487b84",
+        "team": "Royal Challengers Bangalore",
+        "team_slug": "rcb",
+        "value": 0.73014,
+        "per_match": 0.05616,
+        "matches": 13,
+        "balls": 198
       },
       {
         "player": "David Warner",
         "slug": "da-warner-dcce6f09",
         "team": "Delhi Capitals",
         "team_slug": "dc",
-        "value": 0.0401,
-        "raw": 0.06908,
+        "value": 0.6963,
+        "per_match": 0.08704,
         "matches": 8,
         "balls": 156
+      },
+      {
+        "player": "Dwayne Smith",
+        "slug": "dr-smith-35205dfc",
+        "team": "Mumbai Indians",
+        "team_slug": "mi",
+        "value": 0.6615,
+        "per_match": 0.11025,
+        "matches": 6,
+        "balls": 98
       }
     ],
     "bowling_tilt": [
@@ -558,50 +567,50 @@
         "slug": "sp-narine-9d430b40",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 0.09237,
-        "raw": 0.12246,
+        "value": 1.82844,
+        "per_match": 0.1219,
         "matches": 15,
         "balls": 355
       },
       {
-        "player": "Lakshmipathy Balaji",
-        "slug": "l-balaji-b2b50355",
+        "player": "Morn\u00e9 Morkel",
+        "slug": "m-morkel-5bb5a915",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 1.22694,
+        "per_match": 0.07668,
+        "matches": 16,
+        "balls": 378
+      },
+      {
+        "player": "Jacques Kallis",
+        "slug": "jh-kallis-86dc8f2e",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 0.07748,
-        "raw": 0.12546,
-        "matches": 8,
-        "balls": 180
+        "value": 1.21141,
+        "per_match": 0.07571,
+        "matches": 16,
+        "balls": 324
       },
       {
         "player": "Lasith Malinga",
         "slug": "sl-malinga-a12e1d51",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.06212,
-        "raw": 0.08457,
+        "value": 1.20465,
+        "per_match": 0.08605,
         "matches": 14,
         "balls": 333
       },
       {
-        "player": "Dale Steyn",
-        "slug": "dw-steyn-8fd1a8f5",
-        "team": "Deccan Chargers",
-        "team_slug": "dch",
-        "value": 0.06026,
-        "raw": 0.08575,
-        "matches": 12,
-        "balls": 280
-      },
-      {
-        "player": "Muttiah Muralitharan",
-        "slug": "m-muralitharan-4ba44e19",
-        "team": "Royal Challengers Bangalore",
-        "team_slug": "rcb",
-        "value": 0.05994,
-        "raw": 0.09038,
-        "matches": 10,
-        "balls": 240
+        "player": "Umesh Yadav",
+        "slug": "ut-yadav-cc1e8c68",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 0.98175,
+        "per_match": 0.05775,
+        "matches": 17,
+        "balls": 366
       }
     ],
     "total_tilt": [
@@ -610,45 +619,45 @@
         "slug": "sp-narine-9d430b40",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 0.09596,
-        "raw": 0.12296,
+        "value": 1.83592,
+        "per_match": 0.12239,
         "matches": 15
       },
       {
-        "player": "Gurkeerat Singh",
-        "slug": "gurkeerat-singh-6eb146d2",
-        "team": "Punjab Kings",
-        "team_slug": "pbks",
-        "value": 0.08549,
-        "raw": 0.17729,
-        "matches": 4
-      },
-      {
-        "player": "Lakshmipathy Balaji",
-        "slug": "l-balaji-b2b50355",
-        "team": "Kolkata Knight Riders",
-        "team_slug": "kkr",
-        "value": 0.08141,
-        "raw": 0.12546,
-        "matches": 8
-      },
-      {
-        "player": "Muttiah Muralitharan",
-        "slug": "m-muralitharan-4ba44e19",
-        "team": "Royal Challengers Bangalore",
-        "team_slug": "rcb",
-        "value": 0.06212,
-        "raw": 0.09038,
-        "matches": 10
+        "player": "Morn\u00e9 Morkel",
+        "slug": "m-morkel-5bb5a915",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 1.19989,
+        "per_match": 0.07499,
+        "matches": 16
       },
       {
         "player": "Lasith Malinga",
         "slug": "sl-malinga-a12e1d51",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.06148,
-        "raw": 0.08149,
+        "value": 1.15744,
+        "per_match": 0.08267,
         "matches": 14
+      },
+      {
+        "player": "Umesh Yadav",
+        "slug": "ut-yadav-cc1e8c68",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 0.97969,
+        "per_match": 0.05763,
+        "matches": 17
+      },
+      {
+        "player": "Muttiah Muralitharan",
+        "slug": "m-muralitharan-4ba44e19",
+        "team": "Royal Challengers Bangalore",
+        "team_slug": "rcb",
+        "value": 0.97308,
+        "per_match": 0.09731,
+        "matches": 10
       }
     ]
   },

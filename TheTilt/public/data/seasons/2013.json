@@ -12,8 +12,9 @@
       "wins": 13,
       "losses": 6,
       "win_pct": 0.6842,
-      "team_total_tilt": 2.96782,
-      "team_tilt_per_match": 0.1562,
+      "nrr": 0.297,
+      "team_total_tilt": 2.88056,
+      "team_tilt_per_match": 0.15161,
       "position_est": 1
     },
     {
@@ -24,8 +25,9 @@
       "wins": 12,
       "losses": 6,
       "win_pct": 0.6667,
-      "team_total_tilt": 2.26516,
-      "team_tilt_per_match": 0.12584,
+      "nrr": 0.546,
+      "team_total_tilt": 2.11713,
+      "team_tilt_per_match": 0.11762,
       "position_est": 2
     },
     {
@@ -36,8 +38,9 @@
       "wins": 11,
       "losses": 7,
       "win_pct": 0.6111,
-      "team_total_tilt": 0.94234,
-      "team_tilt_per_match": 0.05235,
+      "nrr": 0.297,
+      "team_total_tilt": 0.96832,
+      "team_tilt_per_match": 0.0538,
       "position_est": 3
     },
     {
@@ -48,8 +51,9 @@
       "wins": 8,
       "losses": 6,
       "win_pct": 0.5714,
-      "team_total_tilt": 1.02117,
-      "team_tilt_per_match": 0.07294,
+      "nrr": 0.391,
+      "team_total_tilt": 1.11328,
+      "team_tilt_per_match": 0.07952,
       "position_est": 4
     },
     {
@@ -60,8 +64,9 @@
       "wins": 9,
       "losses": 7,
       "win_pct": 0.5625,
-      "team_total_tilt": 0.32397,
-      "team_tilt_per_match": 0.02025,
+      "nrr": -0.117,
+      "team_total_tilt": 0.33354,
+      "team_tilt_per_match": 0.02085,
       "position_est": 5
     },
     {
@@ -72,8 +77,9 @@
       "wins": 8,
       "losses": 8,
       "win_pct": 0.5,
-      "team_total_tilt": -0.2579,
-      "team_tilt_per_match": -0.01612,
+      "nrr": 0.254,
+      "team_total_tilt": -0.4133,
+      "team_tilt_per_match": -0.02583,
       "position_est": 6
     },
     {
@@ -84,8 +90,9 @@
       "wins": 6,
       "losses": 10,
       "win_pct": 0.375,
-      "team_total_tilt": -1.73764,
-      "team_tilt_per_match": -0.1086,
+      "nrr": -0.085,
+      "team_total_tilt": -1.33666,
+      "team_tilt_per_match": -0.08354,
       "position_est": 7
     },
     {
@@ -96,8 +103,9 @@
       "wins": 4,
       "losses": 12,
       "win_pct": 0.25,
-      "team_total_tilt": -2.99351,
-      "team_tilt_per_match": -0.18709,
+      "nrr": -0.867,
+      "team_total_tilt": -2.72687,
+      "team_tilt_per_match": -0.17043,
       "position_est": 8
     },
     {
@@ -108,8 +116,9 @@
       "wins": 3,
       "losses": 12,
       "win_pct": 0.2,
-      "team_total_tilt": -2.5314,
-      "team_tilt_per_match": -0.16876,
+      "nrr": -0.853,
+      "team_total_tilt": -2.93601,
+      "team_tilt_per_match": -0.19573,
       "position_est": 9
     }
   ],
@@ -506,28 +515,18 @@
         "slug": "da-miller-d67d5f00",
         "team": "Punjab Kings",
         "team_slug": "pbks",
-        "value": 0.11777,
-        "raw": 0.16576,
+        "value": 1.84672,
+        "per_match": 0.15389,
         "matches": 12,
         "balls": 254
-      },
-      {
-        "player": "Ryan ten Doeschate",
-        "slug": "rn-ten-doeschate-4ec07775",
-        "team": "Kolkata Knight Riders",
-        "team_slug": "kkr",
-        "value": 0.06787,
-        "raw": 0.15658,
-        "matches": 4,
-        "balls": 63
       },
       {
         "player": "Chris Gayle",
         "slug": "ch-gayle-db584dad",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 0.05691,
-        "raw": 0.07878,
+        "value": 1.16125,
+        "per_match": 0.08295,
         "matches": 14,
         "balls": 442
       },
@@ -536,18 +535,28 @@
         "slug": "ra-jadeja-fe93fd9d",
         "team": "Chennai Super Kings",
         "team_slug": "csk",
-        "value": 0.05474,
-        "raw": 0.07122,
+        "value": 0.92814,
+        "per_match": 0.0663,
         "matches": 14,
         "balls": 135
+      },
+      {
+        "player": "Kieron Pollard",
+        "slug": "ka-pollard-a757b0d8",
+        "team": "Mumbai Indians",
+        "team_slug": "mi",
+        "value": 0.87462,
+        "per_match": 0.04859,
+        "matches": 18,
+        "balls": 281
       },
       {
         "player": "Virat Kohli",
         "slug": "v-kohli-ba607b88",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 0.05037,
-        "raw": 0.07018,
+        "value": 0.75428,
+        "per_match": 0.05388,
         "matches": 14,
         "balls": 363
       }
@@ -558,50 +567,50 @@
         "slug": "mm-sharma-759ac88f",
         "team": "Chennai Super Kings",
         "team_slug": "csk",
-        "value": 0.082,
-        "raw": 0.10896,
+        "value": 1.72015,
+        "per_match": 0.11468,
         "matches": 15,
         "balls": 304
-      },
-      {
-        "player": "Sunil Narine",
-        "slug": "sp-narine-9d430b40",
-        "team": "Kolkata Knight Riders",
-        "team_slug": "kkr",
-        "value": 0.07225,
-        "raw": 0.09476,
-        "matches": 16,
-        "balls": 384
-      },
-      {
-        "player": "Harbhajan Singh",
-        "slug": "harbhajan-singh-8b5b6769",
-        "team": "Mumbai Indians",
-        "team_slug": "mi",
-        "value": 0.06957,
-        "raw": 0.08789,
-        "matches": 19,
-        "balls": 420
       },
       {
         "player": "Mitchell Johnson",
         "slug": "mg-johnson-f5180fe6",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.06952,
-        "raw": 0.08998,
+        "value": 1.57493,
+        "per_match": 0.09264,
         "matches": 17,
         "balls": 384
       },
       {
-        "player": "Dale Steyn",
-        "slug": "dw-steyn-8fd1a8f5",
+        "player": "Sunil Narine",
+        "slug": "sp-narine-9d430b40",
+        "team": "Kolkata Knight Riders",
+        "team_slug": "kkr",
+        "value": 1.42304,
+        "per_match": 0.08894,
+        "matches": 16,
+        "balls": 384
+      },
+      {
+        "player": "Amit Mishra",
+        "slug": "a-mishra-6b19d823",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 0.0672,
-        "raw": 0.08828,
+        "value": 1.38646,
+        "per_match": 0.08665,
         "matches": 16,
-        "balls": 383
+        "balls": 348
+      },
+      {
+        "player": "James Faulkner",
+        "slug": "jp-faulkner-808f425a",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 1.35628,
+        "per_match": 0.08477,
+        "matches": 16,
+        "balls": 379
       }
     ],
     "total_tilt": [
@@ -610,8 +619,8 @@
         "slug": "da-miller-d67d5f00",
         "team": "Punjab Kings",
         "team_slug": "pbks",
-        "value": 0.12365,
-        "raw": 0.16576,
+        "value": 1.84672,
+        "per_match": 0.15389,
         "matches": 12
       },
       {
@@ -619,8 +628,8 @@
         "slug": "mm-sharma-759ac88f",
         "team": "Chennai Super Kings",
         "team_slug": "csk",
-        "value": 0.08447,
-        "raw": 0.1087,
+        "value": 1.71116,
+        "per_match": 0.11408,
         "matches": 15
       },
       {
@@ -628,27 +637,27 @@
         "slug": "dw-steyn-8fd1a8f5",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 0.08177,
-        "raw": 0.10387,
+        "value": 1.6029,
+        "per_match": 0.10018,
         "matches": 16
       },
       {
-        "player": "Rishi Dhawan",
-        "slug": "r-dhawan-26a85969",
+        "player": "Mitchell Johnson",
+        "slug": "mg-johnson-f5180fe6",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.07845,
-        "raw": 0.14678,
-        "matches": 5
+        "value": 1.52895,
+        "per_match": 0.08994,
+        "matches": 17
       },
       {
-        "player": "Harbhajan Singh",
-        "slug": "harbhajan-singh-8b5b6769",
-        "team": "Mumbai Indians",
-        "team_slug": "mi",
-        "value": 0.07738,
-        "raw": 0.09516,
-        "matches": 19
+        "player": "James Faulkner",
+        "slug": "jp-faulkner-808f425a",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 1.44622,
+        "per_match": 0.09039,
+        "matches": 16
       }
     ]
   },

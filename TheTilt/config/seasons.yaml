@@ -1,0 +1,26 @@
+# Seasons whose final has been played. Any season NOT listed is treated as
+# in-progress, and `seasons/{season}.json:champion` is exported as null even
+# though a "winner of the last completed match" placeholder exists.
+#
+# When a new season's final concludes, append the season string here and
+# re-run `refresh_tilt_data_only` (or any pipeline export) so the champion
+# field flips on. See TheTilt/dependencies.md for the full reverse map.
+completed_seasons:
+  - "2007/08"
+  - "2009"
+  - "2009/10"
+  - "2011"
+  - "2012"
+  - "2013"
+  - "2014"
+  - "2015"
+  - "2016"
+  - "2017"
+  - "2018"
+  - "2019"
+  - "2020/21"
+  - "2021"
+  - "2022"
+  - "2023"
+  - "2024"
+  - "2025"

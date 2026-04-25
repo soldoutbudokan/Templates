@@ -12,8 +12,9 @@
       "wins": 11,
       "losses": 3,
       "win_pct": 0.7857,
-      "team_total_tilt": 2.06632,
-      "team_tilt_per_match": 0.14759,
+      "nrr": 1.291,
+      "team_total_tilt": 2.62384,
+      "team_tilt_per_match": 0.18742,
       "position_est": 1
     },
     {
@@ -24,8 +25,9 @@
       "wins": 9,
       "losses": 6,
       "win_pct": 0.6,
-      "team_total_tilt": 1.70495,
-      "team_tilt_per_match": 0.11366,
+      "nrr": 0.107,
+      "team_total_tilt": 1.58183,
+      "team_tilt_per_match": 0.10546,
       "position_est": 2
     },
     {
@@ -36,8 +38,9 @@
       "wins": 9,
       "losses": 7,
       "win_pct": 0.5625,
-      "team_total_tilt": -0.91416,
-      "team_tilt_per_match": -0.05714,
+      "nrr": -0.037,
+      "team_total_tilt": -1.23163,
+      "team_tilt_per_match": -0.07698,
       "position_est": 3
     },
     {
@@ -48,8 +51,9 @@
       "wins": 7,
       "losses": 7,
       "win_pct": 0.5,
-      "team_total_tilt": 0.74766,
-      "team_tilt_per_match": 0.0534,
+      "nrr": 0.415,
+      "team_total_tilt": 1.11453,
+      "team_tilt_per_match": 0.07961,
       "position_est": 4
     },
     {
@@ -60,8 +64,9 @@
       "wins": 7,
       "losses": 7,
       "win_pct": 0.5,
-      "team_total_tilt": 0.17852,
-      "team_tilt_per_match": 0.01275,
+      "nrr": -0.133,
+      "team_total_tilt": 0.31163,
+      "team_tilt_per_match": 0.02226,
       "position_est": 4
     },
     {
@@ -72,8 +77,9 @@
       "wins": 7,
       "losses": 7,
       "win_pct": 0.5,
-      "team_total_tilt": -0.75857,
-      "team_tilt_per_match": -0.05418,
+      "nrr": -0.585,
+      "team_total_tilt": -0.60769,
+      "team_tilt_per_match": -0.04341,
       "position_est": 4
     },
     {
@@ -84,8 +90,9 @@
       "wins": 7,
       "losses": 8,
       "win_pct": 0.4667,
-      "team_total_tilt": -0.38101,
-      "team_tilt_per_match": -0.0254,
+      "nrr": 0.275,
+      "team_total_tilt": -0.37569,
+      "team_tilt_per_match": -0.02505,
       "position_est": 7
     },
     {
@@ -96,8 +103,9 @@
       "wins": 5,
       "losses": 7,
       "win_pct": 0.4167,
-      "team_total_tilt": -1.8109,
-      "team_tilt_per_match": -0.15091,
+      "nrr": -1.035,
+      "team_total_tilt": -1.51711,
+      "team_tilt_per_match": -0.12643,
       "position_est": 8
     },
     {
@@ -108,8 +116,9 @@
       "wins": 5,
       "losses": 9,
       "win_pct": 0.3571,
-      "team_total_tilt": 0.4279,
-      "team_tilt_per_match": 0.03056,
+      "nrr": -0.198,
+      "team_total_tilt": -0.14413,
+      "team_tilt_per_match": -0.01029,
       "position_est": 9
     },
     {
@@ -120,8 +129,9 @@
       "wins": 4,
       "losses": 10,
       "win_pct": 0.2857,
-      "team_total_tilt": -1.26069,
-      "team_tilt_per_match": -0.09005,
+      "nrr": -0.216,
+      "team_total_tilt": -1.75558,
+      "team_tilt_per_match": -0.1254,
       "position_est": 10
     }
   ],
@@ -514,22 +524,12 @@
     ],
     "batting_tilt": [
       {
-        "player": "Jake Fraser-McGurk",
-        "slug": "j-fraser-mcgurk-9b6e1b3f",
-        "team": "Delhi Capitals",
-        "team_slug": "dc",
-        "value": 0.07605,
-        "raw": 0.1195,
-        "matches": 9,
-        "balls": 141
-      },
-      {
         "player": "Philip Salt",
         "slug": "pd-salt-3d284ca3",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 0.06924,
-        "raw": 0.09931,
+        "value": 1.3408,
+        "per_match": 0.11173,
         "matches": 12,
         "balls": 239
       },
@@ -538,8 +538,8 @@
         "slug": "n-pooran-3241e3fd",
         "team": "Lucknow Super Giants",
         "team_slug": "lsg",
-        "value": 0.06685,
-        "raw": 0.09188,
+        "value": 1.28843,
+        "per_match": 0.09203,
         "matches": 14,
         "balls": 280
       },
@@ -548,18 +548,28 @@
         "slug": "shashank-singh-26989d80",
         "team": "Punjab Kings",
         "team_slug": "pbks",
-        "value": 0.05338,
-        "raw": 0.07414,
+        "value": 1.21757,
+        "per_match": 0.08697,
         "matches": 14,
         "balls": 215
+      },
+      {
+        "player": "Jake Fraser-McGurk",
+        "slug": "j-fraser-mcgurk-9b6e1b3f",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 1.1419,
+        "per_match": 0.12688,
+        "matches": 9,
+        "balls": 141
       },
       {
         "player": "Travis Head",
         "slug": "tm-head-12b610c2",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 0.05122,
-        "raw": 0.06996,
+        "value": 1.07355,
+        "per_match": 0.07157,
         "matches": 15,
         "balls": 296
       }
@@ -570,50 +580,50 @@
         "slug": "jj-bumrah-462411b3",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.08887,
-        "raw": 0.12236,
+        "value": 1.5254,
+        "per_match": 0.11734,
         "matches": 13,
         "balls": 311
-      },
-      {
-        "player": "Mayank Yadav",
-        "slug": "mp-yadav-b1ad996b",
-        "team": "Lucknow Super Giants",
-        "team_slug": "lsg",
-        "value": 0.05512,
-        "raw": 0.12576,
-        "matches": 4,
-        "balls": 73
-      },
-      {
-        "player": "Matheesha Pathirana",
-        "slug": "m-pathirana-64839cb3",
-        "team": "Chennai Super Kings",
-        "team_slug": "csk",
-        "value": 0.04403,
-        "raw": 0.08275,
-        "matches": 6,
-        "balls": 132
       },
       {
         "player": "Sandeep Sharma",
         "slug": "sandeep-sharma-ce820073",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 0.04097,
-        "raw": 0.06282,
+        "value": 0.86594,
+        "per_match": 0.08659,
         "matches": 10,
         "balls": 228
       },
       {
-        "player": "Ishant Sharma",
-        "slug": "i-sharma-5bb1a1c4",
-        "team": "Delhi Capitals",
-        "team_slug": "dc",
-        "value": 0.04091,
-        "raw": 0.06515,
-        "matches": 9,
-        "balls": 162
+        "player": "Andre Russell",
+        "slug": "ad-russell-bbd41817",
+        "team": "Kolkata Knight Riders",
+        "team_slug": "kkr",
+        "value": 0.47105,
+        "per_match": 0.03365,
+        "matches": 14,
+        "balls": 176
+      },
+      {
+        "player": "Trent Boult",
+        "slug": "ta-boult-a818c1be",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 0.45945,
+        "per_match": 0.03063,
+        "matches": 15,
+        "balls": 320
+      },
+      {
+        "player": "Matheesha Pathirana",
+        "slug": "m-pathirana-64839cb3",
+        "team": "Chennai Super Kings",
+        "team_slug": "csk",
+        "value": 0.45787,
+        "per_match": 0.07631,
+        "matches": 6,
+        "balls": 132
       }
     ],
     "total_tilt": [
@@ -622,26 +632,17 @@
         "slug": "jj-bumrah-462411b3",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.09178,
-        "raw": 0.12178,
+        "value": 1.52677,
+        "per_match": 0.11744,
         "matches": 13
-      },
-      {
-        "player": "Jake Fraser-McGurk",
-        "slug": "j-fraser-mcgurk-9b6e1b3f",
-        "team": "Delhi Capitals",
-        "team_slug": "dc",
-        "value": 0.08065,
-        "raw": 0.1195,
-        "matches": 9
       },
       {
         "player": "Philip Salt",
         "slug": "pd-salt-3d284ca3",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 0.0726,
-        "raw": 0.09931,
+        "value": 1.3408,
+        "per_match": 0.11173,
         "matches": 12
       },
       {
@@ -649,18 +650,27 @@
         "slug": "n-pooran-3241e3fd",
         "team": "Lucknow Super Giants",
         "team_slug": "lsg",
-        "value": 0.06973,
-        "raw": 0.09188,
+        "value": 1.28843,
+        "per_match": 0.09203,
         "matches": 14
       },
       {
-        "player": "Liam Livingstone",
-        "slug": "ls-livingstone-50c6bc2b",
+        "player": "Shashank Singh",
+        "slug": "shashank-singh-26989d80",
         "team": "Punjab Kings",
         "team_slug": "pbks",
-        "value": 0.06534,
-        "raw": 0.10737,
-        "matches": 7
+        "value": 1.2741,
+        "per_match": 0.09101,
+        "matches": 14
+      },
+      {
+        "player": "Jake Fraser-McGurk",
+        "slug": "j-fraser-mcgurk-9b6e1b3f",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 1.1419,
+        "per_match": 0.12688,
+        "matches": 9
       }
     ]
   },
