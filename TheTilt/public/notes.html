@@ -77,35 +77,9 @@
     </style>
 </head>
 <body>
-    <nav class="top-nav">
-        <div class="top-nav-inner">
-            <div class="logo"><a href="index.html">THE TILT</a></div>
-            <div class="nav-links">
-                <a href="index.html">leaderboard</a>
-                <a href="goats.html">&#x1F410; GOATs</a>
-                <a href="notes.html" class="active">Why is my Favourite Player Rated so Low?</a>
-                <a href="about.html">about</a>
-                <div class="theme-switch">
-                    <span class="theme-icon" id="sunIcon">&#9788;</span>
-                    <button class="theme-toggle" id="themeBtn"></button>
-                    <span class="theme-icon" id="moonIcon">&#9789;</span>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <script>
-        (function() {
-            const t = document.documentElement.getAttribute('data-theme') || 'dark';
-            document.getElementById(t === 'dark' ? 'moonIcon' : 'sunIcon').classList.add('active');
-            document.getElementById('themeBtn').addEventListener('click', () => {
-                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('theme', next);
-                document.getElementById('sunIcon').classList.toggle('active');
-                document.getElementById('moonIcon').classList.toggle('active');
-            });
-        })();
-    </script>
+    <nav class="top-nav"></nav>
+    <script src="common.js"></script>
+    <script>initNav('notes');</script>
 
     <div class="container">
         <div id="listing">

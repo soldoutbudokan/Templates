@@ -7,7 +7,8 @@ from typing import Optional
 import pandas as pd
 import yaml
 
-from pipeline.compute_tilt import make_slug
+from pipeline.compute_tilt import make_slug, make_team_slug
+from pipeline.parse_matches import TEAM_ALIASES, TEAM_SLUG, season_team_label
 
 
 # %% Configuration
@@ -24,6 +25,116 @@ def _add_legal_flags(df: pd.DataFrame) -> pd.DataFrame:
     df["legal_bat"] = (~df["is_wide"]).astype(int)
     df["legal_bowl"] = (~df["is_wide"] & ~df["is_noball"]).astype(int)
     return df
+
+
+# %% Counting-stat helpers (shared by player, team-season, season, leaders exports)
+def _batting_counting_stats(
+    bat_slice: pd.DataFrame,
+    player_id: str,
+    player_name: str,
+    *,
+    include_dismissals: bool = False,
+) -> Optional[dict]:
+    """Compute batting counting stats over a slice of legal-flagged ball data.
+
+    Caller must have run `_add_legal_flags` already. Returns None if slice empty.
+    `include_dismissals` controls whether the dismissals key is in the output
+    (career view: yes; season view: no — preserves the existing JSON shape).
+    """
+    if len(bat_slice) == 0:
+        return None
+    runs = int(bat_slice["runs_batter"].sum())
+    balls = int(bat_slice["legal_bat"].sum())
+    innings = int(bat_slice["match_id"].nunique())
+    if player_id:
+        dismissals = int(bat_slice["player_dismissed_id"].eq(player_id).sum())
+    else:
+        dismissals = int(bat_slice["player_dismissed"].eq(player_name).sum())
+    match_runs = bat_slice.groupby("match_id")["runs_batter"].sum()
+    out = {
+        "runs": runs,
+        "innings": innings,
+        "balls": balls,
+        "avg": round(runs / max(dismissals, 1), 2),
+        "sr": round(runs / max(balls, 1) * 100, 2),
+        "hs": int(match_runs.max()),
+    }
+    if include_dismissals:
+        out["dismissals"] = dismissals
+    out["not_outs"] = innings - dismissals
+    out["fifties"] = int((match_runs >= 50).sum())
+    out["hundreds"] = int((match_runs >= 100).sum())
+    return out
+
+
+def _bowling_counting_stats(bowl_slice: pd.DataFrame) -> Optional[dict]:
+    """Compute bowling counting stats over a legal-flagged slice. None if empty."""
+    if len(bowl_slice) == 0:
+        return None
+    wickets = int(bowl_slice["is_wicket"].sum())
+    balls = int(bowl_slice["legal_bowl"].sum())
+    runs_conceded = int(bowl_slice["runs_total"].sum())
+    innings = int(bowl_slice["match_id"].nunique())
+    bowl_match = bowl_slice.groupby("match_id").agg(
+        wickets=("is_wicket", "sum"),
+        runs=("runs_total", "sum"),
+    )
+    best_idx = bowl_match["wickets"].idxmax()
+    best_w = int(bowl_match.loc[best_idx, "wickets"])
+    best_r = int(bowl_match.loc[best_idx, "runs"])
+    return {
+        "wickets": wickets,
+        "innings": innings,
+        "balls": balls,
+        "runs_conceded": runs_conceded,
+        "avg": round(runs_conceded / max(wickets, 1), 2),
+        "economy": round(runs_conceded / max(balls, 1) * 6, 2),
+        "best_figures": f"{best_w}/{best_r}",
+    }
+
+
+def _build_match_info_cache(deltas_df: pd.DataFrame) -> dict:
+    """Pre-compute (date, venue, winner, season, teams, scores) per match."""
+    cache = {}
+    for mid in deltas_df["match_id"].unique():
+        mdf = deltas_df[deltas_df["match_id"] == mid]
+        first = mdf.iloc[0]
+        scores = {}
+        for inn_num in sorted(mdf["innings"].unique()):
+            inn_df = mdf[mdf["innings"] == inn_num]
+            last_ball = inn_df.iloc[-1]
+            total_r = int(last_ball["runs_scored"]) + int(last_ball["runs_total"])
+            total_w = int(last_ball["wickets_fallen"]) + (1 if last_ball["is_wicket"] else 0)
+            scores[str(inn_df.iloc[0]["batting_team"])] = f"{total_r}/{total_w}"
+        cache[mid] = {
+            "date": str(first["date"]),
+            "venue": str(first["venue"]),
+            "winner": str(first["winner"]) if pd.notna(first["winner"]) else None,
+            "season": str(first["season"]),
+            "teams": list(mdf["batting_team"].unique()),
+            "scores": scores,
+        }
+    return cache
+
+
+def _build_player_slug_lookup(player_tilt: pd.DataFrame, *, include_empty_id: bool = False) -> dict:
+    """Map player_id -> slug. `include_empty_id=True` mirrors the legacy GOATs
+    behavior of also storing a slug under the empty-string key."""
+    lookup = {}
+    if player_tilt is None:
+        return lookup
+    for _, row in player_tilt.iterrows():
+        pid = row.get("player_id", "")
+        if pid:
+            lookup[pid] = make_slug(row["player"], pid)
+        elif include_empty_id:
+            lookup[pid] = make_slug(row["player"], None)
+    return lookup
+
+
+def _build_player_name_lookup(player_tilt: pd.DataFrame) -> dict:
+    """Map player_id -> full_name (falls back to display name)."""
+    return {row.get("player_id", ""): row.get("full_name", row["player"]) for _, row in player_tilt.iterrows()}
 
 
 # %% Export rankings
@@ -127,25 +238,7 @@ def export_player_details(
 
     deltas_df = _add_legal_flags(deltas_df)
 
-    # Pre-compute match info cache (team scores, winner, venue) for all matches
-    match_info_cache = {}
-    for mid in deltas_df["match_id"].unique():
-        mdf = deltas_df[deltas_df["match_id"] == mid]
-        first = mdf.iloc[0]
-        scores = {}
-        for inn_num in sorted(mdf["innings"].unique()):
-            inn_df = mdf[mdf["innings"] == inn_num]
-            last_ball = inn_df.iloc[-1]
-            total_r = int(last_ball["runs_scored"]) + int(last_ball["runs_total"])
-            total_w = int(last_ball["wickets_fallen"]) + (1 if last_ball["is_wicket"] else 0)
-            scores[str(inn_df.iloc[0]["batting_team"])] = f"{total_r}/{total_w}"
-        match_info_cache[mid] = {
-            "date": str(first["date"]),
-            "venue": str(first["venue"]),
-            "winner": str(first["winner"]) if pd.notna(first["winner"]) else None,
-            "teams": list(mdf["batting_team"].unique()),
-            "scores": scores,
-        }
+    match_info_cache = _build_match_info_cache(deltas_df)
 
     exported = 0
     for _, row in qualified.iterrows():
@@ -196,56 +289,15 @@ def export_player_details(
             bowl_balls = int(bowl_s["balls"]) if bowl_s is not None else 0
 
             # Per-season team and counting stats
-            season_team = None
-            season_bat_stats = None
-            season_bowl_stats = None
-
-            # Batting counting stats for this season
             bat_season_df = bat_df[bat_df["season"] == season]
+            bowl_season_df = bowl_df[bowl_df["season"] == season]
+            season_bat_stats = _batting_counting_stats(bat_season_df, player_id, player_name)
+            season_bowl_stats = _bowling_counting_stats(bowl_season_df)
+            season_team = None
             if len(bat_season_df) > 0:
                 season_team = bat_season_df["batting_team"].mode().iloc[0]
-                s_runs = int(bat_season_df["runs_batter"].sum())
-                s_balls = int(bat_season_df["legal_bat"].sum())
-                s_innings = bat_season_df["match_id"].nunique()
-                s_dismissals = int(bat_season_df["player_dismissed_id"].eq(player_id).sum()) if player_id else int(bat_season_df["player_dismissed"].eq(player_name).sum())
-                s_match_runs = bat_season_df.groupby("match_id")["runs_batter"].sum()
-                season_bat_stats = {
-                    "runs": s_runs,
-                    "innings": s_innings,
-                    "balls": s_balls,
-                    "avg": round(s_runs / max(s_dismissals, 1), 2),
-                    "sr": round(s_runs / max(s_balls, 1) * 100, 2),
-                    "hs": int(s_match_runs.max()),
-                    "not_outs": s_innings - s_dismissals,
-                    "fifties": int((s_match_runs >= 50).sum()),
-                    "hundreds": int((s_match_runs >= 100).sum()),
-                }
-
-            # Bowling counting stats for this season
-            bowl_season_df = bowl_df[bowl_df["season"] == season]
-            if len(bowl_season_df) > 0:
-                if season_team is None:
-                    season_team = bowl_season_df["bowling_team"].mode().iloc[0]
-                s_wickets = int(bowl_season_df["is_wicket"].sum())
-                s_bowl_balls = int(bowl_season_df["legal_bowl"].sum())
-                s_runs_conceded = int(bowl_season_df["runs_total"].sum())
-                s_bowl_innings = bowl_season_df["match_id"].nunique()
-                s_bowl_match = bowl_season_df.groupby("match_id").agg(
-                    wickets=("is_wicket", "sum"),
-                    runs=("runs_total", "sum"),
-                )
-                s_best_idx = s_bowl_match["wickets"].idxmax()
-                s_best_w = int(s_bowl_match.loc[s_best_idx, "wickets"])
-                s_best_r = int(s_bowl_match.loc[s_best_idx, "runs"])
-                season_bowl_stats = {
-                    "wickets": s_wickets,
-                    "innings": s_bowl_innings,
-                    "balls": s_bowl_balls,
-                    "runs_conceded": s_runs_conceded,
-                    "avg": round(s_runs_conceded / max(s_wickets, 1), 2),
-                    "economy": round(s_runs_conceded / max(s_bowl_balls, 1) * 6, 2),
-                    "best_figures": f"{s_best_w}/{s_best_r}",
-                }
+            elif len(bowl_season_df) > 0:
+                season_team = bowl_season_df["bowling_team"].mode().iloc[0]
 
             # Per-match breakdown for this season
             bat_match_ids = set(bat_season_df["match_id"].unique()) if len(bat_season_df) > 0 else set()
@@ -410,53 +462,9 @@ def export_player_details(
         else:
             team_matchups = []
 
-        # Traditional counting stats (batting)
-        batting_stats = None
-        if len(bat_df) > 0:
-            total_runs = int(bat_df["runs_batter"].sum())
-            balls_faced = int(bat_df["legal_bat"].sum())
-            batting_innings = bat_df["match_id"].nunique()
-            # Dismissals: count balls where this player was dismissed
-            dismissals = int(bat_df["player_dismissed_id"].eq(player_id).sum()) if player_id else int(bat_df["player_dismissed"].eq(player_name).sum())
-            # Per-match runs for HS, 50s, 100s
-            match_runs = bat_df.groupby("match_id")["runs_batter"].sum()
-            batting_stats = {
-                "runs": total_runs,
-                "innings": batting_innings,
-                "balls": balls_faced,
-                "avg": round(total_runs / max(dismissals, 1), 2),
-                "sr": round(total_runs / max(balls_faced, 1) * 100, 2),
-                "hs": int(match_runs.max()),
-                "dismissals": dismissals,
-                "not_outs": batting_innings - dismissals,
-                "fifties": int((match_runs >= 50).sum()),
-                "hundreds": int((match_runs >= 100).sum()),
-            }
-
-        # Traditional counting stats (bowling)
-        bowling_stats = None
-        if len(bowl_df) > 0:
-            total_wickets = int(bowl_df["is_wicket"].sum())
-            bowling_balls_total = int(bowl_df["legal_bowl"].sum())
-            runs_conceded = int(bowl_df["runs_total"].sum())
-            bowling_innings = bowl_df["match_id"].nunique()
-            # Best figures per match
-            bowl_match = bowl_df.groupby("match_id").agg(
-                wickets=("is_wicket", "sum"),
-                runs=("runs_total", "sum"),
-            )
-            best_idx = bowl_match["wickets"].idxmax()
-            best_w = int(bowl_match.loc[best_idx, "wickets"])
-            best_r = int(bowl_match.loc[best_idx, "runs"])
-            bowling_stats = {
-                "wickets": total_wickets,
-                "innings": bowling_innings,
-                "balls": bowling_balls_total,
-                "runs_conceded": runs_conceded,
-                "avg": round(runs_conceded / max(total_wickets, 1), 2),
-                "economy": round(runs_conceded / max(bowling_balls_total, 1) * 6, 2),
-                "best_figures": f"{best_w}/{best_r}",
-            }
+        # Traditional counting stats (career-level)
+        batting_stats = _batting_counting_stats(bat_df, player_id, player_name, include_dismissals=True)
+        bowling_stats = _bowling_counting_stats(bowl_df)
 
         # Match TILT distribution (for histogram)
         match_tilt_distribution = []
@@ -567,13 +575,7 @@ def export_match_details(
     matches_dir = output_dir / "matches"
     matches_dir.mkdir(parents=True, exist_ok=True)
 
-    # Build player slug lookup for linking
-    slug_lookup = {}
-    if player_tilt is not None:
-        for _, row in player_tilt.iterrows():
-            pid = row.get("player_id", "")
-            if pid:
-                slug_lookup[pid] = make_slug(row["player"], pid)
+    slug_lookup = _build_player_slug_lookup(player_tilt)
 
     deltas_df = _add_legal_flags(deltas_df)
 
@@ -780,17 +782,8 @@ def export_goats(
     config = load_config()
     output_dir = Path(output_dir or config["export"]["output_dir"])
 
-    # Build slug lookup
-    slug_lookup = {}
-    for _, row in player_tilt.iterrows():
-        pid = row.get("player_id", "")
-        slug_lookup[pid] = make_slug(row["player"], pid if pid else None)
-
-    # Full name lookup
-    name_lookup = {}
-    for _, row in player_tilt.iterrows():
-        pid = row.get("player_id", "")
-        name_lookup[pid] = row.get("full_name", row["player"])
+    slug_lookup = _build_player_slug_lookup(player_tilt, include_empty_id=True)
+    name_lookup = _build_player_name_lookup(player_tilt)
 
     deltas_df = _add_legal_flags(deltas_df)
 
@@ -982,25 +975,625 @@ def export_goats(
     return goats_path
 
 
+# %% Team-level counting stats (orthogonal to player-level — different fields)
+def _team_batting_counting_stats(slice_df: pd.DataFrame) -> Optional[dict]:
+    if len(slice_df) == 0:
+        return None
+    runs = int(slice_df["runs_batter"].sum())
+    balls = int(slice_df["legal_bat"].sum())
+    return {
+        "runs": runs,
+        "balls": balls,
+        "sr": round(runs / max(balls, 1) * 100, 2),
+        "fours": int((slice_df["runs_batter"] == 4).sum()),
+        "sixes": int((slice_df["runs_batter"] == 6).sum()),
+        "dots": int((slice_df["runs_batter"] == 0).sum()),
+    }
+
+
+def _team_bowling_counting_stats(slice_df: pd.DataFrame) -> Optional[dict]:
+    if len(slice_df) == 0:
+        return None
+    wickets = int(slice_df["is_wicket"].sum())
+    balls = int(slice_df["legal_bowl"].sum())
+    runs_conceded = int(slice_df["runs_total"].sum())
+    return {
+        "wickets": wickets,
+        "balls": balls,
+        "runs_conceded": runs_conceded,
+        "economy": round(runs_conceded / max(balls, 1) * 6, 2),
+    }
+
+
+# %% Export team details (career + season summary embedded)
+def export_team_details(
+    deltas_df: pd.DataFrame,
+    team_tilt: pd.DataFrame,
+    team_season_tilt: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """Write per-team JSON: career + season-by-season summary + all-time roster."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+    teams_dir = output_dir / "teams"
+    teams_dir.mkdir(parents=True, exist_ok=True)
+
+    deltas_df = _add_legal_flags(deltas_df)
+    slug_lookup = _build_player_slug_lookup(player_tilt)
+    name_lookup = _build_player_name_lookup(player_tilt)
+
+    exported = 0
+    for canonical, slug in TEAM_SLUG.items():
+        team_row = team_tilt[team_tilt["team"] == canonical]
+        if len(team_row) == 0:
+            continue
+        tr = team_row.iloc[0]
+
+        # Career batting/bowling slices
+        bat_slice = deltas_df[deltas_df["batting_team"] == canonical]
+        bowl_slice = deltas_df[deltas_df["bowling_team"] == canonical]
+
+        # Season-by-season summary
+        ts_rows = team_season_tilt[team_season_tilt["team"] == canonical].copy()
+        ts_rows["season_year"] = ts_rows["season"].apply(lambda s: int(str(s).split("/")[0]) if "/" in str(s) else int(s))
+        ts_rows = ts_rows.sort_values("season_year")
+        seasons = []
+        for _, r in ts_rows.iterrows():
+            seasons.append({
+                "season": str(r["season"]),
+                "season_year": int(r["season_year"]),
+                "label": season_team_label(canonical, int(r["season_year"])),
+                "matches": int(r["matches"]),
+                "wins": int(r["wins"]),
+                "losses": int(r["losses"]),
+                "win_pct": float(round(r["win_pct"], 4)),
+                "team_total_tilt": round(float(r["team_total_tilt"]), 5),
+                "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
+                "position_est": int(r["position_est"]),
+            })
+
+        # All-time roster: each player who appeared (batted or bowled) for this team
+        roster_bat = (
+            bat_slice.groupby(["batter_id", "batter"])
+            .agg(
+                matches_for_team=("match_id", "nunique"),
+                runs=("runs_batter", "sum"),
+                balls=("legal_bat", "sum"),
+                bat_total_tilt=("delta_wp", "sum"),
+            )
+            .reset_index()
+            .rename(columns={"batter_id": "player_id", "batter": "player"})
+        )
+        roster_bowl = (
+            bowl_slice.groupby(["bowler_id", "bowler"])
+            .agg(
+                bowl_matches=("match_id", "nunique"),
+                wickets=("is_wicket", "sum"),
+                bowl_balls=("legal_bowl", "sum"),
+                bowl_total_tilt=("delta_wp", lambda x: -x.sum()),
+            )
+            .reset_index()
+            .rename(columns={"bowler_id": "player_id", "bowler": "player"})
+        )
+        roster = pd.merge(roster_bat, roster_bowl, on=["player_id", "player"], how="outer")
+        for col in ["matches_for_team", "runs", "balls", "bat_total_tilt", "bowl_matches", "wickets", "bowl_balls", "bowl_total_tilt"]:
+            if col in roster.columns:
+                roster[col] = roster[col].fillna(0)
+        # Total matches across batting and bowling (de-dup by player)
+        appearances_bat = bat_slice[["batter_id", "match_id"]].rename(columns={"batter_id": "player_id"})
+        appearances_bowl = bowl_slice[["bowler_id", "match_id"]].rename(columns={"bowler_id": "player_id"})
+        appearances = pd.concat([appearances_bat, appearances_bowl]).dropna().drop_duplicates()
+        total_matches_per_player = appearances.groupby("player_id").size().reset_index(name="total_matches_for_team")
+        roster = roster.merge(total_matches_per_player, on="player_id", how="left")
+        roster["total_matches_for_team"] = roster["total_matches_for_team"].fillna(0).astype(int)
+
+        roster_records = []
+        for _, r in roster.sort_values("total_matches_for_team", ascending=False).iterrows():
+            pid = r["player_id"]
+            bat_balls = int(r.get("balls") or 0)
+            bowl_balls = int(r.get("bowl_balls") or 0)
+            n = int(r["total_matches_for_team"])
+            bat_tpm = round(float(r.get("bat_total_tilt") or 0) / max(n, 1), 5) if bat_balls >= 50 else None
+            bowl_tpm = round(float(r.get("bowl_total_tilt") or 0) / max(n, 1), 5) if bowl_balls >= 50 else None
+            roster_records.append({
+                "player": name_lookup.get(pid, r["player"]),
+                "slug": slug_lookup.get(pid, ""),
+                "matches": n,
+                "runs": int(r.get("runs") or 0),
+                "batting_balls": bat_balls,
+                "wickets": int(r.get("wickets") or 0),
+                "bowling_balls": bowl_balls,
+                "batting_tilt_per_match": bat_tpm,
+                "bowling_tilt_per_match": bowl_tpm,
+                "total_tilt_per_match": round((float(r.get("bat_total_tilt") or 0) + float(r.get("bowl_total_tilt") or 0)) / max(n, 1), 5),
+            })
+
+        team_doc = {
+            "team": canonical,
+            "slug": slug,
+            "aliases": TEAM_ALIASES.get(canonical, [canonical]),
+            "first_season": int(tr["first_season"]),
+            "last_season": int(tr["last_season"]),
+            "career": {
+                "matches": int(tr["matches"]),
+                "wins": int(tr["wins"]),
+                "losses": int(tr["losses"]),
+                "win_pct": float(round(tr["win_pct"], 4)),
+                "team_total_tilt": round(float(tr["team_total_tilt"]), 5),
+                "team_tilt_per_match": round(float(tr["team_tilt_per_match"]), 5),
+                "batting_tilt_per_match": round(float(tr["batting_tilt_per_match"]), 5),
+                "bowling_tilt_per_match": round(float(tr["bowling_tilt_per_match"]), 5),
+                "batting_stats": _team_batting_counting_stats(bat_slice),
+                "bowling_stats": _team_bowling_counting_stats(bowl_slice),
+            },
+            "seasons": seasons,
+            "all_time_roster": roster_records,
+        }
+        with open(teams_dir / f"{slug}.json", "w") as f:
+            json.dump(team_doc, f, indent=2)
+        exported += 1
+
+    print(f"  Exported {exported} team detail files to {teams_dir}")
+    return teams_dir
+
+
+# %% Export team-season details
+def export_team_season_details(
+    deltas_df: pd.DataFrame,
+    team_season_tilt: pd.DataFrame,
+    player_season_tilt: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """Write per-(team, season) JSON: header + counting stats + roster + match log."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+    ts_dir = output_dir / "team_seasons"
+    ts_dir.mkdir(parents=True, exist_ok=True)
+
+    deltas_df = _add_legal_flags(deltas_df)
+    slug_lookup = _build_player_slug_lookup(player_tilt)
+    name_lookup = _build_player_name_lookup(player_tilt)
+    match_info = _build_match_info_cache(deltas_df)
+
+    exported = 0
+    for _, ts in team_season_tilt.iterrows():
+        canonical = ts["team"]
+        season = str(ts["season"])
+        slug = TEAM_SLUG.get(canonical)
+        if not slug:
+            continue
+        season_year = int(season.split("/")[0]) if "/" in season else int(season)
+
+        # Season slices for this team
+        bat_slice = deltas_df[(deltas_df["batting_team"] == canonical) & (deltas_df["season"] == season)]
+        bowl_slice = deltas_df[(deltas_df["bowling_team"] == canonical) & (deltas_df["season"] == season)]
+
+        # Season roster: every player_id appearing in either slice (player-season subset)
+        ps_rows = player_season_tilt[
+            (player_season_tilt["season"] == season)
+            & player_season_tilt["team"].isin([canonical])
+        ].copy()
+
+        roster = []
+        for _, r in ps_rows.sort_values("total_tilt_per_match", ascending=False).iterrows():
+            pid = r["player_id"]
+            bat_p_slice = bat_slice[bat_slice["batter_id"] == pid]
+            bowl_p_slice = bowl_slice[bowl_slice["bowler_id"] == pid]
+            roster.append({
+                "player": name_lookup.get(pid, r["player"]),
+                "slug": slug_lookup.get(pid, ""),
+                "matches": int(r["total_matches"]),
+                "batting_stats": _batting_counting_stats(bat_p_slice, pid, r["player"]),
+                "bowling_stats": _bowling_counting_stats(bowl_p_slice),
+                "batting_tilt_per_match": round(float(r["batting_tilt_per_match"]), 5) if int(r["batting_balls"]) >= 50 else None,
+                "bowling_tilt_per_match": round(float(r["bowling_tilt_per_match"]), 5) if int(r["bowling_balls"]) >= 50 else None,
+                "shrunk_total_tilt_per_match": round(float(r.get("shrunk_total_tilt_per_match", r["total_tilt_per_match"])), 5),
+                "total_tilt": round(float(r["total_tilt"]), 5),
+            })
+
+        # Match log for the team-season
+        team_match_ids = sorted(set(bat_slice["match_id"].unique()) | set(bowl_slice["match_id"].unique()))
+        match_log = []
+        for mid in team_match_ids:
+            mi = match_info.get(mid)
+            if mi is None:
+                continue
+            # Team's score is the score of canonical in mi.scores
+            opponent = next((t for t in mi["teams"] if t != canonical), None)
+            team_total_tilt = float(deltas_df[(deltas_df["match_id"] == mid) & (deltas_df["batting_team"] == canonical)]["delta_wp"].sum())
+            team_total_tilt += float(-deltas_df[(deltas_df["match_id"] == mid) & (deltas_df["bowling_team"] == canonical)]["delta_wp"].sum())
+            match_log.append({
+                "match_id": str(mid),
+                "date": mi["date"],
+                "opponent": opponent,
+                "team_score": mi["scores"].get(canonical),
+                "opponent_score": mi["scores"].get(opponent) if opponent else None,
+                "winner": mi["winner"],
+                "team_total_tilt": round(team_total_tilt, 5),
+            })
+        match_log.sort(key=lambda x: x["date"])
+
+        doc = {
+            "team": canonical,
+            "slug": slug,
+            "season": season,
+            "season_year": season_year,
+            "label": season_team_label(canonical, season_year),
+            "header": {
+                "matches": int(ts["matches"]),
+                "wins": int(ts["wins"]),
+                "losses": int(ts["losses"]),
+                "win_pct": float(round(ts["win_pct"], 4)),
+                "team_total_tilt": round(float(ts["team_total_tilt"]), 5),
+                "team_tilt_per_match": round(float(ts["team_tilt_per_match"]), 5),
+                "position_est": int(ts["position_est"]),
+            },
+            "batting_stats": _team_batting_counting_stats(bat_slice),
+            "bowling_stats": _team_bowling_counting_stats(bowl_slice),
+            "roster": roster,
+            "matches": match_log,
+        }
+        with open(ts_dir / f"{slug}-{season.replace('/', '-')}.json", "w") as f:
+            json.dump(doc, f, indent=2)
+        exported += 1
+
+    print(f"  Exported {exported} team-season files to {ts_dir}")
+    return ts_dir
+
+
+# %% Helpers for season + leaders exporters
+_LEADER_STATS = [
+    "runs", "wickets",
+    "batting_tilt", "bowling_tilt", "total_tilt",
+    "sr", "economy",
+    "fifties", "hundreds", "fours", "sixes",
+]
+
+
+def _build_player_season_leaders(
+    deltas_df: pd.DataFrame,
+    player_season_tilt: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+    season: str,
+    *,
+    min_balls: int = 50,
+) -> dict:
+    """Compute per-stat ranked lists for one season. Returns {stat: [rows]}."""
+    slug_lookup = _build_player_slug_lookup(player_tilt)
+    name_lookup = _build_player_name_lookup(player_tilt)
+
+    season_balls = deltas_df[deltas_df["season"] == season]
+
+    # Batter-level stats for this season (group on batter_id)
+    bat = (
+        season_balls.groupby(["batter_id", "batter", "batting_team"])
+        .agg(
+            runs=("runs_batter", "sum"),
+            balls=("legal_bat", "sum"),
+            innings=("match_id", "nunique"),
+            fours=("runs_batter", lambda x: (x == 4).sum()),
+            sixes=("runs_batter", lambda x: (x == 6).sum()),
+        )
+        .reset_index()
+    )
+    # Per-match runs for fifties/hundreds + HS
+    match_runs = (
+        season_balls.groupby(["batter_id", "match_id"])["runs_batter"].sum().reset_index()
+    )
+    fifties = match_runs[match_runs["runs_batter"] >= 50].groupby("batter_id").size().reset_index(name="fifties")
+    hundreds = match_runs[match_runs["runs_batter"] >= 100].groupby("batter_id").size().reset_index(name="hundreds")
+    bat = bat.merge(fifties, on="batter_id", how="left").merge(hundreds, on="batter_id", how="left").fillna({"fifties": 0, "hundreds": 0})
+    bat["sr"] = (bat["runs"] / bat["balls"].clip(lower=1) * 100).round(2)
+    bat = bat.rename(columns={"batter_id": "player_id"})
+
+    # Bowler-level stats for this season
+    bowl = (
+        season_balls.groupby(["bowler_id", "bowler", "bowling_team"])
+        .agg(
+            wickets=("is_wicket", "sum"),
+            runs_conceded=("runs_total", "sum"),
+            balls=("legal_bowl", "sum"),
+            innings=("match_id", "nunique"),
+        )
+        .reset_index()
+        .rename(columns={"bowler_id": "player_id"})
+    )
+    bowl["economy"] = (bowl["runs_conceded"] / bowl["balls"].clip(lower=1) * 6).round(2)
+
+    # TILT stats from player_season_tilt
+    ps = player_season_tilt[player_season_tilt["season"] == season].copy()
+
+    leaders = {}
+
+    def _row_team_slug(team_name):
+        return TEAM_SLUG.get(team_name, "")
+
+    def _bat_row(r, value, ancillary):
+        return {
+            "player": name_lookup.get(r["player_id"], r.get("batter") or r.get("player", "")),
+            "slug": slug_lookup.get(r["player_id"], ""),
+            "team": r.get("batting_team") or r.get("team", ""),
+            "team_slug": _row_team_slug(r.get("batting_team") or r.get("team", "")),
+            "value": value,
+            **ancillary,
+        }
+
+    def _bowl_row(r, value, ancillary):
+        return {
+            "player": name_lookup.get(r["player_id"], r.get("bowler") or r.get("player", "")),
+            "slug": slug_lookup.get(r["player_id"], ""),
+            "team": r.get("bowling_team") or r.get("team", ""),
+            "team_slug": _row_team_slug(r.get("bowling_team") or r.get("team", "")),
+            "value": value,
+            **ancillary,
+        }
+
+    leaders["runs"] = [
+        _bat_row(r, int(r["runs"]), {"balls": int(r["balls"]), "sr": float(r["sr"]), "innings": int(r["innings"])})
+        for _, r in bat.nlargest(50, "runs").iterrows()
+    ]
+    leaders["fours"] = [
+        _bat_row(r, int(r["fours"]), {"balls": int(r["balls"]), "runs": int(r["runs"])})
+        for _, r in bat.nlargest(50, "fours").iterrows()
+    ]
+    leaders["sixes"] = [
+        _bat_row(r, int(r["sixes"]), {"balls": int(r["balls"]), "runs": int(r["runs"])})
+        for _, r in bat.nlargest(50, "sixes").iterrows()
+    ]
+    leaders["fifties"] = [
+        _bat_row(r, int(r["fifties"]), {"hundreds": int(r["hundreds"]), "innings": int(r["innings"])})
+        for _, r in bat.nlargest(50, "fifties").iterrows()
+    ]
+    leaders["hundreds"] = [
+        _bat_row(r, int(r["hundreds"]), {"fifties": int(r["fifties"]), "innings": int(r["innings"])})
+        for _, r in bat.nlargest(50, "hundreds").iterrows()
+    ]
+    sr_qual = bat[bat["balls"] >= min_balls]
+    leaders["sr"] = [
+        _bat_row(r, float(r["sr"]), {"runs": int(r["runs"]), "balls": int(r["balls"])})
+        for _, r in sr_qual.nlargest(50, "sr").iterrows()
+    ]
+
+    leaders["wickets"] = [
+        _bowl_row(r, int(r["wickets"]), {"balls": int(r["balls"]), "economy": float(r["economy"]), "innings": int(r["innings"])})
+        for _, r in bowl.nlargest(50, "wickets").iterrows()
+    ]
+    econ_qual = bowl[bowl["balls"] >= min_balls]
+    # Lowest economy wins — sort ascending
+    leaders["economy"] = [
+        _bowl_row(r, float(r["economy"]), {"wickets": int(r["wickets"]), "balls": int(r["balls"])})
+        for _, r in econ_qual.nsmallest(50, "economy").iterrows()
+    ]
+
+    # TILT-based: use shrunk_*_per_match and require min balls
+    if len(ps) > 0:
+        ps_bat = ps[ps["batting_balls"] >= min_balls].copy()
+        ps_bowl = ps[ps["bowling_balls"] >= min_balls].copy()
+        ps_total = ps[(ps["batting_balls"] >= min_balls) | (ps["bowling_balls"] >= min_balls)].copy()
+
+        def _ps_row(r, value, ancillary):
+            return {
+                "player": name_lookup.get(r["player_id"], r["player"]),
+                "slug": slug_lookup.get(r["player_id"], ""),
+                "team": r.get("team", ""),
+                "team_slug": _row_team_slug(r.get("team", "")),
+                "value": value,
+                **ancillary,
+            }
+
+        leaders["batting_tilt"] = [
+            _ps_row(r, round(float(r["shrunk_batting_tilt_per_match"]), 5),
+                    {"raw": round(float(r["batting_tilt_per_match"]), 5), "matches": int(r["batting_matches"]), "balls": int(r["batting_balls"])})
+            for _, r in ps_bat.sort_values("shrunk_batting_tilt_per_match", ascending=False).head(50).iterrows()
+        ]
+        leaders["bowling_tilt"] = [
+            _ps_row(r, round(float(r["shrunk_bowling_tilt_per_match"]), 5),
+                    {"raw": round(float(r["bowling_tilt_per_match"]), 5), "matches": int(r["bowling_matches"]), "balls": int(r["bowling_balls"])})
+            for _, r in ps_bowl.sort_values("shrunk_bowling_tilt_per_match", ascending=False).head(50).iterrows()
+        ]
+        leaders["total_tilt"] = [
+            _ps_row(r, round(float(r["shrunk_total_tilt_per_match"]), 5),
+                    {"raw": round(float(r["total_tilt_per_match"]), 5), "matches": int(r["total_matches"])})
+            for _, r in ps_total.sort_values("shrunk_total_tilt_per_match", ascending=False).head(50).iterrows()
+        ]
+    else:
+        leaders["batting_tilt"] = []
+        leaders["bowling_tilt"] = []
+        leaders["total_tilt"] = []
+
+    return leaders
+
+
+# %% Export season hub pages
+def export_seasons(
+    deltas_df: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+    player_season_tilt: pd.DataFrame,
+    team_season_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """Write one JSON per season with team table + top-5 by each stat + match list."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+    seasons_dir = output_dir / "seasons"
+    seasons_dir.mkdir(parents=True, exist_ok=True)
+
+    deltas_df = _add_legal_flags(deltas_df)
+    match_info = _build_match_info_cache(deltas_df)
+
+    exported = 0
+    for season in sorted(deltas_df["season"].unique(), key=str):
+        season_year = int(season.split("/")[0]) if "/" in season else int(season)
+
+        # Team table for the season
+        ts_rows = team_season_tilt[team_season_tilt["season"] == season].copy()
+        team_table = []
+        for _, r in ts_rows.sort_values("position_est").iterrows():
+            canonical = r["team"]
+            team_table.append({
+                "team": canonical,
+                "slug": TEAM_SLUG.get(canonical, ""),
+                "label": season_team_label(canonical, season_year),
+                "matches": int(r["matches"]),
+                "wins": int(r["wins"]),
+                "losses": int(r["losses"]),
+                "win_pct": float(round(r["win_pct"], 4)),
+                "team_total_tilt": round(float(r["team_total_tilt"]), 5),
+                "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
+                "position_est": int(r["position_est"]),
+            })
+
+        # Champion: team that won the final / the most matches in the playoffs is unknown without
+        # finals tags from cricsheet. Use the season's last match's winner as a placeholder hint.
+        season_matches_df = deltas_df[deltas_df["season"] == season]
+        last_match_id = season_matches_df.sort_values("date").iloc[-1]["match_id"]
+        champion = match_info.get(last_match_id, {}).get("winner")
+
+        # Leaders: top 5 by each stat (full ranked list lives in /leaders/)
+        full_leaders = _build_player_season_leaders(deltas_df, player_season_tilt, player_tilt, season)
+        leaders_top5 = {stat: rows[:5] for stat, rows in full_leaders.items()}
+
+        # Match list
+        season_match_ids = sorted(season_matches_df["match_id"].unique(), key=lambda x: match_info.get(x, {}).get("date", ""))
+        matches_list = []
+        for mid in season_match_ids:
+            mi = match_info.get(mid)
+            if mi is None:
+                continue
+            matches_list.append({
+                "match_id": str(mid),
+                "date": mi["date"],
+                "venue": mi["venue"],
+                "teams": mi["teams"],
+                "winner": mi["winner"],
+            })
+
+        doc = {
+            "season": season,
+            "season_year": season_year,
+            "matches": int(season_matches_df["match_id"].nunique()),
+            "champion": champion,
+            "team_table": team_table,
+            "leaders": leaders_top5,
+            "matches_list": matches_list,
+        }
+        with open(seasons_dir / f"{season.replace('/', '-')}.json", "w") as f:
+            json.dump(doc, f, indent=2)
+        exported += 1
+
+    print(f"  Exported {exported} season files to {seasons_dir}")
+    return seasons_dir
+
+
+# %% Export leaders (full ranked list per season + stat)
+def export_leaders(
+    deltas_df: pd.DataFrame,
+    player_tilt: pd.DataFrame,
+    player_season_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """One file per (season, stat). Used by leaders.html for full lists."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+    leaders_dir = output_dir / "leaders"
+    leaders_dir.mkdir(parents=True, exist_ok=True)
+
+    deltas_df = _add_legal_flags(deltas_df)
+
+    exported = 0
+    for season in sorted(deltas_df["season"].unique(), key=str):
+        full_leaders = _build_player_season_leaders(deltas_df, player_season_tilt, player_tilt, season)
+        season_slug = season.replace("/", "-")
+        for stat, rows in full_leaders.items():
+            ranked = []
+            for i, r in enumerate(rows, 1):
+                ranked.append({"rank": i, **r})
+            doc = {
+                "season": season,
+                "season_year": int(season.split("/")[0]) if "/" in season else int(season),
+                "stat": stat,
+                "leaders": ranked,
+            }
+            with open(leaders_dir / f"{season_slug}-{stat}.json", "w") as f:
+                json.dump(doc, f, indent=2)
+            exported += 1
+
+    print(f"  Exported {exported} leader files to {leaders_dir}")
+    return leaders_dir
+
+
+# %% Export team index
+def export_team_index(
+    team_tilt: pd.DataFrame,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """Write a thin index of all teams for navigation / picker components."""
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    from pipeline.parse_matches import _SEASON_LABELS
+
+    index = []
+    for canonical, slug in TEAM_SLUG.items():
+        row = team_tilt[team_tilt["team"] == canonical]
+        if len(row) == 0:
+            continue
+        r = row.iloc[0]
+        index.append({
+            "slug": slug,
+            "name": canonical,
+            "aliases": TEAM_ALIASES.get(canonical, [canonical]),
+            "season_labels": _SEASON_LABELS.get(canonical, []),
+            "career_matches": int(r["matches"]),
+            "first_season": int(r["first_season"]),
+            "last_season": int(r["last_season"]),
+            "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
+            "win_pct": float(round(r["win_pct"], 4)),
+        })
+    index.sort(key=lambda x: x["career_matches"], reverse=True)
+
+    index_path = output_dir / "team_index.json"
+    with open(index_path, "w") as f:
+        json.dump(index, f, indent=2)
+
+    print(f"  Exported team index ({len(index)} teams) to {index_path}")
+    return index_path
+
+
 # %% Main
 def export_all(
     deltas_df: pd.DataFrame,
     player_tilt: pd.DataFrame,
+    player_season_tilt: Optional[pd.DataFrame] = None,
+    team_tilt: Optional[pd.DataFrame] = None,
+    team_season_tilt: Optional[pd.DataFrame] = None,
 ) -> None:
-    """Export all JSON files for the website."""
+    """Export all JSON files for the website.
+
+    The new aggregated DataFrames (player_season_tilt, team_tilt, team_season_tilt)
+    are optional only so legacy callers don't break — `run_pipeline` always passes
+    them. If absent, the new exporters are skipped.
+    """
     print("\nExporting JSON for website...")
     export_rankings(player_tilt)
     export_player_details(deltas_df, player_tilt)
     export_match_details(deltas_df, player_tilt)
     export_goats(deltas_df, player_tilt)
     export_meta(deltas_df)
+    if team_tilt is not None and team_season_tilt is not None and player_season_tilt is not None:
+        export_team_details(deltas_df, team_tilt, team_season_tilt, player_tilt)
+        export_team_season_details(deltas_df, team_season_tilt, player_season_tilt, player_tilt)
+        export_seasons(deltas_df, player_tilt, player_season_tilt, team_season_tilt)
+        export_leaders(deltas_df, player_tilt, player_season_tilt)
+        export_team_index(team_tilt)
     print("  Done!")
 
 
 if __name__ == "__main__":
     # Load pre-computed data
-    import pickle
-
     config = load_config()
     processed_dir = Path(config["data"]["processed_dir"])
 
@@ -1008,4 +1601,10 @@ if __name__ == "__main__":
     deltas_df = pd.read_parquet(processed_dir / "deltas.parquet")
     player_tilt = pd.read_parquet(processed_dir / "player_tilt.parquet")
 
-    export_all(deltas_df, player_tilt)
+    extras = {}
+    for name in ["player_season_tilt", "team_tilt", "team_season_tilt"]:
+        path = processed_dir / f"{name}.parquet"
+        if path.exists():
+            extras[name] = pd.read_parquet(path)
+
+    export_all(deltas_df, player_tilt, **extras)

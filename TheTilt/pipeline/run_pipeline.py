@@ -22,7 +22,12 @@ from pipeline.download_people import download_and_resolve
 from pipeline.parse_matches import parse_all_matches
 from pipeline.build_features import build_all_features
 from pipeline.train_win_prob import train_and_evaluate
-from pipeline.compute_tilt import compute_tilt
+from pipeline.compute_tilt import (
+    compute_tilt,
+    aggregate_player_season_tilt,
+    aggregate_team_tilt,
+    aggregate_team_season_tilt,
+)
 from pipeline.export_json import export_all
 
 
@@ -74,8 +79,22 @@ def refresh_tilt_data_only() -> None:
     deltas_df.to_parquet(processed_dir / "deltas.parquet", index=False)
     player_tilt.to_parquet(processed_dir / "player_tilt.parquet", index=False)
 
+    print("\n  Computing per-player-season + team aggregates...")
+    player_season_tilt = aggregate_player_season_tilt(deltas_df)
+    team_tilt = aggregate_team_tilt(deltas_df)
+    team_season_tilt = aggregate_team_season_tilt(deltas_df)
+    player_season_tilt.to_parquet(processed_dir / "player_season_tilt.parquet", index=False)
+    team_tilt.to_parquet(processed_dir / "team_tilt.parquet", index=False)
+    team_season_tilt.to_parquet(processed_dir / "team_season_tilt.parquet", index=False)
+
     print("\n[6/6] Exporting JSON for website...")
-    export_all(deltas_df, player_tilt)
+    export_all(
+        deltas_df,
+        player_tilt,
+        player_season_tilt=player_season_tilt,
+        team_tilt=team_tilt,
+        team_season_tilt=team_season_tilt,
+    )
 
     elapsed = time.time() - start
     print(f"\n{'=' * 60}")
@@ -121,9 +140,23 @@ def run_pipeline() -> None:
     deltas_df.to_parquet(processed_dir / "deltas.parquet", index=False)
     player_tilt.to_parquet(processed_dir / "player_tilt.parquet", index=False)
 
+    print("\n  Computing per-player-season + team aggregates...")
+    player_season_tilt = aggregate_player_season_tilt(deltas_df)
+    team_tilt = aggregate_team_tilt(deltas_df)
+    team_season_tilt = aggregate_team_season_tilt(deltas_df)
+    player_season_tilt.to_parquet(processed_dir / "player_season_tilt.parquet", index=False)
+    team_tilt.to_parquet(processed_dir / "team_tilt.parquet", index=False)
+    team_season_tilt.to_parquet(processed_dir / "team_season_tilt.parquet", index=False)
+
     # Step 7: Export JSON
     print("\n[7/7] Exporting JSON for website...")
-    export_all(deltas_df, player_tilt)
+    export_all(
+        deltas_df,
+        player_tilt,
+        player_season_tilt=player_season_tilt,
+        team_tilt=team_tilt,
+        team_season_tilt=team_season_tilt,
+    )
 
     elapsed = time.time() - start
     print(f"\n{'=' * 60}")

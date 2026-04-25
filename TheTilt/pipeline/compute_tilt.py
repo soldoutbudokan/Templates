@@ -241,7 +241,43 @@ def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     return combined
 
 
-# %% Bayesian shrinkage
+# %% Bayesian shrinkage helper (module-level so other aggregators can call it)
+def _compute_shrinkage(
+    combined_df: pd.DataFrame,
+    col: str,
+    match_df: pd.DataFrame,
+    *,
+    match_col: str = "match_tilt",
+    n_col: str = "total_matches",
+    group_keys: Optional[list] = None,
+) -> tuple:
+    """Compute James-Stein shrinkage for a single TILT column.
+
+    `group_keys` defaults to ["player_id"]; player-season uses
+    ["player_id", "season"]. Variance is computed within each row's natural
+    group (its match-by-match TILT for that group).
+    """
+    if group_keys is None:
+        group_keys = ["player_id"]
+
+    pop_mean = combined_df[col].mean()
+    between_var = combined_df[col].var()
+    player_var = match_df.groupby(group_keys)[match_col].var().dropna()
+    within_var = player_var.mean()
+
+    if between_var is None or pd.isna(between_var) or between_var <= 0 or pd.isna(within_var) or within_var <= 0:
+        print(f"  Warning: cannot compute shrinkage for {col} (between={between_var}, within={within_var})")
+        combined_df[f"shrunk_{col}"] = combined_df[col]
+        return combined_df, 0
+
+    k = within_var / between_var
+    print(f"  {col}: k={k:.1f} (within_var={within_var:.6f}, between_var={between_var:.6f}, pop_mean={pop_mean:.6f})")
+
+    n = combined_df[n_col]
+    combined_df[f"shrunk_{col}"] = (n / (n + k)) * combined_df[col] + (k / (n + k)) * pop_mean
+    return combined_df, k
+
+
 def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataFrame:
     """Apply empirical Bayes shrinkage to stabilize small-sample rankings.
 
@@ -271,32 +307,6 @@ def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataF
         bat_match.assign(role="bat"),
         bowl_match.assign(role="bowl"),
     ]).groupby(["player_id", "match_id"])["match_tilt"].sum().reset_index()
-
-    def _compute_shrinkage(combined_df, col, match_df, match_col="match_tilt"):
-        """Compute shrinkage for a single TILT column."""
-        # Population mean (across all players)
-        pop_mean = combined_df[col].mean()
-
-        # Between-player variance: variance of player-level averages
-        between_var = combined_df[col].var()
-
-        # Within-player variance: average of each player's match-to-match variance
-        player_var = match_df.groupby("player_id")[match_col].var().dropna()
-        within_var = player_var.mean()
-
-        if between_var <= 0 or within_var <= 0:
-            print(f"  Warning: cannot compute shrinkage for {col} (between={between_var:.6f}, within={within_var:.6f})")
-            combined_df[f"shrunk_{col}"] = combined_df[col]
-            return combined_df, 0
-
-        k = within_var / between_var
-        print(f"  {col}: k={k:.1f} (within_var={within_var:.6f}, between_var={between_var:.6f}, pop_mean={pop_mean:.6f})")
-
-        # Apply shrinkage
-        n = combined_df["total_matches"]
-        combined_df[f"shrunk_{col}"] = (n / (n + k)) * combined_df[col] + (k / (n + k)) * pop_mean
-
-        return combined_df, k
 
     # Apply to each TILT column
     combined, k_total = _compute_shrinkage(combined, "total_tilt_per_match", total_match)
@@ -351,7 +361,7 @@ def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataF
     return combined
 
 
-# %% Slug helper
+# %% Slug helpers
 def make_slug(name: str, player_id: Optional[str] = None) -> str:
     """Convert player name to URL-friendly slug, with optional ID suffix for uniqueness."""
     slug = name.lower().strip()
@@ -360,6 +370,278 @@ def make_slug(name: str, player_id: Optional[str] = None) -> str:
     if player_id:
         slug = f"{slug}-{player_id}"
     return slug
+
+
+def make_team_slug(canonical: str) -> str:
+    """Look up the canonical team's slug from the YAML alias map."""
+    from pipeline.parse_matches import TEAM_SLUG
+    return TEAM_SLUG.get(canonical, re.sub(r"[^a-z0-9-]", "-", canonical.lower()))
+
+
+# %% Helper: legal-delivery flags (mirrors export_json._add_legal_flags but local)
+def _ensure_legal_flags(df: pd.DataFrame) -> pd.DataFrame:
+    if "legal_bat" not in df.columns:
+        df = df.copy()
+        df["legal_bat"] = (~df["is_wide"]).astype(int)
+    if "legal_bowl" not in df.columns:
+        df["legal_bowl"] = (~df["is_wide"] & ~df["is_noball"]).astype(int)
+    return df
+
+
+def _season_year(season: str) -> int:
+    s = str(season)
+    return int(s.split("/")[0]) if "/" in s else int(s)
+
+
+# %% Aggregate per (player, season)
+def aggregate_player_season_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate ball-level deltas into per-player-per-season TILT.
+
+    Mirrors `aggregate_player_tilt` but adds `season` to the groupby keys.
+    Applies shrinkage at the player-season level (small-sample seasons get
+    pulled toward the global player-season mean).
+    """
+    print("\nAggregating per-player-per-season TILT scores...")
+    deltas_df = _ensure_legal_flags(deltas_df)
+    deltas_df = deltas_df.copy()
+    deltas_df["bowling_delta"] = -deltas_df["delta_wp"]
+
+    # Batting per (player, season)
+    bat = (
+        deltas_df.groupby(["batter_id", "season"])
+        .agg(
+            player=("batter", "last"),
+            batting_total_tilt=("delta_wp", "sum"),
+            batting_balls=("legal_bat", "sum"),
+            batting_matches=("match_id", "nunique"),
+            batting_team=("batting_team", lambda s: s.mode().iloc[0] if len(s) else None),
+        )
+        .reset_index()
+        .rename(columns={"batter_id": "player_id"})
+    )
+    bat["batting_tilt_per_match"] = bat["batting_total_tilt"] / bat["batting_matches"].replace(0, 1)
+
+    # Bowling per (player, season)
+    bowl = (
+        deltas_df.groupby(["bowler_id", "season"])
+        .agg(
+            player=("bowler", "last"),
+            bowling_total_tilt=("bowling_delta", "sum"),
+            bowling_balls=("legal_bowl", "sum"),
+            bowling_matches=("match_id", "nunique"),
+            bowling_team=("bowling_team", lambda s: s.mode().iloc[0] if len(s) else None),
+        )
+        .reset_index()
+        .rename(columns={"bowler_id": "player_id"})
+    )
+    bowl["bowling_tilt_per_match"] = bowl["bowling_total_tilt"] / bowl["bowling_matches"].replace(0, 1)
+
+    # Outer-merge on (player_id, season)
+    bowl_no_player = bowl.drop(columns=["player"])
+    combined = pd.merge(bat, bowl_no_player, on=["player_id", "season"], how="outer")
+    # Fill name from bowling-only rows
+    bowl_only_names = bowl.set_index(["player_id", "season"])["player"]
+    combined = combined.set_index(["player_id", "season"])
+    combined["player"] = combined["player"].fillna(bowl_only_names)
+    combined = combined.reset_index()
+
+    numeric_fill = [
+        "batting_total_tilt", "batting_balls", "batting_matches", "batting_tilt_per_match",
+        "bowling_total_tilt", "bowling_balls", "bowling_matches", "bowling_tilt_per_match",
+    ]
+    for col in numeric_fill:
+        if col in combined.columns:
+            combined[col] = combined[col].fillna(0)
+
+    # Total matches: union of batting and bowling appearances per (player, season)
+    bat_match_sets = deltas_df.groupby(["batter_id", "season"])["match_id"].apply(set).reset_index()
+    bat_match_sets.columns = ["player_id", "season", "bat_match_set"]
+    bowl_match_sets = deltas_df.groupby(["bowler_id", "season"])["match_id"].apply(set).reset_index()
+    bowl_match_sets.columns = ["player_id", "season", "bowl_match_set"]
+    match_sets = pd.merge(bat_match_sets, bowl_match_sets, on=["player_id", "season"], how="outer")
+    match_sets["bat_match_set"] = match_sets["bat_match_set"].apply(lambda x: x if isinstance(x, set) else set())
+    match_sets["bowl_match_set"] = match_sets["bowl_match_set"].apply(lambda x: x if isinstance(x, set) else set())
+    match_sets["total_matches"] = match_sets.apply(lambda r: len(r["bat_match_set"] | r["bowl_match_set"]), axis=1)
+    combined = combined.merge(match_sets[["player_id", "season", "total_matches"]], on=["player_id", "season"], how="left")
+    combined["total_matches"] = combined["total_matches"].fillna(0).astype(int)
+
+    combined["total_tilt"] = combined["batting_total_tilt"].fillna(0) + combined["bowling_total_tilt"].fillna(0)
+    combined["total_tilt_per_match"] = combined["total_tilt"] / combined["total_matches"].replace(0, 1)
+
+    # Season-team: prefer batting_team (more reliable signal); fall back to bowling_team
+    combined["team"] = combined["batting_team"].fillna(combined["bowling_team"])
+    # Season teams list — collect any teams the player appeared for that season
+    season_team_lookup = (
+        pd.concat([
+            deltas_df[["batter_id", "season", "batting_team"]].rename(columns={"batter_id": "player_id", "batting_team": "team"}),
+            deltas_df[["bowler_id", "season", "bowling_team"]].rename(columns={"bowler_id": "player_id", "bowling_team": "team"}),
+        ])
+        .dropna(subset=["player_id"])
+        .groupby(["player_id", "season"])["team"]
+        .apply(lambda s: sorted(set(s)))
+        .reset_index()
+        .rename(columns={"team": "season_teams"})
+    )
+    combined = combined.merge(season_team_lookup, on=["player_id", "season"], how="left")
+
+    # Apply shrinkage (per-season aggregate; group_keys = ["player_id", "season"])
+    print("  Applying player-season shrinkage...")
+    bat_match_df = (
+        deltas_df.groupby(["batter_id", "season", "match_id"])["delta_wp"]
+        .sum()
+        .reset_index()
+        .rename(columns={"batter_id": "player_id", "delta_wp": "match_tilt"})
+    )
+    bowl_match_df = (
+        deltas_df.groupby(["bowler_id", "season", "match_id"])
+        .agg(match_tilt=("delta_wp", lambda x: -x.sum()))
+        .reset_index()
+        .rename(columns={"bowler_id": "player_id"})
+    )
+    total_match_df = (
+        pd.concat([bat_match_df.assign(role="bat"), bowl_match_df.assign(role="bowl")])
+        .groupby(["player_id", "season", "match_id"])["match_tilt"]
+        .sum()
+        .reset_index()
+    )
+    combined, _ = _compute_shrinkage(combined, "total_tilt_per_match", total_match_df, group_keys=["player_id", "season"])
+    combined, _ = _compute_shrinkage(combined, "batting_tilt_per_match", bat_match_df, group_keys=["player_id", "season"])
+    combined, _ = _compute_shrinkage(combined, "bowling_tilt_per_match", bowl_match_df, group_keys=["player_id", "season"])
+
+    combined = combined.sort_values(["season", "shrunk_total_tilt_per_match"], ascending=[True, False]).reset_index(drop=True)
+    print(f"  Total player-seasons: {len(combined)}")
+    return combined
+
+
+# %% Aggregate per team (career)
+def aggregate_team_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate per canonical team (across all seasons).
+
+    `team_total_tilt = sum(delta_wp where batting_team == T) + sum(-delta_wp where bowling_team == T)`.
+    No shrinkage — teams accumulate hundreds of matches.
+    """
+    print("\nAggregating per-team TILT scores...")
+    deltas_df = _ensure_legal_flags(deltas_df)
+
+    bat = (
+        deltas_df.groupby("batting_team")
+        .agg(batting_total_tilt=("delta_wp", "sum"), batting_balls=("legal_bat", "sum"))
+        .reset_index()
+        .rename(columns={"batting_team": "team"})
+    )
+    bowl = (
+        deltas_df.groupby("bowling_team")
+        .agg(bowling_total_tilt=("delta_wp", lambda x: -x.sum()), bowling_balls=("legal_bowl", "sum"))
+        .reset_index()
+        .rename(columns={"bowling_team": "team"})
+    )
+
+    # Match-level appearances: a team appeared if it batted OR bowled
+    teams_per_match = deltas_df.groupby("match_id")[["batting_team", "bowling_team", "winner"]].first().reset_index()
+    appearances = pd.concat([
+        teams_per_match[["match_id", "batting_team"]].rename(columns={"batting_team": "team"}),
+        teams_per_match[["match_id", "bowling_team"]].rename(columns={"bowling_team": "team"}),
+    ]).dropna().drop_duplicates()
+    matches = appearances.groupby("team").size().reset_index(name="matches")
+
+    wins = (
+        teams_per_match.dropna(subset=["winner"]).groupby("winner").size().reset_index(name="wins")
+        .rename(columns={"winner": "team"})
+    )
+
+    out = matches.merge(bat, on="team", how="left").merge(bowl, on="team", how="left").merge(wins, on="team", how="left")
+    for col in ["batting_total_tilt", "batting_balls", "bowling_total_tilt", "bowling_balls", "wins"]:
+        if col in out.columns:
+            out[col] = out[col].fillna(0)
+    out["wins"] = out["wins"].astype(int)
+    out["losses"] = (out["matches"] - out["wins"]).astype(int)
+    out["win_pct"] = (out["wins"] / out["matches"].replace(0, 1)).round(4)
+    out["team_total_tilt"] = out["batting_total_tilt"] + out["bowling_total_tilt"]
+    out["team_tilt_per_match"] = out["team_total_tilt"] / out["matches"].replace(0, 1)
+    out["batting_tilt_per_match"] = out["batting_total_tilt"] / out["matches"].replace(0, 1)
+    out["bowling_tilt_per_match"] = out["bowling_total_tilt"] / out["matches"].replace(0, 1)
+
+    # First/last active season (in calendar-year terms)
+    season_year = deltas_df["season"].apply(_season_year)
+    bat_seasons = (
+        deltas_df.assign(season_year=season_year)
+        .groupby("batting_team")["season_year"].agg(["min", "max"]).reset_index()
+        .rename(columns={"batting_team": "team", "min": "bat_first", "max": "bat_last"})
+    )
+    bowl_seasons = (
+        deltas_df.assign(season_year=season_year)
+        .groupby("bowling_team")["season_year"].agg(["min", "max"]).reset_index()
+        .rename(columns={"bowling_team": "team", "min": "bowl_first", "max": "bowl_last"})
+    )
+    out = out.merge(bat_seasons, on="team", how="left").merge(bowl_seasons, on="team", how="left")
+    out["first_season"] = out[["bat_first", "bowl_first"]].min(axis=1).fillna(0).astype(int)
+    out["last_season"] = out[["bat_last", "bowl_last"]].max(axis=1).fillna(0).astype(int)
+    out = out.drop(columns=["bat_first", "bat_last", "bowl_first", "bowl_last"])
+
+    out = out.sort_values("team_tilt_per_match", ascending=False).reset_index(drop=True)
+    print(f"  Total teams: {len(out)}")
+    print(out[["team", "matches", "wins", "win_pct", "team_tilt_per_match", "first_season", "last_season"]].to_string(index=False))
+    return out
+
+
+# %% Aggregate per (team, season)
+def aggregate_team_season_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate per (team, season). Same metrics as team aggregate plus
+    a position estimate (rank by win_pct in the season)."""
+    print("\nAggregating per-team-per-season TILT scores...")
+    deltas_df = _ensure_legal_flags(deltas_df)
+
+    # Match-level info per (team, season): for wins/losses, season per match
+    match_first = deltas_df.groupby("match_id").first()[["season", "winner", "batting_team", "bowling_team"]].reset_index()
+    appearances = pd.concat([
+        match_first[["match_id", "season", "batting_team"]].rename(columns={"batting_team": "team"}),
+        match_first[["match_id", "season", "bowling_team"]].rename(columns={"bowling_team": "team"}),
+    ]).dropna().drop_duplicates()
+    matches = appearances.groupby(["team", "season"]).size().reset_index(name="matches")
+
+    wins = (
+        match_first.dropna(subset=["winner"]).groupby(["winner", "season"]).size().reset_index(name="wins")
+        .rename(columns={"winner": "team"})
+    )
+
+    bat = (
+        deltas_df.groupby(["batting_team", "season"])
+        .agg(batting_total_tilt=("delta_wp", "sum"), batting_balls=("legal_bat", "sum"))
+        .reset_index()
+        .rename(columns={"batting_team": "team"})
+    )
+    bowl = (
+        deltas_df.groupby(["bowling_team", "season"])
+        .agg(bowling_total_tilt=("delta_wp", lambda x: -x.sum()), bowling_balls=("legal_bowl", "sum"))
+        .reset_index()
+        .rename(columns={"bowling_team": "team"})
+    )
+
+    out = (
+        matches
+        .merge(wins, on=["team", "season"], how="left")
+        .merge(bat, on=["team", "season"], how="left")
+        .merge(bowl, on=["team", "season"], how="left")
+    )
+    for col in ["wins", "batting_total_tilt", "batting_balls", "bowling_total_tilt", "bowling_balls"]:
+        if col in out.columns:
+            out[col] = out[col].fillna(0)
+    out["wins"] = out["wins"].astype(int)
+    out["losses"] = (out["matches"] - out["wins"]).astype(int)
+    out["win_pct"] = (out["wins"] / out["matches"].replace(0, 1)).round(4)
+    out["team_total_tilt"] = out["batting_total_tilt"] + out["bowling_total_tilt"]
+    out["team_tilt_per_match"] = out["team_total_tilt"] / out["matches"].replace(0, 1)
+
+    # Position estimate: rank within season by win_pct (1 = best)
+    out["position_est"] = (
+        out.groupby("season")["win_pct"]
+        .rank(method="min", ascending=False)
+        .astype(int)
+    )
+
+    out = out.sort_values(["season", "win_pct"], ascending=[True, False]).reset_index(drop=True)
+    print(f"  Total team-seasons: {len(out)}")
+    return out
 
 
 # %% Main

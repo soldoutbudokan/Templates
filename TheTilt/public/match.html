@@ -9,35 +9,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
-    <nav class="top-nav">
-        <div class="top-nav-inner">
-            <div class="logo"><a href="index.html">THE TILT</a></div>
-            <div class="nav-links">
-                <a href="index.html">leaderboard</a>
-                <a href="goats.html">🐐 GOATs</a>
-                <a href="notes.html">Why is my Favourite Player Rated so Low?</a>
-                <a href="about.html">about</a>
-                <div class="theme-switch">
-                    <span class="theme-icon" id="sunIcon">&#9788;</span>
-                    <button class="theme-toggle" id="themeBtn"></button>
-                    <span class="theme-icon" id="moonIcon">&#9789;</span>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <script>
-        (function() {
-            const t = document.documentElement.getAttribute('data-theme') || 'dark';
-            document.getElementById(t === 'dark' ? 'moonIcon' : 'sunIcon').classList.add('active');
-            document.getElementById('themeBtn').addEventListener('click', () => {
-                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('theme', next);
-                document.getElementById('sunIcon').classList.toggle('active');
-                document.getElementById('moonIcon').classList.toggle('active');
-            });
-        })();
-    </script>
+    <nav class="top-nav"></nav>
+    <script src="common.js"></script>
+    <script>initNav(null);</script>
 
     <div class="container">
         <div id="content">
@@ -51,15 +25,6 @@
     </div>
 
 <script>
-function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
-
-function formatTilt(val) {
-    const sign = val >= 0 ? '+' : '';
-    const pct = (val * 100).toFixed(2);
-    const cls = val > 0.001 ? 'tilt-positive' : val < -0.001 ? 'tilt-negative' : 'tilt-neutral';
-    return `<span class="${cls}">${sign}${pct}%</span>`;
-}
-
 async function loadMatch() {
     const params = new URLSearchParams(window.location.search);
     const matchId = params.get('id');
@@ -70,19 +35,23 @@ async function loadMatch() {
     }
 
     try {
-        const res = await fetch(`data/matches/${matchId}.json`);
+        const [res, teamIndex] = await Promise.all([
+            fetch(`data/matches/${matchId}.json`),
+            loadTeamIndex(),
+        ]);
         if (!res.ok) throw new Error('not found');
         const m = await res.json();
 
         document.title = `The TILT — ${m.teams[0]} vs ${m.teams[1]}`;
         const refTeam = m.innings && m.innings.length > 0 ? m.innings[0].batting_team : m.teams[0];
+        const teamLnk = (name) => teamLink(name, m.season, teamIndex);
 
         let html = `
             <div class="match-header">
-                <div class="teams">${m.teams[0]} <span class="vs">vs</span> ${m.teams[1]}</div>
-                <div class="match-meta">${m.date} | ${m.venue} | ${m.season}</div>
-                ${m.toss_winner ? `<div class="match-meta">${m.toss_winner} won the toss and chose to ${m.toss_decision}</div>` : ''}
-                ${m.winner ? `<div class="result">${m.winner} won</div>` : ''}
+                <div class="teams">${teamLnk(m.teams[0])} <span class="vs">vs</span> ${teamLnk(m.teams[1])}</div>
+                <div class="match-meta">${m.date} | ${m.venue} | ${seasonLink(m.season)}</div>
+                ${m.toss_winner ? `<div class="match-meta">${teamLnk(m.toss_winner)} won the toss and chose to ${m.toss_decision}</div>` : ''}
+                ${m.winner ? `<div class="result">${teamLnk(m.winner)} won</div>` : ''}
             </div>
         `;
 
@@ -120,7 +89,7 @@ async function loadMatch() {
         // Innings scorecards
         if (m.innings && m.innings.length > 0) {
             for (const inn of m.innings) {
-                html += `<div class="section"><h3>${inn.batting_team} — ${inn.total} (innings ${inn.innings})</h3>`;
+                html += `<div class="section"><h3>${teamLnk(inn.batting_team)} — ${inn.total} (innings ${inn.innings})</h3>`;
 
                 // Batting card
                 html += `<div class="table-wrap"><table class="detail-table">

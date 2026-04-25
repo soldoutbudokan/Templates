@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — Season</title>
+    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+</head>
+<body>
+    <nav class="top-nav"></nav>
+    <script src="common.js"></script>
+    <script>initNav('season');</script>
+
+    <div class="container">
+        <div id="content">
+            <div class="loading">loading season…</div>
+        </div>
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="index.html">back to leaderboard</a>
+        </div>
+    </div>
+
+<script>
+const STAT_LABELS = {
+    runs: 'Runs',
+    wickets: 'Wickets',
+    batting_tilt: 'Batting TILT',
+    bowling_tilt: 'Bowling TILT',
+    total_tilt: 'Total TILT',
+    sr: 'Strike Rate',
+    economy: 'Economy',
+    fifties: 'Fifties',
+    hundreds: 'Hundreds',
+    fours: 'Fours',
+    sixes: 'Sixes',
+};
+
+const STAT_ORDER = [
+    'total_tilt', 'batting_tilt', 'bowling_tilt',
+    'runs', 'wickets', 'sr', 'economy',
+    'fifties', 'hundreds', 'fours', 'sixes',
+];
+
+function isTiltStat(stat) {
+    return stat.endsWith('_tilt');
+}
+
+function formatLeaderValue(stat, value) {
+    if (isTiltStat(stat)) return formatTilt(value);
+    if (stat === 'sr' || stat === 'economy') return Number(value).toFixed(2);
+    return String(value);
+}
+
+async function loadSeason() {
+    const params = new URLSearchParams(window.location.search);
+    let season = params.get('season');
+    const teamIndex = await loadTeamIndex();
+
+    // If no season param, default to latest from meta.json
+    if (!season) {
+        try {
+            const m = await (await fetch('data/meta.json')).json();
+            season = (m.seasons || []).slice(-1)[0];
+            if (season) {
+                window.history.replaceState(null, '', `season.html?season=${encodeURIComponent(season)}`);
+            }
+        } catch (e) { /* fall through */ }
+        if (!season) {
+            document.getElementById('content').innerHTML = '<div class="loading">no season specified</div>';
+            return;
+        }
+    }
+
+    let data;
+    try {
+        const seasonSlug = season.replace('/', '-');
+        const res = await fetch(`data/seasons/${seasonSlug}.json`);
+        if (!res.ok) throw new Error('not found');
+        data = await res.json();
+    } catch (e) {
+        document.getElementById('content').innerHTML = `<div class="loading">no data for season ${season}</div>`;
+        return;
+    }
+
+    // Season picker chips
+    let allSeasons = [];
+    try {
+        const m = await (await fetch('data/meta.json')).json();
+        allSeasons = (m.seasons || []).slice().reverse();
+    } catch (e) {}
+
+    const seasonChips = allSeasons.map((s) => {
+        const cls = s === data.season ? 'picker-chip active' : 'picker-chip';
+        return `<a href="season.html?season=${encodeURIComponent(s)}" class="${cls}">${s}</a>`;
+    }).join('');
+
+    const inProgress = data.matches < 60 && Number(data.season_year) >= new Date().getFullYear() - 1
+        ? `<div class="subtitle">season in progress — ${data.matches} matches played</div>`
+        : `<div class="subtitle">${data.matches} matches</div>`;
+
+    let html = `
+        <div class="page-header">
+            <h1>IPL ${data.season}</h1>
+            ${inProgress}
+            ${data.champion ? `<div class="meta">last match winner: ${teamLink(data.champion, data.season, teamIndex)}</div>` : ''}
+        </div>
+        <div class="season-picker-chips">${seasonChips}</div>
+
+        <h2 class="section-title">Standings</h2>
+        <div class="table-wrap">
+            <table class="detail-table">
+                <thead><tr><th>#</th><th>team</th><th>W</th><th>L</th><th>win%</th><th>team TILT/m</th></tr></thead>
+                <tbody>
+                    ${data.team_table.map((t) => `
+                        <tr>
+                            <td>${t.position_est}</td>
+                            <td><a href="team.html?team=${t.slug}&season=${encodeURIComponent(data.season)}">${t.label}</a></td>
+                            <td>${t.wins}</td>
+                            <td>${t.losses}</td>
+                            <td>${(t.win_pct * 100).toFixed(1)}%</td>
+                            <td>${formatTilt(t.team_tilt_per_match)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">Leaders</h2>
+        <div class="leaders-grid">
+            ${STAT_ORDER.map((stat) => {
+                const rows = data.leaders[stat] || [];
+                if (rows.length === 0) return '';
+                return `
+                    <div class="leader-tile">
+                        <div class="leader-tile-header">
+                            <span class="leader-tile-title">${STAT_LABELS[stat]}</span>
+                            <a class="leader-see-all" href="leaders.html?season=${encodeURIComponent(data.season)}&stat=${stat}">see all →</a>
+                        </div>
+                        <ol class="leader-list">
+                            ${rows.map((r, i) => `
+                                <li>
+                                    <span class="leader-rank">${i + 1}.</span>
+                                    <a href="player.html?player=${r.slug}" class="leader-player">${r.player}</a>
+                                    <span class="leader-team">${teamLink(r.team, data.season, teamIndex, { cls: 'team-link-subtle' })}</span>
+                                    <span class="leader-value">${formatLeaderValue(stat, r.value)}</span>
+                                </li>
+                            `).join('')}
+                        </ol>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+
+        <h2 class="section-title">Matches</h2>
+        <div class="table-wrap">
+            <table class="detail-table">
+                <thead><tr><th>date</th><th>teams</th><th>winner</th><th>venue</th></tr></thead>
+                <tbody>
+                    ${data.matches_list.map((m) => `
+                        <tr>
+                            <td><a href="match.html?id=${m.match_id}">${m.date}</a></td>
+                            <td>${m.teams.map((t) => teamLink(t, data.season, teamIndex)).join(' vs ')}</td>
+                            <td>${m.winner ? teamLink(m.winner, data.season, teamIndex) : '—'}</td>
+                            <td>${m.venue || ''}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    document.getElementById('content').innerHTML = html;
+}
+
+loadSeason();
+</script>
+</body>
+</html>

@@ -8,35 +8,9 @@
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
 </head>
 <body>
-    <nav class="top-nav">
-        <div class="top-nav-inner">
-            <div class="logo"><a href="index.html">THE TILT</a></div>
-            <div class="nav-links">
-                <a href="index.html">leaderboard</a>
-                <a href="goats.html" class="active">🐐 GOATs</a>
-                <a href="notes.html">Why is my Favourite Player Rated so Low?</a>
-                <a href="about.html">about</a>
-                <div class="theme-switch">
-                    <span class="theme-icon" id="sunIcon">&#9788;</span>
-                    <button class="theme-toggle" id="themeBtn"></button>
-                    <span class="theme-icon" id="moonIcon">&#9789;</span>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <script>
-        (function() {
-            const t = document.documentElement.getAttribute('data-theme') || 'dark';
-            document.getElementById(t === 'dark' ? 'moonIcon' : 'sunIcon').classList.add('active');
-            document.getElementById('themeBtn').addEventListener('click', () => {
-                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('theme', next);
-                document.getElementById('sunIcon').classList.toggle('active');
-                document.getElementById('moonIcon').classList.toggle('active');
-            });
-        })();
-    </script>
+    <nav class="top-nav"></nav>
+    <script src="common.js"></script>
+    <script>initNav('goats');</script>
 
     <div class="container">
         <div class="page-header">
@@ -77,6 +51,7 @@ let goats = {};
 let currentSection = 'match_batting';
 let currentSort = { key: 'tilt', desc: true };
 let currentInnings = 'all';
+let teamIndex = new Map();
 
 const matchSections = ['match_batting', 'match_bowling'];
 
@@ -88,13 +63,6 @@ const defaultSortKeys = {
     season_batting: 'total_tilt',
     season_bowling: 'total_tilt',
 };
-
-function formatTilt(val) {
-    const sign = val >= 0 ? '+' : '';
-    const pct = (val * 100).toFixed(2);
-    const cls = val > 0.001 ? 'tilt-positive' : val < -0.001 ? 'tilt-negative' : 'tilt-neutral';
-    return `<span class="${cls}">${sign}${pct}%</span>`;
-}
 
 function sortData(data) {
     const sorted = [...data];
@@ -138,7 +106,7 @@ function render() {
                 <td>
                     <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
                         <span class="player-name">${r.player}</span><br>
-                        <span class="player-team">${r.team}</span>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
                     </a>
                 </td>
                 <td>${formatTilt(r.tilt)}</td>
@@ -163,7 +131,7 @@ function render() {
                 <td>
                     <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
                         <span class="player-name">${r.player}</span><br>
-                        <span class="player-team">${r.team}</span>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
                     </a>
                 </td>
                 <td>${formatTilt(r.tilt)}</td>
@@ -188,7 +156,7 @@ function render() {
                 <td>
                     <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
                         <span class="player-name">${r.player}</span><br>
-                        <span class="player-team">${r.team}</span>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
                     </a>
                 </td>
                 <td>${formatTilt(r.tilt)}</td>
@@ -213,14 +181,14 @@ function render() {
                 <td>
                     <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
                         <span class="player-name">${r.player}</span><br>
-                        <span class="player-team">${r.team}</span>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
                     </a>
                 </td>
                 <td>${formatTilt(r.total_tilt)}</td>
                 <td class="hide-mobile">${formatTilt(r.tilt_per_match)}</td>
                 <td class="hide-mobile">${r.runs}</td>
                 <td class="hide-mobile">${r.matches}</td>
-                <td class="hide-mobile">${r.season}</td>
+                <td class="hide-mobile">${seasonLink(r.season)}</td>
             </tr>`;
         });
         html += '</tbody></table></div>';
@@ -239,14 +207,14 @@ function render() {
                 <td>
                     <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
                         <span class="player-name">${r.player}</span><br>
-                        <span class="player-team">${r.team}</span>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
                     </a>
                 </td>
                 <td>${formatTilt(r.total_tilt)}</td>
                 <td class="hide-mobile">${formatTilt(r.tilt_per_match)}</td>
                 <td class="hide-mobile">${r.wickets}</td>
                 <td class="hide-mobile">${r.matches}</td>
-                <td class="hide-mobile">${r.season}</td>
+                <td class="hide-mobile">${seasonLink(r.season)}</td>
             </tr>`;
         });
         html += '</tbody></table></div>';
@@ -275,8 +243,9 @@ function render() {
 
 async function load() {
     try {
-        const res = await fetch('data/goats.json');
+        const [res, ti] = await Promise.all([fetch('data/goats.json'), loadTeamIndex()]);
         goats = await res.json();
+        teamIndex = ti;
         render();
     } catch (e) {
         document.getElementById('content').innerHTML = '<div class="loading">failed to load data</div>';

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — Team</title>
+    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <nav class="top-nav"></nav>
+    <script src="common.js"></script>
+    <script>initNav('team');</script>
+
+    <div class="container">
+        <div id="content">
+            <div class="loading">loading…</div>
+        </div>
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="index.html">back to leaderboard</a>
+        </div>
+    </div>
+
+<script>
+async function load() {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('team');
+    const season = params.get('season');
+
+    if (!slug) {
+        return renderTeamHub();
+    }
+    if (season) {
+        return renderTeamSeason(slug, season);
+    }
+    return renderTeamCareer(slug);
+}
+
+async function renderTeamHub() {
+    let teams = [];
+    try {
+        const res = await fetch('data/team_index.json');
+        teams = await res.json();
+    } catch (e) {
+        document.getElementById('content').innerHTML = '<div class="loading">team index not available</div>';
+        return;
+    }
+    let html = `
+        <div class="page-header">
+            <h1>Teams</h1>
+            <div class="subtitle">${teams.length} franchises</div>
+        </div>
+        <div class="team-grid">
+            ${teams.map((t) => `
+                <a class="team-card" href="team.html?team=${t.slug}">
+                    <div class="team-card-name">${t.name}</div>
+                    <div class="team-card-meta">${t.first_season}–${t.last_season} · ${t.career_matches} matches</div>
+                    <div class="team-card-tilt">${formatTilt(t.team_tilt_per_match)} TILT/m · ${(t.win_pct * 100).toFixed(1)}% wins</div>
+                    ${t.aliases.length > 1 ? `<div class="team-card-aliases">aka ${t.aliases.filter((a) => a !== t.name).join(', ')}</div>` : ''}
+                </a>
+            `).join('')}
+        </div>
+    `;
+    document.getElementById('content').innerHTML = html;
+}
+
+async function renderTeamCareer(slug) {
+    let team;
+    try {
+        const res = await fetch(`data/teams/${slug}.json`);
+        if (!res.ok) throw new Error('not found');
+        team = await res.json();
+    } catch (e) {
+        document.getElementById('content').innerHTML = `<div class="loading">team "${slug}" not found</div>`;
+        return;
+    }
+
+    const aliasNote = team.aliases.length > 1
+        ? `<div class="meta">aka ${team.aliases.filter((a) => a !== team.team).join(', ')}</div>`
+        : '';
+
+    let html = `
+        <div class="page-header">
+            <h1>${team.team}</h1>
+            <div class="subtitle">${team.first_season}–${team.last_season} · ${team.career.matches} matches · ${(team.career.win_pct * 100).toFixed(1)}% wins</div>
+            ${aliasNote}
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-card-label">Team TILT/match</div>
+                <div class="stat-card-value">${formatTilt(team.career.team_tilt_per_match)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">Batting TILT/m</div>
+                <div class="stat-card-value">${formatTilt(team.career.batting_tilt_per_match)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">Bowling TILT/m</div>
+                <div class="stat-card-value">${formatTilt(team.career.bowling_tilt_per_match)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">W–L</div>
+                <div class="stat-card-value">${team.career.wins}–${team.career.losses}</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Career batting</h2>
+        <div class="table-wrap">
+            <table class="detail-table">
+                <thead><tr><th>runs</th><th>balls</th><th>SR</th><th>4s</th><th>6s</th><th>dots</th></tr></thead>
+                <tbody><tr>
+                    <td>${team.career.batting_stats.runs}</td>
+                    <td>${team.career.batting_stats.balls}</td>
+                    <td>${team.career.batting_stats.sr.toFixed(2)}</td>
+                    <td>${team.career.batting_stats.fours}</td>
+                    <td>${team.career.batting_stats.sixes}</td>
+                    <td>${team.career.batting_stats.dots}</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">Career bowling</h2>
+        <div class="table-wrap">
+            <table class="detail-table">
+                <thead><tr><th>wickets</th><th>balls</th><th>runs</th><th>economy</th></tr></thead>
+                <tbody><tr>
+                    <td>${team.career.bowling_stats.wickets}</td>
+                    <td>${team.career.bowling_stats.balls}</td>
+                    <td>${team.career.bowling_stats.runs_conceded}</td>
+                    <td>${team.career.bowling_stats.economy.toFixed(2)}</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">Season-by-season</h2>
+        <div class="table-wrap">
+            <table class="detail-table sortable">
+                <thead><tr><th>season</th><th>label</th><th>W</th><th>L</th><th>win%</th><th>TILT/m</th><th>position</th></tr></thead>
+                <tbody>
+                    ${team.seasons.slice().reverse().map((s) => `
+                        <tr>
+                            <td><a href="team.html?team=${team.slug}&season=${encodeURIComponent(s.season)}">${s.season}</a></td>
+                            <td>${s.label}</td>
+                            <td>${s.wins}</td>
+                            <td>${s.losses}</td>
+                            <td>${(s.win_pct * 100).toFixed(1)}%</td>
+                            <td>${formatTilt(s.team_tilt_per_match)}</td>
+                            <td>${s.position_est}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">All-time roster</h2>
+        <div class="table-wrap">
+            <table class="detail-table sortable">
+                <thead><tr><th>player</th><th>matches</th><th>runs</th><th>wickets</th><th>bat TILT/m</th><th>bowl TILT/m</th></tr></thead>
+                <tbody>
+                    ${team.all_time_roster.map((r) => `
+                        <tr>
+                            <td><a href="player.html?player=${r.slug}">${r.player}</a></td>
+                            <td>${r.matches}</td>
+                            <td>${r.runs}</td>
+                            <td>${r.wickets}</td>
+                            <td>${formatTilt(r.batting_tilt_per_match)}</td>
+                            <td>${formatTilt(r.bowling_tilt_per_match)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">Season TILT/m trend</h2>
+        <div class="chart-container"><canvas id="trendChart" height="120"></canvas></div>
+    `;
+    document.getElementById('content').innerHTML = html;
+
+    // Chart
+    const ctx = document.getElementById('trendChart');
+    if (ctx && window.Chart) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: team.seasons.map((s) => s.season),
+                datasets: [{
+                    data: team.seasons.map((s) => s.team_tilt_per_match * 100),
+                    borderColor: cssVar('--accent-green'),
+                    backgroundColor: cssVar('--accent-green') + '33',
+                    fill: false,
+                    tension: 0.2,
+                }],
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { color: cssVar('--text-muted') }, grid: { color: cssVar('--border') } },
+                    y: { ticks: { color: cssVar('--text-muted'), callback: (v) => v.toFixed(1) + '%' }, grid: { color: cssVar('--border') } },
+                },
+            },
+        });
+    }
+}
+
+async function renderTeamSeason(slug, season) {
+    let ts;
+    try {
+        const seasonSlug = season.replace('/', '-');
+        const res = await fetch(`data/team_seasons/${slug}-${seasonSlug}.json`);
+        if (!res.ok) throw new Error('not found');
+        ts = await res.json();
+    } catch (e) {
+        document.getElementById('content').innerHTML = `<div class="loading">no data for ${slug} ${season}</div>`;
+        return;
+    }
+
+    const teamIndex = await loadTeamIndex();
+
+    let html = `
+        <div class="page-header">
+            <h1>${ts.label} — ${ts.season}</h1>
+            <div class="subtitle">
+                ${ts.header.wins}–${ts.header.losses} · ${(ts.header.win_pct * 100).toFixed(1)}% wins · position #${ts.header.position_est}
+            </div>
+            <div class="meta">
+                <a href="team.html?team=${ts.slug}">back to ${ts.label} career</a> ·
+                <a href="season.html?season=${encodeURIComponent(ts.season)}">all of IPL ${ts.season}</a>
+            </div>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-card-label">Team TILT/match</div>
+                <div class="stat-card-value">${formatTilt(ts.header.team_tilt_per_match)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">Total TILT</div>
+                <div class="stat-card-value">${formatTilt(ts.header.team_total_tilt)}</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Season batting</h2>
+        <div class="table-wrap">
+            <table class="detail-table">
+                <thead><tr><th>runs</th><th>balls</th><th>SR</th><th>4s</th><th>6s</th><th>dots</th></tr></thead>
+                <tbody><tr>
+                    <td>${ts.batting_stats.runs}</td>
+                    <td>${ts.batting_stats.balls}</td>
+                    <td>${ts.batting_stats.sr.toFixed(2)}</td>
+                    <td>${ts.batting_stats.fours}</td>
+                    <td>${ts.batting_stats.sixes}</td>
+                    <td>${ts.batting_stats.dots}</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">Season bowling</h2>
+        <div class="table-wrap">
+            <table class="detail-table">
+                <thead><tr><th>wickets</th><th>balls</th><th>runs</th><th>economy</th></tr></thead>
+                <tbody><tr>
+                    <td>${ts.bowling_stats.wickets}</td>
+                    <td>${ts.bowling_stats.balls}</td>
+                    <td>${ts.bowling_stats.runs_conceded}</td>
+                    <td>${ts.bowling_stats.economy.toFixed(2)}</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">Season roster</h2>
+        <div class="table-wrap">
+            <table class="detail-table sortable">
+                <thead><tr><th>player</th><th>matches</th><th>runs</th><th>balls</th><th>SR</th><th>wkts</th><th>econ</th><th>bat TILT/m</th><th>bowl TILT/m</th><th>total TILT</th></tr></thead>
+                <tbody>
+                    ${ts.roster.map((r) => `
+                        <tr>
+                            <td><a href="player.html?player=${r.slug}&season=${encodeURIComponent(ts.season)}">${r.player}</a></td>
+                            <td>${r.matches}</td>
+                            <td>${r.batting_stats ? r.batting_stats.runs : '—'}</td>
+                            <td>${r.batting_stats ? r.batting_stats.balls : '—'}</td>
+                            <td>${r.batting_stats ? r.batting_stats.sr.toFixed(2) : '—'}</td>
+                            <td>${r.bowling_stats ? r.bowling_stats.wickets : '—'}</td>
+                            <td>${r.bowling_stats ? r.bowling_stats.economy.toFixed(2) : '—'}</td>
+                            <td>${formatTilt(r.batting_tilt_per_match)}</td>
+                            <td>${formatTilt(r.bowling_tilt_per_match)}</td>
+                            <td>${formatTilt(r.total_tilt)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title">Match log</h2>
+        <div class="table-wrap">
+            <table class="detail-table">
+                <thead><tr><th>date</th><th>opponent</th><th>scores</th><th>winner</th><th>team TILT</th></tr></thead>
+                <tbody>
+                    ${ts.matches.map((m) => `
+                        <tr>
+                            <td><a href="match.html?id=${m.match_id}">${m.date}</a></td>
+                            <td>${teamLink(m.opponent, ts.season, teamIndex)}</td>
+                            <td>${m.team_score || '—'} vs ${m.opponent_score || '—'}</td>
+                            <td>${m.winner ? teamLink(m.winner, ts.season, teamIndex) : '—'}</td>
+                            <td>${formatTilt(m.team_total_tilt)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    document.getElementById('content').innerHTML = html;
+}
+
+load();
+</script>
+</body>
+</html>

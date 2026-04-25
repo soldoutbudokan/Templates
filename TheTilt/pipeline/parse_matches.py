@@ -43,16 +43,63 @@ class BallEvent:
 
 
 # %% Team name normalization
-# Same franchise, different name — map all to one canonical form.
-TEAM_NAME_MAP = {
-    "Royal Challengers Bengaluru": "Royal Challengers Bangalore",
-}
+# Franchise aliases (DD↔DC, KXIP↔PBKS, RPS spelling variants, etc.) are loaded
+# from config/team_aliases.yaml. Every downstream artifact reads canonical
+# names from the parquet — this module is the single chokepoint.
+_TEAM_ALIASES_PATH = Path(__file__).parent.parent / "config" / "team_aliases.yaml"
+
+
+def _load_team_aliases(path: Path = _TEAM_ALIASES_PATH) -> tuple:
+    with open(path, "r") as f:
+        cfg = yaml.safe_load(f)
+    alias_to_canonical: Dict[str, str] = {}
+    canonical_to_slug: Dict[str, str] = {}
+    canonical_to_aliases: Dict[str, List[str]] = {}
+    canonical_season_labels: Dict[str, list] = {}
+    seen_slugs = {}
+    for entry in cfg.get("teams", []):
+        canonical = entry["canonical"]
+        slug = entry["slug"]
+        if slug in seen_slugs:
+            raise ValueError(f"Duplicate team slug '{slug}' for '{canonical}' and '{seen_slugs[slug]}'")
+        seen_slugs[slug] = canonical
+        canonical_to_slug[canonical] = slug
+        aliases = entry.get("aliases", []) or [canonical]
+        canonical_to_aliases[canonical] = list(aliases)
+        for alias in aliases:
+            alias_to_canonical[alias] = canonical
+        # Self-reference always resolves
+        alias_to_canonical[canonical] = canonical
+        canonical_season_labels[canonical] = entry.get("season_labels", []) or []
+    return alias_to_canonical, canonical_to_slug, canonical_to_aliases, canonical_season_labels
+
+
+_ALIAS_TO_CANONICAL, TEAM_SLUG, TEAM_ALIASES, _SEASON_LABELS = _load_team_aliases()
 
 
 def normalize_team(name: Optional[str]) -> Optional[str]:
     if name is None:
         return None
-    return TEAM_NAME_MAP.get(name, name)
+    return _ALIAS_TO_CANONICAL.get(name, name)
+
+
+def season_team_label(canonical: Optional[str], season_year: Optional[int]) -> Optional[str]:
+    """Return the display label for a canonical team in a given season year.
+
+    Falls back to the canonical name when no season override applies.
+    """
+    if canonical is None:
+        return None
+    rules = _SEASON_LABELS.get(canonical, [])
+    if season_year is not None:
+        for rule in rules:
+            through = rule.get("through_year")
+            from_year = rule.get("from_year")
+            if through is not None and season_year <= int(through):
+                return rule["label"]
+            if from_year is not None and season_year >= int(from_year):
+                return rule["label"]
+    return canonical
 
 
 # %% Configuration

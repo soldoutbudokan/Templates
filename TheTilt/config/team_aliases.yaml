@@ -1,0 +1,72 @@
+# Franchise alias map.
+#
+# `canonical` is the unified name used in every parquet, every JSON, and every
+# URL slug. `aliases` is the list of source strings (as Cricsheet writes them)
+# that should map to this canonical. `season_labels` overrides the *display*
+# name for a given era (canonical otherwise). Year refers to the season's
+# starting calendar year (e.g. "2020/21" -> 2020).
+
+teams:
+  - canonical: Delhi Capitals
+    slug: dc
+    aliases: [Delhi Daredevils, Delhi Capitals]
+    season_labels:
+      - { through_year: 2018, label: Delhi Daredevils }
+
+  - canonical: Punjab Kings
+    slug: pbks
+    aliases: [Kings XI Punjab, Punjab Kings]
+    season_labels:
+      - { through_year: 2020, label: Kings XI Punjab }
+
+  - canonical: Rising Pune Supergiants
+    slug: rps
+    aliases: [Rising Pune Supergiant, Rising Pune Supergiants]
+
+  - canonical: Royal Challengers Bangalore
+    slug: rcb
+    aliases: [Royal Challengers Bangalore, Royal Challengers Bengaluru]
+
+  - canonical: Mumbai Indians
+    slug: mi
+    aliases: [Mumbai Indians]
+
+  - canonical: Chennai Super Kings
+    slug: csk
+    aliases: [Chennai Super Kings]
+
+  - canonical: Kolkata Knight Riders
+    slug: kkr
+    aliases: [Kolkata Knight Riders]
+
+  - canonical: Sunrisers Hyderabad
+    slug: srh
+    aliases: [Sunrisers Hyderabad]
+
+  - canonical: Rajasthan Royals
+    slug: rr
+    aliases: [Rajasthan Royals]
+
+  - canonical: Lucknow Super Giants
+    slug: lsg
+    aliases: [Lucknow Super Giants]
+
+  - canonical: Gujarat Titans
+    slug: gt
+    aliases: [Gujarat Titans]
+
+  - canonical: Deccan Chargers
+    slug: dch
+    aliases: [Deccan Chargers]
+
+  - canonical: Kochi Tuskers Kerala
+    slug: ktk
+    aliases: [Kochi Tuskers Kerala]
+
+  - canonical: Gujarat Lions
+    slug: gl
+    aliases: [Gujarat Lions]
+
+  - canonical: Pune Warriors India
+    slug: pwi
+    aliases: [Pune Warriors, Pune Warriors India]

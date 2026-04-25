@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — Leaders</title>
+    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+</head>
+<body>
+    <nav class="top-nav"></nav>
+    <script src="common.js"></script>
+    <script>initNav('leaders');</script>
+
+    <div class="container">
+        <div id="content">
+            <div class="loading">loading leaders…</div>
+        </div>
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="index.html">back to leaderboard</a>
+        </div>
+    </div>
+
+<script>
+const STAT_LABELS = {
+    runs: 'Runs',
+    wickets: 'Wickets',
+    batting_tilt: 'Batting TILT',
+    bowling_tilt: 'Bowling TILT',
+    total_tilt: 'Total TILT',
+    sr: 'Strike Rate',
+    economy: 'Economy',
+    fifties: 'Fifties',
+    hundreds: 'Hundreds',
+    fours: 'Fours',
+    sixes: 'Sixes',
+};
+
+const STAT_ORDER = [
+    'runs', 'wickets',
+    'total_tilt', 'batting_tilt', 'bowling_tilt',
+    'sr', 'economy',
+    'fifties', 'hundreds', 'fours', 'sixes',
+];
+
+const STAT_THRESHOLDS = {
+    sr: 'min 50 balls faced',
+    economy: 'min 50 legal deliveries bowled',
+    batting_tilt: 'min 50 balls faced',
+    bowling_tilt: 'min 50 legal deliveries bowled',
+    total_tilt: 'min 50 balls (batting or bowling)',
+};
+
+function isTiltStat(stat) {
+    return stat.endsWith('_tilt');
+}
+
+function ancillaryColumns(stat, row) {
+    if (stat === 'runs') return `<td>${row.balls}</td><td>${row.sr.toFixed(2)}</td><td>${row.innings}</td>`;
+    if (stat === 'wickets') return `<td>${(row.balls / 6).toFixed(1)} ov</td><td>${row.economy.toFixed(2)}</td><td>${row.innings}</td>`;
+    if (stat === 'sr') return `<td>${row.runs}</td><td>${row.balls}</td>`;
+    if (stat === 'economy') return `<td>${row.wickets}</td><td>${(row.balls / 6).toFixed(1)} ov</td>`;
+    if (stat === 'batting_tilt' || stat === 'bowling_tilt') return `<td>${formatTilt(row.raw)}</td><td>${row.matches}</td><td>${row.balls}</td>`;
+    if (stat === 'total_tilt') return `<td>${formatTilt(row.raw)}</td><td>${row.matches}</td>`;
+    if (stat === 'fifties') return `<td>${row.hundreds}</td><td>${row.innings}</td>`;
+    if (stat === 'hundreds') return `<td>${row.fifties}</td><td>${row.innings}</td>`;
+    if (stat === 'fours' || stat === 'sixes') return `<td>${row.runs}</td><td>${row.balls}</td>`;
+    return '';
+}
+
+function ancillaryHeaders(stat) {
+    if (stat === 'runs') return '<th>balls</th><th>SR</th><th>inn</th>';
+    if (stat === 'wickets') return '<th>overs</th><th>econ</th><th>inn</th>';
+    if (stat === 'sr') return '<th>runs</th><th>balls</th>';
+    if (stat === 'economy') return '<th>wkts</th><th>overs</th>';
+    if (stat === 'batting_tilt' || stat === 'bowling_tilt') return '<th>raw</th><th>matches</th><th>balls</th>';
+    if (stat === 'total_tilt') return '<th>raw</th><th>matches</th>';
+    if (stat === 'fifties') return '<th>100s</th><th>inn</th>';
+    if (stat === 'hundreds') return '<th>50s</th><th>inn</th>';
+    if (stat === 'fours' || stat === 'sixes') return '<th>runs</th><th>balls</th>';
+    return '';
+}
+
+function formatLeaderValue(stat, value) {
+    if (isTiltStat(stat)) return formatTilt(value);
+    if (stat === 'sr' || stat === 'economy') return Number(value).toFixed(2);
+    return String(value);
+}
+
+async function loadLeaders() {
+    const params = new URLSearchParams(window.location.search);
+    let season = params.get('season');
+    let stat = params.get('stat');
+    const teamIndex = await loadTeamIndex();
+
+    let allSeasons = [];
+    try {
+        const m = await (await fetch('data/meta.json')).json();
+        allSeasons = (m.seasons || []).slice().reverse();
+    } catch (e) {}
+
+    if (!season) season = allSeasons[0];
+    if (!stat) stat = 'runs';
+
+    if (!season) {
+        document.getElementById('content').innerHTML = '<div class="loading">no season available</div>';
+        return;
+    }
+
+    let data;
+    try {
+        const seasonSlug = season.replace('/', '-');
+        const res = await fetch(`data/leaders/${seasonSlug}-${stat}.json`);
+        if (!res.ok) throw new Error('not found');
+        data = await res.json();
+    } catch (e) {
+        document.getElementById('content').innerHTML = `<div class="loading">no leaders for ${stat} in ${season}</div>`;
+        return;
+    }
+
+    const seasonChips = allSeasons.map((s) => {
+        const cls = s === data.season ? 'picker-chip active' : 'picker-chip';
+        return `<a href="leaders.html?season=${encodeURIComponent(s)}&stat=${stat}" class="${cls}">${s}</a>`;
+    }).join('');
+
+    const statChips = STAT_ORDER.map((s) => {
+        const cls = s === stat ? 'picker-chip active' : 'picker-chip';
+        return `<a href="leaders.html?season=${encodeURIComponent(data.season)}&stat=${s}" class="${cls}">${STAT_LABELS[s]}</a>`;
+    }).join('');
+
+    const directionNote = stat === 'economy' ? '(lower is better)' : '';
+    const threshold = STAT_THRESHOLDS[stat];
+
+    const html = `
+        <div class="page-header">
+            <h1>${STAT_LABELS[stat]} leaders — IPL ${data.season}</h1>
+            <div class="subtitle">${directionNote}${threshold ? ` ${threshold}` : ''}</div>
+        </div>
+
+        <div class="picker-row">
+            <div class="picker-row-label">Season</div>
+            <div class="picker-chips">${seasonChips}</div>
+        </div>
+        <div class="picker-row">
+            <div class="picker-row-label">Stat</div>
+            <div class="picker-chips">${statChips}</div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>player</th>
+                        <th>team</th>
+                        <th>${STAT_LABELS[stat]}</th>
+                        ${ancillaryHeaders(stat)}
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.leaders.map((r) => `
+                        <tr>
+                            <td>${r.rank}</td>
+                            <td><a href="player.html?player=${r.slug}">${r.player}</a></td>
+                            <td>${teamLink(r.team, data.season, teamIndex, { cls: 'team-link-subtle' })}</td>
+                            <td><strong>${formatLeaderValue(stat, r.value)}</strong></td>
+                            ${ancillaryColumns(stat, r)}
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    document.getElementById('content').innerHTML = html;
+}
+
+loadLeaders();
+</script>
+</body>
+</html>
