@@ -10,21 +10,21 @@
     "Royal Challengers Bangalore",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.0247,
-  "batting_tilt_per_match": -0.00816,
-  "bowling_tilt_per_match": -0.02216,
-  "shrunk_total_tilt_per_match": -0.02426,
-  "shrunk_batting_tilt_per_match": -0.01001,
-  "shrunk_bowling_tilt_per_match": -0.02008,
-  "tilt_ci_lower": -0.05658,
-  "tilt_ci_upper": 0.00807,
-  "tilt_ci_lower_90": -0.05139,
-  "tilt_ci_upper_90": 0.00288,
+  "total_tilt_per_match": -0.04474,
+  "batting_tilt_per_match": -0.01119,
+  "bowling_tilt_per_match": -0.0425,
+  "shrunk_total_tilt_per_match": -0.04083,
+  "shrunk_batting_tilt_per_match": -0.01242,
+  "shrunk_bowling_tilt_per_match": -0.03673,
+  "tilt_ci_lower": -0.08807,
+  "tilt_ci_upper": 0.00641,
+  "tilt_ci_lower_90": -0.08048,
+  "tilt_ci_upper_90": -0.00118,
   "confidence": "low",
-  "total_tilt": -0.54336,
-  "total_matches": 22,
-  "batting_balls": 108,
-  "bowling_balls": 259,
+  "total_tilt": -1.02903,
+  "total_matches": 23,
+  "batting_balls": 112,
+  "bowling_balls": 264,
   "seasons": [
     {
       "season": "2022",
@@ -471,12 +471,12 @@
     {
       "season": "2026",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": 0.02004,
-      "bowling_tilt_per_match": -0.02572,
-      "batting_matches": 3,
-      "bowling_matches": 4,
-      "batting_balls": 21,
-      "bowling_balls": 49,
+      "batting_tilt_per_match": 0.00087,
+      "bowling_tilt_per_match": -0.10638,
+      "batting_matches": 4,
+      "bowling_matches": 5,
+      "batting_balls": 25,
+      "bowling_balls": 54,
       "matches": [
         {
           "match_id": "1527674",
@@ -527,13 +527,13 @@
           "bat_runs": 22,
           "bat_balls": 11,
           "bat_sr": 200.0,
-          "bat_tilt": 0.05156,
+          "bat_tilt": 0.05174,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 18,
           "bowl_econ": 9.0,
           "bowl_tilt": -0.0064,
-          "total_tilt": 0.04516
+          "total_tilt": 0.04534
         },
         {
           "match_id": "1527693",
@@ -572,14 +572,33 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": 0.00856
+        },
+        {
+          "match_id": "1529269",
+          "date": "2026-04-18",
+          "opponent": "Delhi Capitals",
+          "venue": "M Chinnaswamy Stadium",
+          "team_score": "175/8",
+          "opponent_score": "179/5",
+          "winner": "Delhi Capitals",
+          "bat_runs": 1,
+          "bat_balls": 4,
+          "bat_sr": 25.0,
+          "bat_tilt": -0.05681,
+          "bowl_wkts": 0,
+          "bowl_balls": 5,
+          "bowl_runs": 18,
+          "bowl_econ": 21.6,
+          "bowl_tilt": -0.42905,
+          "total_tilt": -0.48586
         }
       ],
       "batting_stats": {
-        "runs": 38,
-        "innings": 3,
-        "balls": 21,
-        "avg": 38.0,
-        "sr": 180.95,
+        "runs": 39,
+        "innings": 4,
+        "balls": 25,
+        "avg": 19.5,
+        "sr": 156.0,
         "hs": 22,
         "not_outs": 2,
         "fifties": 0,
@@ -587,11 +606,11 @@
       },
       "bowling_stats": {
         "wickets": 3,
-        "innings": 4,
-        "balls": 49,
-        "runs_conceded": 119,
-        "avg": 39.67,
-        "economy": 14.57,
+        "innings": 5,
+        "balls": 54,
+        "runs_conceded": 137,
+        "avg": 45.67,
+        "economy": 15.22,
         "best_figures": "3/54"
       }
     }
@@ -599,15 +618,15 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": 0.02797,
+      "tilt": 0.02815,
       "balls": 37,
-      "avg_delta": 0.000756
+      "avg_delta": 0.000761
     },
     {
       "phase": "death",
-      "tilt": -0.15034,
-      "balls": 71,
-      "avg_delta": -0.001952
+      "tilt": -0.20715,
+      "balls": 75,
+      "avg_delta": -0.002557
     }
   ],
   "bowling_phases": [
@@ -625,9 +644,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.09744,
-      "balls": 73,
-      "avg_delta": -0.001188
+      "tilt": -0.52649,
+      "balls": 78,
+      "avg_delta": -0.006052
     }
   ],
   "best_matches": [
@@ -643,7 +662,7 @@
       "match_id": "1527689",
       "date": "2026-04-10",
       "vs": "Rajasthan Royals",
-      "tilt": 0.05156,
+      "tilt": 0.05174,
       "runs": 22,
       "balls": 11
     },
@@ -698,20 +717,20 @@
       "balls": 2
     },
     {
+      "match_id": "1529269",
+      "date": "2026-04-18",
+      "vs": "Delhi Capitals",
+      "tilt": -0.05681,
+      "runs": 1,
+      "balls": 4
+    },
+    {
       "match_id": "1304051",
       "date": "2022-03-29",
       "vs": "Rajasthan Royals",
       "tilt": -0.03196,
       "runs": 24,
       "balls": 18
-    },
-    {
-      "match_id": "1422138",
-      "date": "2024-04-07",
-      "vs": "Delhi Capitals",
-      "tilt": -0.02399,
-      "runs": 39,
-      "balls": 10
     }
   ],
   "bowling_best_matches": [
@@ -758,6 +777,14 @@
   ],
   "bowling_worst_matches": [
     {
+      "match_id": "1529269",
+      "date": "2026-04-18",
+      "vs": "Delhi Capitals",
+      "tilt": -0.42905,
+      "wickets": 0,
+      "balls": 5
+    },
+    {
       "match_id": "1426267",
       "date": "2024-04-14",
       "vs": "Chennai Super Kings",
@@ -788,14 +815,6 @@
       "tilt": -0.07681,
       "wickets": 1,
       "balls": 24
-    },
-    {
-      "match_id": "1473489",
-      "date": "2025-05-03",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.07563,
-      "wickets": 0,
-      "balls": 6
     }
   ],
   "career_trend": [
@@ -916,20 +935,26 @@
     {
       "match": 20,
       "date": "2026-04-10",
-      "tilt": 0.04516,
-      "cumulative": -0.52533
+      "tilt": 0.04534,
+      "cumulative": -0.52515
     },
     {
       "match": 21,
       "date": "2026-04-12",
       "tilt": -0.02659,
-      "cumulative": -0.55192
+      "cumulative": -0.55174
     },
     {
       "match": 22,
       "date": "2026-04-15",
       "tilt": 0.00856,
-      "cumulative": -0.54336
+      "cumulative": -0.54318
+    },
+    {
+      "match": 23,
+      "date": "2026-04-18",
+      "tilt": -0.48585,
+      "cumulative": -1.02903
     }
   ],
   "team_matchups": [
@@ -940,7 +965,7 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.0098,
+      "tilt_per_match": 0.00989,
       "matches": 2
     },
     {
@@ -960,8 +985,8 @@
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.02399,
-      "matches": 1
+      "tilt_per_match": -0.0404,
+      "matches": 2
     },
     {
       "opponent": "Sunrisers Hyderabad",
@@ -970,24 +995,24 @@
     }
   ],
   "batting_stats": {
-    "runs": 223,
-    "innings": 15,
-    "balls": 108,
-    "avg": 27.88,
-    "sr": 206.48,
+    "runs": 224,
+    "innings": 16,
+    "balls": 112,
+    "avg": 24.89,
+    "sr": 200.0,
     "hs": 53,
-    "dismissals": 8,
+    "dismissals": 9,
     "not_outs": 7,
     "fifties": 1,
     "hundreds": 0
   },
   "bowling_stats": {
     "wickets": 15,
-    "innings": 19,
-    "balls": 259,
-    "runs_conceded": 535,
-    "avg": 35.67,
-    "economy": 12.39,
+    "innings": 20,
+    "balls": 264,
+    "runs_conceded": 553,
+    "avg": 36.87,
+    "economy": 12.57,
     "best_figures": "3/42"
   },
   "match_tilt_distribution": [
@@ -1010,8 +1035,9 @@
     0.05664,
     -0.06204,
     -0.00784,
-    0.04516,
+    0.04534,
     -0.02659,
-    0.00856
+    0.00856,
+    -0.48585
   ]
 }
