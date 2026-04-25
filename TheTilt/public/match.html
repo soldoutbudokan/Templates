@@ -138,17 +138,31 @@ async function loadMatch() {
                 wpData.push(+((1 - b.wp_after) * 100).toFixed(1));
             }
 
-            const inningsBreak = inn1.length;
+            // Bridge the innings boundary visually. The model has two predictions
+            // for the moment between innings (inn1-last after-state vs inn2-first
+            // before-state) and they typically disagree. Insert a midpoint at the
+            // boundary so the line passes smoothly through the dashed marker
+            // instead of cliff-jumping. Underlying TILT data is unchanged.
+            let inningsBreak = inn1.length;
+            if (inn1.length > 0 && inn2.length > 0) {
+                const inn1_last_bf = inn1[inn1.length - 1].wp_after * 100;
+                const inn2_first_before_bf = (1 - inn2[0].wp) * 100;
+                const bridge = +((inn1_last_bf + inn2_first_before_bf) / 2).toFixed(1);
+                labels.splice(inningsBreak, 0, 'innings break');
+                wpData.splice(inningsBreak, 0, bridge);
+                inningsBreak += 1;  // shift to point at the new inn2 first index
+            }
 
+            // The bridge data point sits at chart index (inningsBreak - 1).
+            // Draw the dashed innings-break vertical right through it.
+            const bridgeIdx = inningsBreak - 1;
             const inningsBreakLine = {
                 id: 'inningsBreakLine',
                 afterDatasetsDraw(chart) {
-                    if (inningsBreak <= 0 || inningsBreak >= chart.data.labels.length) return;
+                    if (bridgeIdx <= 0 || bridgeIdx >= chart.data.labels.length) return;
                     const xScale = chart.scales.x;
                     const yScale = chart.scales.y;
-                    const x0 = xScale.getPixelForValue(inningsBreak - 1);
-                    const x1 = xScale.getPixelForValue(inningsBreak);
-                    const x = (x0 + x1) / 2;
+                    const x = xScale.getPixelForValue(bridgeIdx);
                     const ctx = chart.ctx;
                     ctx.save();
                     ctx.setLineDash([4, 4]);
@@ -176,9 +190,9 @@ async function loadMatch() {
                         data: wpData,
                         borderColor: wpData.map((_, i) => i < inningsBreak ? cssVar('--accent-green') : cssVar('--accent-red')),
                         segment: {
-                            borderColor: ctx => ctx.p0DataIndex === inningsBreak - 1
-                                ? 'transparent'
-                                : (ctx.p0DataIndex < inningsBreak - 1 ? cssVar('--accent-green') : cssVar('--accent-red')),
+                            borderColor: ctx => ctx.p0DataIndex < inningsBreak - 1
+                                ? cssVar('--accent-green')
+                                : cssVar('--accent-red'),
                         },
                         backgroundColor: 'transparent',
                         fill: false,
@@ -199,13 +213,19 @@ async function loadMatch() {
                             callbacks: {
                                 title: (items) => {
                                     const i = items[0].dataIndex;
-                                    const b = m.balls[i];
+                                    if (i === bridgeIdx) return 'innings break';
+                                    const ball_i = i < bridgeIdx ? i : i - 1;
+                                    const b = m.balls[ball_i];
                                     if (!b) return '';
                                     return `Inn ${b.inn}, Over ${b.over}.${b.ball}`;
                                 },
                                 label: (item) => {
                                     const i = item.dataIndex;
-                                    const b = m.balls[i];
+                                    if (i === bridgeIdx) {
+                                        return `${refTeam}: ${item.formattedValue}% (bridge)`;
+                                    }
+                                    const ball_i = i < bridgeIdx ? i : i - 1;
+                                    const b = m.balls[ball_i];
                                     if (!b) return '';
                                     let line = `${refTeam}: ${item.formattedValue}%`;
                                     if (b.score) line += ` | Score: ${b.score}`;
