@@ -1724,7 +1724,8 @@ def export_search_index(
         else:
             primary_code = TEAM_SLUG.get(r["team"], "").upper() or r["team"]
             team_part = primary_code
-        sub = f"{r['role']} · {team_part} · {r['total_matches']} M"
+        role_label = "batsman" if r["role"] == "batter" else r["role"]
+        sub = f"{role_label} · {team_part} · {r['total_matches']} M"
         rows.append({
             "t": "p",
             "l": r["player"],
