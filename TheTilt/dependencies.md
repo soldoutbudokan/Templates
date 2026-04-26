@@ -48,7 +48,8 @@ export_json.py ──> public/data/
                        ├── team_seasons/<slug>-<season>.json     ──> public/team.html (?season= view)
                        ├── seasons/<season>.json                 ──> public/season.html
                        ├── leaders/<season>-<stat>.json          ──> public/leaders.html
-                       └── team_index.json                       ──> nav / picker / common.js teamLink lookups
+                       ├── team_index.json                       ──> nav / picker / common.js teamLink lookups
+                       └── search_index.json                     ──> nav search box (common.js initGlobalSearch)
 
 config/team_aliases.yaml (hand-edited) ──> pipeline/parse_matches.py
                        ├── normalize_team()      — flattens DD↔DC, KXIP↔PBKS, RPS spelling, etc. into canonical

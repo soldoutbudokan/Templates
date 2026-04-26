@@ -1630,6 +1630,138 @@ def export_team_index(
     return index_path
 
 
+# %% Search index
+# A few historic team abbreviations don't fall out of standard initials
+# (Kings XI Punjab → KXP via initials, but fans wrote it KXIP). Hand-map
+# only the irregular ones; standard initials handle DD / PWI / RPS / etc.
+_TEAM_ABBREV_OVERRIDES = {
+    "Kings XI Punjab": ["kxip"],
+}
+
+
+def _alias_initials(name: str) -> Optional[str]:
+    """Initials of each whitespace-separated word, lowercased. Returns None
+    for single-word inputs or noise."""
+    words = [w for w in name.split() if w]
+    if len(words) < 2:
+        return None
+    init = "".join(w[0] for w in words).lower()
+    return init if 2 <= len(init) <= 5 else None
+
+
+def _build_corpus(sources, *, with_initials: bool = False, extras=()) -> str:
+    """Pipe-delimited token set: full lowercased phrase + each individual
+    word + (optionally) initials of multi-word phrases + extras. Pipes are
+    the token-start sentinel the client-side scorer looks for."""
+    tokens = set()
+    for s in sources:
+        if not s:
+            continue
+        sl = s.strip().lower()
+        if not sl:
+            continue
+        tokens.add(sl)
+        for w in sl.split():
+            if w:
+                tokens.add(w)
+        if with_initials:
+            init = _alias_initials(s)
+            if init:
+                tokens.add(init)
+    tokens.update(extras)
+    return "|".join(sorted(tk for tk in tokens if tk))
+
+
+def export_search_index(
+    deltas_df: Optional[pd.DataFrame] = None,
+    output_dir: Optional[str] = None,
+) -> Path:
+    """Build a flat search index for the global nav search box.
+
+    Reads the already-written `tilt_rankings.json` and `team_index.json` so
+    role classification and alias flattening don't get re-implemented here.
+    Must run after both of those exporters.
+
+    `deltas_df` is used to enumerate distinct teams per player (the rankings
+    file's `teams` array only carries one); pass None to skip and fall back
+    to the rankings primary team only.
+
+    One row per entity:
+      t   — 'p' (player) or 'team'
+      l   — display label
+      s   — slug used to build player.html / team.html URL
+      sub — muted secondary line (role/team/matches)
+      x   — pipe-delimited lowercase searchable corpus including each
+            alias's individual words and initials; pipes act as token-start
+            sentinels for the client-side scorer
+      b   — numeric tie-break boost
+      r   — player rank (only on players)
+    """
+    config = load_config()
+    output_dir = Path(output_dir or config["export"]["output_dir"])
+
+    rankings_path = output_dir / config["export"]["rankings_file"]
+    team_index_path = output_dir / "team_index.json"
+    with open(rankings_path) as f:
+        rankings = json.load(f)
+    with open(team_index_path) as f:
+        teams = json.load(f)
+
+    teams_by_pid: dict = {}
+    if deltas_df is not None:
+        for pid, grp in deltas_df.groupby("batter_id"):
+            teams_by_pid.setdefault(pid, set()).update(grp["batting_team"].dropna().unique())
+        for pid, grp in deltas_df.groupby("bowler_id"):
+            teams_by_pid.setdefault(pid, set()).update(grp["bowling_team"].dropna().unique())
+
+    rows = []
+
+    for r in rankings:
+        pid = r.get("player_id") or ""
+        played_for = teams_by_pid.get(pid) or {r["team"]}
+        if len(played_for) > 1:
+            team_part = f"{len(played_for)} Teams"
+        else:
+            primary_code = TEAM_SLUG.get(r["team"], "").upper() or r["team"]
+            team_part = primary_code
+        sub = f"{r['role']} · {team_part} · {r['total_matches']} M"
+        rows.append({
+            "t": "p",
+            "l": r["player"],
+            "s": r["slug"],
+            "sub": sub,
+            "x": _build_corpus([r["player"], r.get("full_name", r["player"])]),
+            "b": r["total_tilt_per_match"],
+            "r": r["rank"],
+        })
+
+    for t in teams:
+        sources = [t["name"], t["slug"]]
+        sources.extend(t.get("aliases", []) or [])
+        for rule in t.get("season_labels", []) or []:
+            if rule.get("label"):
+                sources.append(rule["label"])
+        extras = []
+        for src in sources:
+            if src in _TEAM_ABBREV_OVERRIDES:
+                extras.extend(_TEAM_ABBREV_OVERRIDES[src])
+        rows.append({
+            "t": "team",
+            "l": t["name"],
+            "s": t["slug"],
+            "sub": f"{t['career_matches']} matches",
+            "x": _build_corpus(sources, with_initials=True, extras=extras),
+            "b": round(t["career_matches"] / 1000.0, 4),
+        })
+
+    output_path = output_dir / "search_index.json"
+    with open(output_path, "w") as f:
+        json.dump(rows, f, separators=(",", ":"))
+
+    print(f"  Exported search index ({len(rows)} entries) to {output_path}")
+    return output_path
+
+
 # %% Main
 def export_all(
     deltas_df: pd.DataFrame,
@@ -1656,6 +1788,7 @@ def export_all(
         export_seasons(deltas_df, player_tilt, player_season_tilt, team_season_tilt)
         export_leaders(deltas_df, player_tilt, player_season_tilt)
         export_team_index(team_tilt)
+        export_search_index(deltas_df)
     print("  Done!")
 
 

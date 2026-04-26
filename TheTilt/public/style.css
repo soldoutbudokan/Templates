@@ -249,6 +249,122 @@ body {
 }
 
 /* ============================================
+   Global Search (nav)
+   ============================================ */
+.global-search {
+    position: relative;
+    flex: 1 1 240px;
+    max-width: 360px;
+    margin: 0 16px;
+}
+
+.global-search input {
+    width: 100%;
+    height: 32px;
+    padding: 0 12px 0 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23787882' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+
+.global-search input:focus {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px var(--accent-green-dim);
+}
+
+.global-search input::placeholder {
+    color: var(--text-dim);
+}
+
+.global-search-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
+    z-index: 200;
+    padding: 4px 0;
+}
+
+.gs-group-label {
+    padding: 8px 12px 4px;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+.gs-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.gs-row:hover,
+.gs-row.active {
+    background: var(--bg-hover);
+}
+
+.gs-row .gs-label {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gs-row .gs-sub {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+}
+
+.gs-row mark {
+    background: var(--accent-green-dim);
+    color: var(--accent-green);
+    padding: 0 1px;
+    border-radius: 2px;
+}
+
+.gs-show-more {
+    padding: 6px 12px 8px;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.gs-show-more:hover {
+    color: var(--accent-green);
+}
+
+.gs-empty,
+.gs-hint {
+    padding: 14px 12px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+/* ============================================
    Filter Tabs
    ============================================ */
 .tabs {
@@ -928,8 +1044,21 @@ body {
 
 @media (max-width: 768px) {
     .top-nav-inner {
-        height: 48px;
-        padding: 0 12px;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 48px;
+        padding: 6px 12px;
+    }
+
+    .global-search {
+        order: 3;
+        flex-basis: 100%;
+        max-width: none;
+        margin: 6px 0 2px;
+    }
+
+    .global-search-panel {
+        max-height: 60vh;
     }
 
     .nav-links {
