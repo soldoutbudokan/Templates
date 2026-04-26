@@ -2,7 +2,7 @@
 
 **A technical overview of how every IPL delivery is converted into Win Probability Added.**
 
-TILT is a player-impact metric for the Indian Premier League. For every legal delivery in IPL history we estimate the change in win probability that delivery produced and attribute it to the batter and bowler involved. Aggregated across a player's career, this is their TILT — a *win probability per match* number that captures **when** they performed, not just **what** they did.
+TILT is a player-impact metric for the Indian Premier League. For every legal delivery in IPL history we estimate the change in win probability that delivery produced and attribute it to the batsman and bowler involved. Aggregated across a player's career, this is their TILT — a *win probability per match* number that captures **when** they performed, not just **what** they did.
 
 This page is the long-form methodology. The headline numbers and rankings live on the [leaderboard](index.html); the player and match pages drill into individual games. If you only want the one-line version: TILT is Win Probability Added for T20 cricket, with Bayesian shrinkage on top of a LightGBM ball-by-ball win probability model trained on Cricsheet data.
 
@@ -28,7 +28,7 @@ The standard tool from American sports for this is **Win Probability Added (WPA)
 What this gets you that classical stats don't:
 
 - **Phase-aware.** A boundary in the death is worth more than a boundary in over 4, because it shifts the model's prediction more.
-- **Wicket-aware.** Losing a set batter when chasing is more damaging than losing a tail-ender at the end.
+- **Wicket-aware.** Losing a set batsman when chasing is more damaging than losing a tail-ender at the end.
 - **Opposition-aware.** Conceding 12 to KKR in 2024 with Narine batting is different from conceding 12 to a weak side. The model knows the opposition's recent form and the bowler's career economy.
 - **Venue-aware.** A 180 at Chinnaswamy is below par; a 180 at Chepauk is winning. The model learns this.
 - **Era-aware.** A strike rate of 140 in 2010 is elite; in 2025 it is below average. Season is a model feature.
@@ -250,11 +250,11 @@ batter_credit = +delta_wp
 bowler_credit = −delta_wp
 ```
 
-A six in the death that takes the batting side from 40% → 55% is `delta_wp = +0.15`: the batter gets +15 percentage points, the bowler gets −15. A wicket in the powerplay that drops a chase from 55% → 48% is `delta_wp = −0.07`: the batter gets −7, the bowler gets +7.
+A six in the death that takes the batting side from 40% → 55% is `delta_wp = +0.15`: the batsman gets +15 percentage points, the bowler gets −15. A wicket in the powerplay that drops a chase from 55% → 48% is `delta_wp = −0.07`: the batsman gets −7, the bowler gets +7.
 
 A few details that matter for fair attribution:
 
-- **Wides and no-balls.** Wides aren't credited to the batter (they didn't face it); no-balls aren't counted against the bowler's *legal-delivery* count for per-ball stats. Both still produce a `delta_wp` and both still flow into the batting/bowling totals — the legal flags only affect denominators in per-ball reporting.
+- **Wides and no-balls.** Wides aren't credited to the batsman (they didn't face it); no-balls aren't counted against the bowler's *legal-delivery* count for per-ball stats. Both still produce a `delta_wp` and both still flow into the batting/bowling totals — the legal flags only affect denominators in per-ball reporting.
 - **Wickets are credited to the bowler regardless of wicket-kind.** Run-outs are an exception flagged in the parsing step but credited the same way at the WP layer; a future model could reattribute based on fielder.
 - **The non-striker gets nothing.** TILT only credits the two players directly involved in the delivery.
 
@@ -387,7 +387,7 @@ The match chart marks the boundary with a dashed vertical line and breaks the li
 
 ### Where the model is approximate, not wrong
 
-- **Opponent quality is a single number.** `opponent_bowler_economy` is a career average — it doesn't know if a bowler is in form right now, or if they're matched up well against this batter type.
+- **Opponent quality is a single number.** `opponent_bowler_economy` is a career average — it doesn't know if a bowler is in form right now, or if they're matched up well against this batsman type.
 - **Venue captures conditions, not weather.** A 38-level categorical knows nothing about whether the dew arrived in the second innings.
 - **Team strength updates only between matches.** `batting_team_nrr` reflects season-to-date but can lag a recent change in form.
 

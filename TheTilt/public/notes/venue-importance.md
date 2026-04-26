@@ -1,8 +1,8 @@
 # The Importance of Venue
 
-**How much of a batter's TILT is coming from *where* they played? We relocate six player-cohorts' home matches into the model, one venue swap at a time, and read off the delta.**
+**How much of a batsman's TILT is coming from *where* they played? We relocate six player-cohorts' home matches into the model, one venue swap at a time, and read off the delta.**
 
-Cricket fans carry strong priors about grounds. M Chinnaswamy is a batter's paradise; Chepauk rewards patience and spin; Wankhede swings in the evening. The TILT model has `venue` as a feature in its win-probability classifier, so those narratives are implicitly priced in. This post makes the pricing explicit.
+Cricket fans carry strong priors about grounds. M Chinnaswamy is a batsman's paradise; Chepauk rewards patience and spin; Wankhede swings in the evening. The TILT model has `venue` as a feature in its win-probability classifier, so those narratives are implicitly priced in. This post makes the pricing explicit.
 
 ---
 
@@ -73,7 +73,7 @@ His full nine-venue sweep:
 | Rajiv Gandhi International, Uppal | +2.55% |
 | MA Chidambaram Stadium, Chepauk | **+3.05%** |
 
-The range is 3.6pp — not small for a career-level cohort with 37 matches. And the shape is odd: the venues that look structurally similar to Chinnaswamy (flat, batter-friendly) *suppress* Gayle's TILT; the lower-scoring venues lift him. Again the logic is about where the WP ceiling sits relative to his scoring: Gayle on a Chinnaswamy-clone spends a lot of balls at states the model already considers resolved.
+The range is 3.6pp — not small for a career-level cohort with 37 matches. And the shape is odd: the venues that look structurally similar to Chinnaswamy (flat, batsman-friendly) *suppress* Gayle's TILT; the lower-scoring venues lift him. Again the logic is about where the WP ceiling sits relative to his scoring: Gayle on a Chinnaswamy-clone spends a lot of balls at states the model already considers resolved.
 
 ---
 
@@ -146,7 +146,7 @@ The venue lever quantified here is the model's reliance on the venue categorical
 - **Opposition is held constant in the model's view but not in reality**. ABD's Chinnaswamy matches were against whatever bowlers RCB faced at home — which is not a random sample of IPL bowling attacks. Relocating those matches holds opposition fixed, which is convenient for the counterfactual but not what would actually happen if RCB played their home slate somewhere else.
 - **Era drift is baked in**. The model has more 2017–2024 data for Narendra Modi, Ekana, Holkar; earlier-era venues dominate pre-2020 splits. When a 2016 cohort gets swapped to Motera, you're partly measuring the 2021+ scoring regime, not the 2016 one. Hence the 9-venue whitelist — but even within it, the signal isn't era-neutral.
 - **"Relocating the match" ≠ "relocating the player"**. When we swap venue, we swap it for both innings. We're asking the model to rescore the *match*, not to imagine the player in a different team context.
-- **It's a model probe, not a physics experiment**. The venue categorical encodes whatever correlation LightGBM's tree splits found useful — pitch behaviour, yes, but also squad composition at that ground, local bowler economies, toss decisions, and the specific batters who happened to play there. The lever is measuring the model's belief about venue, which is correlated with but distinct from venue itself.
+- **It's a model probe, not a physics experiment**. The venue categorical encodes whatever correlation LightGBM's tree splits found useful — pitch behaviour, yes, but also squad composition at that ground, local bowler economies, toss decisions, and the specific batsmen who happened to play there. The lever is measuring the model's belief about venue, which is correlated with but distinct from venue itself.
 
 ---
 

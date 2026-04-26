@@ -59,7 +59,7 @@ Two matches define the paradox: **two centuries that registered roughly zero TIL
 
 ![Credit sharing in Kohli centuries](plots/kohli_credit_sharing.png)
 
-Two of Kohli's 2016 centuries gave him essentially no TILT. We try to figure out why. The chart above shows where the win-probability credit went in each century innings, with Kohli highlighted. In two of the four cases the answer is simply that another batter at the other end captured almost everything that was on offer.
+Two of Kohli's 2016 centuries gave him essentially no TILT. We try to figure out why. The chart above shows where the win-probability credit went in each century innings, with Kohli highlighted. In two of the four cases the answer is simply that another batsman at the other end captured almost everything that was on offer.
 
 ### 109(55) vs Gujarat Lions, TILT +1.70%
 
@@ -180,13 +180,13 @@ The purple line shows runs by season. The bars show batting TILT per match (2016
 
 TILT is largely picking up something real about 2016. Some of those 973 runs came when RCB were already cruising, and a century at 180/2 in the 18th over genuinely doesn't shift much; the model is right to discount it. The catastrophic matches are real too. 20(21) in the powerplay when your team needs a fast start is genuinely harmful, and the heavy penalty the model applies isn't the model misbehaving, it's the model doing exactly what it's designed to do. And credit sharing reflects reality: when ABD scores 129 and Kohli scores 109 in the same innings, the marginal impact of each run is lower than if one of them had carried the load alone. None of that is a bug.
 
-Where the model has real blind spots is on the volume and innings sides. The first innings has a structural ceiling: the total WP available in innings 1 is limited and gets divided across all batters, so on a stacked 2016 RCB lineup with Kohli, ABD, Gayle, and Watson, the pie is split four ways while a single dominant batter on a weaker team can capture everything. And volume should count for something. Playing 16 matches, batting 640 balls, and still being net positive is a real achievement; TILT measures rate, not volume, and a player who adds +1.08% over 16 matches arguably provides more total value than one who adds +3.10% over 13. Both of these point to the same direction of error: TILT systematically understates 2016 Kohli.
+Where the model has real blind spots is on the volume and innings sides. The first innings has a structural ceiling: the total WP available in innings 1 is limited and gets divided across all batsmen, so on a stacked 2016 RCB lineup with Kohli, ABD, Gayle, and Watson, the pie is split four ways while a single dominant batsman on a weaker team can capture everything. And volume should count for something. Playing 16 matches, batting 640 balls, and still being net positive is a real achievement; TILT measures rate, not volume, and a player who adds +1.08% over 16 matches arguably provides more total value than one who adds +3.10% over 13. Both of these point to the same direction of error: TILT systematically understates 2016 Kohli.
 
 ---
 
 ## So Is 2016 Overrated?
 
-No. It was a historically great season by any measure. But TILT reveals that some of those runs were less impactful than they looked, scored on a dominant team, alongside other world-class batters, often in the first innings where WP shifts are smaller, and partly offset by a few costly failures.
+No. It was a historically great season by any measure. But TILT reveals that some of those runs were less impactful than they looked, scored on a dominant team, alongside other world-class batsmen, often in the first innings where WP shifts are smaller, and partly offset by a few costly failures.
 
 The truth is somewhere between the counting stats and TILT. The counting stats overrate 2016 because they ignore context. TILT underrates it because of its own flaws around underrating total volume and overweighting second innings performances.
 

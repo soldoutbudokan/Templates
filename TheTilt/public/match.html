@@ -93,7 +93,7 @@ async function loadMatch() {
 
                 // Batting card
                 html += `<div class="table-wrap"><table class="detail-table">
-                    <tr><th>batter</th><th>runs</th><th>balls</th><th>SR</th><th>TILT</th></tr>`;
+                    <tr><th>batsman</th><th>runs</th><th>balls</th><th>SR</th><th>TILT</th></tr>`;
                 for (const b of inn.batting) {
                     const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
                     html += `<tr>

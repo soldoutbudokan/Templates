@@ -4,7 +4,7 @@
 
 Live site: [thetilt-rust.vercel.app](https://thetilt-rust.vercel.app)
 
-TILT measures **Win Probability Added (WPA)** per ball in IPL cricket. For every single delivery bowled in the IPL's history, we calculate how much the win probability shifted and attribute that shift to the batter and bowler involved. Aggregate across all matches and you get each player's impact rating — their TILT.
+TILT measures **Win Probability Added (WPA)** per ball in IPL cricket. For every single delivery bowled in the IPL's history, we calculate how much the win probability shifted and attribute that shift to the batsman and bowler involved. Aggregate across all matches and you get each player's impact rating — their TILT.
 
 ---
 
@@ -29,7 +29,7 @@ Open [http://localhost:5002](http://localhost:5002)
 
 ## The Idea
 
-Traditional cricket stats like batting average and economy rate tell you *what* a player did, but not *when* they did it. A batter who scores 30 off 20 balls when chasing 15 off the last over is very different from one who scores 30 off 20 when the team is cruising at 50/0 in the powerplay.
+Traditional cricket stats like batting average and economy rate tell you *what* a player did, but not *when* they did it. A batsman who scores 30 off 20 balls when chasing 15 off the last over is very different from one who scores 30 off 20 when the team is cruising at 50/0 in the powerplay.
 
 **TILT captures context.** It answers: *did this player make their team more or less likely to win, and by how much?*
 
@@ -46,7 +46,7 @@ The stat is denominated in **win probability percentage points per match**. A TI
 All data comes from [Cricsheet](https://cricsheet.org), an open cricket data project that provides ball-by-ball JSON files for every IPL match ever played.
 
 - **1,159 matches** parsed (2008-2026)
-- **276,500+ individual deliveries** with batter, bowler, runs, wickets, and match outcome
+- **276,500+ individual deliveries** with batsman, bowler, runs, wickets, and match outcome
 - Each delivery becomes a row with full match context
 - Team-name aliases normalized (e.g. "Royal Challengers Bengaluru" → "Royal Challengers Bangalore")
 
@@ -137,10 +137,10 @@ delta_wp        = win_prob_after - win_prob_before
 ```
 
 **Attribution:**
-- **Batter credit:** `+delta_wp` (positive means the batter helped their batting team)
+- **Batsman credit:** `+delta_wp` (positive means the batsman helped their batting team)
 - **Bowler credit:** `-delta_wp` (positive means the bowler helped their bowling team)
 
-*Example:* A six in the death overs that takes the batting team's win probability from 40% to 55% produces a `delta_wp` of +0.15. The batter gets +15% credited, the bowler gets -15%.
+*Example:* A six in the death overs that takes the batting team's win probability from 40% to 55% produces a `delta_wp` of +0.15. The batsman gets +15% credited, the bowler gets -15%.
 
 **Aggregation:**
 
@@ -265,7 +265,7 @@ TheTilt/
 ### Current Limitations
 
 1. **Fielding is invisible** — The model can't attribute catches, run-outs, or misfields to specific fielders.
-2. **No batting position context** — An opener facing the new ball operates in a different context than a #6 batter.
+2. **No batting position context** — An opener facing the new ball operates in a different context than a #6 batsman.
 3. **No bowler type classification** — The model doesn't know if a bowler is pace or spin. PaceOrSpin × Venue interactions could improve predictions. This requires external data or manual classification.
 4. **Opponent quality is approximate** — We use career bowling economy as a proxy, but a full iterative system (using TILT-derived quality) would be more accurate.
 5. **Second innings TILT asymmetry** — Win probability swings are inherently larger in the 2nd innings because the target is known and the match resolves ball by ball. On average, 2nd innings balls produce **1.54x** larger |delta_wp| than 1st innings balls. The effect is concentrated in death overs (2.5x) while powerplay overs are nearly equal (1.07x). This inflates single-match TILT for 2nd innings performances — 94% of the top-50 batting and 98% of the top-50 bowling GOAT performances come from the 2nd innings. The GOAT page now provides innings-filtered views to enable fair within-innings comparisons. Career-level rankings are largely unaffected (Spearman ρ = 0.99 between raw and innings-normalized career TILT). See `notebooks/innings_bias_analysis.py` for the full diagnostic.

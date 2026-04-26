@@ -75,7 +75,7 @@ This chart shows what percentage of the top-N single-match performances come fro
 | 200 | 89% | 92% |
 | 500 | 78% | 81% |
 
-A brilliant 1st innings performance simply cannot produce the same magnitude of WP shift as a brilliant 2nd innings performance. A batter who scores an unbeaten 100 chasing 180 in the final over generates enormous TILT. A batter who scores 100 in the first innings setting 200 generates a fraction of that.
+A brilliant 1st innings performance simply cannot produce the same magnitude of WP shift as a brilliant 2nd innings performance. A batsman who scores an unbeaten 100 chasing 180 in the final over generates enormous TILT. A batsman who scores 100 in the first innings setting 200 generates a fraction of that.
 
 ---
 
@@ -85,7 +85,7 @@ Here's the good news: **career rankings are barely affected**.
 
 ![Career correlation](plots/innings_career_correlation.png)
 
-Over a career, most batters face a roughly similar mix of 1st and 2nd innings balls. The correlation between a player's 2nd-innings ball share and their career TILT is nearly zero (Pearson r = 0.08, p = 0.20 across 242 players with 30+ matches).
+Over a career, most batsmen face a roughly similar mix of 1st and 2nd innings balls. The correlation between a player's 2nd-innings ball share and their career TILT is nearly zero (Pearson r = 0.08, p = 0.20 across 242 players with 30+ matches).
 
 When we normalize all deltas to remove the innings effect (scaling each innings' deltas so the mean absolute shift is equal), the career rankings barely move:
 
