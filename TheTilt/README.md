@@ -180,23 +180,24 @@ Rankings use **Bayesian shrinkage** (empirical Bayes) to stabilize small-sample 
 
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |------|--------|------------|-----|------------|---------|
-| 1 | Sunil Narine | +5.59% | +5.79% | **high** | 188 |
-| 2 | Rashid Khan | +5.85% | +6.14% | **high** | 136 |
-| 3 | Philip Salt | +6.57% | +7.76% | medium | 36 |
-| 4 | Lasith Malinga | +4.46% | +4.73% | **high** | 120 |
-| 5 | Yashasvi Jaiswal | +5.20% | +5.73% | medium | 68 |
-| 6 | Priyansh Arya | +9.77% | +13.04% | low | 18 |
-| 7 | Ruturaj Gaikwad | +4.52% | +4.97% | medium | 73 |
-| 8 | AB de Villiers | +3.98% | +4.16% | **high** | 166 |
-| 9 | KL Rahul | +3.84% | +4.06% | **high** | 133 |
-| 10 | Yuzvendra Chahal | +3.30% | +3.46% | **high** | 171 |
+| 1 | Lasith Malinga | +5.98% | +6.32% | **high** | 120 |
+| 2 | Sunil Narine | +5.50% | +5.70% | **high** | 190 |
+| 3 | Jasprit Bumrah | +5.41% | +5.67% | **high** | 146 |
+| 4 | Rashid Khan | +5.30% | +5.58% | **high** | 137 |
+| 5 | AB de Villiers | +4.27% | +4.46% | **high** | 166 |
+| 6 | Philip Salt | +5.70% | +6.70% | medium | 39 |
+| 7 | Yuzvendra Chahal | +3.56% | +3.73% | **high** | 173 |
+| 8 | Ayush Mhatre | +7.78% | +11.89% | low | 12 |
+| 9 | Doug Bollinger | +4.98% | +6.30% | low | 27 |
+| 10 | Munaf Patel | +3.74% | +4.21% | medium | 62 |
 
 ### Notable Observations
 
-- **Sunil Narine** (#1) tops the floor ranking across 188 matches — the most consistent all-round impact player in IPL history
-- **Rashid Khan** (#2) is elite in both batting and bowling TILT
-- **Malinga** (#4) with high confidence at 120 matches — pure bowling impact
-- The floor ranking naturally rewards consistency: Priyansh Arya has the highest raw TILT but ranks #6 because his 18-match sample produces a wider confidence interval
+- **Malinga** tops the floor ranking — high per-match TILT plus a 120-match sample tightens the interval enough to clear Narine's slightly larger but less per-match-impactful career
+- **Sunil Narine** (#2 by floor, #1 by raw career total TILT) — the most consistent all-round impact player in IPL history
+- **Bumrah climbs to #3** after the [boundary-calibration fix](public/notes/innings-boundary.md) — the inn1-end overconfidence had been suppressing his bowling tilt
+- **Rashid Khan** (#4) is elite in both batting and bowling TILT
+- The floor ranking naturally rewards consistency: Mhatre (#8) and Bollinger (#9) have very high raw TILT but small samples widen their intervals
 - **Venue matters most**: The venue feature has the highest importance, confirming that ground conditions significantly affect match outcomes
 - **Era adjustment works**: Old-era players are not disproportionately penalized — the season_numeric feature captures evolving T20 scoring rates
 

@@ -1,118 +1,130 @@
-# The Innings-Boundary Jump
+# Fixing the Innings-Boundary Jump
 
-**Why the match-page chart leaps at the innings switch, even though nothing has been bowled.**
+**A two-step calibration that closes the visible cliff in the win-probability chart and corrects the artificial TILT it was producing.**
 
-Load any recent IPL match on The TILT. Watch the win-probability line across the innings break. For most matches you'll see a visible *jump* — the line doesn't connect smoothly. No ball has been bowled between the last delivery of innings 1 and the first delivery of innings 2, but the batting-first team's estimated win probability shifts anyway. Sometimes by five percentage points. Sometimes by twenty.
+For most of TheTilt's existence, the match-page win-probability chart had a visible discontinuity at the innings break. The line would leap by five, ten, sometimes twenty percentage points across a moment when no ball had been bowled. We documented it ([previous version of this post](#technical-details)), tried four different model rewrites to fix it, shipped a cosmetic chart smoother that hid the jump visually but left the underlying TILT data distorted — and parked the real fix as an open issue.
 
-This isn't a rendering bug. It's the model honestly re-pricing the game state as soon as the chase target is locked in. This post quantifies how big the jump is, why it happens, and what we've done about it.
+This post describes the real fix that landed in [issue #62](https://github.com/soldoutbudokan/Templates/issues/62): a two-step boundary calibration that runs as a post-processing layer on the existing model. Median per-match cliff went from **8.4pp to 0pp** (mathematically zero). The model, the features, and the deltas on every non-boundary ball are byte-for-byte unchanged. Only one ball at the end of innings 1 and one ball at the start of innings 2 — about 1.4% of all deliveries — get a deterministic post-hoc correction. Career rankings reshuffle modestly in the direction you'd expect: players whose tilt was being inflated by the cliff lose a little, players whose tilt was being suppressed by it gain a little.
 
 ---
 
-## What actually moves at the boundary
+## The problem in one paragraph
 
-The win-probability classifier takes 15 features. Several of them *restructure* the moment innings 2 begins, even though the match state is fundamentally unchanged:
+The win-probability classifier sees the innings boundary as two different feature vectors of the same world state. End of innings 1: `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`. Start of innings 2: `innings=2`, `target=actual`, `runs_needed=actual`, `required_run_rate=concrete`, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model — quite reasonably — learned different decision-tree branches for the two states, and they don't agree. Across all 1,169 IPL matches with both innings, the median absolute disagreement was **8.4 percentage points** in the batting-first team's win probability. The mean signed disagreement was **−5.1 pp**: the model was systematically more pessimistic about the batting-first team's chances at the start of the chase than at the end of its own innings.
 
-| Feature | Last ball of innings 1 | First ball of innings 2 |
+We weren't going to retrain the model away from this. The earlier analysis ([the original write-up of this post](#technical-details)) explored that direction and found four dead ends — every "structural" rewrite that suppressed the cliff also flattened the inn1/inn2 signal that distinguishes anchor batters from finishers, and ranked Ashwin and AB de Villiers in places that no cricket fan would defend.
+
+The trick was to stop treating it as a model problem and start treating it as a calibration problem.
+
+---
+
+## The fix: isotonic + per-match midpoint
+
+Two steps, both applied only to the two boundary balls per match:
+
+### Step 1 — Per-side isotonic calibration
+
+The model's raw output at the boundary is biased: at inn1's end, average BF-POV WP is 0.469 when the actual BF win rate at those states is closer to 0.445; at inn2's start, average BF-POV WP is 0.422 when the truth is also closer to 0.445. So we fit two `IsotonicRegression`s — monotonic step functions — on every past match:
+
+```
+iso_inn1: raw_wp_at_inn1_end       →  empirical bf-win rate
+iso_inn2: raw_wp_at_inn2_start_bf  →  empirical bf-win rate
+```
+
+Trained over all 1,160-ish non-DLS matches with `batting_team_won` as the target. Each iso learns a calibrated mapping in its own input range. Applied side-by-side, this kills the average bias (mean signed cliff drops from −5.1pp to +0.3pp). But per-match disagreement actually grows — each side calibrates independently, so the two endpoints don't have to agree on any specific match. Median |cliff| moved from 8.4pp → 11.5pp. Bias dies, variance grows. Step 1 alone is not enough.
+
+### Step 2 — Per-match midpoint bridge
+
+For each match, after step 1, snap both endpoints to their BF-POV midpoint:
+
+```
+mid_bf = 0.5 * (iso_inn1(inn1_end_bf_raw) + iso_inn2(1 - inn2_start_chase_raw))
+inn1.last.wp_after  = mid_bf
+inn2.first.wp_before = 1 - mid_bf
+delta_wp recomputed for both balls
+```
+
+This forces the model to agree with itself across the boundary, by construction. Cliff goes to **exactly 0** on every match. The chart line is naturally continuous — no cosmetic bridge, no dashed-marker fudge. Just the data.
+
+### Why this combination
+
+Step 1 alone is what the original issue called "option 2" and recommended as the surgical fix. Implementing it revealed the variance problem above. Step 2 alone (averaging without isotonic) would close the visual cliff but bake in the model's calibration error — both endpoints would converge on a biased midpoint. Together: step 1 calibrates each side to truth, step 2 enforces per-match continuity. The "A2" name in the analysis log distinguished it from "A" (isotonic only) and "B" (the failed two-model rewrite).
+
+---
+
+## What changed in the rankings
+
+The whole point of doing this carefully was to make sure the fix doesn't violate basic cricketing intuition. Here's the actual top-10 movement.
+
+### Top 10 by total career TILT
+
+| Rank | Before fix | After fix (now) |
 |:--|:--|:--|
-| `innings` | 1 | 2 |
-| `target`, `runs_needed` | 0 (placeholder) | the actual target |
-| `required_run_rate` | 0.0 | a concrete rate |
-| `balls_remaining` | ~1 | 120 |
-| `wickets_in_hand` | whatever innings 1 ended on | 10 |
-| `over` | 19 | 0 |
+| 1 | SP Narine | **SP Narine** |
+| 2 | Rashid Khan | **JJ Bumrah** ⬆ |
+| 3 | JJ Bumrah | Rashid Khan ⬇ |
+| 4 | SL Malinga | **SL Malinga** |
+| 5 | AB de Villiers | **AB de Villiers** |
+| 6 | B Kumar | YS Chahal ⬆ |
+| 7 | YS Chahal | **CH Gayle** 🆕 |
+| 8 | R Ashwin | JC Buttler ⬆ |
+| 9 | JC Buttler | B Kumar ⬇ |
+| 10 | Harbhajan Singh | DW Steyn 🆕 |
 
-Six features move in one step. The `innings` switch is a hard categorical flip. The chase-math features (`target`, `runs_needed`, `required_run_rate`) go from zero — a dummy value the model uses throughout innings 1 — to the real numbers of the chase. `balls_remaining` and `wickets_in_hand` reset to fresh-innings values. `over` wraps from 19 back to 0.
+Top 5 essentially stable. The middle of the list reshuffles: Bumrah climbs to #2 (his bowling tilt was slightly suppressed by inn1-end overconfidence — recalibration helps him), Gayle and Steyn enter, R Ashwin and Harbhajan exit. **B Kumar drops from #6 to #9** — see below for why.
 
-This is what the model was trained on. It learned that "innings 1 ending in state *S*" and "innings 2 beginning with the corresponding target" live on different branches of the decision trees, and it produces a different probability for each. From the batting-first team's perspective the gap can look like a cliff.
+### Top 10 by batting career TILT
 
----
+| Rank | Before fix | After fix (now) |
+|:--|:--|:--|
+| 1 | AB de Villiers | **AB de Villiers** |
+| 2 | JC Buttler | CH Gayle ⬆ |
+| 3 | CH Gayle | JC Buttler ⬇ |
+| 4 | MS Dhoni | V Sehwag ⬆ |
+| 5 | DA Warner | RR Pant ⬆ |
+| 6 | N Pooran | **YBK Jaiswal** 🆕 |
+| 7 | V Sehwag | DA Warner ⬇ |
+| 8 | Shubman Gill | N Pooran ⬇ |
+| 9 | RR Pant | **DR Smith** 🆕 |
+| 10 | GJ Maxwell | Shubman Gill ⬇ |
 
-## The jump is big and one-sided
+Dhoni and Maxwell drop out of the top 10. Jaiswal and DR Smith enter. ABD's #1 spot is unaffected — his career boundary share was only ~2% of his total tilt, so the recalibration barely touches him.
 
-Across all 1,169 matches with both innings in the dataset, we compute a **signed boundary jump** from the batting-first team's point of view:
+### Top 10 by bowling career TILT
 
-```
-boundary_jump = (1 − wp_before[first ball of innings 2])
-              −      wp_after[last ball of innings 1]
-```
+| Rank | Before fix | After fix (now) |
+|:--|:--|:--|
+| 1 | SP Narine | **SP Narine** |
+| 2 | Rashid Khan | JJ Bumrah ⬆ |
+| 3 | JJ Bumrah | Rashid Khan ⬇ |
+| 4 | B Kumar | **SL Malinga** |
+| 5 | SL Malinga | YS Chahal ⬆ |
+| 6 | R Ashwin | Harbhajan Singh ⬆ |
+| 7 | Harbhajan Singh | B Kumar ⬇ |
+| 8 | YS Chahal | R Ashwin ⬇ |
+| 9 | A Mishra | DW Steyn ⬆ |
+| 10 | DW Steyn | A Mishra ⬇ |
 
-Positive means the batting-first team's model-estimated win probability *rose* instantly at the switch. Negative means it fell.
-
-![Distribution of the signed boundary jump](plots/innings_boundary_hist.png)
-
-A few things jump out of this histogram:
-
-- **Median |jump| is 8.4 percentage points.** Not a rare tail case — the typical match produces a meaningful discontinuity.
-- **42% of matches** have |jump| ≥ 10 pp. **21%** have |jump| ≥ 15 pp.
-- **66.2% of jumps are negative** (favour the chasing side). The distribution is visibly skewed left.
-- **Mean signed jump: −5.1 pp** (one-sample t-test against 0: t = −15.0, p ≈ 10⁻⁴⁶).
-
-That last number is the key. The jump isn't centred on zero. The model systematically values the chasing side more than the batting-first side at the instant of the switch. Given the state "batting team has posted *T*, now we see it as a known chase," the model's second thought is a little more pessimistic about defending than its first thought was about batting first.
-
----
-
-## Where the bias comes from: wickets
-
-If you bin matches by how many wickets the batting-first team lost in innings 1, the |jump| magnitude tells a clean story:
-
-![Median |jump| by innings-1 wickets lost](plots/innings_boundary_by_wickets.png)
-
-| Inn-1 wickets lost | Typical boundary-jump magnitude |
-|:--|:--|
-| 0–3 (innings 1 barely disturbed) | ~10 pp |
-| 4–6 | ~8 pp |
-| 7–9 | ~6 pp |
-| 10 (bowled out) | ~4 pp |
-
-Spearman's ρ for magnitude vs wickets-lost is **−0.37** (p ≈ 10⁻³⁸). The jump is smallest when innings 1 ends with the batting-first side already rolled, and largest when they ended with the full hand intact.
-
-The mechanical reason: `wickets_in_hand` is one of the features that resets at the boundary, and the size of that reset is exactly what this bin measures. A side that ended 200/3 steps from (innings 1, wih=7) to (innings 2, wih=10) — a big categorical jump in a feature the model leans on. A side that ended 140-all-out steps from (innings 1, wih=0) to (innings 2, wih=10) and the rest of the chase math dominates the picture. Paradoxically, it's the *strong* innings-1 positions that look most discontinuous.
+The headline movement: B Kumar drops from #4 to #7. About 13% of his pre-fix career bowling tilt came from the first ball of innings 2 — a place where the model used to be wildly pessimistic about the chase, so any wicket on that ball generated outsized credit. Recalibration removes that artificial credit. He's still a top-10 bowler; he's just no longer over-credited for being the death-knell-deliverer of the model's chase pessimism.
 
 ---
 
-## It's shrinking over time
+## What didn't change
 
-![Mean signed jump by season](plots/innings_boundary_by_season.png)
-
-Through the early 2010s the mean signed jump sat around −8 to −9 pp. From 2022 onward it has steadily moved toward zero and then past it: **+0.9 pp in 2025, +3.9 pp in 2026**. The sign has flipped for recent seasons — the model now slightly favours the batting-first team at the boundary.
-
-We don't have a clean causal story here, but two candidates are worth flagging:
-
-1. **Higher scoring rates.** Modern IPL produces bigger totals and the model has seen more 200+ innings-1 scores get successfully defended than it used to. At the boundary, a big total now nudges the prediction more favourably for the batting side than the same total would have in 2014.
-2. **Impact-sub era.** From 2023 the Impact Player rule changes tail-end match dynamics, and the training set's distribution of innings-1 endings has shifted with it.
-
-Either way, the bias is getting smaller with each retrain as more modern matches enter the training data. It isn't yet zero.
+- **The model itself.** No retraining. The committed `models/win_prob_lgbm.pkl` is identical.
+- **All non-boundary deltas.** Every powerplay, middle-overs, and death-overs delta uses the original raw model output. Only the two boundary balls per match have their `wp_after` / `wp_before` overwritten.
+- **The match-volatility analysis.** [The Second Innings Problem](notes.html?note=innings-bias) is a different diagnostic — it documents why career rankings are roughly innings-balanced even though single-match TILT shifts skew toward the chase. That post stands as written; the boundary fix doesn't interact with it.
 
 ---
 
-## A concrete example: match 1527690
+## What it cost
 
-[Punjab Kings vs Sunrisers Hyderabad, 2026](../match.html?id=1527690). SRH batted first and posted 219/6 off 20 overs. End of innings 1, the model had SRH at **76.5%** to win.
-
-Then: zero balls of innings 2. Feature vector restructures. Model re-scores. SRH's win probability:
-
-![Match 1527690 WP trajectory, batting-first POV](plots/innings_boundary_match1527690.png)
-
-**76.5% → 93.7%**, a +17.2 pp jump. This particular match sits in the top quintile for magnitude, but the mechanism is identical to every other match — SRH ended innings 1 with 5 wickets still in hand, which is a large `wickets_in_hand` reset, which the model is sensitive to. SRH lost anyway, but that's not the point; the point is that the probability curve didn't honestly represent a single continuous view of the match.
+About 30 lines added to `pipeline/compute_tilt.py` (a new `apply_boundary_calibration` function called between `compute_ball_deltas` and `aggregate_player_tilt`). About 50 lines removed from `public/match.html` (the cosmetic chart-bridge JavaScript is now redundant and would be a double correction). Two scikit-learn `IsotonicRegression` fits at pipeline time, both trained in well under a second on ~1,200 data points each. The fix is fully reversible — drop the function call and the system reverts to the pre-fix state.
 
 ---
 
-## What we did (and didn't do)
+## Technical details
 
-The pragmatic fix is small: the match-page chart now breaks the line at the innings boundary and draws a dashed vertical marker labelled **innings break**. The jump is still visible — deliberately so — but it reads as a jump rather than a slope that implies continuous play. The chart now communicates what the model is actually doing: two separate probability estimates on either side of the switch, not a single continuous trajectory.
+The original analysis that drove this fix is preserved as the diagnostic notebook `notebooks/innings_boundary_analysis.py`. It can be re-run against the current pipeline output and will report a median |cliff| of 0.0pp, mean signed cliff of 0.0pp, and zero matches with |cliff| ≥ 5pp — confirming the fix is working as intended. The pre-calibration values are stashed in `deltas.parquet` as `wp_after_raw` and `wp_before_raw` (only populated on the two boundary rows per match) so the notebook can also produce before/after diagnostics.
 
-The per-ball TILT attribution is untouched. TILT is a within-innings `wp_after − wp_before` sum, so the boundary re-pricing is never credited to any player on either side. No rankings move because of this post.
-
-What would a *structural* fix look like? Rebuild `build_features.py` so the feature vector is continuous across the boundary. Candidates:
-
-- Replace `target` / `runs_needed` / `required_run_rate` with continuous score-difference and projected-total features that carry meaningful values through innings 1.
-- Stop resetting `wickets_in_hand` and `balls_remaining` — let them carry as match-level counts, and let the model recover the innings-specific information from `score_diff` and a `phase` feature.
-- Drop `innings` as a feature entirely, or replace it with a continuous "phase of match" encoding.
-
-Any of these is a real feature-engineering project with a full retrain behind it, plus a fresh pass at the validation scenarios and the blog-post numbers that assume the current model. The bias is shrinking with each data refresh on its own, so the current plan is to incorporate the structural fix into the next annual retrain (March 2027 if nothing catches fire first) rather than rush it now.
-
-Until then, the match page is honest about the discontinuity. Load any recent match, watch the line break, read the dashed vertical. That's what the model thinks happened between ball 120 and ball 121 — and now it's labelled, instead of hidden.
-
----
-
-*Source: `notebooks/innings_boundary_analysis.py`. Every number above is printed by the notebook's summary block.*
+The four model-rewrite attempts that failed, the per-team-carry experiment that ranked ABD #39, and the trade-off matrix between cliff-closure and ranking validity are all in [issue #62](https://github.com/soldoutbudokan/Templates/issues/62) for anyone who wants the full backstory.

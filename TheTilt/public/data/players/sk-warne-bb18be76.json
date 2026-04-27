@@ -7,18 +7,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": 0.01296,
-  "batting_tilt_per_match": -0.01829,
-  "bowling_tilt_per_match": 0.02218,
-  "shrunk_total_tilt_per_match": 0.0099,
-  "shrunk_batting_tilt_per_match": -0.01817,
-  "shrunk_bowling_tilt_per_match": 0.01913,
-  "tilt_ci_lower": -0.0258,
-  "tilt_ci_upper": 0.04561,
-  "tilt_ci_lower_90": -0.02006,
-  "tilt_ci_upper_90": 0.03987,
+  "total_tilt_per_match": 0.016,
+  "batting_tilt_per_match": -0.02126,
+  "bowling_tilt_per_match": 0.02673,
+  "shrunk_total_tilt_per_match": 0.01269,
+  "shrunk_batting_tilt_per_match": -0.02094,
+  "shrunk_bowling_tilt_per_match": 0.02321,
+  "tilt_ci_lower": -0.0233,
+  "tilt_ci_upper": 0.04868,
+  "tilt_ci_lower_90": -0.01752,
+  "tilt_ci_upper_90": 0.04289,
   "confidence": "medium",
-  "total_tilt": 0.69973,
+  "total_tilt": 0.86407,
   "total_matches": 54,
   "batting_balls": 212,
   "bowling_balls": 1170,
@@ -343,8 +343,8 @@
     {
       "season": "2009",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.02611,
-      "bowling_tilt_per_match": 0.03288,
+      "batting_tilt_per_match": -0.03043,
+      "bowling_tilt_per_match": 0.03993,
       "batting_matches": 9,
       "bowling_matches": 12,
       "batting_balls": 114,
@@ -494,13 +494,13 @@
           "bat_runs": 21,
           "bat_balls": 11,
           "bat_sr": 190.9,
-          "bat_tilt": 0.02959,
+          "bat_tilt": -0.00928,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 27,
           "bowl_econ": 6.75,
           "bowl_tilt": 0.02835,
-          "total_tilt": 0.05794
+          "total_tilt": 0.01907
         },
         {
           "match_id": "392220",
@@ -556,8 +556,8 @@
           "bowl_balls": 24,
           "bowl_runs": 28,
           "bowl_econ": 7.0,
-          "bowl_tilt": -0.03162,
-          "total_tilt": -0.01932
+          "bowl_tilt": 0.05304,
+          "total_tilt": 0.06534
         },
         {
           "match_id": "392233",
@@ -603,7 +603,7 @@
     {
       "season": "2009/10",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.01528,
+      "batting_tilt_per_match": -0.02164,
       "bowling_tilt_per_match": 0.00777,
       "batting_matches": 6,
       "bowling_matches": 14,
@@ -868,13 +868,13 @@
           "bat_runs": 3,
           "bat_balls": 4,
           "bat_sr": 75.0,
-          "bat_tilt": 0.01787,
+          "bat_tilt": -0.02033,
           "bowl_wkts": 0,
           "bowl_balls": 18,
           "bowl_runs": 20,
           "bowl_econ": 6.67,
           "bowl_tilt": -0.03507,
-          "total_tilt": -0.0172
+          "total_tilt": -0.0554
         }
       ],
       "batting_stats": {
@@ -902,7 +902,7 @@
       "season": "2011",
       "team": "Rajasthan Royals",
       "batting_tilt_per_match": -0.01372,
-      "bowling_tilt_per_match": 0.0371,
+      "bowling_tilt_per_match": 0.05017,
       "batting_matches": 4,
       "bowling_matches": 12,
       "batting_balls": 20,
@@ -1152,8 +1152,8 @@
           "bowl_balls": 24,
           "bowl_runs": 30,
           "bowl_econ": 7.5,
-          "bowl_tilt": -0.02696,
-          "total_tilt": -0.02696
+          "bowl_tilt": 0.1298,
+          "total_tilt": 0.1298
         }
       ],
       "batting_stats": {
@@ -1187,9 +1187,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.15068,
+      "tilt": -0.22775,
       "balls": 130,
-      "avg_delta": -0.001141
+      "avg_delta": -0.001725
     }
   ],
   "bowling_phases": [
@@ -1207,9 +1207,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.58867,
+      "tilt": 0.83008,
       "balls": 204,
-      "avg_delta": 0.002803
+      "avg_delta": 0.003953
     }
   ],
   "best_matches": [
@@ -1220,22 +1220,6 @@
       "tilt": 0.54267,
       "runs": 22,
       "balls": 9
-    },
-    {
-      "match_id": "392217",
-      "date": "2009-05-09",
-      "vs": "Chennai Super Kings",
-      "tilt": 0.02959,
-      "runs": 21,
-      "balls": 11
-    },
-    {
-      "match_id": "419158",
-      "date": "2010-04-17",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.01787,
-      "runs": 3,
-      "balls": 4
     },
     {
       "match_id": "392230",
@@ -1252,6 +1236,22 @@
       "tilt": 0.00731,
       "runs": 5,
       "balls": 3
+    },
+    {
+      "match_id": "392233",
+      "date": "2009-05-20",
+      "vs": "Kolkata Knight Riders",
+      "tilt": 0.00164,
+      "runs": 18,
+      "balls": 29
+    },
+    {
+      "match_id": "501249",
+      "date": "2011-05-09",
+      "vs": "Chennai Super Kings",
+      "tilt": 0.0,
+      "runs": 0,
+      "balls": 2
     }
   ],
   "worst_matches": [
@@ -1516,194 +1516,194 @@
     {
       "match": 23,
       "date": "2009-05-09",
-      "tilt": 0.05794,
-      "cumulative": -0.0415
+      "tilt": 0.01906,
+      "cumulative": -0.08037
     },
     {
       "match": 24,
       "date": "2009-05-11",
       "tilt": -0.04708,
-      "cumulative": -0.08858
+      "cumulative": -0.12745
     },
     {
       "match": 25,
       "date": "2009-05-14",
       "tilt": 0.27205,
-      "cumulative": 0.18347
+      "cumulative": 0.1446
     },
     {
       "match": 26,
       "date": "2009-05-17",
-      "tilt": -0.01932,
-      "cumulative": 0.16415
+      "tilt": 0.06534,
+      "cumulative": 0.20993
     },
     {
       "match": 27,
       "date": "2009-05-20",
       "tilt": 0.12808,
-      "cumulative": 0.29222
+      "cumulative": 0.33801
     },
     {
       "match": 28,
       "date": "2010-03-13",
       "tilt": -0.09048,
-      "cumulative": 0.20174
+      "cumulative": 0.24753
     },
     {
       "match": 29,
       "date": "2010-03-15",
       "tilt": -0.0018,
-      "cumulative": 0.19995
+      "cumulative": 0.24573
     },
     {
       "match": 30,
       "date": "2010-03-18",
       "tilt": -0.02454,
-      "cumulative": 0.17541
+      "cumulative": 0.2212
     },
     {
       "match": 31,
       "date": "2010-03-20",
       "tilt": -0.01627,
-      "cumulative": 0.15914
+      "cumulative": 0.20492
     },
     {
       "match": 32,
       "date": "2010-03-24",
       "tilt": -0.14286,
-      "cumulative": 0.01628
+      "cumulative": 0.06207
     },
     {
       "match": 33,
       "date": "2010-03-26",
       "tilt": 0.13952,
-      "cumulative": 0.1558
+      "cumulative": 0.20158
     },
     {
       "match": 34,
       "date": "2010-03-28",
       "tilt": -0.0263,
-      "cumulative": 0.1295
+      "cumulative": 0.17528
     },
     {
       "match": 35,
       "date": "2010-03-31",
       "tilt": 0.0365,
-      "cumulative": 0.16599
+      "cumulative": 0.21178
     },
     {
       "match": 36,
       "date": "2010-04-03",
       "tilt": -0.08336,
-      "cumulative": 0.08264
+      "cumulative": 0.12842
     },
     {
       "match": 37,
       "date": "2010-04-05",
       "tilt": 0.47327,
-      "cumulative": 0.55591
+      "cumulative": 0.60169
     },
     {
       "match": 38,
       "date": "2010-04-07",
       "tilt": -0.15873,
-      "cumulative": 0.39717
+      "cumulative": 0.44296
     },
     {
       "match": 39,
       "date": "2010-04-11",
       "tilt": -0.05595,
-      "cumulative": 0.34122
+      "cumulative": 0.38701
     },
     {
       "match": 40,
       "date": "2010-04-14",
       "tilt": -0.01467,
-      "cumulative": 0.32656
+      "cumulative": 0.37234
     },
     {
       "match": 41,
       "date": "2010-04-17",
-      "tilt": -0.0172,
-      "cumulative": 0.30936
+      "tilt": -0.05539,
+      "cumulative": 0.31695
     },
     {
       "match": 42,
       "date": "2011-04-09",
       "tilt": 0.11771,
-      "cumulative": 0.42707
+      "cumulative": 0.43466
     },
     {
       "match": 43,
       "date": "2011-04-12",
       "tilt": 0.14234,
-      "cumulative": 0.56941
+      "cumulative": 0.577
     },
     {
       "match": 44,
       "date": "2011-04-15",
       "tilt": -0.02175,
-      "cumulative": 0.54767
+      "cumulative": 0.55525
     },
     {
       "match": 45,
       "date": "2011-04-17",
       "tilt": 0.08499,
-      "cumulative": 0.63266
+      "cumulative": 0.64024
     },
     {
       "match": 46,
       "date": "2011-04-21",
       "tilt": -0.12113,
-      "cumulative": 0.51152
+      "cumulative": 0.51911
     },
     {
       "match": 47,
       "date": "2011-04-24",
       "tilt": 0.10627,
-      "cumulative": 0.6178
+      "cumulative": 0.62538
     },
     {
       "match": 48,
       "date": "2011-04-29",
       "tilt": 0.13557,
-      "cumulative": 0.75337
+      "cumulative": 0.76096
     },
     {
       "match": 49,
       "date": "2011-05-01",
       "tilt": -0.00947,
-      "cumulative": 0.7439
+      "cumulative": 0.75148
     },
     {
       "match": 50,
       "date": "2011-05-04",
       "tilt": 0.05069,
-      "cumulative": 0.79458
+      "cumulative": 0.80217
     },
     {
       "match": 51,
       "date": "2011-05-09",
       "tilt": -0.0392,
-      "cumulative": 0.75538
+      "cumulative": 0.76297
     },
     {
       "match": 52,
       "date": "2011-05-11",
       "tilt": 0.01055,
-      "cumulative": 0.76593
+      "cumulative": 0.77352
     },
     {
       "match": 53,
       "date": "2011-05-15",
       "tilt": -0.03925,
-      "cumulative": 0.72668
+      "cumulative": 0.73427
     },
     {
       "match": 54,
       "date": "2011-05-20",
-      "tilt": -0.02696,
-      "cumulative": 0.69973
+      "tilt": 0.1298,
+      "cumulative": 0.86407
     }
   ],
   "team_matchups": [
@@ -1728,18 +1728,18 @@
       "matches": 2
     },
     {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.03602,
-      "matches": 5
-    },
-    {
       "opponent": "Kochi Tuskers Kerala",
       "tilt_per_match": -0.03925,
       "matches": 1
     },
     {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": -0.04366,
+      "matches": 5
+    },
+    {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.04854,
+      "tilt_per_match": -0.05826,
       "matches": 4
     },
     {
@@ -1792,10 +1792,10 @@
     -0.1167,
     0.02662,
     0.0324,
-    0.05794,
+    0.01906,
     -0.04708,
     0.27205,
-    -0.01932,
+    0.06534,
     0.12808,
     -0.09048,
     -0.0018,
@@ -1810,7 +1810,7 @@
     -0.15873,
     -0.05595,
     -0.01467,
-    -0.0172,
+    -0.05539,
     0.11771,
     0.14234,
     -0.02175,
@@ -1823,6 +1823,6 @@
     -0.0392,
     0.01055,
     -0.03925,
-    -0.02696
+    0.1298
   ]
 }

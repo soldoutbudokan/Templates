@@ -10,18 +10,18 @@
     "Rajasthan Royals",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.00578,
+  "total_tilt_per_match": -0.02486,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.00072,
-  "shrunk_total_tilt_per_match": -0.00886,
+  "bowling_tilt_per_match": -0.0198,
+  "shrunk_total_tilt_per_match": -0.02456,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.0028,
-  "tilt_ci_lower": -0.04994,
-  "tilt_ci_upper": 0.03223,
-  "tilt_ci_lower_90": -0.04334,
-  "tilt_ci_upper_90": 0.02563,
+  "shrunk_bowling_tilt_per_match": -0.01837,
+  "tilt_ci_lower": -0.0674,
+  "tilt_ci_upper": 0.01827,
+  "tilt_ci_lower_90": -0.06051,
+  "tilt_ci_upper_90": 0.01139,
   "confidence": "low",
-  "total_tilt": -0.133,
+  "total_tilt": -0.57183,
   "total_matches": 23,
   "batting_balls": 14,
   "bowling_balls": 471,
@@ -408,7 +408,7 @@
       "season": "2018",
       "team": "Punjab Kings",
       "batting_tilt_per_match": -0.04632,
-      "bowling_tilt_per_match": -0.00858,
+      "bowling_tilt_per_match": -0.08172,
       "batting_matches": 3,
       "bowling_matches": 6,
       "batting_balls": 7,
@@ -430,8 +430,8 @@
           "bowl_balls": 24,
           "bowl_runs": 38,
           "bowl_econ": 9.5,
-          "bowl_tilt": 0.00738,
-          "total_tilt": 0.00738
+          "bowl_tilt": -0.19308,
+          "total_tilt": -0.19308
         },
         {
           "match_id": "1136576",
@@ -449,8 +449,8 @@
           "bowl_balls": 24,
           "bowl_runs": 22,
           "bowl_econ": 5.5,
-          "bowl_tilt": 0.21144,
-          "total_tilt": 0.21144
+          "bowl_tilt": 0.07936,
+          "total_tilt": 0.07936
         },
         {
           "match_id": "1136578",
@@ -525,8 +525,8 @@
           "bowl_balls": 18,
           "bowl_runs": 48,
           "bowl_econ": 16.0,
-          "bowl_tilt": -0.11989,
-          "total_tilt": -0.11989
+          "bowl_tilt": -0.22618,
+          "total_tilt": -0.22618
         }
       ],
       "batting_stats": {
@@ -613,9 +613,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.06216,
+      "tilt": -0.27039,
       "balls": 216,
-      "avg_delta": 0.000271
+      "avg_delta": -0.001181
     },
     {
       "phase": "middle",
@@ -625,9 +625,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.13826,
+      "tilt": -0.24455,
       "balls": 87,
-      "avg_delta": -0.00144
+      "avg_delta": -0.002547
     }
   ],
   "best_matches": [
@@ -716,14 +716,6 @@
   ],
   "bowling_best_matches": [
     {
-      "match_id": "1136576",
-      "date": "2018-04-19",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.21144,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "980923",
       "date": "2016-04-18",
       "vs": "Mumbai Indians",
@@ -754,9 +746,33 @@
       "tilt": 0.13477,
       "wickets": 1,
       "balls": 24
+    },
+    {
+      "match_id": "1136576",
+      "date": "2018-04-19",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.07936,
+      "wickets": 1,
+      "balls": 24
     }
   ],
   "bowling_worst_matches": [
+    {
+      "match_id": "1136604",
+      "date": "2018-05-12",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.22618,
+      "wickets": 1,
+      "balls": 18
+    },
+    {
+      "match_id": "1136572",
+      "date": "2018-04-15",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.19308,
+      "wickets": 1,
+      "balls": 24
+    },
     {
       "match_id": "1178422",
       "date": "2019-04-28",
@@ -774,28 +790,12 @@
       "balls": 18
     },
     {
-      "match_id": "1136604",
-      "date": "2018-05-12",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.11989,
-      "wickets": 1,
-      "balls": 18
-    },
-    {
       "match_id": "1082609",
       "date": "2017-04-17",
       "vs": "Punjab Kings",
       "tilt": -0.08682,
       "wickets": 0,
       "balls": 12
-    },
-    {
-      "match_id": "981019",
-      "date": "2016-05-29",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.08428,
-      "wickets": 1,
-      "balls": 18
     }
   ],
   "career_trend": [
@@ -898,44 +898,44 @@
     {
       "match": 17,
       "date": "2018-04-15",
-      "tilt": 0.00738,
-      "cumulative": 0.22444
+      "tilt": -0.19308,
+      "cumulative": 0.02398
     },
     {
       "match": 18,
       "date": "2018-04-19",
-      "tilt": 0.21144,
-      "cumulative": 0.43588
+      "tilt": 0.07936,
+      "cumulative": 0.10334
     },
     {
       "match": 19,
       "date": "2018-04-21",
       "tilt": -0.06809,
-      "cumulative": 0.3678
+      "cumulative": 0.03525
     },
     {
       "match": 20,
       "date": "2018-04-23",
       "tilt": -0.08002,
-      "cumulative": 0.28777
+      "cumulative": -0.04477
     },
     {
       "match": 21,
       "date": "2018-04-26",
       "tilt": -0.14125,
-      "cumulative": 0.14652
+      "cumulative": -0.18603
     },
     {
       "match": 22,
       "date": "2018-05-12",
-      "tilt": -0.11989,
-      "cumulative": 0.02663
+      "tilt": -0.22618,
+      "cumulative": -0.4122
     },
     {
       "match": 23,
       "date": "2019-04-28",
       "tilt": -0.15963,
-      "cumulative": -0.133
+      "cumulative": -0.57183
     }
   ],
   "team_matchups": [
@@ -998,12 +998,12 @@
     -0.04061,
     -0.08428,
     -0.08682,
-    0.00738,
-    0.21144,
+    -0.19308,
+    0.07936,
     -0.06809,
     -0.08002,
     -0.14125,
-    -0.11989,
+    -0.22618,
     -0.15963
   ]
 }

@@ -8,18 +8,18 @@
     "Kolkata Knight Riders",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.00914,
-  "batting_tilt_per_match": 0.00914,
+  "total_tilt_per_match": 0.0005,
+  "batting_tilt_per_match": 0.0005,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.00339,
-  "shrunk_batting_tilt_per_match": 0.00365,
+  "shrunk_total_tilt_per_match": -0.00364,
+  "shrunk_batting_tilt_per_match": -0.00338,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.04252,
-  "tilt_ci_upper": 0.0493,
-  "tilt_ci_lower_90": -0.03515,
-  "tilt_ci_upper_90": 0.04192,
+  "tilt_ci_lower": -0.05159,
+  "tilt_ci_upper": 0.0443,
+  "tilt_ci_lower_90": -0.04388,
+  "tilt_ci_upper_90": 0.03659,
   "confidence": "low",
-  "total_tilt": 0.21015,
+  "total_tilt": 0.01152,
   "total_matches": 23,
   "batting_balls": 309,
   "bowling_balls": 0,
@@ -495,7 +495,7 @@
     {
       "season": "2011",
       "team": "Kolkata Knight Riders",
-      "batting_tilt_per_match": -0.02627,
+      "batting_tilt_per_match": -0.12558,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 2,
       "bowling_matches": 0,
@@ -532,13 +532,13 @@
           "bat_runs": 1,
           "bat_balls": 2,
           "bat_sr": 50.0,
-          "bat_tilt": 0.03156,
+          "bat_tilt": -0.16707,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.03156
+          "total_tilt": -0.16707
         }
       ],
       "batting_stats": {
@@ -563,9 +563,9 @@
     },
     {
       "phase": "middle",
-      "tilt": -0.21054,
+      "tilt": -0.40917,
       "balls": 138,
-      "avg_delta": -0.001483
+      "avg_delta": -0.002881
     },
     {
       "phase": "death",
@@ -635,6 +635,14 @@
       "balls": 6
     },
     {
+      "match_id": "501255",
+      "date": "2011-05-14",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.16707,
+      "runs": 1,
+      "balls": 2
+    },
+    {
       "match_id": "501242",
       "date": "2011-05-05",
       "vs": "Kochi Tuskers Kerala",
@@ -649,14 +657,6 @@
       "tilt": -0.07086,
       "runs": 2,
       "balls": 3
-    },
-    {
-      "match_id": "392221",
-      "date": "2009-05-12",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.05507,
-      "runs": 13,
-      "balls": 10
     }
   ],
   "bowling_best_matches": [],
@@ -797,8 +797,8 @@
     {
       "match": 23,
       "date": "2011-05-14",
-      "tilt": 0.03156,
-      "cumulative": 0.21015
+      "tilt": -0.16707,
+      "cumulative": 0.01152
     }
   ],
   "team_matchups": [
@@ -816,11 +816,6 @@
       "opponent": "Delhi Capitals",
       "tilt_per_match": 0.03479,
       "matches": 4
-    },
-    {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.03156,
-      "matches": 1
     },
     {
       "opponent": "Punjab Kings",
@@ -846,6 +841,11 @@
       "opponent": "Deccan Chargers",
       "tilt_per_match": -0.11987,
       "matches": 2
+    },
+    {
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.16707,
+      "matches": 1
     }
   ],
   "batting_stats": {
@@ -884,6 +884,6 @@
     0.01042,
     -0.07086,
     -0.08409,
-    0.03156
+    -0.16707
   ]
 }

@@ -105,10 +105,10 @@
 const NOTES = [
     {
         id: 'innings-boundary',
-        title: 'The Innings-Boundary Jump',
-        summary: 'Load a recent match and watch the win-probability line across the innings break. It jumps — sometimes five points, sometimes twenty. Median |jump| is 8.4pp, the bias favours the chasing side by 5pp on average, and it all comes from the feature vector restructuring the moment innings 2 starts.',
+        title: 'Fixing the Innings-Boundary Jump',
+        summary: 'The chart used to leap by 8.4pp at the median across the innings break — a signed −5.1pp bias favouring the chasing side. A two-step calibration (per-side isotonic + per-match midpoint) drives the cliff to mathematically zero, touches only 1.4% of balls, and reshuffles the top 10 in the directions you would expect. B Kumar drops three bowling spots; ABD stays #1.',
         tags: ['methodology', 'model'],
-        date: '2026-04-23',
+        date: '2026-04-26',
     },
     {
         id: 'venue-importance',

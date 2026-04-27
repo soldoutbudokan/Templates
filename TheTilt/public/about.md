@@ -363,17 +363,14 @@ The full diagnostic, including per-phase breakdowns and the qq-plot above, is at
 
 ### The innings-boundary recalibration
 
-The match-page win-probability chart shows a visible **jump** between the last ball of innings 1 and the first ball of innings 2, even though no ball has been bowled between them. This isn't a rendering bug — it's the model honestly re-pricing the game state once the chase target is locked in.
+The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and historically those two predictions disagreed by a median of **8.4 pp** with a mean signed gap of **−5.1 pp** (the model was systematically more pessimistic about the batting-first team at chase-start than at innings-1-end).
 
-Several features restructure at the boundary in one step: `target`, `runs_needed`, and `required_run_rate` go from 0 (innings 1 placeholder) to concrete values; `balls_remaining` resets from ~1 back to 120; `wickets_in_hand` resets to 10; the `innings` switch flips from 1 to 2. The model has learned that innings 1 ending at state *S* and innings 2 starting with the corresponding target are two different distributions of match outcomes.
+We close that gap with a two-step post-processing layer in `compute_tilt.apply_boundary_calibration`, applied only to the two boundary balls per match (~1.4% of all deliveries):
 
-Across all 1,169 matches with both innings, from the batting-first team's perspective:
+1. **Per-side isotonic calibration**. Two `IsotonicRegression`s mapping raw model output → empirical BF-win rate, fit on every non-DLS match. Applied to inn1's last `wp_after` and inn2's first `wp_before` (BF POV) independently. Kills the systematic bias.
+2. **Per-match BF-POV midpoint bridge**. After step 1, the two endpoints are snapped to their average per match. Forces the model to agree with itself across the boundary by construction.
 
-- **Median |jump|** is **8.4 pp** and 42% of matches jump by at least 10 pp.
-- **Mean signed jump is −5.1 pp** (one-sample t-test p ≈ 10⁻⁴⁶) — the model systematically favors the chasing side at the switch, most strongly when innings 1 ended with lots of wickets still in hand.
-- The bias has shrunk over seasons: it was ~−8 pp in the early 2010s and is near zero for 2025–2026.
-
-The match chart marks the boundary with a dashed vertical line and breaks the line into two segments so the jump is visible-as-a-jump rather than a sloped connector that reads like continuous play. The per-ball TILT deltas inside each innings are unaffected — TILT is a within-innings `wp_after − wp_before` sum, so the boundary re-pricing never gets credited to any player. A structural fix (continuous features across the boundary, full retrain) is a candidate for the next model revision.
+Median per-match cliff after the fix: **0.0 pp**. The match-page chart line is now naturally continuous — the dashed marker at the innings break is purely a visual cue. The full diagnostic is at: [Fixing the Innings-Boundary Jump](notes.html?note=innings-boundary).
 
 ### What the model can't see
 
@@ -397,27 +394,28 @@ These are tractable upgrades that future iterations may chase.
 
 ## 11. Top Results (Sanity Check)
 
-Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-04-20.*
+Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-04-26.*
 
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |:--|:--|:--|:--|:--|:--|
-| 1 | Sunil Narine | +5.59% | +5.79% | **high** | 188 |
-| 2 | Rashid Khan | +5.85% | +6.14% | **high** | 136 |
-| 3 | Philip Salt | +6.57% | +7.76% | medium | 36 |
-| 4 | Lasith Malinga | +4.46% | +4.73% | **high** | 120 |
-| 5 | Yashasvi Jaiswal | +5.20% | +5.73% | medium | 68 |
-| 6 | Priyansh Arya | +9.77% | +13.04% | low | 18 |
-| 7 | Ruturaj Gaikwad | +4.52% | +4.97% | medium | 73 |
-| 8 | AB de Villiers | +3.98% | +4.16% | **high** | 166 |
-| 9 | KL Rahul | +3.84% | +4.06% | **high** | 133 |
-| 10 | Yuzvendra Chahal | +3.30% | +3.46% | **high** | 171 |
+| 1 | Lasith Malinga | +5.98% | +6.32% | **high** | 120 |
+| 2 | Sunil Narine | +5.50% | +5.70% | **high** | 190 |
+| 3 | Jasprit Bumrah | +5.41% | +5.67% | **high** | 146 |
+| 4 | Rashid Khan | +5.30% | +5.58% | **high** | 137 |
+| 5 | AB de Villiers | +4.27% | +4.46% | **high** | 166 |
+| 6 | Philip Salt | +5.70% | +6.70% | medium | 39 |
+| 7 | Yuzvendra Chahal | +3.56% | +3.73% | **high** | 173 |
+| 8 | Ayush Mhatre | +7.78% | +11.89% | low | 12 |
+| 9 | Doug Bollinger | +4.98% | +6.30% | low | 27 |
+| 10 | Munaf Patel | +3.74% | +4.21% | medium | 62 |
 
 A few sanity reads on this list:
 
-- **Narine #1 across 188 matches** — the most consistent all-round impact in IPL history is exactly the kind of player a per-match WPA metric should surface, and it does.
-- **Salt at #3 with 36 matches** is the floor ranking working: his raw TILT is the highest in the top 10, but the smaller sample means his interval is wider and he sits behind two veterans with tighter intervals.
-- **Priyansh Arya at #6** with the highest raw TILT (+13.04%) on the page is *also* the floor ranking working: his 18-match interval is wide enough that the lower bound drops him six spots.
-- **Old-era players are not punished.** AB de Villiers ranks #8 across an era spanning multiple T20 generations; the `season_numeric` feature successfully neutralises era effects.
+- **Malinga #1 across 120 matches** — the floor ranking rewards both production *and* certainty. Malinga's per-match TILT is among the highest, and his 120-match sample tightens the interval enough to surface him above Narine's larger but slightly less per-match-impactful career.
+- **Narine #2 across 190 matches** — the most consistent all-round impact in IPL history sits one spot below by floor and #1 by raw career total TILT.
+- **Bumrah #3** climbs after the [boundary calibration fix](notes.html?note=innings-boundary) — the inn1-end overconfidence was suppressing his bowling tilt slightly.
+- **Salt at #6 with 39 matches** is the floor ranking working: his raw TILT is among the highest on the page, but the smaller sample widens his interval and he sits behind four veterans with tighter intervals.
+- **Old-era players are not punished.** AB de Villiers ranks #5 across an era spanning multiple T20 generations; the `season_numeric` feature successfully neutralises era effects.
 - **Spinners and fast bowlers both surface.** Narine, Rashid, Malinga, Chahal — different bowling styles, all rated. The model isn't biased toward one type.
 
 ---

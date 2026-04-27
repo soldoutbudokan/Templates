@@ -9,6 +9,7 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import yaml
+from sklearn.isotonic import IsotonicRegression
 
 from pipeline.build_features import shrunk_run_rate
 
@@ -110,6 +111,96 @@ def compute_ball_deltas(
     print(f"  Mean |delta_wp|: {df['delta_wp'].abs().mean():.4f}")
     print(f"  Max delta_wp: {df['delta_wp'].max():.4f}")
     print(f"  Min delta_wp: {df['delta_wp'].min():.4f}")
+
+    return df
+
+
+# %% Boundary calibration (issue #62)
+def apply_boundary_calibration(deltas_df: pd.DataFrame) -> pd.DataFrame:
+    """Recalibrate inn1.last.wp_after and inn2.first.wp_before so they agree.
+
+    Two-step post-processing applied only to the two boundary balls per match:
+      1. Fit per-side IsotonicRegression on (raw_wp, batting_team_won) over all
+         non-DLS matches. Apply to each side independently — this kills the
+         systematic bias but per-match disagreement persists.
+      2. Per match, set both endpoints to their BF-POV midpoint. This drives
+         the chart cliff to exactly zero and removes the artificial TILT
+         credit/penalty that was accruing from the model disagreeing with
+         itself across the innings break.
+
+    Underlying LightGBM is unchanged. Affects 2 of ~150 balls per match (~1.4%
+    of total). Recomputes `delta_wp` for those rows.
+    """
+    print("\nApplying boundary calibration (issue #62)...")
+    df = deltas_df.copy()
+
+    inn1_last_idx = (
+        df[df["innings"] == 1]
+        .sort_values(["match_id", "ball_number"])
+        .groupby("match_id").tail(1).index
+    )
+    inn2_first_idx = (
+        df[df["innings"] == 2]
+        .sort_values(["match_id", "ball_number"])
+        .groupby("match_id").head(1).index
+    )
+
+    # Build training pairs (BF POV both sides) — one row per match
+    inn1_pairs = df.loc[inn1_last_idx, ["match_id", "wp_after", "batting_team_won"]].rename(
+        columns={"wp_after": "wp_inn1_end_bf"}
+    )
+    inn2_pairs = df.loc[inn2_first_idx, ["match_id", "wp_before"]].rename(
+        columns={"wp_before": "wp_inn2_start_chase"}
+    )
+    pairs = inn1_pairs.merge(inn2_pairs, on="match_id")
+    pairs["wp_inn2_start_bf"] = 1.0 - pairs["wp_inn2_start_chase"]
+    pairs["bf_won"] = pairs["batting_team_won"]
+
+    # Exclude DLS matches from isotonic fitting (truncated outcomes are unreliable
+    # signals about boundary calibration). Apply the recalibration to all matches.
+    dls = set(df.loc[df["dls_method"].notna(), "match_id"].unique())
+    fit_pairs = pairs[~pairs["match_id"].isin(dls)]
+    print(f"  Fitting isotonic on {len(fit_pairs):,} non-DLS matches")
+
+    pre_cliff = pairs["wp_inn1_end_bf"] - pairs["wp_inn2_start_bf"]
+    print(f"  Pre-fix:  median |cliff|={pre_cliff.abs().median()*100:.2f}pp, "
+          f"mean signed={pre_cliff.mean()*100:+.2f}pp")
+
+    iso_inn1 = IsotonicRegression(out_of_bounds="clip", y_min=0.001, y_max=0.999)
+    iso_inn1.fit(fit_pairs["wp_inn1_end_bf"].values, fit_pairs["bf_won"].values)
+    iso_inn2 = IsotonicRegression(out_of_bounds="clip", y_min=0.001, y_max=0.999)
+    iso_inn2.fit(fit_pairs["wp_inn2_start_bf"].values, fit_pairs["bf_won"].values)
+
+    # Stash raw values for diagnostics (`notebooks/innings_boundary_analysis.py`).
+    # Only populated on the two boundary rows per match; NaN elsewhere.
+    df["wp_after_raw"] = np.nan
+    df["wp_before_raw"] = np.nan
+    df.loc[inn1_last_idx, "wp_after_raw"] = df.loc[inn1_last_idx, "wp_after"].values
+    df.loc[inn2_first_idx, "wp_before_raw"] = df.loc[inn2_first_idx, "wp_before"].values
+
+    # Step 1: isotonic per side
+    inn1_calibrated = iso_inn1.transform(df.loc[inn1_last_idx, "wp_after"].values)
+    inn2_chase_raw = df.loc[inn2_first_idx, "wp_before"].values
+    inn2_calibrated_bf = iso_inn2.transform(1.0 - inn2_chase_raw)
+
+    # Step 2: per-match BF-POV midpoint
+    midpoint_bf = 0.5 * (inn1_calibrated + inn2_calibrated_bf)
+    df.loc[inn1_last_idx, "wp_after"] = midpoint_bf
+    df.loc[inn2_first_idx, "wp_before"] = 1.0 - midpoint_bf
+
+    # Recompute delta_wp for the touched rows
+    df.loc[inn1_last_idx, "delta_wp"] = (
+        df.loc[inn1_last_idx, "wp_after"] - df.loc[inn1_last_idx, "wp_before"]
+    )
+    df.loc[inn2_first_idx, "delta_wp"] = (
+        df.loc[inn2_first_idx, "wp_after"] - df.loc[inn2_first_idx, "wp_before"]
+    )
+
+    post_cliff = df.loc[inn1_last_idx, "wp_after"].values - (
+        1.0 - df.loc[inn2_first_idx, "wp_before"].values
+    )
+    print(f"  Post-fix: median |cliff|={pd.Series(post_cliff).abs().median()*100:.2f}pp, "
+          f"mean signed={pd.Series(post_cliff).mean()*100:+.2f}pp")
 
     return df
 
@@ -665,6 +756,7 @@ def compute_tilt(
     print(f"  Loaded {len(df):,} balls")
 
     deltas_df = compute_ball_deltas(model, df)
+    deltas_df = apply_boundary_calibration(deltas_df)
     player_tilt = aggregate_player_tilt(deltas_df)
     player_tilt = apply_shrinkage(player_tilt, deltas_df)
 

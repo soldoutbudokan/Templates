@@ -138,31 +138,18 @@ async function loadMatch() {
                 wpData.push(+((1 - b.wp_after) * 100).toFixed(1));
             }
 
-            // Bridge the innings boundary visually. The model has two predictions
-            // for the moment between innings (inn1-last after-state vs inn2-first
-            // before-state) and they typically disagree. Insert a midpoint at the
-            // boundary so the line passes smoothly through the dashed marker
-            // instead of cliff-jumping. Underlying TILT data is unchanged.
-            let inningsBreak = inn1.length;
-            if (inn1.length > 0 && inn2.length > 0) {
-                const inn1_last_bf = inn1[inn1.length - 1].wp_after * 100;
-                const inn2_first_before_bf = (1 - inn2[0].wp) * 100;
-                const bridge = +((inn1_last_bf + inn2_first_before_bf) / 2).toFixed(1);
-                labels.splice(inningsBreak, 0, 'innings break');
-                wpData.splice(inningsBreak, 0, bridge);
-                inningsBreak += 1;  // shift to point at the new inn2 first index
-            }
-
-            // The bridge data point sits at chart index (inningsBreak - 1).
-            // Draw the dashed innings-break vertical right through it.
-            const bridgeIdx = inningsBreak - 1;
+            // Innings boundary is now continuous in the underlying data: the
+            // pipeline (compute_tilt.apply_boundary_calibration) recalibrates
+            // inn1.last.wp_after and inn2.first.wp_before so they agree on a
+            // BF-POV midpoint per match. We just mark the boundary visually.
+            const inningsBreak = inn1.length;
             const inningsBreakLine = {
                 id: 'inningsBreakLine',
                 afterDatasetsDraw(chart) {
-                    if (bridgeIdx <= 0 || bridgeIdx >= chart.data.labels.length) return;
+                    if (inningsBreak <= 0 || inningsBreak >= chart.data.labels.length) return;
                     const xScale = chart.scales.x;
                     const yScale = chart.scales.y;
-                    const x = xScale.getPixelForValue(bridgeIdx);
+                    const x = xScale.getPixelForValue(inningsBreak);
                     const ctx = chart.ctx;
                     ctx.save();
                     ctx.setLineDash([4, 4]);
@@ -212,20 +199,12 @@ async function loadMatch() {
                         tooltip: {
                             callbacks: {
                                 title: (items) => {
-                                    const i = items[0].dataIndex;
-                                    if (i === bridgeIdx) return 'innings break';
-                                    const ball_i = i < bridgeIdx ? i : i - 1;
-                                    const b = m.balls[ball_i];
+                                    const b = m.balls[items[0].dataIndex];
                                     if (!b) return '';
                                     return `Inn ${b.inn}, Over ${b.over}.${b.ball}`;
                                 },
                                 label: (item) => {
-                                    const i = item.dataIndex;
-                                    if (i === bridgeIdx) {
-                                        return `${refTeam}: ${item.formattedValue}% (bridge)`;
-                                    }
-                                    const ball_i = i < bridgeIdx ? i : i - 1;
-                                    const b = m.balls[ball_i];
+                                    const b = m.balls[item.dataIndex];
                                     if (!b) return '';
                                     let line = `${refTeam}: ${item.formattedValue}%`;
                                     if (b.score) line += ` | Score: ${b.score}`;
