@@ -11,6 +11,7 @@
       "matches": 16,
       "wins": 13,
       "losses": 3,
+      "no_results": 0,
       "win_pct": 0.8125,
       "nrr": 0.793,
       "team_total_tilt": 2.99695,
@@ -24,6 +25,7 @@
       "matches": 15,
       "wins": 10,
       "losses": 5,
+      "no_results": 0,
       "win_pct": 0.6667,
       "nrr": 0.304,
       "team_total_tilt": 1.82196,
@@ -37,6 +39,7 @@
       "matches": 16,
       "wins": 9,
       "losses": 7,
+      "no_results": 0,
       "win_pct": 0.5625,
       "nrr": -0.007,
       "team_total_tilt": 0.39566,
@@ -50,6 +53,7 @@
       "matches": 14,
       "wins": 7,
       "losses": 7,
+      "no_results": 0,
       "win_pct": 0.5,
       "nrr": 0.18,
       "team_total_tilt": 0.15078,
@@ -63,6 +67,7 @@
       "matches": 14,
       "wins": 7,
       "losses": 7,
+      "no_results": 0,
       "win_pct": 0.5,
       "nrr": 0.149,
       "team_total_tilt": 0.76254,
@@ -76,6 +81,7 @@
       "matches": 13,
       "wins": 6,
       "losses": 7,
+      "no_results": 0,
       "win_pct": 0.4615,
       "nrr": -0.152,
       "team_total_tilt": -1.07604,
@@ -89,6 +95,7 @@
       "matches": 14,
       "wins": 4,
       "losses": 10,
+      "no_results": 0,
       "win_pct": 0.2857,
       "nrr": -0.98,
       "team_total_tilt": -1.53417,
@@ -102,6 +109,7 @@
       "matches": 14,
       "wins": 2,
       "losses": 12,
+      "no_results": 0,
       "win_pct": 0.1429,
       "nrr": -0.356,
       "team_total_tilt": -3.51768,
@@ -512,8 +520,8 @@
         "slug": "se-marsh-508a1ea7",
         "team": "Punjab Kings",
         "team_slug": "pbks",
-        "value": 1.05805,
-        "per_match": 0.09619,
+        "value": 1.05797,
+        "per_match": 0.09618,
         "matches": 11,
         "balls": 441
       },
@@ -574,7 +582,7 @@
         "slug": "sr-watson-4329fbb5",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.00694,
+        "value": 1.00702,
         "per_match": 0.06713,
         "matches": 15,
         "balls": 325
@@ -584,8 +592,8 @@
         "slug": "sohail-tanvir-64d43928",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 0.99745,
-        "per_match": 0.09068,
+        "value": 0.9949,
+        "per_match": 0.09045,
         "matches": 11,
         "balls": 247
       },
@@ -594,8 +602,8 @@
         "slug": "sm-pollock-88fccd6c",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.9747,
-        "per_match": 0.07498,
+        "value": 0.97215,
+        "per_match": 0.07478,
         "matches": 13,
         "balls": 276
       }
@@ -606,7 +614,7 @@
         "slug": "sr-watson-4329fbb5",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.69692,
+        "value": 1.697,
         "per_match": 0.11313,
         "matches": 15
       },
@@ -624,8 +632,8 @@
         "slug": "sohail-tanvir-64d43928",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.28133,
-        "per_match": 0.11648,
+        "value": 1.27877,
+        "per_match": 0.11625,
         "matches": 11
       },
       {
@@ -633,8 +641,8 @@
         "slug": "ja-morkel-c3d35165",
         "team": "Chennai Super Kings",
         "team_slug": "csk",
-        "value": 1.24976,
-        "per_match": 0.09614,
+        "value": 1.25232,
+        "per_match": 0.09633,
         "matches": 13
       },
       {
@@ -642,8 +650,8 @@
         "slug": "mf-maharoof-ab89348d",
         "team": "Delhi Capitals",
         "team_slug": "dc",
-        "value": 1.17147,
-        "per_match": 0.11715,
+        "value": 1.17403,
+        "per_match": 0.1174,
         "matches": 10
       }
     ]
@@ -657,7 +665,15 @@
         "Kolkata Knight Riders",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Kolkata Knight Riders": "222/3",
+        "Royal Challengers Bangalore": "82/10"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 140 runs",
+      "toss_winner": "Royal Challengers Bangalore",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "335983",
@@ -667,7 +683,15 @@
         "Chennai Super Kings",
         "Punjab Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "240/5",
+        "Punjab Kings": "207/4"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 33 runs",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335984",
@@ -677,7 +701,15 @@
         "Rajasthan Royals",
         "Delhi Capitals"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Rajasthan Royals": "129/8",
+        "Delhi Capitals": "132/1"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335985",
@@ -687,7 +719,15 @@
         "Mumbai Indians",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Mumbai Indians": "165/7",
+        "Royal Challengers Bangalore": "166/5"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335986",
@@ -697,7 +737,15 @@
         "Deccan Chargers",
         "Kolkata Knight Riders"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Deccan Chargers": "110/10",
+        "Kolkata Knight Riders": "112/5"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335987",
@@ -707,7 +755,15 @@
         "Punjab Kings",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Punjab Kings": "166/8",
+        "Rajasthan Royals": "168/4"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335988",
@@ -717,7 +773,15 @@
         "Deccan Chargers",
         "Delhi Capitals"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Deccan Chargers": "142/8",
+        "Delhi Capitals": "143/1"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335989",
@@ -727,7 +791,15 @@
         "Chennai Super Kings",
         "Mumbai Indians"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "208/5",
+        "Mumbai Indians": "202/7"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 6 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "335990",
@@ -737,7 +809,15 @@
         "Deccan Chargers",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Deccan Chargers": "214/5",
+        "Rajasthan Royals": "217/7"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 3 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "335991",
@@ -747,7 +827,15 @@
         "Punjab Kings",
         "Mumbai Indians"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Punjab Kings": "182/10",
+        "Mumbai Indians": "116/9"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 66 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "335992",
@@ -757,7 +845,15 @@
         "Royal Challengers Bangalore",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Royal Challengers Bangalore": "135/8",
+        "Rajasthan Royals": "138/3"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "335993",
@@ -767,7 +863,15 @@
         "Kolkata Knight Riders",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Kolkata Knight Riders": "147/9",
+        "Chennai Super Kings": "152/1"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335994",
@@ -777,7 +881,15 @@
         "Mumbai Indians",
         "Deccan Chargers"
       ],
-      "winner": "Deccan Chargers"
+      "scores": {
+        "Mumbai Indians": "154/7",
+        "Deccan Chargers": "155/0"
+      },
+      "winner": "Deccan Chargers",
+      "result_margin": "won by 10 wickets",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "335995",
@@ -787,7 +899,15 @@
         "Delhi Capitals",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Delhi Capitals": "158/8",
+        "Punjab Kings": "162/6"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 4 wickets",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335996",
@@ -797,7 +917,15 @@
         "Chennai Super Kings",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "178/5",
+        "Royal Challengers Bangalore": "165/10"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 13 runs",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335997",
@@ -807,7 +935,15 @@
         "Kolkata Knight Riders",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Kolkata Knight Riders": "137/8",
+        "Mumbai Indians": "138/3"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "335998",
@@ -817,7 +953,15 @@
         "Delhi Capitals",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Delhi Capitals": "191/5",
+        "Royal Challengers Bangalore": "181/5"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 10 runs",
+      "toss_winner": "Royal Challengers Bangalore",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "335999",
@@ -827,7 +971,15 @@
         "Deccan Chargers",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Deccan Chargers": "164/8",
+        "Punjab Kings": "167/3"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336000",
@@ -837,7 +989,15 @@
         "Rajasthan Royals",
         "Kolkata Knight Riders"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Rajasthan Royals": "196/7",
+        "Kolkata Knight Riders": "151/10"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 45 runs",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336001",
@@ -847,7 +1007,15 @@
         "Chennai Super Kings",
         "Delhi Capitals"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Chennai Super Kings": "169/6",
+        "Delhi Capitals": "172/2"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336003",
@@ -857,7 +1025,15 @@
         "Punjab Kings",
         "Kolkata Knight Riders"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Punjab Kings": "178/6",
+        "Kolkata Knight Riders": "169/6"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 9 runs",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336034",
@@ -867,7 +1043,15 @@
         "Royal Challengers Bangalore",
         "Deccan Chargers"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Royal Challengers Bangalore": "156/8",
+        "Deccan Chargers": "153/6"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 3 runs",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336004",
@@ -877,7 +1061,15 @@
         "Mumbai Indians",
         "Delhi Capitals"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "162/8",
+        "Delhi Capitals": "133/10"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 29 runs",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336005",
@@ -887,7 +1079,15 @@
         "Chennai Super Kings",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Chennai Super Kings": "109/10",
+        "Rajasthan Royals": "110/2"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336006",
@@ -897,7 +1097,15 @@
         "Royal Challengers Bangalore",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Royal Challengers Bangalore": "126/10",
+        "Punjab Kings": "127/4"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336007",
@@ -907,7 +1115,15 @@
         "Chennai Super Kings",
         "Deccan Chargers"
       ],
-      "winner": "Deccan Chargers"
+      "scores": {
+        "Chennai Super Kings": "144/7",
+        "Deccan Chargers": "148/3"
+      },
+      "winner": "Deccan Chargers",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336008",
@@ -917,7 +1133,15 @@
         "Rajasthan Royals",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Rajasthan Royals": "103/10",
+        "Mumbai Indians": "104/3"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336009",
@@ -927,7 +1151,15 @@
         "Delhi Capitals",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Delhi Capitals": "187/5",
+        "Chennai Super Kings": "188/6"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 4 wickets",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336010",
@@ -937,7 +1169,15 @@
         "Kolkata Knight Riders",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Kolkata Knight Riders": "129/7",
+        "Royal Challengers Bangalore": "124/4"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 5 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336011",
@@ -947,7 +1187,15 @@
         "Deccan Chargers",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Deccan Chargers": "140/8",
+        "Rajasthan Royals": "141/2"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336013",
@@ -957,7 +1205,15 @@
         "Chennai Super Kings",
         "Punjab Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "181/4",
+        "Punjab Kings": "163/9"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 18 runs",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336014",
@@ -967,7 +1223,15 @@
         "Kolkata Knight Riders",
         "Deccan Chargers"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Kolkata Knight Riders": "204/4",
+        "Deccan Chargers": "181/7"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 23 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336015",
@@ -977,7 +1241,15 @@
         "Delhi Capitals",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Delhi Capitals": "156/7",
+        "Rajasthan Royals": "159/7"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 3 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336016",
@@ -987,7 +1259,15 @@
         "Royal Challengers Bangalore",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Royal Challengers Bangalore": "143/8",
+        "Punjab Kings": "144/1"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Royal Challengers Bangalore",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336017",
@@ -997,7 +1277,15 @@
         "Kolkata Knight Riders",
         "Delhi Capitals"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Kolkata Knight Riders": "133/6",
+        "Delhi Capitals": "110/10"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 23 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336018",
@@ -1007,7 +1295,15 @@
         "Chennai Super Kings",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Chennai Super Kings": "156/6",
+        "Mumbai Indians": "158/1"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336020",
@@ -1017,7 +1313,15 @@
         "Delhi Capitals",
         "Deccan Chargers"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Delhi Capitals": "194/4",
+        "Deccan Chargers": "182/9"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 12 runs",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336021",
@@ -1027,7 +1331,15 @@
         "Kolkata Knight Riders",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Kolkata Knight Riders": "67/10",
+        "Mumbai Indians": "68/2"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336022",
@@ -1037,7 +1349,15 @@
         "Delhi Capitals",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Delhi Capitals": "118/4",
+        "Punjab Kings": "94/3"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336023",
@@ -1047,7 +1367,15 @@
         "Rajasthan Royals",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Rajasthan Royals": "197/1",
+        "Royal Challengers Bangalore": "132/9"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 65 runs",
+      "toss_winner": "Royal Challengers Bangalore",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336024",
@@ -1057,7 +1385,15 @@
         "Mumbai Indians",
         "Deccan Chargers"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "178/7",
+        "Deccan Chargers": "153/7"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 25 runs",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336025",
@@ -1067,7 +1403,15 @@
         "Kolkata Knight Riders",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Kolkata Knight Riders": "149/5",
+        "Chennai Super Kings": "55/0"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 10 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336026",
@@ -1077,7 +1421,15 @@
         "Royal Challengers Bangalore",
         "Delhi Capitals"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Royal Challengers Bangalore": "154/7",
+        "Delhi Capitals": "158/5"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336027",
@@ -1087,7 +1439,15 @@
         "Kolkata Knight Riders",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Kolkata Knight Riders": "147/8",
+        "Rajasthan Royals": "150/4"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336028",
@@ -1097,7 +1457,15 @@
         "Punjab Kings",
         "Mumbai Indians"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Punjab Kings": "189/4",
+        "Mumbai Indians": "188/10"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 1 run",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336029",
@@ -1107,7 +1475,15 @@
         "Royal Challengers Bangalore",
         "Chennai Super Kings"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Royal Challengers Bangalore": "126/8",
+        "Chennai Super Kings": "112/8"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 14 runs",
+      "toss_winner": "Royal Challengers Bangalore",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336031",
@@ -1117,7 +1493,15 @@
         "Deccan Chargers",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Deccan Chargers": "175/4",
+        "Punjab Kings": "178/4"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336032",
@@ -1127,7 +1511,15 @@
         "Mumbai Indians",
         "Delhi Capitals"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Mumbai Indians": "176/8",
+        "Delhi Capitals": "179/5"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336033",
@@ -1137,7 +1529,15 @@
         "Rajasthan Royals",
         "Chennai Super Kings"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Rajasthan Royals": "211/5",
+        "Chennai Super Kings": "201/7"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 10 runs",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336002",
@@ -1147,7 +1547,15 @@
         "Deccan Chargers",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Deccan Chargers": "165/10",
+        "Royal Challengers Bangalore": "171/5"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336035",
@@ -1157,7 +1565,15 @@
         "Punjab Kings",
         "Kolkata Knight Riders"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Punjab Kings": "174/6",
+        "Kolkata Knight Riders": "175/7"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 3 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336036",
@@ -1167,7 +1583,15 @@
         "Mumbai Indians",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Mumbai Indians": "145/7",
+        "Rajasthan Royals": "146/5"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336037",
@@ -1177,7 +1601,15 @@
         "Deccan Chargers",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Deccan Chargers": "147/8",
+        "Chennai Super Kings": "148/3"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Deccan Chargers",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "336012",
@@ -1187,7 +1619,15 @@
         "Royal Challengers Bangalore",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Royal Challengers Bangalore": "122/9",
+        "Mumbai Indians": "126/1"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336019",
@@ -1197,7 +1637,15 @@
         "Punjab Kings",
         "Rajasthan Royals"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Punjab Kings": "221/3",
+        "Rajasthan Royals": "180/7"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 41 runs",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "336038",
@@ -1207,7 +1655,15 @@
         "Rajasthan Royals",
         "Delhi Capitals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Rajasthan Royals": "192/9",
+        "Delhi Capitals": "87/10"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 105 runs",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "field",
+      "event_stage": "Semi Final"
     },
     {
       "match_id": "336039",
@@ -1217,7 +1673,15 @@
         "Punjab Kings",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Punjab Kings": "112/8",
+        "Chennai Super Kings": "116/1"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "bat",
+      "event_stage": "Semi Final"
     },
     {
       "match_id": "336040",
@@ -1227,7 +1691,65 @@
         "Chennai Super Kings",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Chennai Super Kings": "163/5",
+        "Rajasthan Royals": "164/7"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 3 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": "Final"
+    }
+  ],
+  "playoffs": [
+    {
+      "stage": "Semi Final",
+      "match_id": "336038",
+      "date": "2008-05-30",
+      "venue": "Wankhede Stadium",
+      "teams": [
+        "Rajasthan Royals",
+        "Delhi Capitals"
+      ],
+      "scores": {
+        "Rajasthan Royals": "192/9",
+        "Delhi Capitals": "87/10"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 105 runs"
+    },
+    {
+      "stage": "Semi Final",
+      "match_id": "336039",
+      "date": "2008-05-31",
+      "venue": "Wankhede Stadium",
+      "teams": [
+        "Punjab Kings",
+        "Chennai Super Kings"
+      ],
+      "scores": {
+        "Punjab Kings": "112/8",
+        "Chennai Super Kings": "116/1"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 9 wickets"
+    },
+    {
+      "stage": "Final",
+      "match_id": "336040",
+      "date": "2008-06-01",
+      "venue": "Dr DY Patil Sports Academy",
+      "teams": [
+        "Chennai Super Kings",
+        "Rajasthan Royals"
+      ],
+      "scores": {
+        "Chennai Super Kings": "163/5",
+        "Rajasthan Royals": "164/7"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 3 wickets"
     }
   ]
 }

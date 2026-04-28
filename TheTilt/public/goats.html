@@ -24,6 +24,10 @@
             <button class="tab" data-section="match_allround">match all-around</button>
             <button class="tab" data-section="season_batting">season batting</button>
             <button class="tab" data-section="season_bowling">season bowling</button>
+            <button class="tab" data-section="match_batting_runs">match runs</button>
+            <button class="tab" data-section="match_bowling_wickets">match wickets</button>
+            <button class="tab" data-section="season_batting_runs">season runs</button>
+            <button class="tab" data-section="season_bowling_wickets">season wickets</button>
         </div>
 
         <div class="innings-filter" id="inningsFilter" style="display:none">
@@ -53,7 +57,7 @@ let currentSort = { key: 'tilt', desc: true };
 let currentInnings = 'all';
 let teamIndex = new Map();
 
-const matchSections = ['match_batting', 'match_bowling'];
+const matchSections = ['match_batting', 'match_bowling', 'match_batting_runs', 'match_bowling_wickets'];
 
 // Default sort key per section
 const defaultSortKeys = {
@@ -62,6 +66,10 @@ const defaultSortKeys = {
     match_allround: 'tilt',
     season_batting: 'total_tilt',
     season_bowling: 'total_tilt',
+    match_batting_runs: 'runs',
+    match_bowling_wickets: 'wickets',
+    season_batting_runs: 'runs',
+    season_bowling_wickets: 'wickets',
 };
 
 function sortData(data) {
@@ -214,6 +222,114 @@ function render() {
                 <td class="hide-mobile">${formatTilt(r.tilt_per_match)}</td>
                 <td class="hide-mobile">${r.wickets}</td>
                 <td class="hide-mobile">${r.matches}</td>
+                <td class="hide-mobile">${seasonLink(r.season)}</td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
+
+    else if (currentSection === 'match_batting_runs') {
+        html = `<div class="table-wrap"><table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th>
+                <th data-sort="runs" class="${sortCls('runs')}">runs</th>
+                <th data-sort="balls" class="hide-mobile ${sortCls('balls')}">balls</th>
+                <th data-sort="tilt" class="hide-mobile ${sortCls('tilt')}">TILT</th>
+                <th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
+                    </a>
+                </td>
+                <td>${r.runs}</td>
+                <td class="hide-mobile">${r.balls}</td>
+                <td class="hide-mobile">${formatTilt(r.tilt)}</td>
+                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" class="match-link">${r.season}</a></td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
+
+    else if (currentSection === 'match_bowling_wickets') {
+        html = `<div class="table-wrap"><table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th>
+                <th data-sort="wickets" class="${sortCls('wickets')}">figures</th>
+                <th data-sort="balls" class="hide-mobile ${sortCls('balls')}">balls</th>
+                <th data-sort="tilt" class="hide-mobile ${sortCls('tilt')}">TILT</th>
+                <th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
+                    </a>
+                </td>
+                <td>${r.wickets}/${r.runs_conceded}</td>
+                <td class="hide-mobile">${r.balls}</td>
+                <td class="hide-mobile">${formatTilt(r.tilt)}</td>
+                <td class="hide-mobile"><a href="match.html?id=${r.match_id}" class="match-link">${r.season}</a></td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
+
+    else if (currentSection === 'season_batting_runs') {
+        html = `<div class="table-wrap"><table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th>
+                <th data-sort="runs" class="${sortCls('runs')}">runs</th>
+                <th data-sort="matches" class="hide-mobile ${sortCls('matches')}">matches</th>
+                <th data-sort="tilt_per_match" class="hide-mobile ${sortCls('tilt_per_match')}">TILT/m</th>
+                <th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
+                    </a>
+                </td>
+                <td>${r.runs}</td>
+                <td class="hide-mobile">${r.matches}</td>
+                <td class="hide-mobile">${formatTilt(r.tilt_per_match)}</td>
+                <td class="hide-mobile">${seasonLink(r.season)}</td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
+
+    else if (currentSection === 'season_bowling_wickets') {
+        html = `<div class="table-wrap"><table class="rankings-table">
+            <thead><tr>
+                <th>#</th><th>player</th>
+                <th data-sort="wickets" class="${sortCls('wickets')}">wickets</th>
+                <th data-sort="matches" class="hide-mobile ${sortCls('matches')}">matches</th>
+                <th data-sort="tilt_per_match" class="hide-mobile ${sortCls('tilt_per_match')}">TILT/m</th>
+                <th data-sort="season" class="hide-mobile ${sortCls('season')}">season</th>
+            </tr></thead><tbody>`;
+        data.forEach((r, i) => {
+            html += `<tr>
+                <td>${i+1}</td>
+                <td>
+                    <a href="player.html?player=${r.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${r.player}</span><br>
+                        <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
+                    </a>
+                </td>
+                <td>${r.wickets}</td>
+                <td class="hide-mobile">${r.matches}</td>
+                <td class="hide-mobile">${formatTilt(r.tilt_per_match)}</td>
                 <td class="hide-mobile">${seasonLink(r.season)}</td>
             </tr>`;
         });

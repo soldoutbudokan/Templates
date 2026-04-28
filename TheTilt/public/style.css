@@ -1442,6 +1442,125 @@ img, pre, code {
     border-bottom-color: var(--accent-green);
 }
 
+/* Match page: dismissal column + fall-of-wickets line */
+.dismissal-cell {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+.dismissal-cell .not-out {
+    color: var(--text-muted);
+    font-style: italic;
+}
+.not-out-mark {
+    color: var(--accent-green);
+    font-weight: 600;
+    margin-left: 2px;
+}
+.fall-of-wickets {
+    margin-top: 8px;
+    padding: 8px 12px;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    border-left: 2px solid var(--border);
+    line-height: 1.5;
+}
+.fow-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-right: 4px;
+}
+.fow-entry {
+    white-space: nowrap;
+}
+
+/* Season-page additions: stage badge on playoff matches list,
+   result-margin annotation on Winner cell, and the playoffs bracket. */
+.stage-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 6px;
+    font-size: 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+}
+.result-margin {
+    color: var(--text-dim);
+    font-size: 0.7rem;
+}
+
+.bracket {
+    display: flex;
+    gap: 24px;
+    padding: 16px 0;
+    overflow-x: auto;
+}
+.bracket-modern .bracket-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    min-width: 220px;
+}
+.bracket-flat {
+    flex-wrap: wrap;
+}
+.bracket-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    background: var(--bg-card, transparent);
+    min-width: 220px;
+}
+.bracket-card.empty {
+    border-style: dashed;
+    color: var(--text-dim);
+    text-align: center;
+}
+.bracket-stage {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+}
+.bracket-match-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    border: none;
+}
+.bracket-team {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 2px 0;
+    font-size: 0.85rem;
+}
+.bracket-team.winner {
+    font-weight: 600;
+    color: var(--accent-green);
+}
+.bracket-team-score {
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+}
+.bracket-team.winner .bracket-team-score {
+    color: var(--accent-green);
+}
+.bracket-margin {
+    margin-top: 4px;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
 /* Unify link styling on reference-page tables (Standings, Season-by-Season,
    All-Time Roster, Leaders) with the match-link / team-link convention used
    elsewhere on the site: dotted underline that turns accent-green on hover. */

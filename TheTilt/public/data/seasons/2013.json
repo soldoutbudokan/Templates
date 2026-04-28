@@ -11,6 +11,7 @@
       "matches": 19,
       "wins": 13,
       "losses": 6,
+      "no_results": 0,
       "win_pct": 0.6842,
       "nrr": 0.297,
       "team_total_tilt": 2.7377,
@@ -24,6 +25,7 @@
       "matches": 18,
       "wins": 12,
       "losses": 6,
+      "no_results": 0,
       "win_pct": 0.6667,
       "nrr": 0.546,
       "team_total_tilt": 2.85327,
@@ -37,6 +39,7 @@
       "matches": 18,
       "wins": 11,
       "losses": 7,
+      "no_results": 0,
       "win_pct": 0.6111,
       "nrr": 0.297,
       "team_total_tilt": 0.64394,
@@ -50,6 +53,7 @@
       "matches": 14,
       "wins": 8,
       "losses": 6,
+      "no_results": 0,
       "win_pct": 0.5714,
       "nrr": 0.391,
       "team_total_tilt": -0.35976,
@@ -63,6 +67,7 @@
       "matches": 16,
       "wins": 9,
       "losses": 7,
+      "no_results": 0,
       "win_pct": 0.5625,
       "nrr": -0.117,
       "team_total_tilt": -0.08795,
@@ -76,6 +81,7 @@
       "matches": 16,
       "wins": 8,
       "losses": 8,
+      "no_results": 0,
       "win_pct": 0.5,
       "nrr": 0.254,
       "team_total_tilt": -0.19431,
@@ -89,6 +95,7 @@
       "matches": 16,
       "wins": 6,
       "losses": 10,
+      "no_results": 0,
       "win_pct": 0.375,
       "nrr": -0.085,
       "team_total_tilt": -1.06158,
@@ -102,6 +109,7 @@
       "matches": 16,
       "wins": 4,
       "losses": 12,
+      "no_results": 0,
       "win_pct": 0.25,
       "nrr": -0.867,
       "team_total_tilt": -2.65172,
@@ -115,6 +123,7 @@
       "matches": 15,
       "wins": 3,
       "losses": 12,
+      "no_results": 0,
       "win_pct": 0.2,
       "nrr": -0.853,
       "team_total_tilt": -1.87959,
@@ -535,8 +544,8 @@
         "slug": "mek-hussey-48fd7349",
         "team": "Chennai Super Kings",
         "team_slug": "csk",
-        "value": 1.06509,
-        "per_match": 0.06265,
+        "value": 1.06755,
+        "per_match": 0.0628,
         "matches": 17,
         "balls": 566
       },
@@ -567,8 +576,8 @@
         "slug": "jp-faulkner-808f425a",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.84751,
-        "per_match": 0.11547,
+        "value": 1.84249,
+        "per_match": 0.11516,
         "matches": 16,
         "balls": 379
       },
@@ -597,8 +606,8 @@
         "slug": "dw-steyn-8fd1a8f5",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 1.50867,
-        "per_match": 0.09429,
+        "value": 1.50875,
+        "per_match": 0.0943,
         "matches": 16,
         "balls": 383
       },
@@ -619,8 +628,8 @@
         "slug": "jp-faulkner-808f425a",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.92594,
-        "per_match": 0.12037,
+        "value": 1.92092,
+        "per_match": 0.12006,
         "matches": 16
       },
       {
@@ -637,8 +646,8 @@
         "slug": "dw-steyn-8fd1a8f5",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 1.65394,
-        "per_match": 0.10337,
+        "value": 1.65403,
+        "per_match": 0.10338,
         "matches": 16
       },
       {
@@ -655,8 +664,8 @@
         "slug": "harbhajan-singh-8b5b6769",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 1.4689,
-        "per_match": 0.07731,
+        "value": 1.47146,
+        "per_match": 0.07745,
         "matches": 19
       }
     ]
@@ -670,7 +679,15 @@
         "Delhi Capitals",
         "Kolkata Knight Riders"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Delhi Capitals": "128/10",
+        "Kolkata Knight Riders": "129/4"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "597999",
@@ -680,7 +697,15 @@
         "Royal Challengers Bangalore",
         "Mumbai Indians"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Royal Challengers Bangalore": "156/5",
+        "Mumbai Indians": "154/5"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 2 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598000",
@@ -690,7 +715,15 @@
         "Sunrisers Hyderabad",
         "Pune Warriors India"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Sunrisers Hyderabad": "126/6",
+        "Pune Warriors India": "104/10"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 22 runs",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598001",
@@ -700,7 +733,15 @@
         "Rajasthan Royals",
         "Delhi Capitals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Rajasthan Royals": "165/7",
+        "Delhi Capitals": "160/6"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 5 runs",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598002",
@@ -710,7 +751,15 @@
         "Mumbai Indians",
         "Chennai Super Kings"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "148/6",
+        "Chennai Super Kings": "139/9"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 9 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598003",
@@ -720,7 +769,15 @@
         "Pune Warriors India",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Pune Warriors India": "99/9",
+        "Punjab Kings": "100/2"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598005",
@@ -730,7 +787,15 @@
         "Rajasthan Royals",
         "Kolkata Knight Riders"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Rajasthan Royals": "144/6",
+        "Kolkata Knight Riders": "125/10"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 19 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598006",
@@ -740,7 +805,15 @@
         "Mumbai Indians",
         "Delhi Capitals"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "209/5",
+        "Delhi Capitals": "165/9"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 44 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598048",
@@ -750,7 +823,15 @@
         "Sunrisers Hyderabad",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Sunrisers Hyderabad": "161/6",
+        "Royal Challengers Bangalore": "162/3"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Sunrisers Hyderabad",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598007",
@@ -760,7 +841,15 @@
         "Punjab Kings",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Punjab Kings": "138/10",
+        "Chennai Super Kings": "139/0"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 10 wickets",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598008",
@@ -770,7 +859,15 @@
         "Kolkata Knight Riders",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Kolkata Knight Riders": "154/8",
+        "Royal Challengers Bangalore": "158/2"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Royal Challengers Bangalore",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598009",
@@ -780,7 +877,15 @@
         "Rajasthan Royals",
         "Pune Warriors India"
       ],
-      "winner": "Pune Warriors India"
+      "scores": {
+        "Rajasthan Royals": "145/5",
+        "Pune Warriors India": "148/3"
+      },
+      "winner": "Pune Warriors India",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598010",
@@ -790,7 +895,15 @@
         "Delhi Capitals",
         "Sunrisers Hyderabad"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Delhi Capitals": "114/8",
+        "Sunrisers Hyderabad": "115/7"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 3 wickets",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598011",
@@ -800,7 +913,15 @@
         "Mumbai Indians",
         "Pune Warriors India"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "183/3",
+        "Pune Warriors India": "142/8"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 41 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598012",
@@ -810,7 +931,15 @@
         "Royal Challengers Bangalore",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Royal Challengers Bangalore": "165/6",
+        "Chennai Super Kings": "166/6"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 4 wickets",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598013",
@@ -820,7 +949,15 @@
         "Kolkata Knight Riders",
         "Sunrisers Hyderabad"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Kolkata Knight Riders": "180/4",
+        "Sunrisers Hyderabad": "132/7"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 48 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598014",
@@ -830,7 +967,15 @@
         "Punjab Kings",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Punjab Kings": "124/10",
+        "Rajasthan Royals": "126/4"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598015",
@@ -840,7 +985,15 @@
         "Pune Warriors India",
         "Chennai Super Kings"
       ],
-      "winner": "Pune Warriors India"
+      "scores": {
+        "Pune Warriors India": "159/5",
+        "Chennai Super Kings": "135/8"
+      },
+      "winner": "Pune Warriors India",
+      "result_margin": "won by 24 runs",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598016",
@@ -850,7 +1003,15 @@
         "Punjab Kings",
         "Kolkata Knight Riders"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Punjab Kings": "157/9",
+        "Kolkata Knight Riders": "153/9"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 4 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598018",
@@ -860,7 +1021,15 @@
         "Sunrisers Hyderabad",
         "Pune Warriors India"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Sunrisers Hyderabad": "119/8",
+        "Pune Warriors India": "108/10"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 11 runs",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598019",
@@ -870,7 +1039,15 @@
         "Rajasthan Royals",
         "Mumbai Indians"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Rajasthan Royals": "179/3",
+        "Mumbai Indians": "92/10"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 87 runs",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598020",
@@ -880,7 +1057,15 @@
         "Chennai Super Kings",
         "Delhi Capitals"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "169/4",
+        "Delhi Capitals": "83/10"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 86 runs",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598021",
@@ -890,7 +1075,15 @@
         "Punjab Kings",
         "Sunrisers Hyderabad"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Punjab Kings": "123/9",
+        "Sunrisers Hyderabad": "127/5"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598022",
@@ -900,7 +1093,15 @@
         "Kolkata Knight Riders",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Kolkata Knight Riders": "119/9",
+        "Chennai Super Kings": "124/6"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 4 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598023",
@@ -910,7 +1111,15 @@
         "Rajasthan Royals",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Rajasthan Royals": "117/10",
+        "Royal Challengers Bangalore": "123/3"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Royal Challengers Bangalore",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598024",
@@ -920,7 +1129,15 @@
         "Mumbai Indians",
         "Delhi Capitals"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Mumbai Indians": "161/4",
+        "Delhi Capitals": "165/1"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598025",
@@ -930,7 +1147,15 @@
         "Pune Warriors India",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Pune Warriors India": "185/4",
+        "Punjab Kings": "186/3"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598026",
@@ -940,7 +1165,15 @@
         "Rajasthan Royals",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Rajasthan Royals": "185/4",
+        "Chennai Super Kings": "186/5"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598027",
@@ -950,7 +1183,15 @@
         "Royal Challengers Bangalore",
         "Pune Warriors India"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Royal Challengers Bangalore": "263/5",
+        "Pune Warriors India": "133/9"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 130 runs",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598059",
@@ -960,7 +1201,15 @@
         "Delhi Capitals",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Delhi Capitals": "120/7",
+        "Punjab Kings": "121/5"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598029",
@@ -970,7 +1219,15 @@
         "Kolkata Knight Riders",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Kolkata Knight Riders": "159/6",
+        "Mumbai Indians": "162/5"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598030",
@@ -980,7 +1237,15 @@
         "Sunrisers Hyderabad",
         "Chennai Super Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Sunrisers Hyderabad": "159/6",
+        "Chennai Super Kings": "160/5"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Sunrisers Hyderabad",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598031",
@@ -990,7 +1255,15 @@
         "Punjab Kings",
         "Kolkata Knight Riders"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Punjab Kings": "149/6",
+        "Kolkata Knight Riders": "150/4"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598032",
@@ -1000,7 +1273,15 @@
         "Sunrisers Hyderabad",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Sunrisers Hyderabad": "144/9",
+        "Rajasthan Royals": "146/2"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Sunrisers Hyderabad",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598033",
@@ -1010,7 +1291,15 @@
         "Mumbai Indians",
         "Royal Challengers Bangalore"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "194/7",
+        "Royal Challengers Bangalore": "136/7"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 58 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598034",
@@ -1020,7 +1309,15 @@
         "Chennai Super Kings",
         "Kolkata Knight Riders"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "200/3",
+        "Kolkata Knight Riders": "186/4"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 14 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598035",
@@ -1030,7 +1327,15 @@
         "Delhi Capitals",
         "Pune Warriors India"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Delhi Capitals": "164/5",
+        "Pune Warriors India": "149/4"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 15 runs",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598036",
@@ -1040,7 +1345,15 @@
         "Royal Challengers Bangalore",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Royal Challengers Bangalore": "171/6",
+        "Rajasthan Royals": "173/6"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 4 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598037",
@@ -1050,7 +1363,15 @@
         "Mumbai Indians",
         "Punjab Kings"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "174/3",
+        "Punjab Kings": "170/10"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 4 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598038",
@@ -1060,7 +1381,15 @@
         "Chennai Super Kings",
         "Pune Warriors India"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "164/3",
+        "Pune Warriors India": "127/9"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 37 runs",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598039",
@@ -1070,7 +1399,15 @@
         "Mumbai Indians",
         "Sunrisers Hyderabad"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Mumbai Indians": "129/4",
+        "Sunrisers Hyderabad": "130/3"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598040",
@@ -1080,7 +1417,15 @@
         "Kolkata Knight Riders",
         "Delhi Capitals"
       ],
-      "winner": "Delhi Capitals"
+      "scores": {
+        "Kolkata Knight Riders": "136/7",
+        "Delhi Capitals": "137/3"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598041",
@@ -1090,7 +1435,15 @@
         "Chennai Super Kings",
         "Punjab Kings"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "186/4",
+        "Punjab Kings": "171/6"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 15 runs",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598042",
@@ -1100,7 +1453,15 @@
         "Royal Challengers Bangalore",
         "Pune Warriors India"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Royal Challengers Bangalore": "187/3",
+        "Pune Warriors India": "170/9"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 17 runs",
+      "toss_winner": "Royal Challengers Bangalore",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598043",
@@ -1110,7 +1471,15 @@
         "Rajasthan Royals",
         "Kolkata Knight Riders"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Rajasthan Royals": "132/6",
+        "Kolkata Knight Riders": "133/2"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598044",
@@ -1120,7 +1489,15 @@
         "Delhi Capitals",
         "Sunrisers Hyderabad"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Delhi Capitals": "80/10",
+        "Sunrisers Hyderabad": "81/4"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598046",
@@ -1130,7 +1507,15 @@
         "Mumbai Indians",
         "Chennai Super Kings"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "139/5",
+        "Chennai Super Kings": "79/10"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 60 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598047",
@@ -1140,7 +1525,15 @@
         "Pune Warriors India",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Pune Warriors India": "178/4",
+        "Rajasthan Royals": "182/5"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598064",
@@ -1150,7 +1543,15 @@
         "Royal Challengers Bangalore",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Royal Challengers Bangalore": "190/3",
+        "Punjab Kings": "194/4"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598049",
@@ -1160,7 +1561,15 @@
         "Delhi Capitals",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Delhi Capitals": "154/4",
+        "Rajasthan Royals": "155/1"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 9 wickets",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598050",
@@ -1170,7 +1579,15 @@
         "Mumbai Indians",
         "Kolkata Knight Riders"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "170/6",
+        "Kolkata Knight Riders": "105/10"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 65 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598051",
@@ -1180,7 +1597,15 @@
         "Chennai Super Kings",
         "Sunrisers Hyderabad"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "223/3",
+        "Sunrisers Hyderabad": "146/8"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 77 runs",
+      "toss_winner": "Sunrisers Hyderabad",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598052",
@@ -1190,7 +1615,15 @@
         "Punjab Kings",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Punjab Kings": "145/6",
+        "Rajasthan Royals": "147/2"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 8 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598053",
@@ -1200,7 +1633,15 @@
         "Kolkata Knight Riders",
         "Pune Warriors India"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Kolkata Knight Riders": "152/6",
+        "Pune Warriors India": "106/10"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 46 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598054",
@@ -1210,7 +1651,15 @@
         "Royal Challengers Bangalore",
         "Delhi Capitals"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Royal Challengers Bangalore": "183/4",
+        "Delhi Capitals": "179/7"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 4 runs",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598055",
@@ -1220,7 +1669,15 @@
         "Pune Warriors India",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Pune Warriors India": "112/8",
+        "Mumbai Indians": "116/5"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598056",
@@ -1230,7 +1687,15 @@
         "Sunrisers Hyderabad",
         "Punjab Kings"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Sunrisers Hyderabad": "150/7",
+        "Punjab Kings": "120/9"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 30 runs",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598057",
@@ -1240,7 +1705,15 @@
         "Royal Challengers Bangalore",
         "Kolkata Knight Riders"
       ],
-      "winner": "Kolkata Knight Riders"
+      "scores": {
+        "Royal Challengers Bangalore": "115/9",
+        "Kolkata Knight Riders": "116/5"
+      },
+      "winner": "Kolkata Knight Riders",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598058",
@@ -1250,7 +1723,15 @@
         "Chennai Super Kings",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Chennai Super Kings": "141/4",
+        "Rajasthan Royals": "144/5"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598060",
@@ -1260,7 +1741,15 @@
         "Sunrisers Hyderabad",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Sunrisers Hyderabad": "178/3",
+        "Mumbai Indians": "184/4"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 6 wickets",
+      "toss_winner": "Sunrisers Hyderabad",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598045",
@@ -1270,7 +1759,15 @@
         "Royal Challengers Bangalore",
         "Punjab Kings"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Royal Challengers Bangalore": "174/5",
+        "Punjab Kings": "176/3"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Punjab Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598062",
@@ -1280,7 +1777,15 @@
         "Chennai Super Kings",
         "Delhi Capitals"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "168/4",
+        "Delhi Capitals": "135/9"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 33 runs",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598061",
@@ -1290,7 +1795,15 @@
         "Pune Warriors India",
         "Kolkata Knight Riders"
       ],
-      "winner": "Pune Warriors India"
+      "scores": {
+        "Pune Warriors India": "170/4",
+        "Kolkata Knight Riders": "163/7"
+      },
+      "winner": "Pune Warriors India",
+      "result_margin": "won by 7 runs",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598063",
@@ -1300,7 +1813,15 @@
         "Mumbai Indians",
         "Rajasthan Royals"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "166/8",
+        "Rajasthan Royals": "152/7"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 14 runs",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598028",
@@ -1310,7 +1831,15 @@
         "Punjab Kings",
         "Delhi Capitals"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Punjab Kings": "171/4",
+        "Delhi Capitals": "164/7"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 7 runs",
+      "toss_winner": "Delhi Capitals",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598065",
@@ -1320,7 +1849,15 @@
         "Sunrisers Hyderabad",
         "Rajasthan Royals"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Sunrisers Hyderabad": "136/9",
+        "Rajasthan Royals": "113/9"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 23 runs",
+      "toss_winner": "Sunrisers Hyderabad",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598066",
@@ -1330,7 +1867,15 @@
         "Punjab Kings",
         "Mumbai Indians"
       ],
-      "winner": "Punjab Kings"
+      "scores": {
+        "Punjab Kings": "183/8",
+        "Mumbai Indians": "133/9"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 50 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598068",
@@ -1340,7 +1885,15 @@
         "Royal Challengers Bangalore",
         "Chennai Super Kings"
       ],
-      "winner": "Royal Challengers Bangalore"
+      "scores": {
+        "Royal Challengers Bangalore": "106/2",
+        "Chennai Super Kings": "82/6"
+      },
+      "winner": "Royal Challengers Bangalore",
+      "result_margin": "won by 24 runs",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "field",
+      "event_stage": null
     },
     {
       "match_id": "598067",
@@ -1350,7 +1903,15 @@
         "Pune Warriors India",
         "Delhi Capitals"
       ],
-      "winner": "Pune Warriors India"
+      "scores": {
+        "Pune Warriors India": "172/5",
+        "Delhi Capitals": "134/9"
+      },
+      "winner": "Pune Warriors India",
+      "result_margin": "won by 38 runs",
+      "toss_winner": "Pune Warriors India",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598069",
@@ -1360,7 +1921,15 @@
         "Kolkata Knight Riders",
         "Sunrisers Hyderabad"
       ],
-      "winner": "Sunrisers Hyderabad"
+      "scores": {
+        "Kolkata Knight Riders": "130/7",
+        "Sunrisers Hyderabad": "132/5"
+      },
+      "winner": "Sunrisers Hyderabad",
+      "result_margin": "won by 5 wickets",
+      "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "bat",
+      "event_stage": null
     },
     {
       "match_id": "598070",
@@ -1370,7 +1939,15 @@
         "Chennai Super Kings",
         "Mumbai Indians"
       ],
-      "winner": "Chennai Super Kings"
+      "scores": {
+        "Chennai Super Kings": "192/1",
+        "Mumbai Indians": "144/10"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 48 runs",
+      "toss_winner": "Chennai Super Kings",
+      "toss_decision": "bat",
+      "event_stage": "Qualifier 1"
     },
     {
       "match_id": "598071",
@@ -1380,7 +1957,15 @@
         "Sunrisers Hyderabad",
         "Rajasthan Royals"
       ],
-      "winner": "Rajasthan Royals"
+      "scores": {
+        "Sunrisers Hyderabad": "132/7",
+        "Rajasthan Royals": "135/6"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 4 wickets",
+      "toss_winner": "Sunrisers Hyderabad",
+      "toss_decision": "bat",
+      "event_stage": "Eliminator"
     },
     {
       "match_id": "598072",
@@ -1390,7 +1975,15 @@
         "Rajasthan Royals",
         "Mumbai Indians"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Rajasthan Royals": "165/6",
+        "Mumbai Indians": "169/6"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 4 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
+      "event_stage": "Qualifier 2"
     },
     {
       "match_id": "598073",
@@ -1400,7 +1993,81 @@
         "Mumbai Indians",
         "Chennai Super Kings"
       ],
-      "winner": "Mumbai Indians"
+      "scores": {
+        "Mumbai Indians": "148/9",
+        "Chennai Super Kings": "125/9"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 23 runs",
+      "toss_winner": "Mumbai Indians",
+      "toss_decision": "bat",
+      "event_stage": "Final"
+    }
+  ],
+  "playoffs": [
+    {
+      "stage": "Qualifier 1",
+      "match_id": "598070",
+      "date": "2013-05-21",
+      "venue": "Arun Jaitley Stadium",
+      "teams": [
+        "Chennai Super Kings",
+        "Mumbai Indians"
+      ],
+      "scores": {
+        "Chennai Super Kings": "192/1",
+        "Mumbai Indians": "144/10"
+      },
+      "winner": "Chennai Super Kings",
+      "result_margin": "won by 48 runs"
+    },
+    {
+      "stage": "Eliminator",
+      "match_id": "598071",
+      "date": "2013-05-22",
+      "venue": "Arun Jaitley Stadium",
+      "teams": [
+        "Sunrisers Hyderabad",
+        "Rajasthan Royals"
+      ],
+      "scores": {
+        "Sunrisers Hyderabad": "132/7",
+        "Rajasthan Royals": "135/6"
+      },
+      "winner": "Rajasthan Royals",
+      "result_margin": "won by 4 wickets"
+    },
+    {
+      "stage": "Qualifier 2",
+      "match_id": "598072",
+      "date": "2013-05-24",
+      "venue": "Eden Gardens",
+      "teams": [
+        "Rajasthan Royals",
+        "Mumbai Indians"
+      ],
+      "scores": {
+        "Rajasthan Royals": "165/6",
+        "Mumbai Indians": "169/6"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 4 wickets"
+    },
+    {
+      "stage": "Final",
+      "match_id": "598073",
+      "date": "2013-05-26",
+      "venue": "Eden Gardens",
+      "teams": [
+        "Mumbai Indians",
+        "Chennai Super Kings"
+      ],
+      "scores": {
+        "Mumbai Indians": "148/9",
+        "Chennai Super Kings": "125/9"
+      },
+      "winner": "Mumbai Indians",
+      "result_margin": "won by 23 runs"
     }
   ]
 }

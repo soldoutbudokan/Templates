@@ -25,6 +25,27 @@
     </div>
 
 <script>
+function formatDismissal(b) {
+    if (b.not_out || !b.dismissal_kind) return '<span class="not-out">not out</span>';
+    const kind = b.dismissal_kind;
+    const bowler = b.dismissal_bowler;
+    const fielders = b.dismissal_fielders;
+    if (kind === 'caught') {
+        return `c ${fielders || '?'} b ${bowler || '?'}`;
+    }
+    if (kind === 'bowled') return `b ${bowler || '?'}`;
+    if (kind === 'lbw') return `lbw b ${bowler || '?'}`;
+    if (kind === 'stumped') return `st ${fielders || '?'} b ${bowler || '?'}`;
+    if (kind === 'caught and bowled') return `c &amp; b ${bowler || '?'}`;
+    if (kind === 'run out') return `run out${fielders ? ' (' + fielders + ')' : ''}`;
+    if (kind === 'hit wicket') return `hit wicket b ${bowler || '?'}`;
+    if (kind === 'retired hurt') return 'retired hurt';
+    if (kind === 'retired out') return 'retired out';
+    if (kind === 'obstructing the field') return 'obstructing the field';
+    if (kind === 'timed out') return 'timed out';
+    return kind;
+}
+
 async function loadMatch() {
     const params = new URLSearchParams(window.location.search);
     const matchId = params.get('id');
@@ -93,15 +114,27 @@ async function loadMatch() {
 
                 // Batting card
                 html += `<div class="table-wrap"><table class="detail-table">
-                    <tr><th>batsman</th><th>runs</th><th>balls</th><th>SR</th><th>TILT</th></tr>`;
+                    <tr><th>batsman</th><th>dismissal</th><th>runs</th><th>balls</th><th>SR</th><th>TILT</th></tr>`;
                 for (const b of inn.batting) {
                     const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
+                    const nameCell = b.not_out
+                        ? `<a href="${playerLink}" class="player-link">${b.player}</a><span class="not-out-mark">*</span>`
+                        : `<a href="${playerLink}" class="player-link">${b.player}</a>`;
                     html += `<tr>
-                        <td><a href="${playerLink}" class="player-link">${b.player}</a></td>
+                        <td>${nameCell}</td>
+                        <td class="dismissal-cell">${formatDismissal(b)}</td>
                         <td>${b.runs}</td><td>${b.balls}</td><td>${b.sr}</td><td>${formatTilt(b.tilt)}</td>
                     </tr>`;
                 }
                 html += '</table></div>';
+
+                // Fall of wickets line
+                if (inn.fall_of_wickets && inn.fall_of_wickets.length > 0) {
+                    const fow = inn.fall_of_wickets.map((f) =>
+                        `<span class="fow-entry">${f.score}-${f.wicket} (${f.player || '?'}, ${f.over} ov)</span>`
+                    ).join(' · ');
+                    html += `<div class="fall-of-wickets"><span class="fow-label">Fall of wickets:</span> ${fow}</div>`;
+                }
 
                 // Bowling card
                 html += `<div class="table-wrap"><table class="detail-table" style="margin-top:12px">

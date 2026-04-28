@@ -34,12 +34,15 @@ class BallEvent:
     wicket_kind: Optional[str]
     player_dismissed: Optional[str]
     player_dismissed_id: Optional[str]
+    wicket_fielders: Optional[str]
     winner: Optional[str]
     season: str
     toss_winner: Optional[str]
     toss_decision: Optional[str]
     dls_method: Optional[str]
     is_impact_sub_match: bool
+    event_stage: Optional[str]
+    event_match_number: Optional[int]
 
 
 # %% Team name normalization
@@ -171,6 +174,19 @@ def parse_match(filepath: Path) -> List[BallEvent]:
     players_info = info.get("players", {})
     is_impact_sub_match = any(len(v) > 11 for v in players_info.values())
 
+    # Event metadata: `stage` is set on playoff matches ("Qualifier 1",
+    # "Eliminator", "Qualifier 2", "Final", historical "Semi Final 1/2",
+    # "3rd Place Play-off"). `match_number` is the league-stage seq for
+    # tie-break ordering inside a season.
+    event = info.get("event", {}) or {}
+    event_stage = event.get("stage")
+    event_match_number = event.get("match_number")
+    if event_match_number is not None:
+        try:
+            event_match_number = int(event_match_number)
+        except (TypeError, ValueError):
+            event_match_number = None
+
     # Player name → unique ID mapping from Cricsheet registry
     registry = info.get("registry", {}).get("people", {})
 
@@ -194,6 +210,14 @@ def parse_match(filepath: Path) -> List[BallEvent]:
                 is_noball = "noballs" in extras
                 wicket_kind = wickets[0].get("kind") if is_wicket else None
                 player_dismissed = wickets[0].get("player_out") if is_wicket else None
+                if is_wicket:
+                    fielder_list = wickets[0].get("fielders") or []
+                    fielder_names = [
+                        f.get("name") for f in fielder_list if isinstance(f, dict) and f.get("name")
+                    ]
+                    wicket_fielders = ", ".join(fielder_names) if fielder_names else None
+                else:
+                    wicket_fielders = None
 
                 batter_name = delivery.get("batter", "")
                 bowler_name = delivery.get("bowler", "")
@@ -223,11 +247,14 @@ def parse_match(filepath: Path) -> List[BallEvent]:
                     wicket_kind=wicket_kind,
                     player_dismissed=player_dismissed,
                     player_dismissed_id=registry.get(player_dismissed) if player_dismissed else None,
+                    wicket_fielders=wicket_fielders,
                     winner=winner,
                     season=season,
                     toss_winner=toss_winner,
                     toss_decision=toss_decision,
                     dls_method=dls_method,
+                    event_stage=event_stage,
+                    event_match_number=event_match_number,
                     is_impact_sub_match=is_impact_sub_match,
                 ))
 

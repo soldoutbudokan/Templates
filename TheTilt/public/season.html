@@ -111,14 +111,16 @@ async function loadSeason() {
         <h2 class="section-title">Standings</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>Win%</th><th>NRR</th><th>Team TILT/m</th></tr></thead>
+                <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>NR</th><th>Win%</th><th>NRR</th><th>Team TILT/m</th></tr></thead>
                 <tbody>
                     ${data.team_table.map((t) => `
                         <tr>
                             <td>${t.position_est}</td>
                             <td>${teamLink(t.team, data.season, teamIndex)}</td>
+                            <td>${t.matches}</td>
                             <td>${t.wins}</td>
                             <td>${t.losses}</td>
+                            <td>${t.no_results || 0}</td>
                             <td>${(t.win_pct * 100).toFixed(1)}%</td>
                             <td>${t.nrr != null ? (t.nrr > 0 ? '+' : '') + t.nrr.toFixed(2) : '—'}</td>
                             <td>${formatTilt(t.team_tilt_per_match)}</td>
@@ -154,25 +156,106 @@ async function loadSeason() {
             }).join('')}
         </div>
 
+        ${renderPlayoffsBracket(data, teamIndex)}
+
         <h2 class="section-title">Matches</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th>Date</th><th>Teams</th><th>Winner</th><th>Venue</th></tr></thead>
+                <thead><tr><th>Date</th><th>Teams</th><th>Score</th><th>Toss</th><th>Result</th><th>Venue</th></tr></thead>
                 <tbody>
-                    ${data.matches_list.map((m) => `
-                        <tr>
-                            <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
-                            <td>${m.teams.map((t) => teamLink(t, data.season, teamIndex)).join(' vs ')}</td>
-                            <td>${m.winner ? teamLink(m.winner, data.season, teamIndex) : '—'}</td>
-                            <td>${m.venue || ''}</td>
-                        </tr>
-                    `).join('')}
+                    ${data.matches_list.map((m) => {
+                        const scores = m.scores || {};
+                        const scoreCell = m.teams.map((t) => {
+                            const s = scores[t];
+                            return s ? `${s}` : '—';
+                        }).join(' / ');
+                        const teamsCell = m.teams.map((t) => teamLink(t, data.season, teamIndex)).join(' vs ');
+                        const tossCell = m.toss_winner
+                            ? `${teamLink(m.toss_winner, data.season, teamIndex, { cls: 'team-link-subtle' })} → ${m.toss_decision || ''}`
+                            : '—';
+                        const resultCell = m.winner
+                            ? `${teamLink(m.winner, data.season, teamIndex)}${m.result_margin ? ` <span class="result-margin">(${m.result_margin})</span>` : ''}`
+                            : (m.result_margin || '—');
+                        const stageBadge = m.event_stage ? ` <span class="stage-badge">${m.event_stage}</span>` : '';
+                        return `
+                            <tr>
+                                <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a>${stageBadge}</td>
+                                <td>${teamsCell}</td>
+                                <td>${scoreCell}</td>
+                                <td>${tossCell}</td>
+                                <td>${resultCell}</td>
+                                <td>${m.venue || ''}</td>
+                            </tr>
+                        `;
+                    }).join('')}
                 </tbody>
             </table>
         </div>
     `;
 
     document.getElementById('content').innerHTML = html;
+}
+
+function renderPlayoffsBracket(data, teamIndex) {
+    const playoffs = data.playoffs || [];
+    if (playoffs.length === 0) return '';
+
+    const card = (p) => {
+        if (!p) return '<div class="bracket-card empty">—</div>';
+        const [t1, t2] = p.teams;
+        const s1 = (p.scores || {})[t1];
+        const s2 = (p.scores || {})[t2];
+        const winnerCls = (team) => p.winner === team ? 'bracket-team winner' : 'bracket-team';
+        return `
+            <div class="bracket-card">
+                <div class="bracket-stage">${p.stage}</div>
+                <a href="match.html?id=${p.match_id}" class="bracket-match-link">
+                    <div class="${winnerCls(t1)}">
+                        <span class="bracket-team-name">${teamLink(t1, data.season, teamIndex, { cls: 'team-link-subtle' })}</span>
+                        <span class="bracket-team-score">${s1 || ''}</span>
+                    </div>
+                    <div class="${winnerCls(t2)}">
+                        <span class="bracket-team-name">${teamLink(t2, data.season, teamIndex, { cls: 'team-link-subtle' })}</span>
+                        <span class="bracket-team-score">${s2 || ''}</span>
+                    </div>
+                    ${p.result_margin ? `<div class="bracket-margin">${p.result_margin}</div>` : ''}
+                </a>
+            </div>
+        `;
+    };
+
+    // Modern format (2011+): Q1 / Eliminator / Q2 / Final → 3-column bracket.
+    // Older formats (2008-2010 semis + 3rd place + final, plus any other
+    // historical layout) → simple flat list ordered by date.
+    const byStage = {};
+    for (const p of playoffs) byStage[p.stage] = p;
+    const modern = ['Qualifier 1', 'Eliminator', 'Qualifier 2', 'Final']
+        .every(s => byStage[s]);
+
+    let inner = '';
+    if (modern) {
+        inner = `
+            <div class="bracket bracket-modern">
+                <div class="bracket-col">
+                    ${card(byStage['Qualifier 1'])}
+                    ${card(byStage['Eliminator'])}
+                </div>
+                <div class="bracket-col">
+                    ${card(byStage['Qualifier 2'])}
+                </div>
+                <div class="bracket-col">
+                    ${card(byStage['Final'])}
+                </div>
+            </div>
+        `;
+    } else {
+        inner = `<div class="bracket bracket-flat">${playoffs.map(card).join('')}</div>`;
+    }
+
+    return `
+        <h2 class="section-title">Playoffs</h2>
+        ${inner}
+    `;
 }
 
 loadSeason();

@@ -234,7 +234,7 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         # Raw event data
         "runs_batter", "runs_extras", "runs_total",
         "is_wide", "is_noball",
-        "is_wicket", "wicket_kind", "player_dismissed", "player_dismissed_id",
+        "is_wicket", "wicket_kind", "player_dismissed", "player_dismissed_id", "wicket_fielders",
         # Features (state before delivery)
         "ball_number", "balls_remaining", "wickets_in_hand",
         "runs_scored", "wickets_fallen", "run_rate",
@@ -249,7 +249,10 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
     ]
 
     # Include DLS/impact sub metadata if available (for filtering, not as model features)
-    for optional_col in ["dls_method", "is_impact_sub_match", "toss_winner", "toss_decision"]:
+    for optional_col in [
+        "dls_method", "is_impact_sub_match", "toss_winner", "toss_decision",
+        "event_stage", "event_match_number",
+    ]:
         if optional_col in result.columns:
             feature_cols.append(optional_col)
 

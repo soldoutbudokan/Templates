@@ -126,27 +126,95 @@ def _bowling_counting_stats(bowl_slice: pd.DataFrame) -> Optional[dict]:
 
 
 def _build_match_info_cache(deltas_df: pd.DataFrame) -> dict:
-    """Pre-compute (date, venue, winner, season, teams, scores) per match."""
+    """Pre-compute (date, venue, winner, season, teams, scores, toss, result_margin, stage) per match."""
     cache = {}
     for mid in deltas_df["match_id"].unique():
         mdf = deltas_df[deltas_df["match_id"] == mid]
         first = mdf.iloc[0]
         scores = {}
+        innings_totals: dict[int, tuple] = {}
         for inn_num in sorted(mdf["innings"].unique()):
             inn_df = mdf[mdf["innings"] == inn_num]
             last_ball = inn_df.iloc[-1]
             total_r = int(last_ball["runs_scored"]) + int(last_ball["runs_total"])
             total_w = int(last_ball["wickets_fallen"]) + (1 if last_ball["is_wicket"] else 0)
-            scores[str(inn_df.iloc[0]["batting_team"])] = f"{total_r}/{total_w}"
+            batting_team = str(inn_df.iloc[0]["batting_team"])
+            scores[batting_team] = f"{total_r}/{total_w}"
+            innings_totals[int(inn_num)] = (batting_team, total_r, total_w)
+
+        winner = str(first["winner"]) if pd.notna(first["winner"]) else None
+        result_margin = _compute_result_margin(innings_totals, winner)
+
+        toss_winner = first.get("toss_winner")
+        toss_decision = first.get("toss_decision")
+        event_stage = first.get("event_stage")
+        event_match_number = first.get("event_match_number")
+
         cache[mid] = {
             "date": str(first["date"]),
             "venue": str(first["venue"]),
-            "winner": str(first["winner"]) if pd.notna(first["winner"]) else None,
+            "winner": winner,
             "season": str(first["season"]),
             "teams": list(mdf["batting_team"].unique()),
             "scores": scores,
+            "toss_winner": str(toss_winner) if pd.notna(toss_winner) else None,
+            "toss_decision": str(toss_decision) if pd.notna(toss_decision) else None,
+            "result_margin": result_margin,
+            "event_stage": str(event_stage) if pd.notna(event_stage) else None,
+            "event_match_number": int(event_match_number) if pd.notna(event_match_number) else None,
         }
     return cache
+
+
+def _build_playoffs_block(season_match_ids: list, match_info: dict) -> list:
+    """Return playoff matches for a season as a date-ordered list.
+
+    Each entry: {stage, match_id, date, teams, scores, winner, result_margin}.
+    Stage names come from Cricsheet `info.event.stage` (e.g. "Qualifier 1",
+    "Eliminator", "Qualifier 2", "Final", historical "Semi Final 1/2",
+    "3rd Place Play-off"). Empty list when a season has no playoff data
+    (in-progress mid-season, or non-playoff format).
+    """
+    playoffs = []
+    for mid in season_match_ids:
+        mi = match_info.get(mid)
+        if mi is None or not mi.get("event_stage"):
+            continue
+        playoffs.append({
+            "stage": mi["event_stage"],
+            "match_id": str(mid),
+            "date": mi["date"],
+            "venue": mi.get("venue"),
+            "teams": mi["teams"],
+            "scores": mi.get("scores", {}),
+            "winner": mi.get("winner"),
+            "result_margin": mi.get("result_margin"),
+        })
+    playoffs.sort(key=lambda p: p["date"])
+    return playoffs
+
+
+def _compute_result_margin(
+    innings_totals: dict, winner: Optional[str]
+) -> Optional[str]:
+    """Format match result as e.g. "won by 7 wickets" or "won by 23 runs".
+
+    Innings 1 batting team won → margin in runs (defending). Innings 2 batting
+    team won → margin in wickets (chasing). Returns None when winner is unknown
+    or innings totals are incomplete (e.g. abandoned matches that slipped past
+    parser filters).
+    """
+    if winner is None or 1 not in innings_totals or 2 not in innings_totals:
+        return None
+    inn1_team, inn1_runs, _ = innings_totals[1]
+    inn2_team, inn2_runs, inn2_wickets = innings_totals[2]
+    if winner == inn1_team:
+        margin = inn1_runs - inn2_runs
+        return f"won by {margin} run{'s' if margin != 1 else ''}"
+    if winner == inn2_team:
+        wickets_left = 10 - inn2_wickets
+        return f"won by {wickets_left} wicket{'s' if wickets_left != 1 else ''}"
+    return None
 
 
 def _build_player_slug_lookup(player_tilt: pd.DataFrame, *, include_empty_id: bool = False) -> dict:
@@ -642,6 +710,43 @@ def export_match_details(
             batting_team = str(inn_df.iloc[0]["batting_team"])
             bowling_team = str(inn_df.iloc[0]["bowling_team"])
 
+            # Dismissal lookup keyed by dismissed player_id (one row per wicket).
+            # Score-at-fall is the cumulative team score just AFTER this delivery,
+            # which matches the conventional "67-3" notation. Wicket position
+            # 1..N is the order of falls in the innings.
+            dismissals_df = inn_df[inn_df["is_wicket"]].copy()
+            dismissals_df = dismissals_df.sort_values("ball_number")
+            dismissals_df["wicket_position"] = range(1, len(dismissals_df) + 1)
+            fall_of_wickets = []
+            dismissal_map = {}
+            for _, r in dismissals_df.iterrows():
+                fow_runs = int(r["runs_scored"]) + int(r["runs_total"])
+                over_label = f"{int(r['over'])}.{int(r['ball']) + 1}"
+                wicket_pos = int(r["wicket_position"])
+                kind = r["wicket_kind"] if pd.notna(r["wicket_kind"]) else None
+                fielders = r.get("wicket_fielders")
+                fielders = str(fielders) if pd.notna(fielders) else None
+                bowler_name = str(r["bowler"]) if pd.notna(r["bowler"]) else None
+                dismissed_id = r["player_dismissed_id"] if pd.notna(r["player_dismissed_id"]) else None
+                dismissed_name = r["player_dismissed"] if pd.notna(r["player_dismissed"]) else None
+                bowler_credited = kind not in (None, "run out", "retired hurt", "retired out", "obstructing the field", "timed out")
+                key = dismissed_id or dismissed_name
+                if key is not None:
+                    dismissal_map[key] = {
+                        "kind": kind,
+                        "bowler": bowler_name if bowler_credited else None,
+                        "fielders": fielders,
+                        "score_at_fall": fow_runs,
+                        "wicket_position": wicket_pos,
+                        "over": over_label,
+                    }
+                fall_of_wickets.append({
+                    "wicket": wicket_pos,
+                    "score": fow_runs,
+                    "player": dismissed_name,
+                    "over": over_label,
+                })
+
             # Batting scorecard — sorted by order of appearance.
             # `balls` = legal_bat sum (excludes wides; no-balls still count — batter faced them).
             bat_card = (
@@ -655,17 +760,27 @@ def export_match_details(
                 .reset_index()
                 .sort_values("first_ball")
             )
-            batting_scorecard = [
-                {
-                    "player": r["batter"],
-                    "slug": slug_lookup.get(r["batter_id"], ""),
+            batting_scorecard = []
+            for _, r in bat_card.iterrows():
+                batter_id = r["batter_id"]
+                batter_name = r["batter"]
+                key = batter_id if batter_id else batter_name
+                d = dismissal_map.get(key)
+                batting_scorecard.append({
+                    "player": batter_name,
+                    "slug": slug_lookup.get(batter_id, ""),
                     "runs": int(r["runs"]),
                     "balls": int(r["balls"]),
                     "sr": round(r["runs"] / max(r["balls"], 1) * 100, 1),
                     "tilt": round(r["tilt"], 5),
-                }
-                for _, r in bat_card.iterrows()
-            ]
+                    "dismissal_kind": d["kind"] if d else None,
+                    "dismissal_bowler": d["bowler"] if d else None,
+                    "dismissal_fielders": d["fielders"] if d else None,
+                    "fall_of_wicket_score": d["score_at_fall"] if d else None,
+                    "fall_of_wicket_over": d["over"] if d else None,
+                    "wicket_position": d["wicket_position"] if d else None,
+                    "not_out": d is None,
+                })
 
             # Bowling scorecard — `legal_balls` excludes both wides and no-balls.
             bowl_card = (
@@ -705,6 +820,7 @@ def export_match_details(
                 "total": f"{total_runs}/{total_wickets}",
                 "batting": batting_scorecard,
                 "bowling": bowling_scorecard,
+                "fall_of_wickets": fall_of_wickets,
             })
 
         # Ball-by-ball WP data
@@ -991,12 +1107,60 @@ def export_goats(
         for _, r in top_bowl_season.iterrows()
     ]
 
+    # --- Counting-stat leaderboards (issue #66) ---
+    # Single-innings runs (batters): runs desc, balls asc as tiebreak
+    top_match_runs = bat_match.sort_values(["runs", "balls"], ascending=[False, True]).head(50)
+    goat_match_runs = [_bat_match_row(r) for _, r in top_match_runs.iterrows()]
+
+    # Single-innings figures (bowlers): wickets desc, runs_conceded asc as tiebreak
+    top_match_wickets = bowl_match.sort_values(
+        ["wickets", "runs_conceded"], ascending=[False, True]
+    ).head(50)
+    goat_match_wickets = [_bowl_match_row(r) for _, r in top_match_wickets.iterrows()]
+
+    # Season runs (batters): min 5 matches to avoid one-off cameos
+    top_season_runs = bat_season[bat_season["matches"] >= 5].nlargest(50, "runs")
+    goat_season_runs = [
+        {
+            "player": name_lookup.get(r["batter_id"], r["batter"]),
+            "slug": slug_lookup.get(r["batter_id"], ""),
+            "team": r.get("team", ""),
+            "season": str(r["season"]),
+            "runs": int(r["runs"]),
+            "matches": int(r["matches"]),
+            "tilt_per_match": round(r["tilt_per_match"], 5),
+            "total_tilt": round(r["total_tilt"], 5),
+        }
+        for _, r in top_season_runs.iterrows()
+    ]
+
+    # Season wickets (bowlers): min 5 matches
+    top_season_wickets = bowl_season[bowl_season["matches"] >= 5].nlargest(50, "wickets")
+    goat_season_wickets = [
+        {
+            "player": name_lookup.get(r["bowler_id"], r["bowler"]),
+            "slug": slug_lookup.get(r["bowler_id"], ""),
+            "team": r.get("team", ""),
+            "season": str(r["season"]),
+            "wickets": int(r["wickets"]),
+            "runs_conceded": int(r["runs_conceded"]),
+            "matches": int(r["matches"]),
+            "tilt_per_match": round(r["tilt_per_match"], 5),
+            "total_tilt": round(r["total_tilt"], 5),
+        }
+        for _, r in top_season_wickets.iterrows()
+    ]
+
     goats = {
         "match_batting": goat_bat_match,
         "match_bowling": goat_bowl_match,
         "match_allround": goat_allround_match,
         "season_batting": goat_bat_season,
         "season_bowling": goat_bowl_season,
+        "match_batting_runs": goat_match_runs,
+        "match_bowling_wickets": goat_match_wickets,
+        "season_batting_runs": goat_season_runs,
+        "season_bowling_wickets": goat_season_wickets,
     }
 
     goats_path = output_dir / "goats.json"
@@ -1494,13 +1658,18 @@ def export_seasons(
         team_table = []
         for _, r in ts_rows.sort_values("position_est").iterrows():
             canonical = r["team"]
+            wins = int(r["wins"])
+            losses = int(r["losses"])
+            matches = int(r["matches"])
+            no_results = max(matches - wins - losses, 0)
             team_table.append({
                 "team": canonical,
                 "slug": TEAM_SLUG.get(canonical, ""),
                 "label": season_team_label(canonical, season_year),
-                "matches": int(r["matches"]),
-                "wins": int(r["wins"]),
-                "losses": int(r["losses"]),
+                "matches": matches,
+                "wins": wins,
+                "losses": losses,
+                "no_results": no_results,
                 "win_pct": float(round(r["win_pct"], 4)),
                 "nrr": _compute_team_season_nrr(deltas_df, canonical, season),
                 "team_total_tilt": round(float(r["team_total_tilt"]), 5),
@@ -1534,8 +1703,15 @@ def export_seasons(
                 "date": mi["date"],
                 "venue": mi["venue"],
                 "teams": mi["teams"],
+                "scores": mi.get("scores", {}),
                 "winner": mi["winner"],
+                "result_margin": mi.get("result_margin"),
+                "toss_winner": mi.get("toss_winner"),
+                "toss_decision": mi.get("toss_decision"),
+                "event_stage": mi.get("event_stage"),
             })
+
+        playoffs = _build_playoffs_block(season_match_ids, match_info)
 
         doc = {
             "season": season,
@@ -1545,6 +1721,7 @@ def export_seasons(
             "team_table": team_table,
             "leaders": leaders_top5,
             "matches_list": matches_list,
+            "playoffs": playoffs,
         }
         with open(seasons_dir / f"{season.replace('/', '-')}.json", "w") as f:
             json.dump(doc, f, indent=2)
