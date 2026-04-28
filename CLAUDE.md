@@ -27,6 +27,12 @@
 - README should include a Quick Start section
 - Document major changes as they happen
 
+### Recipe Templates
+- Every recipe in `Recipes/` must include a `## Nutrition (per serving)` section with macro and calorie breakdown — calories, protein, carbs, fat — in a markdown table.
+- Use a `*Based on N servings*` line above the table. If the dish is typically served with a side (bread, rice, rolls), add a second column showing "with side" totals (see `Chilli.md`, `Spinach and Chickpea Stew.md` for the pattern).
+- End with a one-line Claude-disclaimer noting which variables (broth type, oil quantity, side portion, etc.) move the numbers.
+- This applies to every new recipe and any edit that changes serving count or major ingredients.
+
 ### CLAUDE.md Maintenance
 - After any correction, end with: "Update CLAUDE.md so you don't make that mistake again"
 - Ruthlessly edit this file over time - keep iterating
