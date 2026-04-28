@@ -179,7 +179,11 @@ function render() {
                     <a href="player.html?player=${p.slug}" class="row-link" style="text-decoration:none;color:inherit">
                         <span class="player-name">${displayName}</span>
                     </a><br>
-                    <span class="player-team">${teamLink(p.team, null, teamIndex, { cls: 'team-link' })}</span>
+                    <span class="player-team">${
+                        p.teams && p.teams.length > 1
+                            ? `<span title="${p.teams.join(', ')}" style="cursor:help">${p.teams.length} Teams</span>`
+                            : teamLink(p.team, null, teamIndex, { cls: 'team-link' })
+                    }</span>
                     <span class="role-badge">${p.role === 'batter' ? 'batsman' : p.role}</span>
                 </td>
                 <td>

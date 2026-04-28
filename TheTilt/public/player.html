@@ -118,21 +118,21 @@ async function loadPlayer() {
         if (p.bowling_stats || seasonsWithBowl.length > 0) {
             html += '<div class="section"><h3>bowling statistics</h3>';
             html += `<div class="table-wrap"><table class="detail-table">
-                <tr><th>season</th><th>team</th><th>inn</th><th>wkts</th><th>avg</th><th>econ</th><th>best</th></tr>`;
+                <tr><th>season</th><th>team</th><th>inn</th><th>wkts</th><th>runs</th><th>avg</th><th>econ</th><th>best</th></tr>`;
             for (const s of seasonsWithBowl) {
                 const b = s.bowling_stats;
                 const seasonLnk = `<a href="player.html?player=${slug}&season=${encodeURIComponent(s.season)}">${s.season}</a>`;
                 html += `<tr>
                     <td>${seasonLnk}</td>
                     <td><span class="season-team">${teamLink(s.team, s.season, teamIndex)}</span></td>
-                    <td>${b.innings}</td><td>${b.wickets}</td><td>${b.avg}</td><td>${b.economy}</td><td>${b.best_figures}</td>
+                    <td>${b.innings}</td><td>${b.wickets}</td><td>${b.runs_conceded}</td><td>${b.avg}</td><td>${b.economy}</td><td>${b.best_figures}</td>
                 </tr>`;
             }
             if (p.bowling_stats) {
                 const b = p.bowling_stats;
                 html += `<tr class="career-total">
                     <td colspan="2">career</td>
-                    <td>${b.innings}</td><td>${b.wickets}</td><td>${b.avg}</td><td>${b.economy}</td><td>${b.best_figures}</td>
+                    <td>${b.innings}</td><td>${b.wickets}</td><td>${b.runs_conceded}</td><td>${b.avg}</td><td>${b.economy}</td><td>${b.best_figures}</td>
                 </tr>`;
             }
             html += '</table></div></div>';
@@ -254,7 +254,7 @@ async function loadPlayer() {
             for (const m of p.best_matches) {
                 const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
                 html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
-                    <td><a href="${matchLink}" style="color:inherit;text-decoration:none">${m.date}</a></td><td>${m.vs}</td>
+                    <td><a href="${matchLink}" class="match-link">${m.date}</a></td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
                 </tr>`;
             }
@@ -267,7 +267,7 @@ async function loadPlayer() {
             for (const m of p.worst_matches) {
                 const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
                 html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
-                    <td><a href="${matchLink}" style="color:inherit;text-decoration:none">${m.date}</a></td><td>${m.vs}</td>
+                    <td><a href="${matchLink}" class="match-link">${m.date}</a></td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
                 </tr>`;
             }
@@ -281,7 +281,7 @@ async function loadPlayer() {
             for (const m of p.bowling_best_matches) {
                 const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
                 html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
-                    <td><a href="${matchLink}" style="color:inherit;text-decoration:none">${m.date}</a></td><td>${m.vs}</td>
+                    <td><a href="${matchLink}" class="match-link">${m.date}</a></td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
@@ -294,7 +294,7 @@ async function loadPlayer() {
             for (const m of p.bowling_worst_matches) {
                 const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
                 html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
-                    <td><a href="${matchLink}" style="color:inherit;text-decoration:none">${m.date}</a></td><td>${m.vs}</td>
+                    <td><a href="${matchLink}" class="match-link">${m.date}</a></td><td>${m.vs}</td>
                     <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
@@ -492,7 +492,7 @@ async function renderPlayerSeason(p, season, slug) {
         document.getElementById('content').innerHTML = `
             <div class="player-header">
                 <h2>${displayName}</h2>
-                <div class="meta">no data for season ${season} — <a href="player.html?player=${slug}">back to career</a></div>
+                <div class="meta">no data for season ${season} — <a href="player.html?player=${slug}" class="match-link">back to career</a></div>
             </div>`;
         return;
     }
@@ -505,8 +505,8 @@ async function renderPlayerSeason(p, season, slug) {
             <h2>${displayName} — ${season}</h2>
             <div class="team">${teamLabel} · ${totalMatches} matches</div>
             <div class="meta">
-                <a href="player.html?player=${slug}">back to ${displayName}'s career</a> ·
-                <a href="season.html?season=${encodeURIComponent(season)}">all of IPL ${season}</a>
+                <a href="player.html?player=${slug}" class="match-link">back to ${displayName}'s career</a> ·
+                <a href="season.html?season=${encodeURIComponent(season)}" class="match-link">all of IPL ${season}</a>
             </div>
         </div>
 
@@ -563,7 +563,7 @@ async function renderPlayerSeason(p, season, slug) {
                     <tbody>
                         ${s.matches.map((m) => `
                             <tr>
-                                <td><a href="match.html?id=${m.match_id}">${m.date}</a></td>
+                                <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
                                 <td>${teamLink(m.opponent, season, teamIndex)}</td>
                                 <td>${m.team_score || '—'} vs ${m.opponent_score || '—'}</td>
                                 <td>${m.bat_runs != null ? m.bat_runs : '—'}</td>

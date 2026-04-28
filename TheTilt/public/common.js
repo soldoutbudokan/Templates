@@ -115,7 +115,7 @@
         if (!t) return label;
         const params = new URLSearchParams({ team: t.slug });
         if (season != null && season !== '') params.set('season', String(season));
-        const cls = opts.cls ? ` class="${opts.cls}"` : '';
+        const cls = ` class="${opts.cls || 'team-link'}"`;
         return `<a href="team.html?${params.toString()}"${cls}>${label}</a>`;
     }
 

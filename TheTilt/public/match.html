@@ -97,7 +97,7 @@ async function loadMatch() {
                 for (const b of inn.batting) {
                     const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
                     html += `<tr>
-                        <td><a href="${playerLink}" style="color:var(--text-primary);text-decoration:none;font-weight:500">${b.player}</a></td>
+                        <td><a href="${playerLink}" class="player-link">${b.player}</a></td>
                         <td>${b.runs}</td><td>${b.balls}</td><td>${b.sr}</td><td>${formatTilt(b.tilt)}</td>
                     </tr>`;
                 }
@@ -109,7 +109,7 @@ async function loadMatch() {
                 for (const b of inn.bowling) {
                     const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
                     html += `<tr>
-                        <td><a href="${playerLink}" style="color:var(--text-primary);text-decoration:none;font-weight:500">${b.player}</a></td>
+                        <td><a href="${playerLink}" class="player-link">${b.player}</a></td>
                         <td>${b.overs}</td><td>${b.runs}</td><td>${b.wickets}</td><td>${b.economy}</td><td>${formatTilt(b.tilt)}</td>
                     </tr>`;
                 }

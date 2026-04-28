@@ -161,7 +161,7 @@ async function loadSeason() {
                 <tbody>
                     ${data.matches_list.map((m) => `
                         <tr>
-                            <td><a href="match.html?id=${m.match_id}">${m.date}</a></td>
+                            <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
                             <td>${m.teams.map((t) => teamLink(t, data.season, teamIndex)).join(' vs ')}</td>
                             <td>${m.winner ? teamLink(m.winner, data.season, teamIndex) : '—'}</td>
                             <td>${m.venue || ''}</td>
