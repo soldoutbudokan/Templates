@@ -80,6 +80,24 @@ def _load_team_aliases(path: Path = _TEAM_ALIASES_PATH) -> tuple:
 _ALIAS_TO_CANONICAL, TEAM_SLUG, TEAM_ALIASES, _SEASON_LABELS = _load_team_aliases()
 
 
+# Canonical season-string overrides (issue #73). Cricsheet labels three IPL
+# seasons as cross-year (2007/08, 2009/10, 2020/21) even though each was
+# played within a single calendar year; rewrite to single-year strings so
+# URLs, picker chips, and per-season exports use the year people actually
+# remember. All other Cricsheet season strings pass through unchanged.
+_SEASON_RENAMES: Dict[str, str] = {
+    "2007/08": "2008",
+    "2009/10": "2010",
+    "2020/21": "2020",
+}
+
+
+def normalize_season(season: Optional[str]) -> Optional[str]:
+    if season is None:
+        return None
+    return _SEASON_RENAMES.get(str(season), str(season))
+
+
 def normalize_team(name: Optional[str]) -> Optional[str]:
     if name is None:
         return None
@@ -160,7 +178,7 @@ def parse_match(filepath: Path) -> List[BallEvent]:
     venue = info.get("venue", "unknown")
     winner = normalize_team(outcome.get("winner"))
     teams = [normalize_team(t) for t in info.get("teams", [])]
-    season = str(info.get("season", "unknown"))
+    season = normalize_season(str(info.get("season", "unknown")))
 
     # Toss info
     toss = info.get("toss", {})

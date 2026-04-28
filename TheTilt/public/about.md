@@ -8,7 +8,7 @@ This page is the long-form methodology. The headline numbers and rankings live o
 
 | Coverage | Value |
 |:--|:--|
-| Seasons | IPL 2007/08 — 2026 |
+| Seasons | IPL 2008 — 2026 |
 | Matches parsed | 1,159 |
 | Legal-ish deliveries scored | 276,500+ |
 | Players ranked (≥ 10 matches) | 443 |
@@ -65,7 +65,7 @@ Cricsheet is excellent but raw cricket data is messy. The pipeline does a few cl
 
 - **Team name aliases.** "Royal Challengers Bengaluru" and "Royal Challengers Bangalore" collapse to a single canonical name. Likewise for the Punjab Kings / Kings XI Punjab / Punjab XI variants and the various Pune franchises.
 - **Venue deduplication.** Cricsheet ships 59 raw venue strings — a mix of stadium-only and stadium-with-city ("Wankhede Stadium" vs "Wankhede Stadium, Mumbai") and renamings ("Feroz Shah Kotla" → "Arun Jaitley Stadium", "Sardar Patel Stadium, Motera" → "Narendra Modi Stadium, Ahmedabad"). After mapping, the model sees **38 canonical venues**, which materially reduces categorical overfitting.
-- **Season parsing.** IPL seasons cross calendar years (e.g. "2009/10"). The pipeline takes the start year as the integer feature `season_numeric`.
+- **Season parsing.** Cricsheet labels three IPL seasons in cross-year form ("2007/08", "2009/10", "2020/21") even though each was played within a single calendar year. The pipeline rewrites those to their year of play (2008, 2010, 2020) so URLs, picker chips, and the integer feature `season_numeric` all use the year people actually remember.
 - **DLS exclusion.** 22 DLS-affected matches are excluded from the model's training set — their outcomes don't reflect "fair" win probability — but the rest of the pipeline still scores them so players aren't penalised for appearing in them.
 - **Player ID resolution.** Cricsheet ships short IDs; the pipeline resolves full names against Wikidata so the leaderboard can show e.g. "Sunil Narine" instead of the registry handle.
 
