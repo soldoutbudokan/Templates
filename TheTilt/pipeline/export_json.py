@@ -17,6 +17,48 @@ def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
         return yaml.safe_load(f)
 
 
+_PLAYER_COUNTRY_CACHE: Optional[dict] = None
+
+
+def load_player_countries(config_path: str = "config/player_countries.yaml") -> dict:
+    """Load `{player_id: country_code}` from the hand-curated YAML.
+
+    Default falls back to the `default_country` key (currently "IN") for any
+    player_id not listed. The lookup is cached after first call so repeated
+    exports don't re-parse the file. See `config/player_countries.yaml` and
+    `/tmp/build_player_countries.py` for how the file is regenerated.
+    """
+    global _PLAYER_COUNTRY_CACHE
+    if _PLAYER_COUNTRY_CACHE is not None:
+        return _PLAYER_COUNTRY_CACHE
+    try:
+        with open(config_path, "r") as f:
+            doc = yaml.safe_load(f) or {}
+    except FileNotFoundError:
+        _PLAYER_COUNTRY_CACHE = {"_default": "IN", "_map": {}}
+        return _PLAYER_COUNTRY_CACHE
+    default = str(doc.get("default_country") or "IN")
+    raw = doc.get("players") or {}
+    mapping = {}
+    for pid, entry in raw.items():
+        if isinstance(entry, dict):
+            c = entry.get("country")
+        else:
+            c = entry
+        if c:
+            mapping[str(pid)] = str(c)
+    _PLAYER_COUNTRY_CACHE = {"_default": default, "_map": mapping}
+    return _PLAYER_COUNTRY_CACHE
+
+
+def country_for(player_id: Optional[str]) -> str:
+    """Return ICC country code for a player_id, falling back to default_country."""
+    cache = load_player_countries()
+    if player_id is None:
+        return cache["_default"]
+    return cache["_map"].get(str(player_id), cache["_default"])
+
+
 def load_completed_seasons(config_path: str = "config/seasons.yaml") -> set:
     """Hand-maintained list of seasons whose final has been played.
 
@@ -284,6 +326,7 @@ def export_rankings(
             "full_name": row.get("full_name", row["player"]),
             "player_id": player_id,
             "slug": make_slug(row["player"], player_id if player_id else None),
+            "country": country_for(player_id),
             "team": row["team"],
             "teams": row.get("teams", [row["team"]]) if isinstance(row.get("teams"), list) else [row["team"]],
             "role": row["role"],
@@ -582,6 +625,7 @@ def export_player_details(
             "full_name": row.get("full_name", player_name),
             "player_id": player_id,
             "slug": slug,
+            "country": country_for(player_id),
             "team": row["team"],
             "teams": row.get("teams", [row["team"]]) if isinstance(row.get("teams"), list) else [row["team"]],
             "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
@@ -769,6 +813,7 @@ def export_match_details(
                 batting_scorecard.append({
                     "player": batter_name,
                     "slug": slug_lookup.get(batter_id, ""),
+                    "country": country_for(batter_id),
                     "runs": int(r["runs"]),
                     "balls": int(r["balls"]),
                     "sr": round(r["runs"] / max(r["balls"], 1) * 100, 1),
@@ -800,6 +845,7 @@ def export_match_details(
                 {
                     "player": r["bowler"],
                     "slug": slug_lookup.get(r["bowler_id"], ""),
+                    "country": country_for(r["bowler_id"]),
                     "overs": f"{int(r['legal_balls'] // 6)}.{int(r['legal_balls'] % 6)}",
                     "runs": int(r["runs"]),
                     "wickets": int(r["wickets"]),
@@ -946,6 +992,7 @@ def export_goats(
         return {
             "player": name_lookup.get(r["batter_id"], r["batter"]),
             "slug": slug_lookup.get(r["batter_id"], ""),
+            "country": country_for(r["batter_id"]),
             "team": r["batting_team"],
             "season": str(r["season"]),
             "date": str(r["date"]),
@@ -986,6 +1033,7 @@ def export_goats(
         return {
             "player": name_lookup.get(r["bowler_id"], r["bowler"]),
             "slug": slug_lookup.get(r["bowler_id"], ""),
+            "country": country_for(r["bowler_id"]),
             "team": r["bowling_team"],
             "season": str(r["season"]),
             "date": str(r["date"]),
@@ -1039,6 +1087,7 @@ def export_goats(
         {
             "player": name_lookup.get(r["player_id"], r.get("player", "")),
             "slug": slug_lookup.get(r["player_id"], ""),
+            "country": country_for(r["player_id"]),
             "team": r.get("team", ""),
             "season": str(r["season"]),
             "date": str(r["date"]),
@@ -1068,6 +1117,7 @@ def export_goats(
         {
             "player": name_lookup.get(r["batter_id"], r["batter"]),
             "slug": slug_lookup.get(r["batter_id"], ""),
+            "country": country_for(r["batter_id"]),
             "team": r.get("team", ""),
             "season": str(r["season"]),
             "tilt_per_match": round(r["tilt_per_match"], 5),
@@ -1096,6 +1146,7 @@ def export_goats(
         {
             "player": name_lookup.get(r["bowler_id"], r["bowler"]),
             "slug": slug_lookup.get(r["bowler_id"], ""),
+            "country": country_for(r["bowler_id"]),
             "team": r.get("team", ""),
             "season": str(r["season"]),
             "tilt_per_match": round(r["tilt_per_match"], 5),
@@ -1124,6 +1175,7 @@ def export_goats(
         {
             "player": name_lookup.get(r["batter_id"], r["batter"]),
             "slug": slug_lookup.get(r["batter_id"], ""),
+            "country": country_for(r["batter_id"]),
             "team": r.get("team", ""),
             "season": str(r["season"]),
             "runs": int(r["runs"]),
@@ -1140,6 +1192,7 @@ def export_goats(
         {
             "player": name_lookup.get(r["bowler_id"], r["bowler"]),
             "slug": slug_lookup.get(r["bowler_id"], ""),
+            "country": country_for(r["bowler_id"]),
             "team": r.get("team", ""),
             "season": str(r["season"]),
             "wickets": int(r["wickets"]),
@@ -1321,6 +1374,7 @@ def export_team_details(
             roster_records.append({
                 "player": name_lookup.get(pid, r["player"]),
                 "slug": slug_lookup.get(pid, ""),
+                "country": country_for(pid),
                 "matches": n,
                 "runs": int(r.get("runs") or 0),
                 "batting_balls": bat_balls,
@@ -1406,6 +1460,7 @@ def export_team_season_details(
             roster.append({
                 "player": name_lookup.get(pid, r["player"]),
                 "slug": slug_lookup.get(pid, ""),
+                "country": country_for(pid),
                 "matches": int(r["total_matches"]),
                 "batting_stats": _batting_counting_stats(bat_p_slice, pid, r["player"]),
                 "bowling_stats": _bowling_counting_stats(bowl_p_slice),
@@ -1537,6 +1592,7 @@ def _build_player_season_leaders(
         return {
             "player": name_lookup.get(r["player_id"], r.get("batter") or r.get("player", "")),
             "slug": slug_lookup.get(r["player_id"], ""),
+            "country": country_for(r["player_id"]),
             "team": r.get("batting_team") or r.get("team", ""),
             "team_slug": _row_team_slug(r.get("batting_team") or r.get("team", "")),
             "value": value,
@@ -1547,6 +1603,7 @@ def _build_player_season_leaders(
         return {
             "player": name_lookup.get(r["player_id"], r.get("bowler") or r.get("player", "")),
             "slug": slug_lookup.get(r["player_id"], ""),
+            "country": country_for(r["player_id"]),
             "team": r.get("bowling_team") or r.get("team", ""),
             "team_slug": _row_team_slug(r.get("bowling_team") or r.get("team", "")),
             "value": value,
@@ -1602,6 +1659,7 @@ def _build_player_season_leaders(
             return {
                 "player": name_lookup.get(r["player_id"], r["player"]),
                 "slug": slug_lookup.get(r["player_id"], ""),
+                "country": country_for(r["player_id"]),
                 "team": r.get("team", ""),
                 "team_slug": _row_team_slug(r.get("team", "")),
                 "value": value,
@@ -1907,6 +1965,7 @@ def export_search_index(
             "t": "p",
             "l": r["player"],
             "s": r["slug"],
+            "c": r.get("country"),
             "sub": sub,
             "x": _build_corpus([r["player"], r.get("full_name", r["player"])]),
             "b": r["total_tilt_per_match"],

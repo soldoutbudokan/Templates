@@ -172,7 +172,7 @@ async function renderTeamCareer(slug) {
                 <tbody>
                     ${team.all_time_roster.map((r) => `
                         <tr>
-                            <td><a href="player.html?player=${r.slug}">${r.player}</a></td>
+                            <td><a href="player.html?player=${r.slug}">${flagSpan(r.country)}${r.player}</a></td>
                             <td>${r.matches}</td>
                             <td>${r.runs}</td>
                             <td>${r.wickets}</td>
@@ -291,7 +291,7 @@ async function renderTeamSeason(slug, season) {
                 <tbody>
                     ${ts.roster.map((r) => `
                         <tr>
-                            <td><a href="player.html?player=${r.slug}&season=${encodeURIComponent(ts.season)}">${r.player}</a></td>
+                            <td><a href="player.html?player=${r.slug}&season=${encodeURIComponent(ts.season)}">${flagSpan(r.country)}${r.player}</a></td>
                             <td>${r.matches}</td>
                             <td>${r.batting_stats ? r.batting_stats.runs : '—'}</td>
                             <td>${r.batting_stats ? r.batting_stats.balls : '—'}</td>

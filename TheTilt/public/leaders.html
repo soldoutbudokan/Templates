@@ -162,7 +162,7 @@ async function loadLeaders() {
                     ${data.leaders.map((r) => `
                         <tr>
                             <td>${r.rank}</td>
-                            <td><a href="player.html?player=${r.slug}">${r.player}</a></td>
+                            <td><a href="player.html?player=${r.slug}">${flagSpan(r.country)}${r.player}</a></td>
                             <td>${teamLink(r.team, data.season, teamIndex, { cls: 'team-link-subtle' })}</td>
                             <td><strong>${formatLeaderValue(stat, r.value)}</strong></td>
                             ${ancillaryColumns(stat, r)}

@@ -62,7 +62,7 @@ async function loadPlayer() {
 
         let html = `
             <div class="player-header">
-                <h2>${displayName}</h2>
+                <h2>${flagSpan(p.country)}${displayName}</h2>
                 ${p.full_name && p.full_name !== p.player ? `<div class="initials">${p.player}</div>` : ''}
                 <div class="team">${(p.teams && p.teams.length > 0 ? p.teams : [p.team]).map(t => teamLink(t, null, teamIndex)).join(', ')} | ${p.total_matches} matches | ${p.batting_balls} balls faced | ${p.bowling_balls} balls bowled</div>
             </div>
@@ -502,7 +502,7 @@ async function renderPlayerSeason(p, season, slug) {
 
     let html = `
         <div class="player-header">
-            <h2>${displayName} — ${season}</h2>
+            <h2>${flagSpan(p.country)}${displayName} — ${season}</h2>
             <div class="team">${teamLabel} · ${totalMatches} matches</div>
             <div class="meta">
                 <a href="player.html?player=${slug}" class="match-link">back to ${displayName}'s career</a> ·

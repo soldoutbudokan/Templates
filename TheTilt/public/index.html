@@ -177,7 +177,7 @@ function render() {
                 <td>${i + 1}</td>
                 <td>
                     <a href="player.html?player=${p.slug}" class="row-link" style="text-decoration:none;color:inherit">
-                        <span class="player-name">${displayName}</span>
+                        <span class="player-name">${flagSpan(p.country)}${displayName}</span>
                     </a><br>
                     <span class="player-team">${
                         p.teams && p.teams.length > 1

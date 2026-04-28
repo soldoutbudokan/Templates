@@ -67,6 +67,45 @@
         return `<span class="${cls}">${sign}${pct}%</span>`;
     }
 
+    // Map an ICC country code to a Unicode flag emoji. ICC and ISO 3166-1
+    // alpha-2 codes diverge for England (no ISO code → use the GB-ENG
+    // subdivision tag flag) and West Indies (no flag → fall through to a
+    // text badge handled by `flagSpan`). All other ICC codes pass through
+    // as ISO regional indicator pairs.
+    const _COUNTRY_FLAGS = {
+        IN: '🇮🇳',
+        AU: '🇦🇺',
+        NZ: '🇳🇿',
+        ZA: '🇿🇦',
+        LK: '🇱🇰',
+        PK: '🇵🇰',
+        BD: '🇧🇩',
+        AF: '🇦🇫',
+        IE: '🇮🇪',
+        NL: '🇳🇱',
+        ZW: '🇿🇼',
+        NP: '🇳🇵',
+        US: '🇺🇸',
+        // England — Unicode tag-sequence flag (St. George's Cross). Renders
+        // on macOS / iOS / Windows 10+ / Android 11+ / recent Chrome.
+        EN: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+    };
+
+    function countryFlag(country) {
+        if (!country) return '';
+        return _COUNTRY_FLAGS[country] || '';
+    }
+
+    function flagSpan(country) {
+        if (!country) return '';
+        const flag = countryFlag(country);
+        if (flag) {
+            return `<span class="flag" title="${country}">${flag}</span>`;
+        }
+        // Text fallback for ICC codes without a Unicode flag (e.g. WI).
+        return `<span class="flag flag-text" title="${country}">${country}</span>`;
+    }
+
     function cssVar(name) {
         return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     }
@@ -244,8 +283,9 @@
                 const href = _entityHref(h.rec);
                 const lab = _highlight(h.rec.l, qTokens);
                 const sub = _escapeHtml(h.rec.sub || '');
+                const flagPrefix = h.rec.t === 'p' && h.rec.c ? flagSpan(h.rec.c) : '';
                 html += `<a class="gs-row" data-idx="${idx}" href="${href}" role="option">`
-                    + `<span class="gs-label">${lab}</span>`
+                    + `<span class="gs-label">${flagPrefix}${lab}</span>`
                     + `<span class="gs-sub">${sub}</span>`
                     + `</a>`;
             }
@@ -400,4 +440,6 @@
     window.loadTeamIndex = loadTeamIndex;
     window.teamLink = teamLink;
     window.seasonLink = seasonLink;
+    window.countryFlag = countryFlag;
+    window.flagSpan = flagSpan;
 })();

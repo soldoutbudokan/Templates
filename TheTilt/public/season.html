@@ -145,7 +145,7 @@ async function loadSeason() {
                             ${rows.map((r, i) => `
                                 <li>
                                     <span class="leader-rank">${i + 1}.</span>
-                                    <a href="player.html?player=${r.slug}" class="leader-player">${r.player}</a>
+                                    <a href="player.html?player=${r.slug}" class="leader-player">${flagSpan(r.country)}${r.player}</a>
                                     <span class="leader-team">${teamLink(r.team, data.season, teamIndex, { cls: 'team-link-subtle' })}</span>
                                     <span class="leader-value">${formatLeaderValue(stat, r.value)}</span>
                                 </li>
