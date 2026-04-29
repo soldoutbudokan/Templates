@@ -63,6 +63,18 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Kill browser-default blue links everywhere (issue #81). Most components
+   already wrap their <a> in a class with explicit colors (.match-link,
+   .team-link, .nav-links a, etc.) — this catches the bare <a> tags
+   (seasonLink, back-to-TILT links, prose anchors in about/notes). */
+a {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--accent-green);
+}
+
 /* ============================================
    Top Navigation Bar
    ============================================ */
