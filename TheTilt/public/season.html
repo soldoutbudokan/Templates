@@ -174,7 +174,7 @@ async function loadSeason() {
                         }).join(' / ');
                         const teamsCell = m.teams.map((t) => teamLink(t, data.season, teamIndex)).join(' vs ');
                         const tossCell = m.toss_winner
-                            ? `${teamLink(m.toss_winner, data.season, teamIndex, { cls: 'team-link-subtle' })} → ${m.toss_decision || ''}`
+                            ? `${teamLink(m.toss_winner, data.season, teamIndex, { cls: 'team-link-subtle' })} won the toss and chose to ${m.toss_decision || ''}`
                             : '—';
                         const resultCell = m.winner
                             ? `${teamLink(m.winner, data.season, teamIndex)}${m.result_margin ? ` <span class="result-margin">(${m.result_margin})</span>` : ''}`
