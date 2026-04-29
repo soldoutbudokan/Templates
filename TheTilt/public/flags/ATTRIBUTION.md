@@ -20,4 +20,4 @@ copies or substantial portions of the Software.
 
 `en.svg` is the GB-ENG (England) subdivision flag from the same set.
 
-`wi.svg` is the Cricket West Indies team flag (2017+) sourced from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Cricket_West_Indies_flag_2017.svg), placed in the public domain by Sebastian Wallroth. Note: the artwork itself may be protected as a trademark of Cricket West Indies in some jurisdictions; this file is used here purely for reference / fan-site identification purposes alongside other ICC member flags.
+West Indies has no SVG file — the CWI 2017 flag had too much fine detail (palm-tree crest, lettering) to read at the ~14×10px size we render flags at, so WI players show a plain "WI" text badge.

@@ -69,13 +69,16 @@
 
     // ICC codes with a vendored SVG flag in /flags/. ICC and ISO 3166-1
     // alpha-2 codes diverge for England (file is named `en.svg` but holds
-    // the GB-ENG subdivision flag) and West Indies (no national flag —
-    // hand-drawn placeholder). The vendored SVGs render identically on
-    // every browser/OS, unlike the previous Unicode-emoji approach which
-    // fell back to a black flag for EN on older Windows / Android.
+    // the GB-ENG subdivision flag). West Indies is intentionally NOT in
+    // this set — the CWI 2017 flag has too much fine detail (palm-tree
+    // crest, lettering, narrow stripes) to read at the ~14×10px size we
+    // render flags at, so it falls through to the plain "WI" text badge.
+    // The vendored SVGs render identically on every browser/OS, unlike
+    // the previous Unicode-emoji approach which fell back to a black
+    // flag for EN on older Windows / Android.
     const _SVG_FLAG_CODES = new Set([
         'IN', 'AU', 'NZ', 'ZA', 'LK', 'PK', 'BD', 'AF',
-        'IE', 'NL', 'ZW', 'NP', 'US', 'EN', 'WI',
+        'IE', 'NL', 'ZW', 'NP', 'US', 'EN',
     ]);
 
     function flagSpan(country) {
