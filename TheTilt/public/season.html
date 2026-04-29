@@ -203,15 +203,20 @@ function renderPlayoffsBracket(data, teamIndex) {
     const playoffs = data.playoffs || [];
     if (playoffs.length === 0) return '';
 
-    const card = (p) => {
+    const card = (p, opts) => {
+        opts = opts || {};
         if (!p) return '<div class="bracket-card empty">—</div>';
         const [t1, t2] = p.teams;
         const s1 = (p.scores || {})[t1];
         const s2 = (p.scores || {})[t2];
         const winnerCls = (team) => p.winner === team ? 'bracket-team winner' : 'bracket-team';
+        const showStage = opts.showStage !== false;
         return `
             <div class="bracket-card">
-                <div class="bracket-stage">${p.stage}</div>
+                <div class="bracket-card-header">
+                    ${showStage ? `<span class="bracket-stage">${p.stage}</span>` : '<span class="bracket-stage">&nbsp;</span>'}
+                    <span class="bracket-date">${p.date || ''}</span>
+                </div>
                 <a href="match.html?id=${p.match_id}" class="bracket-match-link">
                     <div class="${winnerCls(t1)}">
                         <span class="bracket-team-name">${teamLink(t1, data.season, teamIndex, { cls: 'team-link-subtle' })}</span>
@@ -221,15 +226,15 @@ function renderPlayoffsBracket(data, teamIndex) {
                         <span class="bracket-team-name">${teamLink(t2, data.season, teamIndex, { cls: 'team-link-subtle' })}</span>
                         <span class="bracket-team-score">${s2 || ''}</span>
                     </div>
-                    ${p.result_margin ? `<div class="bracket-margin">${p.result_margin}</div>` : ''}
                 </a>
+                ${opts.advance ? `<div class="bracket-advance">${opts.advance}</div>` : ''}
             </div>
         `;
     };
 
-    // Modern format (2011+): Q1 / Eliminator / Q2 / Final → 3-column bracket.
-    // Older formats (2008-2010 semis + 3rd place + final, plus any other
-    // historical layout) → simple flat list ordered by date.
+    // Modern format (2011+): Q1 / Eliminator / Q2 / Final → 4-column bracket
+    // tree. Older formats (2008-2010 semis + 3rd place + final, plus any
+    // other historical layout) → simple flat list ordered by date.
     const byStage = {};
     for (const p of playoffs) byStage[p.stage] = p;
     const modern = ['Qualifier 1', 'Eliminator', 'Qualifier 2', 'Final']
@@ -237,22 +242,38 @@ function renderPlayoffsBracket(data, teamIndex) {
 
     let inner = '';
     if (modern) {
+        const q1 = byStage['Qualifier 1'];
+        const elim = byStage['Eliminator'];
+        const q2 = byStage['Qualifier 2'];
+        const final = byStage['Final'];
+        const champ = final && final.winner;
+        const champLink = champ ? teamLink(champ, data.season, teamIndex) : '';
+        const q1Loser = q1 && q1.winner ? (q1.winner === q1.teams[0] ? q1.teams[1] : q1.teams[0]) : null;
+        const elimLoser = elim && elim.winner ? (elim.winner === elim.teams[0] ? elim.teams[1] : elim.teams[0]) : null;
+        const q2Loser = q2 && q2.winner ? (q2.winner === q2.teams[0] ? q2.teams[1] : q2.teams[0]) : null;
         inner = `
             <div class="bracket bracket-modern">
-                <div class="bracket-col">
-                    ${card(byStage['Qualifier 1'])}
-                    ${card(byStage['Eliminator'])}
+                <div class="bracket-col bracket-col-1">
+                    <div class="bracket-col-header">Qualifier 1</div>
+                    ${card(q1, { showStage: false, advance: q1 && q1.winner ? `winner → Final · loser → Q2` : '' })}
                 </div>
-                <div class="bracket-col">
-                    ${card(byStage['Qualifier 2'])}
+                <div class="bracket-col bracket-col-2">
+                    <div class="bracket-col-header">Eliminator</div>
+                    ${card(elim, { showStage: false, advance: elim && elim.winner ? `winner → Q2 · loser eliminated` : '' })}
                 </div>
-                <div class="bracket-col">
-                    ${card(byStage['Final'])}
+                <div class="bracket-col bracket-col-3">
+                    <div class="bracket-col-header">Qualifier 2</div>
+                    ${card(q2, { showStage: false, advance: q2 && q2.winner ? `winner → Final · loser eliminated` : '' })}
+                </div>
+                <div class="bracket-col bracket-col-4">
+                    <div class="bracket-col-header">Final</div>
+                    ${card(final, { showStage: false })}
+                    ${champ ? `<div class="bracket-champion">🏆 ${champLink}</div>` : ''}
                 </div>
             </div>
         `;
     } else {
-        inner = `<div class="bracket bracket-flat">${playoffs.map(card).join('')}</div>`;
+        inner = `<div class="bracket bracket-flat">${playoffs.map((p) => card(p)).join('')}</div>`;
     }
 
     return `

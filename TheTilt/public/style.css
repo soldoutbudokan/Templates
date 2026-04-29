@@ -1513,38 +1513,78 @@ img, pre, code {
 
 .bracket {
     display: flex;
-    gap: 24px;
+    gap: 0;
     padding: 16px 0;
     overflow-x: auto;
+}
+.bracket-modern {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    min-width: 880px;
+    align-items: center;
 }
 .bracket-modern .bracket-col {
     display: flex;
     flex-direction: column;
+    gap: 12px;
+    padding: 0 16px;
+    border-right: 1px dashed var(--border);
+    min-height: 180px;
     justify-content: center;
-    gap: 16px;
-    min-width: 220px;
+    position: relative;
+}
+.bracket-modern .bracket-col:first-child {
+    padding-left: 0;
+}
+.bracket-modern .bracket-col-4 {
+    border-right: none;
+    padding-right: 0;
+}
+.bracket-col-header {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 8px;
 }
 .bracket-flat {
+    display: flex;
     flex-wrap: wrap;
+    gap: 16px;
 }
 .bracket-card {
     border: 1px solid var(--border);
     border-radius: 4px;
-    padding: 8px 12px;
+    padding: 8px 10px;
     background: var(--bg-card, transparent);
-    min-width: 220px;
 }
 .bracket-card.empty {
     border-style: dashed;
     color: var(--text-dim);
     text-align: center;
 }
+.bracket-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+    gap: 8px;
+}
 .bracket-stage {
     font-size: 0.65rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    margin-bottom: 6px;
+}
+.bracket-date {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
 }
 .bracket-match-link {
     display: block;
@@ -1557,12 +1597,17 @@ img, pre, code {
     justify-content: space-between;
     align-items: baseline;
     gap: 8px;
-    padding: 2px 0;
+    padding: 4px 6px;
     font-size: 0.85rem;
+    border-bottom: 1px solid var(--border);
+}
+.bracket-team:last-child {
+    border-bottom: none;
 }
 .bracket-team.winner {
     font-weight: 600;
     color: var(--accent-green);
+    background: var(--accent-green-dim);
 }
 .bracket-team-score {
     color: var(--text-dim);
@@ -1572,11 +1617,23 @@ img, pre, code {
 .bracket-team.winner .bracket-team-score {
     color: var(--accent-green);
 }
-.bracket-margin {
-    margin-top: 4px;
+.bracket-advance {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed var(--border);
     font-size: 0.65rem;
     color: var(--text-muted);
-    font-style: italic;
+    text-align: center;
+}
+.bracket-champion {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 2px solid var(--accent-green);
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: var(--accent-green-dim);
 }
 
 /* Unify link styling on reference-page tables (Standings, Season-by-Season,
