@@ -20,4 +20,4 @@ copies or substantial portions of the Software.
 
 `en.svg` is the GB-ENG (England) subdivision flag from the same set.
 
-`wi.svg` is a hand-drawn West Indies placeholder ("WI" text on maroon, the Cricket West Indies palette) — there is no Unicode emoji or national flag for the West Indies, and the Cricket West Indies emblem is trademarked. Replace with an appropriate licensed asset if desired.
+`wi.svg` is the Cricket West Indies team flag (2017+) sourced from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Cricket_West_Indies_flag_2017.svg), placed in the public domain by Sebastian Wallroth. Note: the artwork itself may be protected as a trademark of Cricket West Indies in some jurisdictions; this file is used here purely for reference / fan-site identification purposes alongside other ICC member flags.
