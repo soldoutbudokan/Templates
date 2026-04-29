@@ -1454,15 +1454,22 @@ img, pre, code {
     border-bottom-color: var(--accent-green);
 }
 
-/* Player country flag (issue #72). Inline before names everywhere. */
-.flag {
+/* Player country flag (issue #72, #78). Vendored SVG flags in /flags/.
+   Display inline before player names; sized to match the surrounding
+   line-height so they look consistent across leaderboards, tables, and
+   match scorecards. */
+img.flag {
     display: inline-block;
-    margin-right: 4px;
-    font-size: 0.85em;
-    vertical-align: baseline;
-    line-height: 1;
+    width: 1.1em;
+    height: 0.85em;
+    margin-right: 5px;
+    vertical-align: -0.05em;
+    object-fit: cover;
+    border-radius: 1px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
 }
-.flag-text {
+span.flag-text {
+    display: inline-block;
     font-size: 0.6rem;
     padding: 1px 4px;
     border: 1px solid var(--border);
@@ -1470,6 +1477,7 @@ img, pre, code {
     color: var(--text-muted);
     letter-spacing: 0.5px;
     margin-right: 6px;
+    line-height: 1;
 }
 
 /* Match page: dismissal column + fall-of-wickets line */

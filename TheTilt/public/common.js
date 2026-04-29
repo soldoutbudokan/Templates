@@ -67,43 +67,24 @@
         return `<span class="${cls}">${sign}${pct}%</span>`;
     }
 
-    // Map an ICC country code to a Unicode flag emoji. ICC and ISO 3166-1
-    // alpha-2 codes diverge for England (no ISO code → use the GB-ENG
-    // subdivision tag flag) and West Indies (no flag → fall through to a
-    // text badge handled by `flagSpan`). All other ICC codes pass through
-    // as ISO regional indicator pairs.
-    const _COUNTRY_FLAGS = {
-        IN: '🇮🇳',
-        AU: '🇦🇺',
-        NZ: '🇳🇿',
-        ZA: '🇿🇦',
-        LK: '🇱🇰',
-        PK: '🇵🇰',
-        BD: '🇧🇩',
-        AF: '🇦🇫',
-        IE: '🇮🇪',
-        NL: '🇳🇱',
-        ZW: '🇿🇼',
-        NP: '🇳🇵',
-        US: '🇺🇸',
-        // England — Unicode tag-sequence flag (St. George's Cross). Renders
-        // on macOS / iOS / Windows 10+ / Android 11+ / recent Chrome.
-        EN: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-    };
-
-    function countryFlag(country) {
-        if (!country) return '';
-        return _COUNTRY_FLAGS[country] || '';
-    }
+    // ICC codes with a vendored SVG flag in /flags/. ICC and ISO 3166-1
+    // alpha-2 codes diverge for England (file is named `en.svg` but holds
+    // the GB-ENG subdivision flag) and West Indies (no national flag —
+    // hand-drawn placeholder). The vendored SVGs render identically on
+    // every browser/OS, unlike the previous Unicode-emoji approach which
+    // fell back to a black flag for EN on older Windows / Android.
+    const _SVG_FLAG_CODES = new Set([
+        'IN', 'AU', 'NZ', 'ZA', 'LK', 'PK', 'BD', 'AF',
+        'IE', 'NL', 'ZW', 'NP', 'US', 'EN', 'WI',
+    ]);
 
     function flagSpan(country) {
         if (!country) return '';
-        const flag = countryFlag(country);
-        if (flag) {
-            return `<span class="flag" title="${country}">${flag}</span>`;
+        const code = String(country).toUpperCase();
+        if (_SVG_FLAG_CODES.has(code)) {
+            return `<img class="flag" src="flags/${code.toLowerCase()}.svg" alt="${code}" title="${code}">`;
         }
-        // Text fallback for ICC codes without a Unicode flag (e.g. WI).
-        return `<span class="flag flag-text" title="${country}">${country}</span>`;
+        return `<span class="flag flag-text" title="${code}">${code}</span>`;
     }
 
     function cssVar(name) {
@@ -440,6 +421,5 @@
     window.loadTeamIndex = loadTeamIndex;
     window.teamLink = teamLink;
     window.seasonLink = seasonLink;
-    window.countryFlag = countryFlag;
     window.flagSpan = flagSpan;
 })();
