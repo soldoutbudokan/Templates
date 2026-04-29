@@ -8,20 +8,20 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.01017,
-  "batting_tilt_per_match": -0.00499,
+  "total_tilt_per_match": -0.00991,
+  "batting_tilt_per_match": -0.00479,
   "bowling_tilt_per_match": -0.01341,
-  "shrunk_total_tilt_per_match": -0.01095,
-  "shrunk_batting_tilt_per_match": -0.00596,
+  "shrunk_total_tilt_per_match": -0.0107,
+  "shrunk_batting_tilt_per_match": -0.00576,
   "shrunk_bowling_tilt_per_match": -0.01336,
-  "tilt_ci_lower": -0.02868,
-  "tilt_ci_upper": 0.00677,
-  "tilt_ci_lower_90": -0.02583,
-  "tilt_ci_upper_90": 0.00392,
+  "tilt_ci_lower": -0.02822,
+  "tilt_ci_upper": 0.00682,
+  "tilt_ci_lower_90": -0.02541,
+  "tilt_ci_upper_90": 0.004,
   "confidence": "medium",
-  "total_tilt": -0.82381,
-  "total_matches": 81,
-  "batting_balls": 1171,
+  "total_tilt": -0.81266,
+  "total_matches": 82,
+  "batting_balls": 1187,
   "bowling_balls": 307,
   "seasons": [
     {
@@ -1629,11 +1629,11 @@
     {
       "season": "2026",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.01804,
+      "batting_tilt_per_match": -0.01479,
       "bowling_tilt_per_match": 0.01088,
-      "batting_matches": 8,
+      "batting_matches": 9,
       "bowling_matches": 4,
-      "batting_balls": 78,
+      "batting_balls": 94,
       "bowling_balls": 24,
       "matches": [
         {
@@ -1787,15 +1787,34 @@
           "bowl_econ": 12.0,
           "bowl_tilt": -0.01045,
           "total_tilt": -0.023
+        },
+        {
+          "match_id": "1529283",
+          "date": "2026-04-28",
+          "opponent": "Punjab Kings",
+          "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+          "team_score": "228/4",
+          "opponent_score": "222/4",
+          "winner": "Rajasthan Royals",
+          "bat_runs": 29,
+          "bat_balls": 16,
+          "bat_sr": 181.2,
+          "bat_tilt": 0.01115,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.01115
         }
       ],
       "batting_stats": {
-        "runs": 88,
-        "innings": 8,
-        "balls": 78,
-        "avg": 12.57,
-        "sr": 112.82,
-        "hs": 20,
+        "runs": 117,
+        "innings": 9,
+        "balls": 94,
+        "avg": 14.62,
+        "sr": 124.47,
+        "hs": 29,
         "not_outs": 1,
         "fifties": 0,
         "hundreds": 0
@@ -1820,9 +1839,9 @@
     },
     {
       "phase": "middle",
-      "tilt": 0.04537,
-      "balls": 713,
-      "avg_delta": 6.1e-05
+      "tilt": 0.05652,
+      "balls": 729,
+      "avg_delta": 7.5e-05
     },
     {
       "phase": "death",
@@ -2505,6 +2524,12 @@
       "date": "2026-04-25",
       "tilt": -0.023,
       "cumulative": -0.82381
+    },
+    {
+      "match": 82,
+      "date": "2026-04-28",
+      "tilt": 0.01115,
+      "cumulative": -0.81266
     }
   ],
   "team_matchups": [
@@ -2539,14 +2564,14 @@
       "matches": 9
     },
     {
+      "opponent": "Punjab Kings",
+      "tilt_per_match": -0.02239,
+      "matches": 11
+    },
+    {
       "opponent": "Delhi Capitals",
       "tilt_per_match": -0.02307,
       "matches": 9
-    },
-    {
-      "opponent": "Punjab Kings",
-      "tilt_per_match": -0.02575,
-      "matches": 10
     },
     {
       "opponent": "Chennai Super Kings",
@@ -2555,13 +2580,13 @@
     }
   ],
   "batting_stats": {
-    "runs": 1646,
-    "innings": 79,
-    "balls": 1171,
-    "avg": 26.13,
-    "sr": 140.56,
+    "runs": 1675,
+    "innings": 80,
+    "balls": 1187,
+    "avg": 26.17,
+    "sr": 141.11,
     "hs": 95,
-    "dismissals": 63,
+    "dismissals": 64,
     "not_outs": 16,
     "fifties": 7,
     "hundreds": 0
@@ -2656,6 +2681,7 @@
     0.09029,
     -0.10079,
     -0.04739,
-    -0.023
+    -0.023,
+    0.01115
   ]
 }
