@@ -203,83 +203,245 @@ function renderPlayoffsBracket(data, teamIndex) {
     const playoffs = data.playoffs || [];
     if (playoffs.length === 0) return '';
 
-    const card = (p, opts) => {
-        opts = opts || {};
-        if (!p) return '<div class="bracket-card empty">—</div>';
-        const [t1, t2] = p.teams;
-        const s1 = (p.scores || {})[t1];
-        const s2 = (p.scores || {})[t2];
-        const winnerCls = (team) => p.winner === team ? 'bracket-team winner' : 'bracket-team';
-        const showStage = opts.showStage !== false;
-        return `
-            <div class="bracket-card">
-                <div class="bracket-card-header">
-                    ${showStage ? `<span class="bracket-stage">${p.stage}</span>` : '<span class="bracket-stage">&nbsp;</span>'}
-                    <span class="bracket-date">${p.date || ''}</span>
-                </div>
-                <a href="match.html?id=${p.match_id}" class="bracket-match-link">
-                    <div class="${winnerCls(t1)}">
-                        <span class="bracket-team-name">${teamLink(t1, data.season, teamIndex, { cls: 'team-link-subtle' })}</span>
-                        <span class="bracket-team-score">${s1 || ''}</span>
-                    </div>
-                    <div class="${winnerCls(t2)}">
-                        <span class="bracket-team-name">${teamLink(t2, data.season, teamIndex, { cls: 'team-link-subtle' })}</span>
-                        <span class="bracket-team-score">${s2 || ''}</span>
-                    </div>
-                </a>
-                ${opts.advance ? `<div class="bracket-advance">${opts.advance}</div>` : ''}
-            </div>
-        `;
-    };
-
-    // Modern format (2011+): Q1 / Eliminator / Q2 / Final → 4-column bracket
-    // tree. Older formats (2008-2010 semis + 3rd place + final, plus any
-    // other historical layout) → simple flat list ordered by date.
+    // Treat 2011's "Elimination Final" as the modern Eliminator slot.
+    const normStage = (s) => s === 'Elimination Final' ? 'Eliminator' : s;
     const byStage = {};
-    for (const p of playoffs) byStage[p.stage] = p;
-    const modern = ['Qualifier 1', 'Eliminator', 'Qualifier 2', 'Final']
+    for (const p of playoffs) byStage[normStage(p.stage)] = p;
+
+    const isModern = ['Qualifier 1', 'Eliminator', 'Qualifier 2', 'Final']
         .every(s => byStage[s]);
 
-    let inner = '';
-    if (modern) {
-        const q1 = byStage['Qualifier 1'];
-        const elim = byStage['Eliminator'];
-        const q2 = byStage['Qualifier 2'];
-        const final = byStage['Final'];
-        const champ = final && final.winner;
-        const champLink = champ ? teamLink(champ, data.season, teamIndex) : '';
-        const q1Loser = q1 && q1.winner ? (q1.winner === q1.teams[0] ? q1.teams[1] : q1.teams[0]) : null;
-        const elimLoser = elim && elim.winner ? (elim.winner === elim.teams[0] ? elim.teams[1] : elim.teams[0]) : null;
-        const q2Loser = q2 && q2.winner ? (q2.winner === q2.teams[0] ? q2.teams[1] : q2.teams[0]) : null;
-        inner = `
-            <div class="bracket bracket-modern">
-                <div class="bracket-col bracket-col-1">
-                    <div class="bracket-col-header">Qualifier 1</div>
-                    ${card(q1, { showStage: false, advance: q1 && q1.winner ? `winner → Final · loser → Q2` : '' })}
-                </div>
-                <div class="bracket-col bracket-col-2">
-                    <div class="bracket-col-header">Eliminator</div>
-                    ${card(elim, { showStage: false, advance: elim && elim.winner ? `winner → Q2 · loser eliminated` : '' })}
-                </div>
-                <div class="bracket-col bracket-col-3">
-                    <div class="bracket-col-header">Qualifier 2</div>
-                    ${card(q2, { showStage: false, advance: q2 && q2.winner ? `winner → Final · loser eliminated` : '' })}
-                </div>
-                <div class="bracket-col bracket-col-4">
-                    <div class="bracket-col-header">Final</div>
-                    ${card(final, { showStage: false })}
-                    ${champ ? `<div class="bracket-champion">🏆 ${champLink}</div>` : ''}
-                </div>
-            </div>
-        `;
-    } else {
-        inner = `<div class="bracket bracket-flat">${playoffs.map((p) => card(p)).join('')}</div>`;
-    }
+    const inner = isModern
+        ? renderModernBracket(data, teamIndex, byStage)
+        : renderFlatBracket(data, teamIndex, playoffs);
 
     return `
         <h2 class="section-title">Playoffs</h2>
         ${inner}
     `;
+}
+
+function renderFlatBracket(data, teamIndex, playoffs) {
+    const card = (p) => {
+        const [t1, t2] = p.teams;
+        const scores = p.scores || {};
+        const row = (t) => {
+            const isW = p.winner === t;
+            const s = scores[t] || '';
+            return `<div class="brk-flat-row${isW ? ' winner' : ''}">
+                        <span class="brk-flat-team">${t}</span>
+                        <span class="brk-flat-score">${s}</span>
+                    </div>`;
+        };
+        return `
+            <a class="brk-flat-card" href="match.html?id=${p.match_id}">
+                <div class="brk-flat-header">
+                    <span class="brk-flat-stage">${p.stage}</span>
+                    <span class="brk-flat-date">${p.date || ''}</span>
+                </div>
+                ${row(t1)}
+                ${row(t2)}
+            </a>
+        `;
+    };
+    return `<div class="bracket-flat">${playoffs.map(card).join('')}</div>`;
+}
+
+function renderModernBracket(data, teamIndex, byStage) {
+    const seedMap = new Map();
+    (data.team_table || []).forEach(t => seedMap.set(t.team, t.position_est));
+
+    const q1 = byStage['Qualifier 1'];
+    const elim = byStage['Eliminator'];
+    const q2 = byStage['Qualifier 2'];
+    const final = byStage['Final'];
+
+    const q1W = q1.winner;
+    const q1L = q1.teams.find(t => t !== q1W) || null;
+    const eW = elim.winner;
+    const q2W = q2.winner;
+    const q2L = q2.teams.find(t => t !== q2W) || null;
+    const champ = final.winner;
+
+    const seedOf = (t) => seedMap.get(t) || 99;
+    const orderBySeed = (teams) => [...teams].sort((a, b) => seedOf(a) - seedOf(b));
+    const orderByList = (teams, preferred) => {
+        const result = [];
+        for (const p of preferred) if (teams.includes(p) && !result.includes(p)) result.push(p);
+        for (const t of teams) if (!result.includes(t)) result.push(t);
+        return result;
+    };
+    const q1Order = orderBySeed(q1.teams);
+    const elimOrder = orderBySeed(elim.teams);
+    const q2Order = orderByList(q2.teams, [q1L, eW]);
+    const finalOrder = orderByList(final.teams, [q1W, q2W]);
+
+    const fmtDate = (iso) => {
+        if (!iso) return '';
+        const parts = iso.split('-');
+        if (parts.length < 3) return iso;
+        const months = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${parseInt(parts[2], 10)} ${months[parseInt(parts[1], 10)] || ''}`;
+    };
+    // Show date alone — full venue lives in the Matches table. Some Cricsheet
+    // venues lack a comma-separated city (e.g. the Visakhapatnam stadium) and
+    // would overflow the bracket cells, so don't try to inline them here.
+    const dateVenue = (m) => fmtDate(m.date);
+
+    // Each match cell is wrapped in <a href="match.html?id=X"> so the box
+    // is clickable and right-clickable. Three sibling anchors (one per td)
+    // share a hover state via JS-free CSS group selector on the row.
+    //
+    // borders is "T R B L" (top right bottom left) in px values like "1px 1px 1px 1px".
+    const link = (matchId, content) =>
+        `<a class="brk-cell-link" href="match.html?id=${matchId}">${content}</a>`;
+    const seedCell = (seed, isW, matchId, borders) =>
+        `<td class="brk-td brk-bgD brk-center${isW ? ' winner' : ''}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${seed}</b>` : String(seed))}</td>`;
+    const teamCell = (team, isW, matchId, borders) =>
+        `<td class="brk-td brk-bgL${isW ? ' winner' : ''}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${team}</b>` : team)}</td>`;
+    const scoreCell = (score, isW, matchId, borders) =>
+        `<td class="brk-td brk-bgL brk-center${isW ? ' winner' : ''}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${score}</b>` : score)}</td>`;
+    const matchTriple = (label, team, match, isFirst) => {
+        const isW = match.winner === team;
+        const score = (match.scores || {})[team] || '';
+        const seedLeft = isFirst ? '1px' : '0px';
+        const seedTop = isFirst ? '1px' : '0px';
+        return seedCell(label, isW, match.match_id, `${seedTop} 1px 1px ${seedLeft}`)
+             + teamCell(team, isW, match.match_id, `${seedTop} 0px 1px 0px`)
+             + scoreCell(score, isW, match.match_id, `${seedTop} 1px 1px 0px`);
+    };
+    const headerCell = (label) =>
+        `<td class="brk-td brk-bgD brk-center brk-header" colspan="3" rowspan="2" style="border-width:1px 1px 1px 1px"><b>${label}</b></td>`;
+    const dateCell = (m) =>
+        `<td class="brk-date" colspan="3" rowspan="2">${dateVenue(m)}</td>`;
+
+    // 14-column, 18-row table porting Wikipedia's Page-playoff bracket.
+    // Column widths: 1, 22, 165, 95, 4, 2, 22, 165, 95, 4, 2, 22, 165, 95.
+    // Cells with explicit border styles draw the connector lines.
+    const inner = `
+<div class="brk-wrap">
+<table class="brk-tbl">
+<colgroup>
+  <col style="width:1px"/>
+  <col style="width:22px"/><col style="width:165px"/><col style="width:95px"/>
+  <col style="width:4px"/><col style="width:2px"/>
+  <col style="width:22px"/><col style="width:165px"/><col style="width:95px"/>
+  <col style="width:4px"/><col style="width:2px"/>
+  <col style="width:22px"/><col style="width:165px"/><col style="width:95px"/>
+</colgroup>
+<tbody>
+  <!-- Row 1: section headers -->
+  <tr>
+    <td style="height:11px"></td>
+    ${headerCell('Qualifier 1 / Eliminator')}
+    <td rowspan="5"></td><td rowspan="5"></td>
+    ${headerCell('Qualifier 2')}
+    <td rowspan="5"></td><td rowspan="5"></td>
+    ${headerCell('Final')}
+  </tr>
+  <tr><td style="height:11px"></td></tr>
+  <!-- Row 3: dates for Q1 + Final -->
+  <tr>
+    <td style="height:11px"></td>
+    ${dateCell(q1)}
+    <td colspan="3" rowspan="2"></td>
+    ${dateCell(final)}
+  </tr>
+  <tr><td style="height:11px"></td></tr>
+  <!-- Row 5: Q1 team1 + connector to Final + Final team1 (Q1W) -->
+  <tr>
+    <td style="height:11px"></td>
+    ${matchTriple(seedOf(q1Order[0]), q1Order[0], q1, true)}
+    <td colspan="3" rowspan="2" class="brk-line" style="border-width:0 0 2px 0"></td>
+    ${matchTriple('Q1W', finalOrder[0], final, true)}
+  </tr>
+  <tr>
+    <td style="height:11px"></td>
+    <td class="brk-line" style="border-width:0 0 2px 0"></td>
+    <td class="brk-line" style="border-width:0 0 2px 0"></td>
+    <td class="brk-line" style="border-width:0 0 2px 0"></td>
+    <td class="brk-line" style="border-width:0 0 2px 0"></td>
+  </tr>
+  <!-- Row 7: Q1 team2, connectors, Q2 date, Final team2 (Q2W) -->
+  <tr>
+    <td style="height:11px"></td>
+    ${matchTriple(seedOf(q1Order[1]), q1Order[1], q1, false)}
+    <td class="brk-line-loser" style="border-width:2px 2px 0 0"></td>
+    <td></td>
+    ${dateCell(q2)}
+    <td class="brk-line" style="border-width:0 2px 0 0"></td>
+    <td class="brk-line" style="border-width:1px 0 0 0"></td>
+    ${matchTriple('Q2W', finalOrder[1], final, false)}
+  </tr>
+  <tr>
+    <td style="height:11px"></td>
+    <td rowspan="2" class="brk-line-loser" style="border-width:0 2px 0 0"></td>
+    <td rowspan="2"></td>
+    <td rowspan="2" class="brk-line" style="border-width:0 2px 0 0"></td>
+    <td rowspan="2"></td>
+  </tr>
+  <!-- Row 9: Q2 team1 (Q1L) -->
+  <tr>
+    <td style="height:11px"></td>
+    <td colspan="3" rowspan="2"></td>
+    ${matchTriple('Q1L', q2Order[0], q2, true)}
+    <td colspan="3" rowspan="2"></td>
+  </tr>
+  <tr>
+    <td style="height:11px"></td>
+    <td class="brk-line-loser" style="border-width:0 2px 0 0"></td>
+    <td class="brk-line-loser" style="border-width:0 0 2px 0"></td>
+    <td class="brk-line" style="border-width:0 2px 2px 0"></td>
+    <td></td>
+  </tr>
+  <!-- Row 11: Eliminator date + Q2 team2 (EW) -->
+  <tr>
+    <td style="height:11px"></td>
+    ${dateCell(elim)}
+    <td class="brk-line" style="border-width:0 2px 0 0"></td>
+    <td class="brk-line" style="border-width:2px 0 0 0"></td>
+    ${matchTriple('EW', q2Order[1], q2, false)}
+    <td class="brk-line" style="border-width:1px 0 0 0"></td>
+    <td></td>
+    <td colspan="3" rowspan="2"></td>
+  </tr>
+  <tr>
+    <td style="height:11px"></td>
+    <td rowspan="2" class="brk-line" style="border-width:0 2px 0 0"></td>
+    <td rowspan="2"></td>
+    <td rowspan="4"></td>
+    <td rowspan="4"></td>
+  </tr>
+  <!-- Row 13: Eliminator team1 -->
+  <tr>
+    <td style="height:11px"></td>
+    ${matchTriple(seedOf(elimOrder[0]), elimOrder[0], elim, true)}
+    <td colspan="3" rowspan="4"></td>
+    <td colspan="3" rowspan="2"></td>
+  </tr>
+  <tr>
+    <td style="height:11px"></td>
+    <td class="brk-line" style="border-width:0 2px 2px 0"></td>
+    <td></td>
+  </tr>
+  <!-- Row 15: Eliminator team2 -->
+  <tr>
+    <td style="height:11px"></td>
+    ${matchTriple(seedOf(elimOrder[1]), elimOrder[1], elim, false)}
+    <td class="brk-line" style="border-width:1px 0 0 0"></td>
+    <td></td>
+    <td colspan="3" rowspan="2"></td>
+  </tr>
+  <tr>
+    <td style="height:11px"></td>
+    <td></td><td></td><td></td><td></td>
+  </tr>
+</tbody>
+</table>
+${champ ? `<div class="bracket-champion">🏆 ${teamLink(champ, data.season, teamIndex)}</div>` : ''}
+</div>
+    `;
+    return inner;
 }
 
 loadSeason();
