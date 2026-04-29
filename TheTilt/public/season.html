@@ -111,9 +111,11 @@ async function loadSeason() {
         <h2 class="section-title">Standings</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>NR</th><th>Win%</th><th>NRR</th><th>Team TILT/m</th></tr></thead>
+                <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th><th>Team TILT/m</th></tr></thead>
                 <tbody>
-                    ${data.team_table.map((t) => `
+                    ${data.team_table.map((t) => {
+                        const pts = (t.points != null) ? t.points : (t.wins * 2 + (t.no_results || 0));
+                        return `
                         <tr>
                             <td>${t.position_est}</td>
                             <td>${teamLink(t.team, data.season, teamIndex)}</td>
@@ -121,11 +123,12 @@ async function loadSeason() {
                             <td>${t.wins}</td>
                             <td>${t.losses}</td>
                             <td>${t.no_results || 0}</td>
-                            <td>${(t.win_pct * 100).toFixed(1)}%</td>
+                            <td>${pts}</td>
                             <td>${t.nrr != null ? (t.nrr > 0 ? '+' : '') + t.nrr.toFixed(2) : '—'}</td>
                             <td>${formatTilt(t.team_tilt_per_match)}</td>
                         </tr>
-                    `).join('')}
+                    `;
+                    }).join('')}
                 </tbody>
             </table>
         </div>

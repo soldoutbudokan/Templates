@@ -76,12 +76,17 @@ def load_completed_seasons(config_path: str = "config/seasons.yaml") -> set:
 def _compute_team_season_nrr(deltas_df: pd.DataFrame, team: str, season: str) -> Optional[float]:
     """Season-final NRR for a (team, season): runs/over scored minus runs/over conceded.
 
-    Uses every legal-or-extras delivery as one ball (matches build_features.py
-    NRR feature so the model and the website tell the same story). Returns
-    None if the team didn't play (avoids division by zero on empty slices).
+    Restricted to regular-season balls (issue #75) so the NRR matches the
+    points-table convention used by IPL standings. Uses every legal-or-extras
+    delivery as one ball (matches `build_features.py` so the model and the
+    website tell the same story). Returns None if the team didn't play any
+    regular-season game (avoids division by zero on empty slices).
     """
-    bat = deltas_df[(deltas_df["batting_team"] == team) & (deltas_df["season"] == season)]
-    bowl = deltas_df[(deltas_df["bowling_team"] == team) & (deltas_df["season"] == season)]
+    df = deltas_df
+    if "event_stage" in df.columns:
+        df = df[df["event_stage"].isna()]
+    bat = df[(df["batting_team"] == team) & (df["season"] == season)]
+    bowl = df[(df["bowling_team"] == team) & (df["season"] == season)]
     if len(bat) == 0 or len(bowl) == 0:
         return None
     overs_faced = len(bat) / 6.0
@@ -1310,6 +1315,7 @@ def export_team_details(
                     "team_score": mi["scores"].get(canonical),
                     "opponent_score": mi["scores"].get(opponent) if opponent else None,
                     "winner": mi["winner"],
+                    "event_stage": mi.get("event_stage"),
                     "team_total_tilt": round(team_tilt_for_match, 5),
                 })
             season_matches.sort(key=lambda x: x["date"])
@@ -1320,6 +1326,7 @@ def export_team_details(
                 "matches": int(r["matches"]),
                 "wins": int(r["wins"]),
                 "losses": int(r["losses"]),
+                "no_results": int(r.get("no_results", 0)),
                 "win_pct": float(round(r["win_pct"], 4)),
                 "nrr": _compute_team_season_nrr(deltas_df, canonical, season_str),
                 "team_total_tilt": round(float(r["team_total_tilt"]), 5),
@@ -1488,6 +1495,7 @@ def export_team_season_details(
                 "team_score": mi["scores"].get(canonical),
                 "opponent_score": mi["scores"].get(opponent) if opponent else None,
                 "winner": mi["winner"],
+                "event_stage": mi.get("event_stage"),
                 "team_total_tilt": round(team_total_tilt, 5),
             })
         match_log.sort(key=lambda x: x["date"])
@@ -1502,6 +1510,7 @@ def export_team_season_details(
                 "matches": int(ts["matches"]),
                 "wins": int(ts["wins"]),
                 "losses": int(ts["losses"]),
+                "no_results": int(ts.get("no_results", 0)),
                 "win_pct": float(round(ts["win_pct"], 4)),
                 "nrr": _compute_team_season_nrr(deltas_df, canonical, season),
                 "team_total_tilt": round(float(ts["team_total_tilt"]), 5),
@@ -1711,15 +1720,15 @@ def export_seasons(
     for season in sorted(deltas_df["season"].unique(), key=str):
         season_year = int(season.split("/")[0]) if "/" in season else int(season)
 
-        # Team table for the season
+        # Team table for the season — regular-season only (issue #75)
         ts_rows = team_season_tilt[team_season_tilt["season"] == season].copy()
         team_table = []
-        for _, r in ts_rows.sort_values("position_est").iterrows():
+        for _, r in ts_rows.iterrows():
             canonical = r["team"]
             wins = int(r["wins"])
             losses = int(r["losses"])
             matches = int(r["matches"])
-            no_results = max(matches - wins - losses, 0)
+            no_results = int(r.get("no_results", 0))
             team_table.append({
                 "team": canonical,
                 "slug": TEAM_SLUG.get(canonical, ""),
@@ -1728,12 +1737,24 @@ def export_seasons(
                 "wins": wins,
                 "losses": losses,
                 "no_results": no_results,
+                "points": int(r.get("points", wins * 2 + no_results)),
                 "win_pct": float(round(r["win_pct"], 4)),
                 "nrr": _compute_team_season_nrr(deltas_df, canonical, season),
                 "team_total_tilt": round(float(r["team_total_tilt"]), 5),
                 "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
-                "position_est": int(r["position_est"]),
             })
+
+        # Re-rank by IPL convention: points desc, then NRR desc. Teams that
+        # genuinely tie on both share the position (rank.method='min').
+        team_table.sort(key=lambda t: (-t["points"], -(t["nrr"] if t["nrr"] is not None else -99)))
+        prev_key = None
+        prev_pos = 0
+        for i, t in enumerate(team_table, 1):
+            key = (t["points"], t["nrr"])
+            if key != prev_key:
+                prev_pos = i
+                prev_key = key
+            t["position_est"] = prev_pos
 
         # Champion: only populated for seasons listed in config/seasons.yaml.
         # In-progress seasons (where the final hasn't been played yet) get null

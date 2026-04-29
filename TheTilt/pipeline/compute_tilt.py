@@ -676,19 +676,41 @@ def aggregate_team_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
 
 
 # %% Aggregate per (team, season)
-def aggregate_team_season_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
-    """Aggregate per (team, season). Same metrics as team aggregate plus
-    a position estimate (rank by win_pct in the season)."""
-    print("\nAggregating per-team-per-season TILT scores...")
+def aggregate_team_season_tilt(
+    deltas_df: pd.DataFrame,
+    no_results_df: Optional[pd.DataFrame] = None,
+) -> pd.DataFrame:
+    """Aggregate per (team, season) — **regular-season only** (issue #75).
+
+    Playoff matches (`event_stage` set in cricsheet — Qualifier 1, Eliminator,
+    Qualifier 2, Final, Semi Final, etc.) are excluded so points-table style
+    metrics show every team playing roughly the same number of games. The
+    career view (`aggregate_team_tilt`) still includes everything.
+
+    `no_results_df` (optional, from `parse_no_results_from_raw`) injects NR
+    rows so the team table matches IPL-published standings: matches counts
+    NR, the new `no_results` column shows the count, and `points` follows
+    IPL convention (W=2, NR=1, L=0). Position is ranked by points, then
+    NRR... but NRR isn't computed here — `position_est` falls back to
+    win_pct as the secondary sort.
+    """
+    print("\nAggregating per-team-per-season TILT scores (regular season only)...")
     deltas_df = _ensure_legal_flags(deltas_df)
 
+    # Filter to regular-season balls only. event_stage is None for league
+    # matches, set to "Final" / "Qualifier 1" / etc. on playoffs.
+    if "event_stage" in deltas_df.columns:
+        rs = deltas_df[deltas_df["event_stage"].isna()].copy()
+    else:
+        rs = deltas_df
+
     # Match-level info per (team, season): for wins/losses, season per match
-    match_first = deltas_df.groupby("match_id").first()[["season", "winner", "batting_team", "bowling_team"]].reset_index()
+    match_first = rs.groupby("match_id").first()[["season", "winner", "batting_team", "bowling_team"]].reset_index()
     appearances = pd.concat([
         match_first[["match_id", "season", "batting_team"]].rename(columns={"batting_team": "team"}),
         match_first[["match_id", "season", "bowling_team"]].rename(columns={"bowling_team": "team"}),
     ]).dropna().drop_duplicates()
-    matches = appearances.groupby(["team", "season"]).size().reset_index(name="matches")
+    matches = appearances.groupby(["team", "season"]).size().reset_index(name="played_decided")
 
     wins = (
         match_first.dropna(subset=["winner"]).groupby(["winner", "season"]).size().reset_index(name="wins")
@@ -696,13 +718,13 @@ def aggregate_team_season_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     )
 
     bat = (
-        deltas_df.groupby(["batting_team", "season"])
+        rs.groupby(["batting_team", "season"])
         .agg(batting_total_tilt=("delta_wp", "sum"), batting_balls=("legal_bat", "sum"))
         .reset_index()
         .rename(columns={"batting_team": "team"})
     )
     bowl = (
-        deltas_df.groupby(["bowling_team", "season"])
+        rs.groupby(["bowling_team", "season"])
         .agg(bowling_total_tilt=("delta_wp", lambda x: -x.sum()), bowling_balls=("legal_bowl", "sum"))
         .reset_index()
         .rename(columns={"bowling_team": "team"})
@@ -718,19 +740,40 @@ def aggregate_team_season_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
         if col in out.columns:
             out[col] = out[col].fillna(0)
     out["wins"] = out["wins"].astype(int)
-    out["losses"] = (out["matches"] - out["wins"]).astype(int)
+    out["losses"] = (out["played_decided"] - out["wins"]).astype(int)
+
+    # Inject NR matches: each NR contributes one match to each of its two
+    # teams. Cricsheet excludes NR ball events entirely, so they have to
+    # come from the raw JSON scan.
+    if no_results_df is not None and len(no_results_df) > 0:
+        nr = no_results_df.copy()
+        nr_long = pd.concat([
+            nr[["season", "team1"]].rename(columns={"team1": "team"}),
+            nr[["season", "team2"]].rename(columns={"team2": "team"}),
+        ]).dropna()
+        nr_counts = nr_long.groupby(["team", "season"]).size().reset_index(name="no_results")
+        out = out.merge(nr_counts, on=["team", "season"], how="left")
+    else:
+        out["no_results"] = 0
+    out["no_results"] = out["no_results"].fillna(0).astype(int)
+
+    out["matches"] = (out["played_decided"] + out["no_results"]).astype(int)
     out["win_pct"] = (out["wins"] / out["matches"].replace(0, 1)).round(4)
     out["team_total_tilt"] = out["batting_total_tilt"] + out["bowling_total_tilt"]
-    out["team_tilt_per_match"] = out["team_total_tilt"] / out["matches"].replace(0, 1)
+    out["team_tilt_per_match"] = out["team_total_tilt"] / out["played_decided"].replace(0, 1)
 
-    # Position estimate: rank within season by win_pct (1 = best)
+    # Points = W*2 + NR (IPL convention). Rank within season by points
+    # descending (1 = best), with win_pct as the secondary sort below for
+    # consistent tiebreak ordering.
+    out["points"] = (out["wins"] * 2 + out["no_results"]).astype(int)
     out["position_est"] = (
-        out.groupby("season")["win_pct"]
+        out.groupby("season")["points"]
         .rank(method="min", ascending=False)
         .astype(int)
     )
 
-    out = out.sort_values(["season", "win_pct"], ascending=[True, False]).reset_index(drop=True)
+    out = out.drop(columns=["played_decided"])
+    out = out.sort_values(["season", "points", "win_pct"], ascending=[True, False, False]).reset_index(drop=True)
     print(f"  Total team-seasons: {len(out)}")
     return out
 

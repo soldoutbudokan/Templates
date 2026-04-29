@@ -61,6 +61,16 @@ config/seasons.yaml (hand-edited) ──> pipeline/export_json.py
                                                       (in-progress seasons get champion: null even when a
                                                       "winner of last completed match" placeholder exists)
 
+data/raw/*.json (Cricsheet) ──> pipeline/parse_matches.parse_no_results_from_raw()
+                       └── data/processed/no_results.parquet — NR matches (cricsheet sets
+                                                              outcome.result == "no result"; these have
+                                                              no innings data so they're skipped by
+                                                              parse_match but still belong in the season
+                                                              standings as NRs). Consumed by
+                                                              compute_tilt.aggregate_team_season_tilt to
+                                                              inject NR counts into the points table
+                                                              (issue #75).
+
 config/player_countries.yaml (generator-maintained) ──> pipeline/export_json.py
                        └── country_for(player_id) — drives the `country` field on every player record
                                                     (tilt_rankings, players/, matches/, goats, leaders/,
@@ -164,6 +174,16 @@ Re-run `python pipeline/run_pipeline.py` (or `refresh_tilt_data_only`). Every pa
 ### If you change **website HTML/CSS** (no data implications)
 
 - Nothing else needs refreshing. But re-test with `python3 -m http.server` from `public/` to confirm the page still renders.
+
+### Notes on team_season_tilt scope (issue #75)
+
+`team_season_tilt.parquet` is **regular-season only** as of issue #75 — playoff matches (event_stage set in cricsheet) are filtered out, and NR matches are injected from `no_results.parquet`. The new schema includes `no_results` and `points` (W*2 + NR) columns; `position_est` ranks by points desc. Consumers:
+
+- `seasons/{season}.json` team_table (the points table) — directly correct.
+- `teams/{slug}.json` season-by-season block — W/L/Win%/Position now reflect regular-season standings; `match_log` still includes playoff matches with their stage badges, so the row totals don't sum to the match list (this is expected and matches IPL convention).
+- `team_seasons/{slug}-{season}.json` header — same regular-season-only counts.
+
+The career career-aggregation (`team_tilt`) remains all-inclusive (career W/L for "Mumbai Indians: 5x champions" needs playoffs).
 
 ---
 

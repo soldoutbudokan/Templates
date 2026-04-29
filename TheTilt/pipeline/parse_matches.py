@@ -323,6 +323,53 @@ def parse_all_matches(raw_dir: Optional[str] = None) -> pd.DataFrame:
     return df
 
 
+# %% Parse no-result / abandoned matches
+def parse_no_results_from_raw(raw_dir: Optional[str] = None) -> pd.DataFrame:
+    """Scan raw Cricsheet JSONs for matches where `outcome.result == 'no result'`.
+
+    These never produce ball events (we skip them in `parse_match`) but they
+    still belong in the season standings as NRs. Returns one row per NR match
+    with normalized season/team names. Each match contributes 1 NR to each
+    of its two teams in the points table.
+    """
+    config = load_config()
+    raw_dir = Path(raw_dir or config["data"]["raw_dir"])
+
+    rows: List[Dict] = []
+    for filepath in sorted(raw_dir.glob("*.json")):
+        if not (filepath.stem.isdigit() or filepath.stem.startswith("1")):
+            continue
+        try:
+            with open(filepath, "r") as f:
+                data = json.load(f)
+        except Exception:
+            continue
+        info = data.get("info", {}) or {}
+        outcome = info.get("outcome", {}) or {}
+        if outcome.get("result") != "no result":
+            continue
+        teams = [normalize_team(t) for t in info.get("teams", []) if t]
+        if len(teams) != 2:
+            continue
+        season = normalize_season(str(info.get("season", "")))
+        dates = info.get("dates", []) or []
+        date = dates[0] if dates else None
+        event = info.get("event", {}) or {}
+        rows.append({
+            "match_id": filepath.stem,
+            "date": date,
+            "season": season,
+            "team1": teams[0],
+            "team2": teams[1],
+            "venue": info.get("venue"),
+            "event_stage": event.get("stage"),
+        })
+
+    df = pd.DataFrame(rows)
+    print(f"  Found {len(df)} no-result matches")
+    return df
+
+
 # %% Main
 if __name__ == "__main__":
     df = parse_all_matches()

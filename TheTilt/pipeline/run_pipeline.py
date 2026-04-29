@@ -19,7 +19,7 @@ sys.path.insert(0, str(project_root))
 
 from pipeline.download_data import download_cricsheet_data
 from pipeline.download_people import download_and_resolve
-from pipeline.parse_matches import parse_all_matches
+from pipeline.parse_matches import parse_all_matches, parse_no_results_from_raw
 from pipeline.build_features import build_all_features
 from pipeline.train_win_prob import train_and_evaluate
 from pipeline.compute_tilt import (
@@ -80,9 +80,11 @@ def refresh_tilt_data_only() -> None:
     player_tilt.to_parquet(processed_dir / "player_tilt.parquet", index=False)
 
     print("\n  Computing per-player-season + team aggregates...")
+    no_results_df = parse_no_results_from_raw()
+    no_results_df.to_parquet(processed_dir / "no_results.parquet", index=False)
     player_season_tilt = aggregate_player_season_tilt(deltas_df)
     team_tilt = aggregate_team_tilt(deltas_df)
-    team_season_tilt = aggregate_team_season_tilt(deltas_df)
+    team_season_tilt = aggregate_team_season_tilt(deltas_df, no_results_df=no_results_df)
     player_season_tilt.to_parquet(processed_dir / "player_season_tilt.parquet", index=False)
     team_tilt.to_parquet(processed_dir / "team_tilt.parquet", index=False)
     team_season_tilt.to_parquet(processed_dir / "team_season_tilt.parquet", index=False)
@@ -141,9 +143,11 @@ def run_pipeline() -> None:
     player_tilt.to_parquet(processed_dir / "player_tilt.parquet", index=False)
 
     print("\n  Computing per-player-season + team aggregates...")
+    no_results_df = parse_no_results_from_raw()
+    no_results_df.to_parquet(processed_dir / "no_results.parquet", index=False)
     player_season_tilt = aggregate_player_season_tilt(deltas_df)
     team_tilt = aggregate_team_tilt(deltas_df)
-    team_season_tilt = aggregate_team_season_tilt(deltas_df)
+    team_season_tilt = aggregate_team_season_tilt(deltas_df, no_results_df=no_results_df)
     player_season_tilt.to_parquet(processed_dir / "player_season_tilt.parquet", index=False)
     team_tilt.to_parquet(processed_dir / "team_tilt.parquet", index=False)
     team_season_tilt.to_parquet(processed_dir / "team_season_tilt.parquet", index=False)

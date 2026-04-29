@@ -143,14 +143,17 @@ async function renderTeamCareer(slug) {
                                 <td>${s.position_est}</td>
                             </tr>`;
                         if (!hasMatches) return summaryRow;
-                        const matchRows = s.match_log.map((m) => `
+                        const matchRows = s.match_log.map((m) => {
+                            const stage = m.event_stage ? ` <span class="stage-badge">${m.event_stage}</span>` : '';
+                            return `
                             <tr>
-                                <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
+                                <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a>${stage}</td>
                                 <td>${teamLink(m.opponent, s.season, teamIndex)}</td>
                                 <td>${m.team_score || '—'} vs ${m.opponent_score || '—'}</td>
                                 <td>${m.winner ? (m.winner === team.team ? '<span class="result-win">won</span>' : '<span class="result-loss">lost</span>') : '<span class="result-nr">—</span>'}</td>
                                 <td>${formatTilt(m.team_total_tilt)}</td>
-                            </tr>`).join('');
+                            </tr>`;
+                        }).join('');
                         return summaryRow + `
                             <tr class="season-detail-row" id="${seasonId}" style="display:none">
                                 <td colspan="9">
@@ -229,11 +232,12 @@ async function renderTeamSeason(slug, season) {
 
     const teamIndex = await loadTeamIndex();
 
+    const nrSummary = ts.header.no_results > 0 ? `–${ts.header.no_results} NR` : '';
     let html = `
         <div class="page-header">
             <h1>${ts.label} — ${ts.season}</h1>
             <div class="subtitle">
-                ${ts.header.wins}–${ts.header.losses} · ${(ts.header.win_pct * 100).toFixed(1)}% wins · position #${ts.header.position_est}
+                ${ts.header.wins}–${ts.header.losses}${nrSummary} · ${(ts.header.win_pct * 100).toFixed(1)}% wins · position #${ts.header.position_est}
             </div>
             <div class="meta">
                 <a href="team.html?team=${ts.slug}">back to ${ts.label} career</a> ·
@@ -312,15 +316,18 @@ async function renderTeamSeason(slug, season) {
             <table class="detail-table">
                 <thead><tr><th>Date</th><th>Opponent</th><th>Scores</th><th>Winner</th><th>Team TILT</th></tr></thead>
                 <tbody>
-                    ${ts.matches.map((m) => `
+                    ${ts.matches.map((m) => {
+                        const stage = m.event_stage ? ` <span class="stage-badge">${m.event_stage}</span>` : '';
+                        return `
                         <tr>
-                            <td><a href="match.html?id=${m.match_id}">${m.date}</a></td>
+                            <td><a href="match.html?id=${m.match_id}">${m.date}</a>${stage}</td>
                             <td>${teamLink(m.opponent, ts.season, teamIndex)}</td>
                             <td>${m.team_score || '—'} vs ${m.opponent_score || '—'}</td>
                             <td>${m.winner ? teamLink(m.winner, ts.season, teamIndex) : '—'}</td>
                             <td>${formatTilt(m.team_total_tilt)}</td>
                         </tr>
-                    `).join('')}
+                    `;
+                    }).join('')}
                 </tbody>
             </table>
         </div>
