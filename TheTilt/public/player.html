@@ -186,7 +186,7 @@ async function loadPlayer() {
                                     <tr>
                                         <th>date</th><th>vs</th><th>result</th>
                                         <th>runs</th><th>balls</th><th class="hide-mobile">SR</th>
-                                        <th>wkts</th><th>overs</th><th class="hide-mobile">econ</th>
+                                        <th>wkts</th><th>overs</th><th>RC</th><th class="hide-mobile">econ</th>
                                         <th class="hide-mobile">bat TILT</th><th class="hide-mobile">bowl TILT</th><th>total</th>
                                     </tr>
                                     ${s.matches.map(m => {
@@ -202,6 +202,7 @@ async function loadPlayer() {
                                             <td class="hide-mobile">${m.bat_sr != null ? m.bat_sr : '-'}</td>
                                             <td>${m.bowl_wkts != null ? m.bowl_wkts : '-'}</td>
                                             <td>${m.bowl_balls != null ? Math.floor(m.bowl_balls/6) + '.' + (m.bowl_balls%6) : '-'}</td>
+                                            <td>${m.bowl_runs != null ? m.bowl_runs : '-'}</td>
                                             <td class="hide-mobile">${m.bowl_econ != null ? m.bowl_econ : '-'}</td>
                                             <td class="hide-mobile">${m.bat_tilt != null ? formatTilt(m.bat_tilt) : '-'}</td>
                                             <td class="hide-mobile">${m.bowl_tilt != null ? formatTilt(m.bowl_tilt) : '-'}</td>
@@ -559,7 +560,7 @@ async function renderPlayerSeason(p, season, slug) {
             <h3 class="section-title">Match log</h3>
             <div class="table-wrap">
                 <table class="detail-table">
-                    <thead><tr><th>date</th><th>opponent</th><th>result</th><th>runs</th><th>balls</th><th>SR</th><th>wkts</th><th>econ</th><th>TILT</th></tr></thead>
+                    <thead><tr><th>date</th><th>opponent</th><th>result</th><th>runs</th><th>balls</th><th>SR</th><th>wkts</th><th>RC</th><th>econ</th><th>TILT</th></tr></thead>
                     <tbody>
                         ${s.matches.map((m) => `
                             <tr>
@@ -570,6 +571,7 @@ async function renderPlayerSeason(p, season, slug) {
                                 <td>${m.bat_balls != null ? m.bat_balls : '—'}</td>
                                 <td>${m.bat_sr != null ? m.bat_sr.toFixed(1) : '—'}</td>
                                 <td>${m.bowl_wkts != null ? m.bowl_wkts : '—'}</td>
+                                <td>${m.bowl_runs != null ? m.bowl_runs : '—'}</td>
                                 <td>${m.bowl_econ != null ? m.bowl_econ.toFixed(2) : '—'}</td>
                                 <td>${formatTilt(m.total_tilt)}</td>
                             </tr>
