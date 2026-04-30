@@ -1,7 +1,7 @@
 {
   "season": "2015",
   "season_year": 2015,
-  "matches": 56,
+  "matches": 57,
   "champion": "Mumbai Indians",
   "team_table": [
     {
@@ -15,8 +15,8 @@
       "points": 18,
       "win_pct": 0.6429,
       "nrr": 0.57,
-      "team_total_tilt": 1.06485,
-      "team_tilt_per_match": 0.07606,
+      "team_total_tilt": 1.03233,
+      "team_tilt_per_match": 0.07374,
       "position_est": 1
     },
     {
@@ -30,9 +30,24 @@
       "points": 16,
       "win_pct": 0.5,
       "nrr": 0.654,
-      "team_total_tilt": 1.78148,
-      "team_tilt_per_match": 0.14846,
+      "team_total_tilt": 1.77304,
+      "team_tilt_per_match": 0.14775,
       "position_est": 2
+    },
+    {
+      "team": "Rajasthan Royals",
+      "slug": "rr",
+      "label": "Rajasthan Royals",
+      "matches": 14,
+      "wins": 7,
+      "losses": 5,
+      "no_results": 2,
+      "points": 16,
+      "win_pct": 0.5,
+      "nrr": 0.117,
+      "team_total_tilt": 1.49934,
+      "team_tilt_per_match": 0.12494,
+      "position_est": 3
     },
     {
       "team": "Mumbai Indians",
@@ -45,38 +60,23 @@
       "points": 16,
       "win_pct": 0.5714,
       "nrr": -0.014,
-      "team_total_tilt": 0.3153,
-      "team_tilt_per_match": 0.02252,
-      "position_est": 3
-    },
-    {
-      "team": "Rajasthan Royals",
-      "slug": "rr",
-      "label": "Rajasthan Royals",
-      "matches": 12,
-      "wins": 7,
-      "losses": 4,
-      "no_results": 1,
-      "points": 15,
-      "win_pct": 0.5833,
-      "nrr": 0.157,
-      "team_total_tilt": 1.69358,
-      "team_tilt_per_match": 0.15396,
+      "team_total_tilt": 0.24694,
+      "team_tilt_per_match": 0.01764,
       "position_est": 4
     },
     {
       "team": "Kolkata Knight Riders",
       "slug": "kkr",
       "label": "Kolkata Knight Riders",
-      "matches": 13,
+      "matches": 14,
       "wins": 7,
       "losses": 6,
-      "no_results": 0,
-      "points": 14,
-      "win_pct": 0.5385,
+      "no_results": 1,
+      "points": 15,
+      "win_pct": 0.5,
       "nrr": 0.25,
-      "team_total_tilt": 1.38099,
-      "team_tilt_per_match": 0.10623,
+      "team_total_tilt": 1.44387,
+      "team_tilt_per_match": 0.11107,
       "position_est": 5
     },
     {
@@ -90,8 +90,8 @@
       "points": 14,
       "win_pct": 0.5,
       "nrr": -0.157,
-      "team_total_tilt": -1.05059,
-      "team_tilt_per_match": -0.07504,
+      "team_total_tilt": -1.03706,
+      "team_tilt_per_match": -0.07408,
       "position_est": 6
     },
     {
@@ -105,23 +105,23 @@
       "points": 11,
       "win_pct": 0.3571,
       "nrr": -0.094,
-      "team_total_tilt": -0.97853,
-      "team_tilt_per_match": -0.07527,
+      "team_total_tilt": -1.14477,
+      "team_tilt_per_match": -0.08806,
       "position_est": 7
     },
     {
       "team": "Punjab Kings",
       "slug": "pbks",
       "label": "Kings XI Punjab",
-      "matches": 13,
-      "wins": 2,
+      "matches": 14,
+      "wins": 3,
       "losses": 11,
       "no_results": 0,
-      "points": 4,
-      "win_pct": 0.1538,
-      "nrr": -1.237,
-      "team_total_tilt": -4.20709,
-      "team_tilt_per_match": -0.32362,
+      "points": 6,
+      "win_pct": 0.2143,
+      "nrr": -1.12,
+      "team_total_tilt": -3.81369,
+      "team_tilt_per_match": -0.27241,
       "position_est": 8
     }
   ],
@@ -137,6 +137,17 @@
         "balls": 359,
         "sr": 156.55,
         "innings": 14
+      },
+      {
+        "player": "Ajinkya Rahane",
+        "slug": "am-rahane-29e95537",
+        "country": "IN",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 540,
+        "balls": 413,
+        "sr": 130.75,
+        "innings": 13
       },
       {
         "player": "Lendl Simmons",
@@ -170,17 +181,6 @@
         "balls": 333,
         "sr": 144.74,
         "innings": 16
-      },
-      {
-        "player": "Chris Gayle",
-        "slug": "ch-gayle-db584dad",
-        "country": "WI",
-        "team": "Royal Challengers Bangalore",
-        "team_slug": "rcb",
-        "value": 480,
-        "balls": 324,
-        "sr": 148.15,
-        "innings": 12
       }
     ],
     "fours": [
@@ -205,6 +205,16 @@
         "runs": 540
       },
       {
+        "player": "Ajinkya Rahane",
+        "slug": "am-rahane-29e95537",
+        "country": "IN",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 53,
+        "balls": 413,
+        "runs": 540
+      },
+      {
         "player": "Dwayne Smith",
         "slug": "dr-smith-35205dfc",
         "country": "WI",
@@ -223,16 +233,6 @@
         "value": 51,
         "balls": 280,
         "runs": 436
-      },
-      {
-        "player": "AB de Villiers",
-        "slug": "ab-de-villiers-c4487b84",
-        "country": "ZA",
-        "team": "Royal Challengers Bangalore",
-        "team_slug": "rcb",
-        "value": 51,
-        "balls": 248,
-        "runs": 456
       }
     ],
     "sixes": [
@@ -309,6 +309,16 @@
         "innings": 13
       },
       {
+        "player": "Ajinkya Rahane",
+        "slug": "am-rahane-29e95537",
+        "country": "IN",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 4,
+        "hundreds": 0,
+        "innings": 13
+      },
+      {
         "player": "Shreyas Iyer",
         "slug": "ss-iyer-85ec8e33",
         "country": "IN",
@@ -327,16 +337,6 @@
         "value": 3,
         "hundreds": 0,
         "innings": 14
-      },
-      {
-        "player": "Ajinkya Rahane",
-        "slug": "am-rahane-29e95537",
-        "country": "IN",
-        "team": "Rajasthan Royals",
-        "team_slug": "rr",
-        "value": 3,
-        "hundreds": 0,
-        "innings": 12
       }
     ],
     "hundreds": [
@@ -348,7 +348,7 @@
         "team_slug": "rr",
         "value": 1,
         "fifties": 2,
-        "innings": 8
+        "innings": 9
       },
       {
         "player": "Brendon McCullum",
@@ -413,16 +413,6 @@
         "balls": 248
       },
       {
-        "player": "Hardik Pandya",
-        "slug": "hh-pandya-dbe50b21",
-        "country": "IN",
-        "team": "Mumbai Indians",
-        "team_slug": "mi",
-        "value": 180.65,
-        "runs": 112,
-        "balls": 62
-      },
-      {
         "player": "Kieron Pollard",
         "slug": "ka-pollard-a757b0d8",
         "country": "WI",
@@ -433,14 +423,24 @@
         "balls": 256
       },
       {
-        "player": "Mandeep Singh",
-        "slug": "mandeep-singh-c3a96caf",
-        "country": "IN",
-        "team": "Royal Challengers Bangalore",
-        "team_slug": "rcb",
-        "value": 162.5,
-        "runs": 130,
-        "balls": 80
+        "player": "David Warner",
+        "slug": "da-warner-dcce6f09",
+        "country": "AU",
+        "team": "Sunrisers Hyderabad",
+        "team_slug": "srh",
+        "value": 156.55,
+        "runs": 562,
+        "balls": 359
+      },
+      {
+        "player": "Brendon McCullum",
+        "slug": "bb-mccullum-b8a55852",
+        "country": "NZ",
+        "team": "Chennai Super Kings",
+        "team_slug": "csk",
+        "value": 155.71,
+        "runs": 436,
+        "balls": 280
       }
     ],
     "wickets": [
@@ -559,8 +559,8 @@
         "country": "WI",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 1.60116,
-        "per_match": 0.13343,
+        "value": 1.61592,
+        "per_match": 0.13466,
         "matches": 12,
         "balls": 324
       },
@@ -570,8 +570,8 @@
         "country": "WI",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 1.46397,
-        "per_match": 0.13309,
+        "value": 1.46387,
+        "per_match": 0.13308,
         "matches": 11,
         "balls": 169
       },
@@ -581,8 +581,8 @@
         "country": "AU",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 1.21828,
-        "per_match": 0.08702,
+        "value": 1.25773,
+        "per_match": 0.08984,
         "matches": 14,
         "balls": 359
       },
@@ -592,21 +592,21 @@
         "country": "IN",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 0.89802,
-        "per_match": 0.06908,
+        "value": 0.97282,
+        "per_match": 0.07483,
         "matches": 13,
         "balls": 277
       },
       {
-        "player": "Kieron Pollard",
-        "slug": "ka-pollard-a757b0d8",
-        "country": "WI",
-        "team": "Mumbai Indians",
-        "team_slug": "mi",
-        "value": 0.70503,
-        "per_match": 0.05036,
-        "matches": 14,
-        "balls": 256
+        "player": "Ajinkya Rahane",
+        "slug": "am-rahane-29e95537",
+        "country": "IN",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 0.7607,
+        "per_match": 0.05852,
+        "matches": 13,
+        "balls": 413
       }
     ],
     "bowling_tilt": [
@@ -616,21 +616,10 @@
         "country": "AU",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 1.78358,
-        "per_match": 0.16214,
+        "value": 1.76372,
+        "per_match": 0.16034,
         "matches": 11,
         "balls": 234
-      },
-      {
-        "player": "Umesh Yadav",
-        "slug": "ut-yadav-cc1e8c68",
-        "country": "IN",
-        "team": "Kolkata Knight Riders",
-        "team_slug": "kkr",
-        "value": 0.94136,
-        "per_match": 0.07845,
-        "matches": 12,
-        "balls": 252
       },
       {
         "player": "Ashish Nehra",
@@ -638,21 +627,21 @@
         "country": "IN",
         "team": "Chennai Super Kings",
         "team_slug": "csk",
-        "value": 0.92093,
-        "per_match": 0.05756,
+        "value": 0.90459,
+        "per_match": 0.05654,
         "matches": 16,
         "balls": 372
       },
       {
-        "player": "Lasith Malinga",
-        "slug": "sl-malinga-a12e1d51",
-        "country": "LK",
-        "team": "Mumbai Indians",
-        "team_slug": "mi",
-        "value": 0.85475,
-        "per_match": 0.05698,
-        "matches": 15,
-        "balls": 360
+        "player": "Umesh Yadav",
+        "slug": "ut-yadav-cc1e8c68",
+        "country": "IN",
+        "team": "Kolkata Knight Riders",
+        "team_slug": "kkr",
+        "value": 0.8899,
+        "per_match": 0.07416,
+        "matches": 12,
+        "balls": 252
       },
       {
         "player": "Chris Morris",
@@ -660,10 +649,21 @@
         "country": "ZA",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 0.8468,
-        "per_match": 0.08468,
-        "matches": 10,
-        "balls": 228
+        "value": 0.8891,
+        "per_match": 0.08083,
+        "matches": 11,
+        "balls": 252
+      },
+      {
+        "player": "Lasith Malinga",
+        "slug": "sl-malinga-a12e1d51",
+        "country": "LK",
+        "team": "Mumbai Indians",
+        "team_slug": "mi",
+        "value": 0.84412,
+        "per_match": 0.05627,
+        "matches": 15,
+        "balls": 360
       }
     ],
     "total_tilt": [
@@ -673,8 +673,8 @@
         "country": "AU",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 1.71014,
-        "per_match": 0.15547,
+        "value": 1.69029,
+        "per_match": 0.15366,
         "matches": 11
       },
       {
@@ -683,8 +683,8 @@
         "country": "WI",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 1.60116,
-        "per_match": 0.13343,
+        "value": 1.61592,
+        "per_match": 0.13466,
         "matches": 12
       },
       {
@@ -693,8 +693,8 @@
         "country": "WI",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 1.37241,
-        "per_match": 0.10557,
+        "value": 1.45037,
+        "per_match": 0.11157,
         "matches": 13
       },
       {
@@ -703,8 +703,8 @@
         "country": "AU",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 1.21828,
-        "per_match": 0.08702,
+        "value": 1.25773,
+        "per_match": 0.08984,
         "matches": 14
       },
       {
@@ -713,9 +713,9 @@
         "country": "ZA",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.18095,
-        "per_match": 0.1181,
-        "matches": 10
+        "value": 1.23074,
+        "per_match": 0.11189,
+        "matches": 11
       }
     ]
   },
@@ -1023,6 +1023,24 @@
       "winner": "Kolkata Knight Riders",
       "result_margin": "won by 6 wickets",
       "toss_winner": "Kolkata Knight Riders",
+      "toss_decision": "field",
+      "event_stage": null
+    },
+    {
+      "match_id": "829741",
+      "date": "2015-04-21",
+      "venue": "Narendra Modi Stadium, Ahmedabad",
+      "teams": [
+        "Rajasthan Royals",
+        "Punjab Kings"
+      ],
+      "scores": {
+        "Rajasthan Royals": "191/6",
+        "Punjab Kings": "191/6"
+      },
+      "winner": "Punjab Kings",
+      "result_margin": "won by 4 wickets",
+      "toss_winner": "Punjab Kings",
       "toss_decision": "field",
       "event_stage": null
     },
