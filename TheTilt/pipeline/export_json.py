@@ -1545,7 +1545,7 @@ def _build_player_season_leaders(
     player_tilt: pd.DataFrame,
     season: str,
     *,
-    min_balls: int = 50,
+    min_balls: int = 100,
 ) -> dict:
     """Compute per-stat ranked lists for one season. Returns {stat: [rows]}."""
     slug_lookup = _build_player_slug_lookup(player_tilt)

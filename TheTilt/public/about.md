@@ -9,9 +9,9 @@ This page is the long-form methodology. The headline numbers and rankings live o
 | Coverage | Value |
 |:--|:--|
 | Seasons | IPL 2008 — 2026 |
-| Matches parsed | 1,159 |
-| Legal-ish deliveries scored | 276,500+ |
-| Players ranked (≥ 10 matches) | 443 |
+| Matches parsed | 1,200 |
+| Legal-ish deliveries scored | 286,500+ |
+| Players ranked (≥ 10 matches) | 455 |
 | Model | LightGBM gradient-boosted classifier |
 | Default ranking | Bayesian-shrunk TILT, 90% CI lower bound |
 

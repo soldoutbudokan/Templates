@@ -167,16 +167,22 @@ def parse_match(filepath: Path) -> List[BallEvent]:
 
     info = data.get("info", {})
 
-    # Skip non-standard matches (no result, abandoned, etc.)
+    # Skip non-standard matches (no result, abandoned, etc.). Ties decided by
+    # Super Over carry `outcome.result == "tie"` and `outcome.eliminator` set
+    # to the SO winner instead of the usual `outcome.winner`; credit the
+    # eliminator so these matches flow through normally (issue #84).
     outcome = info.get("outcome", {})
-    if "winner" not in outcome:
+    winner_raw = outcome.get("winner") or (
+        outcome.get("eliminator") if outcome.get("result") == "tie" else None
+    )
+    if winner_raw is None:
         return []
 
     match_id = filepath.stem
     dates = info.get("dates", ["unknown"])
     date = dates[0] if dates else "unknown"
     venue = info.get("venue", "unknown")
-    winner = normalize_team(outcome.get("winner"))
+    winner = normalize_team(winner_raw)
     teams = [normalize_team(t) for t in info.get("teams", [])]
     season = normalize_season(str(info.get("season", "unknown")))
 
@@ -211,6 +217,13 @@ def parse_match(filepath: Path) -> List[BallEvent]:
     events: List[BallEvent] = []
 
     for innings_idx, innings_data in enumerate(data.get("innings", []), start=1):
+        # Drop Super Over innings (issue #84). They're a 1-over tiebreaker with
+        # a known target from ball 1; including them would pollute career
+        # stats and the regulation-cricket WP signal. IPL/Cricinfo convention
+        # is to track SO performances separately, not in batting/bowling
+        # totals.
+        if innings_data.get("super_over"):
+            continue
         batting_team = normalize_team(innings_data.get("team", ""))
         bowling_team = [t for t in teams if t != batting_team]
         bowling_team = bowling_team[0] if bowling_team else "unknown"
@@ -324,20 +337,63 @@ def parse_all_matches(raw_dir: Optional[str] = None) -> pd.DataFrame:
 
 
 # %% Parse no-result / abandoned matches
-def parse_no_results_from_raw(raw_dir: Optional[str] = None) -> pd.DataFrame:
-    """Scan raw Cricsheet JSONs for matches where `outcome.result == 'no result'`.
+_NO_RESULTS_SUPPLEMENT_PATH = Path(__file__).parent.parent / "config" / "no_results_supplement.yaml"
 
-    These never produce ball events (we skip them in `parse_match`) but they
-    still belong in the season standings as NRs. Returns one row per NR match
-    with normalized season/team names. Each match contributes 1 NR to each
-    of its two teams in the points table.
+
+def _load_no_results_supplement(path: Path = _NO_RESULTS_SUPPLEMENT_PATH) -> tuple:
+    """Read the hand-maintained YAML of NR matches to add and cricsheet NRs to exclude.
+
+    Returns (add_rows, exclude_match_ids). Both are empty when the file is
+    missing. See `config/no_results_supplement.yaml` for the rationale.
+    """
+    if not path.exists():
+        return [], set()
+    with open(path, "r") as f:
+        cfg = yaml.safe_load(f) or {}
+    add_rows: List[Dict] = []
+    for entry in cfg.get("add", []) or []:
+        teams = [normalize_team(entry.get("team1")), normalize_team(entry.get("team2"))]
+        if not (teams[0] and teams[1]):
+            continue
+        season = normalize_season(str(entry.get("season", "")))
+        date = entry.get("date")
+        slug1 = (TEAM_SLUG.get(teams[0]) or teams[0].lower().replace(" ", "-"))
+        slug2 = (TEAM_SLUG.get(teams[1]) or teams[1].lower().replace(" ", "-"))
+        match_id = f"supp-{season}-{date}-{slug1}-{slug2}"
+        add_rows.append({
+            "match_id": match_id,
+            "date": date,
+            "season": season,
+            "team1": teams[0],
+            "team2": teams[1],
+            "venue": entry.get("venue"),
+            "event_stage": entry.get("event_stage"),
+        })
+    exclude_ids = {str(e.get("match_id")) for e in (cfg.get("exclude", []) or []) if e.get("match_id")}
+    return add_rows, exclude_ids
+
+
+def parse_no_results_from_raw(raw_dir: Optional[str] = None) -> pd.DataFrame:
+    """Scan raw Cricsheet JSONs for matches where `outcome.result == 'no result'`,
+    then merge in hand-maintained supplement entries.
+
+    Cricsheet does not publish a JSON for matches abandoned without a ball
+    bowled, and occasionally records a "no result" for a match that was later
+    rescheduled and replayed (the replay being the canonical fixture). The
+    `config/no_results_supplement.yaml` companion file adds the missing rows
+    and excludes the voided ones. Each surviving row contributes 1 NR to each
+    of its two teams in the season standings.
     """
     config = load_config()
     raw_dir = Path(raw_dir or config["data"]["raw_dir"])
 
+    add_rows, exclude_ids = _load_no_results_supplement()
+
     rows: List[Dict] = []
     for filepath in sorted(raw_dir.glob("*.json")):
         if not (filepath.stem.isdigit() or filepath.stem.startswith("1")):
+            continue
+        if filepath.stem in exclude_ids:
             continue
         try:
             with open(filepath, "r") as f:
@@ -365,8 +421,18 @@ def parse_no_results_from_raw(raw_dir: Optional[str] = None) -> pd.DataFrame:
             "event_stage": event.get("stage"),
         })
 
-    df = pd.DataFrame(rows)
-    print(f"  Found {len(df)} no-result matches")
+    df = pd.DataFrame(rows + add_rows)
+    if not df.empty:
+        # Dedupe in case a supplement row collides with a cricsheet row
+        # (canonicalize the team pair so order doesn't matter).
+        def _pair(row):
+            t1, t2 = row["team1"], row["team2"]
+            return tuple(sorted([t1, t2]))
+        df["_pair"] = df.apply(_pair, axis=1)
+        df = df.drop_duplicates(subset=["season", "date", "_pair"]).drop(columns=["_pair"])
+    print(f"  Found {len(df)} no-result matches "
+          f"({len(rows)} from cricsheet, {len(add_rows)} from supplement, "
+          f"{len(exclude_ids)} excluded)")
     return df
 
 

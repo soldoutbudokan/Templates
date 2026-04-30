@@ -1,0 +1,108 @@
+# Hand-maintained supplement for "no result" matches that the cricsheet raw
+# data does not capture.
+#
+# Background: pipeline/parse_matches.parse_no_results_from_raw() scans the
+# raw cricsheet JSONs for `outcome.result == "no result"`. That works for
+# matches where some balls were bowled before abandonment, but cricsheet
+# does NOT publish a JSON file at all for matches abandoned without a ball
+# bowled. Those matches therefore disappear from the points table unless
+# we add them here. (See dependencies.md.)
+#
+# `add` rows are appended to the no-results dataframe (treated as 1 NR
+# each for both teams in the season standings).
+# `exclude` rows drop a cricsheet "no result" entry from the dataframe —
+# used when a match was abandoned mid-game and later replayed as a
+# separate fixture (so the replay is the canonical match for the standings
+# and the original NR is voided).
+#
+# Cross-referenced against the Wikipedia league-stage points table for
+# every IPL season. Any team whose W/L/NR row in the regenerated
+# `seasons/{season}.json` does not match Wikipedia after running the
+# pipeline likely needs an entry here (or has a separate cricsheet data
+# gap for a real played match, which is out of scope for this file).
+#
+# Use canonical team names (per config/team_aliases.yaml). If a cricsheet
+# alias is used it is normalized at parse time, but canonical is preferred
+# for readability.
+
+add:
+  - season: "2008"
+    date: "2008-05-22"
+    team1: "Delhi Capitals"
+    team2: "Kolkata Knight Riders"
+    venue: "Feroz Shah Kotla, Delhi"
+
+  - season: "2009"
+    date: "2009-04-21"
+    team1: "Rajasthan Royals"
+    team2: "Mumbai Indians"
+    venue: "Kingsmead, Durban"
+
+  - season: "2009"
+    date: "2009-04-25"
+    team1: "Chennai Super Kings"
+    team2: "Kolkata Knight Riders"
+    venue: "Newlands, Cape Town"
+
+  - season: "2011"
+    date: "2011-04-19"
+    team1: "Royal Challengers Bangalore"
+    team2: "Rajasthan Royals"
+    venue: "M Chinnaswamy Stadium, Bangalore"
+
+  - season: "2012"
+    date: "2012-04-24"
+    team1: "Kolkata Knight Riders"
+    team2: "Deccan Chargers"
+    venue: "Eden Gardens, Kolkata"
+
+  - season: "2012"
+    date: "2012-04-25"
+    team1: "Chennai Super Kings"
+    team2: "Royal Challengers Bangalore"
+    venue: "M Chinnaswamy Stadium, Bangalore"
+
+  - season: "2015"
+    date: "2015-04-26"
+    team1: "Kolkata Knight Riders"
+    team2: "Rajasthan Royals"
+    venue: "Eden Gardens, Kolkata"
+
+  - season: "2017"
+    date: "2017-04-25"
+    team1: "Royal Challengers Bangalore"
+    team2: "Sunrisers Hyderabad"
+    venue: "M Chinnaswamy Stadium, Bangalore"
+
+  - season: "2024"
+    date: "2024-05-18"
+    team1: "Kolkata Knight Riders"
+    team2: "Gujarat Titans"
+    venue: "ACA Cricket Stadium, Guwahati"
+
+  - season: "2024"
+    date: "2024-05-19"
+    team1: "Sunrisers Hyderabad"
+    team2: "Gujarat Titans"
+    venue: "Rajiv Gandhi International Stadium, Hyderabad"
+
+  - season: "2024"
+    date: "2024-05-19"
+    team1: "Rajasthan Royals"
+    team2: "Kolkata Knight Riders"
+    venue: "ACA Cricket Stadium, Guwahati"
+
+  - season: "2025"
+    date: "2025-05-17"
+    team1: "Royal Challengers Bangalore"
+    team2: "Kolkata Knight Riders"
+    venue: "M Chinnaswamy Stadium, Bengaluru"
+
+exclude:
+  # PBKS vs DC was abandoned mid-game on 2025-05-08 (cricsheet match_id
+  # 1473495, outcome.result == "no result"). The IPL rescheduled and
+  # replayed it on 2025-05-24 as match_id 1485779 (DC won). The replay is
+  # the canonical fixture for the points table; voiding the original NR
+  # so PBKS and DC each get credited for the May 24 result only.
+  - match_id: "1473495"
+    reason: "Abandoned mid-game on 2025-05-08; rescheduled and replayed 2025-05-24 (match_id 1485779). The replay is the canonical fixture in Wikipedia's points table."
