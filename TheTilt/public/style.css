@@ -1597,7 +1597,8 @@ span.flag-text {
     text-decoration: none;
     line-height: 1.2;
 }
-.brk-cell-link:hover {
+.brk-cell-link:hover,
+.brk-cell-link.brk-match-hover {
     background: var(--bg-hover);
 }
 .brk-td.winner {
@@ -1606,6 +1607,39 @@ span.flag-text {
 }
 .brk-td.winner.brk-bgD {
     background: var(--accent-green-dim);
+}
+
+/* Classic bracket (2008–2010): two semis on the left feeding a Final on the
+   right, plus an optional 3rd-place playoff below. Each match is a small
+   brk-tbl built by renderClassicBracket. */
+.brk-classic {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 0;
+    flex-wrap: wrap;
+}
+.brk-classic-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.brk-classic-col-final {
+    align-self: center;
+}
+.brk-classic-match {
+    border-collapse: collapse;
+}
+.brk-classic-connector {
+    width: 28px;
+    height: 1px;
+    border-bottom: 1px solid var(--border);
+    align-self: center;
+}
+.brk-classic-third {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-light);
 }
 
 /* Older formats (semi-finals / 3rd-place playoff): simple horizontal cards. */

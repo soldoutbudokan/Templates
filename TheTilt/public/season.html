@@ -197,6 +197,28 @@ async function loadSeason() {
     `;
 
     document.getElementById('content').innerHTML = html;
+    initBracketHover();
+}
+
+// Highlight all three cells (seed/team/score) of a bracket match when any one
+// is hovered. The rowspan-heavy table layout means matches don't share a clean
+// DOM parent, so CSS sibling selectors can't reach the other cells — hence JS.
+function initBracketHover() {
+    const cells = document.querySelectorAll('.brk-cell-link[data-match-id]');
+    cells.forEach((cell) => {
+        cell.addEventListener('mouseenter', () => {
+            const id = cell.getAttribute('data-match-id');
+            document
+                .querySelectorAll(`.brk-cell-link[data-match-id="${id}"]`)
+                .forEach((sibling) => sibling.classList.add('brk-match-hover'));
+        });
+        cell.addEventListener('mouseleave', () => {
+            const id = cell.getAttribute('data-match-id');
+            document
+                .querySelectorAll(`.brk-cell-link[data-match-id="${id}"]`)
+                .forEach((sibling) => sibling.classList.remove('brk-match-hover'));
+        });
+    });
 }
 
 function renderPlayoffsBracket(data, teamIndex) {
@@ -211,9 +233,20 @@ function renderPlayoffsBracket(data, teamIndex) {
     const isModern = ['Qualifier 1', 'Eliminator', 'Qualifier 2', 'Final']
         .every(s => byStage[s]);
 
-    const inner = isModern
-        ? renderModernBracket(data, teamIndex, byStage)
-        : renderFlatBracket(data, teamIndex, playoffs);
+    // Classic format (2008–2010): two Semi Finals + Final, plus optional
+    // 3rd Place Play-Off in 2010. Two semis share the same `stage` label
+    // so we can't index uniquely by stage — count instead.
+    const semis = playoffs.filter(p => p.stage === 'Semi Final');
+    const isClassic = !isModern && semis.length === 2 && playoffs.some(p => p.stage === 'Final');
+
+    let inner;
+    if (isModern) {
+        inner = renderModernBracket(data, teamIndex, byStage);
+    } else if (isClassic) {
+        inner = renderClassicBracket(data, teamIndex, playoffs, semis);
+    } else {
+        inner = renderFlatBracket(data, teamIndex, playoffs);
+    }
 
     return `
         <h2 class="section-title">Playoffs</h2>
@@ -245,6 +278,85 @@ function renderFlatBracket(data, teamIndex, playoffs) {
         `;
     };
     return `<div class="bracket-flat">${playoffs.map(card).join('')}</div>`;
+}
+
+// 2008–2010 single-elimination format: 2 semis + final, plus optional
+// 3rd-place playoff in 2010. Layout follows Wikipedia's IPL playoff brackets:
+// two semis stacked left, final on the right, 3rd-place below if present.
+function renderClassicBracket(data, teamIndex, playoffs, semis) {
+    const seedMap = new Map();
+    (data.team_table || []).forEach(t => seedMap.set(t.team, t.position_est));
+    const seedOf = (t) => seedMap.get(t) || 99;
+
+    const final = playoffs.find(p => p.stage === 'Final');
+    const thirdPlace = playoffs.find(p => p.stage === '3rd Place Play-Off');
+    const champ = final ? final.winner : null;
+
+    const fmtDate = (iso) => {
+        if (!iso) return '';
+        const parts = iso.split('-');
+        if (parts.length < 3) return iso;
+        const months = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${parseInt(parts[2], 10)} ${months[parseInt(parts[1], 10)] || ''}`;
+    };
+
+    const link = (matchId, content) =>
+        `<a class="brk-cell-link" data-match-id="${matchId}" href="match.html?id=${matchId}">${content}</a>`;
+
+    // One match = a 3-column mini-table with header / date / two team rows.
+    // Reuses brk-* classes so styling, hover, and click match the modern bracket.
+    const matchTable = (label, match, opts = {}) => {
+        const ordered = [...match.teams].sort((a, b) => seedOf(a) - seedOf(b));
+        const teamRow = (team) => {
+            const isW = match.winner === team;
+            const score = (match.scores || {})[team] || '';
+            const seed = seedOf(team);
+            return `
+                <tr>
+                    <td class="brk-td brk-bgD brk-center${isW ? ' winner' : ''}" style="border-width:1px">${link(match.match_id, isW ? `<b>${seed}</b>` : seed)}</td>
+                    <td class="brk-td brk-bgL${isW ? ' winner' : ''}" style="border-width:1px">${link(match.match_id, isW ? `<b>${team}</b>` : team)}</td>
+                    <td class="brk-td brk-bgL brk-center${isW ? ' winner' : ''}" style="border-width:1px">${link(match.match_id, isW ? `<b>${score}</b>` : score)}</td>
+                </tr>
+            `;
+        };
+        return `
+            <table class="brk-tbl brk-classic-match">
+                <colgroup>
+                    <col style="width:30px"/>
+                    <col style="width:165px"/>
+                    <col style="width:75px"/>
+                </colgroup>
+                <tbody>
+                    <tr><td colspan="3" class="brk-td brk-bgD brk-center brk-header" style="border-width:1px"><b>${label}</b></td></tr>
+                    <tr><td colspan="3" class="brk-date">${fmtDate(match.date)}</td></tr>
+                    ${teamRow(ordered[0])}
+                    ${teamRow(ordered[1])}
+                </tbody>
+            </table>
+        `;
+    };
+
+    const main = `
+        <div class="brk-wrap">
+            <div class="brk-classic">
+                <div class="brk-classic-col">
+                    ${matchTable('Semi Final 1', semis[0])}
+                    ${matchTable('Semi Final 2', semis[1])}
+                </div>
+                <div class="brk-classic-connector" aria-hidden="true"></div>
+                <div class="brk-classic-col brk-classic-col-final">
+                    ${matchTable('Final', final)}
+                </div>
+            </div>
+            ${thirdPlace ? `
+                <div class="brk-classic-third">
+                    ${matchTable('3rd Place Play-Off', thirdPlace)}
+                </div>
+            ` : ''}
+            ${champ ? `<div class="bracket-champion">🏆 ${teamLink(champ, data.season, teamIndex)}</div>` : ''}
+        </div>
+    `;
+    return main;
 }
 
 function renderModernBracket(data, teamIndex, byStage) {
@@ -288,13 +400,15 @@ function renderModernBracket(data, teamIndex, byStage) {
     // would overflow the bracket cells, so don't try to inline them here.
     const dateVenue = (m) => fmtDate(m.date);
 
-    // Each match cell is wrapped in <a href="match.html?id=X"> so the box
-    // is clickable and right-clickable. Three sibling anchors (one per td)
-    // share a hover state via JS-free CSS group selector on the row.
+    // Each match cell is wrapped in <a href="match.html?id=X"> so the box is
+    // clickable and right-clickable. Three sibling anchors (one per td) share
+    // a hover state via data-match-id + initBracketHover() handler — the
+    // bracket layout uses rowspan/colspan such that no clean parent wraps each
+    // match, so a CSS-only sibling selector can't express the highlight.
     //
     // borders is "T R B L" (top right bottom left) in px values like "1px 1px 1px 1px".
     const link = (matchId, content) =>
-        `<a class="brk-cell-link" href="match.html?id=${matchId}">${content}</a>`;
+        `<a class="brk-cell-link" data-match-id="${matchId}" href="match.html?id=${matchId}">${content}</a>`;
     const seedCell = (seed, isW, matchId, borders) =>
         `<td class="brk-td brk-bgD brk-center${isW ? ' winner' : ''}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${seed}</b>` : String(seed))}</td>`;
     const teamCell = (team, isW, matchId, borders) =>
