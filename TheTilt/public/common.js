@@ -8,6 +8,7 @@
         { href: 'season.html', key: 'season', label: 'Seasons' },
         { href: 'team.html', key: 'team', label: 'Teams' },
         { href: 'leaders.html', key: 'leaders', label: 'Leaders' },
+        { href: 'awards.html', key: 'awards', label: 'Awards' },
         { href: 'goats.html', key: 'goats', label: '\u{1F410} GOATs' },
         { href: 'notes.html', key: 'notes', label: 'Notes' },
         { href: 'about.html', key: 'about', label: 'About' },

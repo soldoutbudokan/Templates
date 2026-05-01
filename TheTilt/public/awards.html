@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT — Awards</title>
+    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+</head>
+<body>
+    <nav class="top-nav"></nav>
+    <script src="common.js"></script>
+    <script>initNav('awards');</script>
+
+    <div class="container">
+        <div id="content">
+            <div class="loading">loading awards…</div>
+        </div>
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="index.html">back to TILT</a>
+        </div>
+    </div>
+
+<script>
+// Awards categories — each entry pulls rank-1 from the matching leaders/<season>-<stat>.json.
+// Adding a category here is the only change needed to ship more awards.
+const AWARDS = [
+    { key: 'total_tilt', label: 'TILT MVP',         note: 'highest total TILT',          format: (v) => formatTilt(v),         valueLabel: 'Total TILT' },
+    { key: 'runs',       label: 'Most Runs',        note: '',                            format: (v) => String(v),             valueLabel: 'Runs' },
+    { key: 'wickets',    label: 'Most Wickets',     note: '',                            format: (v) => String(v),             valueLabel: 'Wickets' },
+    { key: 'sr',         label: 'Best Strike Rate', note: 'min 100 balls faced',         format: (v) => Number(v).toFixed(2),  valueLabel: 'Strike Rate' },
+    { key: 'economy',    label: 'Best Economy',     note: 'lower is better, min 100 deliveries', format: (v) => Number(v).toFixed(2), valueLabel: 'Economy' },
+];
+
+async function fetchTopAward(season, stat) {
+    const seasonSlug = season.replace('/', '-');
+    try {
+        const res = await fetch(`data/leaders/${seasonSlug}-${stat}.json`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        return (data.leaders || [])[0] || null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function awardTile(award, winner, season, teamIndex) {
+    if (!winner) {
+        return `
+            <article class="award-tile award-tile-empty">
+                <div class="award-label">${award.label}</div>
+                <div class="award-empty">no qualifier</div>
+                <div class="award-meta">${award.note || award.valueLabel}</div>
+            </article>
+        `;
+    }
+    return `
+        <article class="award-tile">
+            <div class="award-label">${award.label}</div>
+            <div class="award-winner">
+                <a href="player.html?player=${winner.slug}">${flagSpan(winner.country)}${winner.player}</a>
+            </div>
+            <div class="award-team">${teamLink(winner.team, season, teamIndex, { cls: 'team-link-subtle' })}</div>
+            <div class="award-value">${award.format(winner.value)}</div>
+            <div class="award-meta">${award.valueLabel}${award.note ? ` · ${award.note}` : ''}</div>
+        </article>
+    `;
+}
+
+async function loadAwards() {
+    const teamIndex = await loadTeamIndex();
+
+    let seasons = [];
+    try {
+        const m = await (await fetch('data/meta.json')).json();
+        seasons = (m.seasons || []).slice().reverse();
+    } catch (e) {}
+
+    if (seasons.length === 0) {
+        document.getElementById('content').innerHTML = '<div class="loading">no seasons available</div>';
+        return;
+    }
+
+    // Build a sticky season anchor strip — clicking jumps to that season's section.
+    const seasonStrip = seasons.map((s) =>
+        `<a href="#season-${s}" class="picker-chip">${s}</a>`
+    ).join('');
+
+    const headerHtml = `
+        <div class="page-header">
+            <h1>Awards</h1>
+            <div class="subtitle">season-by-season top performers across the headline categories</div>
+        </div>
+        <div class="awards-season-strip">${seasonStrip}</div>
+    `;
+
+    document.getElementById('content').innerHTML = headerHtml + '<div id="awards-body"><div class="loading">loading…</div></div>';
+    const body = document.getElementById('awards-body');
+
+    // Fetch in parallel: for each season × each award, pull rank-1.
+    const seasonPayloads = await Promise.all(seasons.map(async (season) => {
+        const winners = await Promise.all(AWARDS.map((a) => fetchTopAward(season, a.key)));
+        return { season, winners };
+    }));
+
+    body.innerHTML = seasonPayloads.map(({ season, winners }) => `
+        <section class="awards-season-card" id="season-${season}">
+            <div class="awards-season-header">
+                <h2 class="awards-season-title">IPL ${season}</h2>
+            </div>
+            <div class="awards-grid">
+                ${AWARDS.map((a, i) => awardTile(a, winners[i], season, teamIndex)).join('')}
+            </div>
+        </section>
+    `).join('');
+}
+
+loadAwards();
+</script>
+</body>
+</html>

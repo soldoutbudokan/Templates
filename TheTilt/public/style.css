@@ -1392,6 +1392,90 @@ img, pre, code {
     font-weight: 500;
 }
 
+/* Awards page (awards.html). Per-season card with one tile per category. */
+.awards-season-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0 18px;
+}
+.awards-season-card {
+    margin: 18px 0 26px;
+    padding: 14px 16px 18px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    scroll-margin-top: 70px;
+}
+.awards-season-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.awards-season-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+}
+.award-tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.award-tile-empty {
+    opacity: 0.55;
+}
+.award-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+.award-winner {
+    font-size: 0.95rem;
+}
+.award-winner a {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+.award-winner a:hover {
+    text-decoration: underline;
+}
+.award-team {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+.award-value {
+    margin-top: 4px;
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--accent-green);
+    font-variant-numeric: tabular-nums;
+}
+.award-meta {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-dim);
+}
+.award-empty {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+}
+
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
