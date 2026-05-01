@@ -1635,9 +1635,10 @@ def _build_player_season_leaders(
         _bat_row(r, int(r["fifties"]), {"hundreds": int(r["hundreds"]), "innings": int(r["innings"])})
         for _, r in bat.nlargest(50, "fifties").iterrows()
     ]
+    hundreds_qual = bat[bat["hundreds"] >= 1]
     leaders["hundreds"] = [
         _bat_row(r, int(r["hundreds"]), {"fifties": int(r["fifties"]), "innings": int(r["innings"])})
-        for _, r in bat.nlargest(50, "hundreds").iterrows()
+        for _, r in hundreds_qual.nlargest(50, "hundreds").iterrows()
     ]
     sr_qual = bat[bat["balls"] >= min_balls]
     leaders["sr"] = [
