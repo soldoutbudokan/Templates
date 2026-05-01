@@ -30,7 +30,7 @@ const AWARDS = [
     { key: 'runs',       label: 'Most Runs',        note: '',                            format: (v) => String(v),             valueLabel: 'Runs' },
     { key: 'wickets',    label: 'Most Wickets',     note: '',                            format: (v) => String(v),             valueLabel: 'Wickets' },
     { key: 'sr',         label: 'Best Strike Rate', note: 'min 100 balls faced',         format: (v) => Number(v).toFixed(2),  valueLabel: 'Strike Rate' },
-    { key: 'economy',    label: 'Best Economy',     note: 'lower is better, min 100 deliveries', format: (v) => Number(v).toFixed(2), valueLabel: 'Economy' },
+    { key: 'economy',    label: 'Best Economy',     note: '',                            format: (v) => Number(v).toFixed(2),  valueLabel: 'Economy' },
 ];
 
 async function fetchTopAward(season, stat) {
