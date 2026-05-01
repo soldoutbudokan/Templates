@@ -88,13 +88,32 @@ data/raw/*.json (Cricsheet) ──> pipeline/parse_matches.parse_no_results_from
                                                               merged into the dataframe by
                                                               parse_no_results_from_raw (issue #83).
 
+data/processed/player_citizenship.json (generator-maintained, Wikidata-derived)
+                       └── pipeline/build_player_countries.py
+                                  ── primary country source via Wikidata P27 (country of citizenship)
+                                     mapped to ICC team codes by pipeline/wikidata_country_map.py.
+                                     Populated by pipeline/download_people.py (extends the existing
+                                     ESPNcricinfo-key → Wikidata SPARQL pipeline).
+
 config/player_countries.yaml (generator-maintained) ──> pipeline/export_json.py
                        └── country_for(player_id) — drives the `country` field on every player record
                                                     (tilt_rankings, players/, matches/, goats, leaders/,
-                                                    teams/, team_seasons/, search_index). Default IN
-                                                    falls through for unlisted ids. Regenerate with
-                                                    `pipeline/build_player_countries.py` when new
-                                                    foreign players appear in the data.
+                                                    teams/, team_seasons/, search_index). Resolution
+                                                    order in build_player_countries.py:
+                                                      1. ID_OVERRIDES (id-keyed manual; for ICC-vs-
+                                                         citizenship divergence like Archer, Buttler,
+                                                         Russell whose Wikidata P27 disagrees with
+                                                         their cricket affiliation)
+                                                      2. Wikidata P27 → ICC code
+                                                      3. OVERRIDES (display-name + full-name)
+                                                      4. Unresolved (script exits non-zero unless
+                                                         --allow-default-in is passed; protects
+                                                         against silent IN misclassifications).
+                                                    Regenerate when new foreign players appear:
+                                                      cd TheTilt
+                                                      ./venv/bin/python pipeline/download_people.py
+                                                      ./venv/bin/python pipeline/build_player_countries.py
+                                                      ./venv/bin/python pipeline/export_json.py
 
 Manual / hand-written (NOT auto-refreshed):
     ├── public/about.md             ── numbers, top-10 table, validation metrics
@@ -221,7 +240,7 @@ Files containing hard-coded numbers, names, or claims that must be reviewed on e
 | `config/team_aliases.yaml` | Hand-edited canonical-name + slug + per-season-label map for franchises (e.g. DD/DC, KXIP/PBKS, RPS spelling). Editing it triggers a full re-parse and downstream re-export — see "If you change `config/team_aliases.yaml`" above. |
 | `config/seasons.yaml` | Hand-edited list of seasons whose final has been played. Append the new season string when a season completes; otherwise the website shows no champion. Used by `pipeline/export_json.py` only — no parquet rebuild needed. |
 | `config/no_results_supplement.yaml` | Hand-maintained list of (a) "no result" matches that cricsheet omits from its raw JSON dump (typically abandoned-without-a-ball-bowled) and (b) cricsheet "no result" entries to void because the match was rescheduled and replayed as a separate fixture. Cross-reference every season's points table against the Wikipedia league-stage table after a refresh — discrepancies in W/L/NR counts that look like NRs likely belong here. Pure cricsheet data gaps (a real played match cricsheet doesn't have at all) cannot be fixed via this file. Consumed by `parse_no_results_from_raw()`; triggers a rebuild of `data/processed/no_results.parquet`, `team_season_tilt.parquet`, and every `public/data/seasons/*.json`. |
-| `config/player_countries.yaml` | Generator-maintained `player_id → ICC country code` map for flag icons. Default `IN` for unlisted ids. Regenerate with `pipeline/build_player_countries.py` (which holds the OVERRIDES dict — edit there, then re-run, then re-export). Used by `pipeline/export_json.py` only — no parquet rebuild needed. |
+| `config/player_countries.yaml` | Generator-maintained `player_id → ICC country code` map for flag icons. Built from Wikidata P27 (country of citizenship) via `data/processed/player_citizenship.json` (populated by `pipeline/download_people.py`), with `pipeline/wikidata_country_map.py` mapping Wikidata labels → ICC codes (incl. WI federation). Regeneration: `pipeline/download_people.py` (fetches Wikidata) → `pipeline/build_player_countries.py` (writes yaml; fails loud on unresolved unless `--allow-default-in`) → `pipeline/export_json.py`. ID_OVERRIDES in `build_player_countries.py` handles ICC-vs-Wikidata divergence (e.g. Archer plays for EN but Wikidata=Barbados). |
 
 When publishing a blog post, **add a row here** with what numbers it embeds and which notebook produced them, **and add the entry to the `NOTES` array in `public/notes.html`** so it appears in the listing.
 

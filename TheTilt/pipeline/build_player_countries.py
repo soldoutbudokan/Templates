@@ -1,20 +1,31 @@
 """
 Build config/player_countries.yaml from the player_tilt parquet.
 
-Default country for any IPL player is IN (India). The OVERRIDES dict below
-lists every non-Indian player who's appeared in IPL data, keyed by the
-display name (`player` column from player_tilt). 2-letter ISO 3166-1
-codes used (cricket convention: WI for West Indies as a federation,
-EN for England rather than GB; ICC team affiliation, not citizenship,
-when the two diverge — e.g. Eoin Morgan = EN despite Irish birth).
+Resolution order (highest priority first):
+    1. ID_OVERRIDES         — id-keyed manual overrides; the only place to put
+                              ICC-vs-citizenship divergence cases (e.g. Eoin
+                              Morgan = EN despite IE/GB citizenship in
+                              Wikidata) and ambiguous shared-display-name IDs.
+    2. Wikidata P27         — country of citizenship, fetched by
+                              pipeline/download_people.py into
+                              data/processed/player_citizenship.json, mapped
+                              to ICC code via wikidata_country_map.py.
+    3. OVERRIDES (name)     — display-name-keyed legacy fallback for players
+                              Wikidata can't resolve (uncapped players, edge
+                              cases, etc.).
+    4. OVERRIDES (full_name) — full-name-keyed legacy fallback.
+    5. Unresolved           — by default, the script exits non-zero and
+                              prints the residue for review. Pass
+                              --allow-default-in to fall back to IN for
+                              unresolved players (legacy behavior, useful
+                              for genuinely-uncapped Indian players).
 
-Coverage philosophy: identify every foreign player I can recognize from
-cricket knowledge. The default-IN fallback only fires for unknown long-
-tail names, which in IPL data are virtually always domestic uncapped
-players.
+Re-run this whenever new players appear in the data:
+    cd TheTilt && ./venv/bin/python pipeline/download_people.py        # warms Wikidata cache
+    cd TheTilt && ./venv/bin/python pipeline/build_player_countries.py # regenerates yaml
 
-Re-run this script whenever new players appear in the data:
-    cd TheTilt && ./venv/bin/python pipeline/build_player_countries.py
+Codes are 2-letter ICC team codes (cricket convention): IN, AU, EN (not GB),
+NZ, ZA, WI (federation), LK, PK, BD, AF, IE, NL, ZW, NP, US.
 """
 
 OVERRIDES = {
@@ -142,11 +153,16 @@ OVERRIDES = {
 }
 
 
-# Player_id-keyed overrides for cases where short-name and full-name forms
-# both fail to match (different cricsheet conventions, ambiguous short
-# names, or first names that look foreign but are actually Indian, e.g.
-# Mohammad Kaif = IN). Authoritative — applied last.
+# Player_id-keyed overrides — highest priority. Use this for:
+#   (a) ICC-vs-citizenship divergence where Wikidata's P27 gives the wrong
+#       cricket affiliation (e.g. JC Archer Wikidata=Barbados but plays for EN;
+#       Buttler/Russell/Gayle/Pollard show citizenship=Australia in Wikidata
+#       presumably from BBL contracts, but their cricket affiliation is EN/WI).
+#   (b) Ambiguous shared display names where (a) the Cricsheet name conflicts
+#       with another player or (b) the player has no Wikidata entry at all.
+#   (c) First names that look foreign but are Indian (Mohammad Kaif = IN).
 ID_OVERRIDES = {
+    # Originally hand-curated entries (pre-Wikidata-pipeline) — kept as-is.
     "14f96089": "AU",   # A Zampa
     "19b9f399": "AU",   # CJ Green
     "25f7b7d6": "EN",   # T Banton (Tom)
@@ -185,46 +201,174 @@ ID_OVERRIDES = {
     "64839cb3": "LK",   # M Pathirana (Matheesha)
     "844e79d1": "ZA",   # D Brevis (Dewald)
     "8dc152d1": "ZA",   # D Jansen (Duan)
+
+    # ICC-vs-Wikidata divergence — Wikidata P27 gives the wrong cricket
+    # affiliation. Without these, Wikidata wins and assigns the wrong country.
+    "5574750c": "EN",   # JC Archer (Wikidata=Barbados; plays for EN)
+    "99b75528": "EN",   # JC Buttler (Wikidata=Australia; plays for EN)
+    "39f01cdb": "EN",   # KP Pietersen (Wikidata=South Africa; plays for EN)
+    "11df3dc8": "EN",   # MJ Lumb (Wikidata=South Africa; played for EN)
+    "3edb58fc": "EN",   # AD Mascarenhas (Wikidata=New Zealand; played for EN)
+    "611926bc": "EN",   # GR Napier (Wikidata=New Zealand; played for EN)
+    "e86754b2": "EN",   # TK Curran (Wikidata=South Africa; plays for EN)
+    "7f048519": "EN",   # DJ Willey (Wikidata=New Zealand; plays for EN)
+    "1558d83b": "IN",   # GS Sandhu (Wikidata=Australia; Indian)
+    "4ba44e19": "LK",   # M Muralitharan (Wikidata=New Zealand; Sri Lankan legend)
+    "9868bc75": "LK",   # BMAJ Mendis (Wikidata=Australia; Sri Lankan)
+    "0f12f9df": "LK",   # NLTC Perera (Wikidata=Australia; Sri Lankan)
+    "05c2ca46": "NL",   # RE van der Merwe (Wikidata=South Africa; plays for NL)
+    "4ec07775": "NL",   # RN ten Doeschate (Wikidata=South Africa; played for NL)
+    "df5a6881": "NZ",   # DP Conway (Wikidata=South Africa; plays for NZ)
+    "64d43928": "PK",   # Sohail Tanvir (Wikidata=Australia; Pakistani)
+    "33cb3411": "PK",   # Younis Khan (Wikidata=Australia; Pakistani)
+    "9ab63e7b": "PK",   # Mohammad Hafeez (Wikidata=Australia; Pakistani)
+    "16dfcc19": "PK",   # Umar Gul (Wikidata=Australia; Pakistani)
+    "bbd41817": "WI",   # AD Russell (Wikidata=Australia; Jamaican/WI)
+    "db584dad": "WI",   # CH Gayle (Wikidata=Australia; Jamaican/WI)
+    "a757b0d8": "WI",   # KA Pollard (Wikidata=Australia; Trinidadian/WI)
+    "9d430b40": "WI",   # SP Narine (Wikidata=Australia; Trinidadian/WI)
+    "a84468fe": "WI",   # DJ Jacobs (Wikidata=South Africa; West Indian wicketkeeper)
+
+    # Foreign players Wikidata couldn't resolve (no entry, or P2697 missing).
+    # Identified manually from cricket knowledge.
+    "9b6e1b3f": "AU",   # J Fraser-McGurk (Jake Fraser-McGurk)
+    "9eb1455b": "AU",   # NT Ellis (Nathan Ellis)
+    "0ebfb1ad": "WI",   # E Lewis (Evin Lewis)
+    "d3a3e82d": "WI",   # AB Barath (Adrian Barath)
+    "76388dc8": "WI",   # S Badree (Samuel Badree)
+    "529eb9e0": "WI",   # OC McCoy (Obed McCoy)
+    "531f0278": "WI",   # K Santokie (Krishmar Santokie)
+    "b552a935": "ZA",   # AC Thomas (Alfonso Thomas)
+    "f0af99a7": "ZA",   # D Ferreira (Donavon Ferreira)
+    "107c26fb": "ZA",   # KT Maphaka (Kwena Maphaka)
+    "60aa2db3": "ZA",   # LG Pretorius (Lhuan-dre Pretorius)
+    "de7d833e": "LK",   # D Madushanka (Dilshan Madushanka)
+    "5750bcb4": "LK",   # E Malinga (Eshan Malinga)
+    "03a83c50": "LK",   # V Viyaskanth (Vijayakanth Viyaskanth)
+    "9061a703": "IE",   # J Little (Joshua Little)
+    "cb9b8664": "NZ",   # W O'Rourke (William O'Rourke)
+    "75de770f": "ZW",   # T Taibu (Tatenda Taibu)
 }
 
+
+import argparse
+import json
+import sys
+from collections import Counter
+from pathlib import Path
 
 import pandas as pd
-from pathlib import Path
 import yaml
 
-df = pd.read_parquet('data/processed/player_tilt.parquet')
+from wikidata_country_map import map_to_icc
 
-result = {}
-for _, r in df.iterrows():
-    pid = r.get('player_id', '')
-    name = r['player']
-    fn = r.get('full_name', name) or name
-    # Order: ID override > name override > full_name override > default IN.
-    country = ID_OVERRIDES.get(str(pid)) or OVERRIDES.get(name) or OVERRIDES.get(fn) or 'IN'
-    if pid:
-        result[str(pid)] = {'name': str(name), 'country': country}
 
-# Sort by player_id for stable output
-sorted_keys = sorted(result.keys())
-data = {
-    'default_country': 'IN',
-    'players': {k: result[k] for k in sorted_keys},
-}
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '--allow-default-in',
+        action='store_true',
+        help='Fall back to IN for any player not resolved via overrides or Wikidata. '
+             'Legacy behavior; off by default so silent misclassifications fail loud.',
+    )
+    args = parser.parse_args()
 
-out = Path('config/player_countries.yaml')
-with open(out, 'w') as f:
-    f.write("# Player country attributions for flag-icon rendering (issue #72).\n")
-    f.write("# default_country = IN — fallback for any player_id not listed below.\n")
-    f.write("# Codes are 2-letter ICC team codes (cricket convention):\n")
-    f.write("#   IN India · AU Australia · EN England · NZ New Zealand · ZA South Africa\n")
-    f.write("#   WI West Indies · LK Sri Lanka · PK Pakistan · BD Bangladesh\n")
-    f.write("#   AF Afghanistan · IE Ireland · NL Netherlands · ZW Zimbabwe\n")
-    f.write("#   NP Nepal · US United States\n")
-    f.write("# Edit by player_id; the `name` field is informational only.\n\n")
-    yaml.safe_dump(data, f, sort_keys=False, default_flow_style=False, allow_unicode=True)
+    df = pd.read_parquet('data/processed/player_tilt.parquet')
 
-# Stats
-from collections import Counter
-countries = [v['country'] for v in result.values()]
-print(f'Wrote {out} ({len(result)} players)')
-print('Country distribution:', dict(Counter(countries).most_common()))
+    citizenship_path = Path('data/processed/player_citizenship.json')
+    citizenships = {}
+    if citizenship_path.exists():
+        with open(citizenship_path) as f:
+            citizenships = json.load(f)
+        print(f'Loaded {len(citizenships)} Wikidata citizenships from {citizenship_path}')
+    else:
+        print(f'WARNING: {citizenship_path} not found. Run pipeline/download_people.py first '
+              'to populate the Wikidata citizenship cache.')
+
+    result = {}
+    unresolved = []
+    sources = Counter()
+    unmapped_citizenships = Counter()
+
+    for _, r in df.iterrows():
+        pid = r.get('player_id', '')
+        if not pid:
+            continue
+        name = r['player']
+        fn = r.get('full_name', name) or name
+        spid = str(pid)
+
+        country = None
+        source = None
+
+        if spid in ID_OVERRIDES:
+            country, source = ID_OVERRIDES[spid], 'id_override'
+
+        if country is None and spid in citizenships:
+            mapped = map_to_icc(citizenships[spid])
+            if mapped:
+                country, source = mapped, 'wikidata'
+            else:
+                unmapped_citizenships[citizenships[spid]] += 1
+
+        if country is None and name in OVERRIDES:
+            country, source = OVERRIDES[name], 'name_override'
+
+        if country is None and fn in OVERRIDES:
+            country, source = OVERRIDES[fn], 'fullname_override'
+
+        if country is None:
+            if args.allow_default_in:
+                country, source = 'IN', 'default_in'
+            else:
+                unresolved.append((spid, name, fn, citizenships.get(spid, '<no wikidata>')))
+                continue
+
+        sources[source] += 1
+        result[spid] = {'name': str(name), 'country': country}
+
+    print(f'\nResolution sources: {dict(sources.most_common())}')
+    if unmapped_citizenships:
+        print(f'Wikidata labels with no ICC mapping (add to wikidata_country_map.py if needed):')
+        for label, n in unmapped_citizenships.most_common():
+            print(f'  {label!r}: {n} players')
+
+    if unresolved:
+        print(f'\nERROR: {len(unresolved)} players unresolved (no override, no Wikidata mapping):')
+        for spid, name, fn, citz in unresolved:
+            print(f'  {spid}  name={name!r}  full_name={fn!r}  wikidata_citz={citz!r}')
+        print('\nResolve by one of:')
+        print('  - Add player_id to ID_OVERRIDES in this file (preferred for ICC-vs-citizenship divergence)')
+        print('  - Map the Wikidata citizenship label in pipeline/wikidata_country_map.py')
+        print('  - Add display-name to OVERRIDES dict in this file')
+        print('  - Re-run with --allow-default-in to fall back to IN for the residue')
+        return 1
+
+    sorted_keys = sorted(result.keys())
+    data = {
+        'default_country': 'IN',
+        'players': {k: result[k] for k in sorted_keys},
+    }
+
+    out = Path('config/player_countries.yaml')
+    with open(out, 'w') as f:
+        f.write("# Player country attributions for flag-icon rendering (issue #72).\n")
+        f.write("# Generated by pipeline/build_player_countries.py — do not edit by hand;\n")
+        f.write("# adjust ID_OVERRIDES / OVERRIDES / wikidata_country_map.py upstream and re-run.\n")
+        f.write("# Resolution order: ID_OVERRIDES > Wikidata P27 > name OVERRIDES > full_name OVERRIDES.\n")
+        f.write("# default_country = IN — only used when --allow-default-in falls back during build.\n")
+        f.write("# Codes are 2-letter ICC team codes (cricket convention):\n")
+        f.write("#   IN India · AU Australia · EN England · NZ New Zealand · ZA South Africa\n")
+        f.write("#   WI West Indies · LK Sri Lanka · PK Pakistan · BD Bangladesh\n")
+        f.write("#   AF Afghanistan · IE Ireland · NL Netherlands · ZW Zimbabwe\n")
+        f.write("#   NP Nepal · US United States\n\n")
+        yaml.safe_dump(data, f, sort_keys=False, default_flow_style=False, allow_unicode=True)
+
+    countries = [v['country'] for v in result.values()]
+    print(f'\nWrote {out} ({len(result)} players)')
+    print(f'Country distribution: {dict(Counter(countries).most_common())}')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
