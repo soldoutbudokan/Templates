@@ -373,16 +373,19 @@ def export_player_details(
     deltas_df: pd.DataFrame,
     player_tilt: pd.DataFrame,
     output_dir: Optional[str] = None,
-    min_matches: int = 10,
 ) -> Path:
-    """Export per-player detail JSON files."""
+    """Export per-player detail JSON files.
+
+    Every player in `player_tilt` gets a file. The `min_matches` config gate
+    applies only to the leaderboard (`export_rankings`); player pages must
+    exist for every slug that any `matches/<id>.json` can link to (issue #91).
+    """
     config = load_config()
     output_dir = Path(output_dir or config["export"]["output_dir"])
     players_dir = output_dir / config["export"]["players_dir"]
     players_dir.mkdir(parents=True, exist_ok=True)
-    min_matches = config["export"].get("min_matches", min_matches)
 
-    qualified = player_tilt[player_tilt["total_matches"] >= min_matches]
+    qualified = player_tilt
 
     deltas_df = _add_legal_flags(deltas_df)
 
@@ -1931,6 +1934,7 @@ def _build_corpus(sources, *, with_initials: bool = False, extras=()) -> str:
 
 def export_search_index(
     deltas_df: Optional[pd.DataFrame] = None,
+    player_tilt: Optional[pd.DataFrame] = None,
     output_dir: Optional[str] = None,
 ) -> Path:
     """Build a flat search index for the global nav search box.
@@ -1943,6 +1947,10 @@ def export_search_index(
     file's `teams` array only carries one); pass None to skip and fall back
     to the rankings primary team only.
 
+    `player_tilt` is used to also index sub-min_matches players (rookies)
+    that have a player page but aren't on the leaderboard (issue #91). Pass
+    None to index ranked players only.
+
     One row per entity:
       t   — 'p' (player) or 'team'
       l   — display label
@@ -1952,7 +1960,7 @@ def export_search_index(
             alias's individual words and initials; pipes act as token-start
             sentinels for the client-side scorer
       b   — numeric tie-break boost
-      r   — player rank (only on players)
+      r   — player rank (only on ranked players; client treats missing as 9999)
     """
     config = load_config()
     output_dir = Path(output_dir or config["export"]["output_dir"])
@@ -1972,9 +1980,11 @@ def export_search_index(
             teams_by_pid.setdefault(pid, set()).update(grp["bowling_team"].dropna().unique())
 
     rows = []
+    ranked_pids: set = set()
 
     for r in rankings:
         pid = r.get("player_id") or ""
+        ranked_pids.add(pid)
         played_for = teams_by_pid.get(pid) or {r["team"]}
         if len(played_for) > 1:
             team_part = f"{len(played_for)} Teams"
@@ -1993,6 +2003,39 @@ def export_search_index(
             "b": r["total_tilt_per_match"],
             "r": r["rank"],
         })
+
+    if player_tilt is not None:
+        for _, row in player_tilt.iterrows():
+            pid = row.get("player_id") or ""
+            if pid in ranked_pids:
+                continue
+            bat_balls = int(row["batting_balls"])
+            bowl_balls = int(row["bowling_balls"])
+            # Mirrors export_rankings role logic: bowler check overrides all-rounder.
+            role = "batter"
+            if bowl_balls >= 50 and bat_balls >= 50:
+                ratio = bowl_balls / max(bat_balls, 1)
+                if 0.3 <= ratio <= 3.0:
+                    role = "all-rounder"
+            if bowl_balls >= 100 and bowl_balls > bat_balls * 1.5:
+                role = "bowler"
+            played_for = teams_by_pid.get(pid) or {row["team"]}
+            if len(played_for) > 1:
+                team_part = f"{len(played_for)} Teams"
+            else:
+                primary_code = TEAM_SLUG.get(row["team"], "").upper() or row["team"]
+                team_part = primary_code
+            role_label = "batsman" if role == "batter" else role
+            sub = f"{role_label} · {team_part} · {int(row['total_matches'])} M"
+            rows.append({
+                "t": "p",
+                "l": row["player"],
+                "s": make_slug(row["player"], pid if pid else None),
+                "c": country_for(pid),
+                "sub": sub,
+                "x": _build_corpus([row["player"], row.get("full_name") or row["player"]]),
+                "b": round(float(row["total_tilt_per_match"]), 5),
+            })
 
     for t in teams:
         sources = [t["name"], t["slug"]]
@@ -2047,7 +2090,7 @@ def export_all(
         export_seasons(deltas_df, player_tilt, player_season_tilt, team_season_tilt)
         export_leaders(deltas_df, player_tilt, player_season_tilt)
         export_team_index(team_tilt)
-        export_search_index(deltas_df)
+        export_search_index(deltas_df, player_tilt)
     print("  Done!")
 
 
