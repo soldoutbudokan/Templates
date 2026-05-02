@@ -10,15 +10,15 @@
     "Kolkata Knight Riders"
   ],
   "total_tilt_per_match": -0.01439,
-  "batting_tilt_per_match": -0.02485,
-  "bowling_tilt_per_match": -0.00374,
+  "batting_tilt_per_match": -0.02494,
+  "bowling_tilt_per_match": -0.00371,
   "shrunk_total_tilt_per_match": -0.01538,
-  "shrunk_batting_tilt_per_match": -0.02392,
-  "shrunk_bowling_tilt_per_match": -0.00479,
+  "shrunk_batting_tilt_per_match": -0.024,
+  "shrunk_bowling_tilt_per_match": -0.00476,
   "tilt_ci_lower": -0.04403,
-  "tilt_ci_upper": 0.01328,
+  "tilt_ci_upper": 0.01326,
   "tilt_ci_lower_90": -0.03943,
-  "tilt_ci_upper_90": 0.00867,
+  "tilt_ci_upper_90": 0.00866,
   "confidence": "medium",
   "total_tilt": -0.60457,
   "total_matches": 42,
@@ -472,7 +472,7 @@
     {
       "season": "2010",
       "team": "Kolkata Knight Riders",
-      "batting_tilt_per_match": -0.01046,
+      "batting_tilt_per_match": -0.01087,
       "bowling_tilt_per_match": -0.03808,
       "batting_matches": 4,
       "bowling_matches": 7,
@@ -528,13 +528,13 @@
           "bat_runs": 8,
           "bat_balls": 5,
           "bat_sr": 160.0,
-          "bat_tilt": 0.00168,
+          "bat_tilt": 5e-05,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 31,
           "bowl_econ": 7.75,
           "bowl_tilt": 0.07349,
-          "total_tilt": 0.07517
+          "total_tilt": 0.07354
         },
         {
           "match_id": "419139",
@@ -638,7 +638,7 @@
       "season": "2011",
       "team": "Delhi Capitals",
       "batting_tilt_per_match": 0.00762,
-      "bowling_tilt_per_match": 0.07255,
+      "bowling_tilt_per_match": 0.07278,
       "batting_matches": 1,
       "bowling_matches": 7,
       "batting_balls": 6,
@@ -755,8 +755,8 @@
           "bowl_balls": 24,
           "bowl_runs": 32,
           "bowl_econ": 8.0,
-          "bowl_tilt": 0.02401,
-          "total_tilt": 0.03163
+          "bowl_tilt": 0.02564,
+          "total_tilt": 0.03326
         },
         {
           "match_id": "501253",
@@ -1020,9 +1020,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.22393,
+      "tilt": -0.22556,
       "balls": 94,
-      "avg_delta": -0.002285
+      "avg_delta": -0.002302
     }
   ],
   "bowling_phases": [
@@ -1040,9 +1040,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.15786,
+      "tilt": -0.15624,
       "balls": 182,
-      "avg_delta": -0.000827
+      "avg_delta": -0.000818
     }
   ],
   "best_matches": [
@@ -1349,67 +1349,67 @@
     {
       "match": 23,
       "date": "2010-04-01",
-      "tilt": 0.07517,
-      "cumulative": -0.78815
+      "tilt": 0.07354,
+      "cumulative": -0.78978
     },
     {
       "match": 24,
       "date": "2010-04-04",
       "tilt": -0.16857,
-      "cumulative": -0.95672
+      "cumulative": -0.95834
     },
     {
       "match": 25,
       "date": "2010-04-07",
       "tilt": -0.04466,
-      "cumulative": -1.00138
+      "cumulative": -1.003
     },
     {
       "match": 26,
       "date": "2010-04-10",
       "tilt": -0.1327,
-      "cumulative": -1.13408
+      "cumulative": -1.1357
     },
     {
       "match": 27,
       "date": "2010-04-13",
       "tilt": 0.0089,
-      "cumulative": -1.12518
+      "cumulative": -1.12681
     },
     {
       "match": 28,
       "date": "2011-04-23",
       "tilt": 0.00334,
-      "cumulative": -1.12184
+      "cumulative": -1.12347
     },
     {
       "match": 29,
       "date": "2011-04-28",
       "tilt": 0.20972,
-      "cumulative": -0.91212
+      "cumulative": -0.91374
     },
     {
       "match": 30,
       "date": "2011-04-30",
       "tilt": 0.23291,
-      "cumulative": -0.67921
+      "cumulative": -0.68083
     },
     {
       "match": 31,
       "date": "2011-05-02",
       "tilt": -0.01467,
-      "cumulative": -0.69387
+      "cumulative": -0.6955
     },
     {
       "match": 32,
       "date": "2011-05-05",
       "tilt": 0.08799,
-      "cumulative": -0.60588
+      "cumulative": -0.60751
     },
     {
       "match": 33,
       "date": "2011-05-07",
-      "tilt": 0.03164,
+      "tilt": 0.03327,
       "cumulative": -0.57425
     },
     {
@@ -1490,7 +1490,7 @@
     },
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.0233,
+      "tilt_per_match": -0.02411,
       "matches": 2
     },
     {
@@ -1548,7 +1548,7 @@
     -0.03102,
     0.07071,
     -0.11723,
-    0.07517,
+    0.07354,
     -0.16857,
     -0.04466,
     -0.1327,
@@ -1558,7 +1558,7 @@
     0.23291,
     -0.01467,
     0.08799,
-    0.03164,
+    0.03327,
     -0.03544,
     0.17829,
     -0.16636,

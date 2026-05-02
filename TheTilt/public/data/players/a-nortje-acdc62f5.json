@@ -10,18 +10,18 @@
     "Kolkata Knight Riders",
     "Lucknow Super Giants"
   ],
-  "total_tilt_per_match": 0.02489,
+  "total_tilt_per_match": 0.02532,
   "batting_tilt_per_match": 0.01411,
-  "bowling_tilt_per_match": 0.02086,
-  "shrunk_total_tilt_per_match": 0.02039,
-  "shrunk_batting_tilt_per_match": 0.01048,
-  "shrunk_bowling_tilt_per_match": 0.01749,
-  "tilt_ci_lower": -0.01664,
-  "tilt_ci_upper": 0.05742,
-  "tilt_ci_lower_90": -0.01069,
-  "tilt_ci_upper_90": 0.05147,
+  "bowling_tilt_per_match": 0.02128,
+  "shrunk_total_tilt_per_match": 0.02076,
+  "shrunk_batting_tilt_per_match": 0.01047,
+  "shrunk_bowling_tilt_per_match": 0.01787,
+  "tilt_ci_lower": -0.01616,
+  "tilt_ci_upper": 0.05769,
+  "tilt_ci_lower_90": -0.01023,
+  "tilt_ci_upper_90": 0.05175,
   "confidence": "medium",
-  "total_tilt": 1.21975,
+  "total_tilt": 1.2405,
   "total_matches": 49,
   "batting_balls": 50,
   "bowling_balls": 1120,
@@ -30,7 +30,7 @@
       "season": "2020",
       "team": "Delhi Capitals",
       "batting_tilt_per_match": 0.01809,
-      "bowling_tilt_per_match": 0.06091,
+      "bowling_tilt_per_match": 0.06127,
       "batting_matches": 3,
       "bowling_matches": 16,
       "batting_balls": 6,
@@ -299,8 +299,8 @@
           "bowl_balls": 24,
           "bowl_runs": 51,
           "bowl_econ": 12.75,
-          "bowl_tilt": -0.14162,
-          "total_tilt": -0.14162
+          "bowl_tilt": -0.13579,
+          "total_tilt": -0.13579
         },
         {
           "match_id": "1237180",
@@ -539,7 +539,7 @@
       "season": "2022",
       "team": "Delhi Capitals",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.02712,
+      "bowling_tilt_per_match": -0.02615,
       "batting_matches": 1,
       "bowling_matches": 6,
       "batting_balls": 6,
@@ -599,8 +599,8 @@
           "bowl_balls": 24,
           "bowl_runs": 42,
           "bowl_econ": 10.5,
-          "bowl_tilt": -0.12346,
-          "total_tilt": -0.12346
+          "bowl_tilt": -0.11763,
+          "total_tilt": -0.11763
         },
         {
           "match_id": "1304104",
@@ -685,7 +685,7 @@
       "season": "2023",
       "team": "Delhi Capitals",
       "batting_tilt_per_match": 0.02148,
-      "bowling_tilt_per_match": -0.00225,
+      "bowling_tilt_per_match": -0.00134,
       "batting_matches": 7,
       "bowling_matches": 10,
       "batting_balls": 29,
@@ -726,8 +726,8 @@
           "bowl_balls": 24,
           "bowl_runs": 44,
           "bowl_econ": 11.0,
-          "bowl_tilt": -0.06536,
-          "total_tilt": -0.06536
+          "bowl_tilt": -0.05953,
+          "total_tilt": -0.05953
         },
         {
           "match_id": "1359490",
@@ -764,8 +764,8 @@
           "bowl_balls": 24,
           "bowl_runs": 34,
           "bowl_econ": 8.5,
-          "bowl_tilt": 0.12947,
-          "total_tilt": 0.18231
+          "bowl_tilt": 0.1311,
+          "total_tilt": 0.18394
         },
         {
           "match_id": "1359502",
@@ -821,8 +821,8 @@
           "bowl_balls": 24,
           "bowl_runs": 44,
           "bowl_econ": 11.0,
-          "bowl_tilt": -0.24617,
-          "total_tilt": -0.24617
+          "bowl_tilt": -0.24454,
+          "total_tilt": -0.24454
         },
         {
           "match_id": "1359518",
@@ -1183,9 +1183,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.6444,
+      "tilt": 0.66515,
       "balls": 440,
-      "avg_delta": 0.001392
+      "avg_delta": 0.001437
     }
   ],
   "best_matches": [
@@ -1327,16 +1327,8 @@
       "match_id": "1359514",
       "date": "2023-04-29",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.24617,
+      "tilt": -0.24454,
       "wickets": 0,
-      "balls": 24
-    },
-    {
-      "match_id": "1237177",
-      "date": "2020-11-05",
-      "vs": "Mumbai Indians",
-      "tilt": -0.14162,
-      "wickets": 1,
       "balls": 24
     },
     {
@@ -1348,10 +1340,18 @@
       "balls": 24
     },
     {
+      "match_id": "1237177",
+      "date": "2020-11-05",
+      "vs": "Mumbai Indians",
+      "tilt": -0.13579,
+      "wickets": 1,
+      "balls": 24
+    },
+    {
       "match_id": "1304101",
       "date": "2022-05-08",
       "vs": "Chennai Super Kings",
-      "tilt": -0.12346,
+      "tilt": -0.11763,
       "wickets": 3,
       "balls": 24
     }
@@ -1438,218 +1438,218 @@
     {
       "match": 14,
       "date": "2020-11-05",
-      "tilt": -0.14162,
-      "cumulative": 1.09114
+      "tilt": -0.13579,
+      "cumulative": 1.09697
     },
     {
       "match": 15,
       "date": "2020-11-08",
       "tilt": -0.03189,
-      "cumulative": 1.05925
+      "cumulative": 1.06508
     },
     {
       "match": 16,
       "date": "2020-11-10",
       "tilt": -0.03046,
-      "cumulative": 1.02879
+      "cumulative": 1.03462
     },
     {
       "match": 17,
       "date": "2021-09-22",
       "tilt": 0.08918,
-      "cumulative": 1.11797
+      "cumulative": 1.1238
     },
     {
       "match": 18,
       "date": "2021-09-25",
       "tilt": 0.22369,
-      "cumulative": 1.34166
+      "cumulative": 1.34749
     },
     {
       "match": 19,
       "date": "2021-09-28",
       "tilt": 0.13416,
-      "cumulative": 1.47582
+      "cumulative": 1.48165
     },
     {
       "match": 20,
       "date": "2021-10-02",
       "tilt": -0.00312,
-      "cumulative": 1.4727
+      "cumulative": 1.47853
     },
     {
       "match": 21,
       "date": "2021-10-04",
       "tilt": -0.10155,
-      "cumulative": 1.37115
+      "cumulative": 1.37698
     },
     {
       "match": 22,
       "date": "2021-10-08",
       "tilt": 0.29572,
-      "cumulative": 1.66687
+      "cumulative": 1.6727
     },
     {
       "match": 23,
       "date": "2021-10-10",
       "tilt": -0.03544,
-      "cumulative": 1.63143
+      "cumulative": 1.63726
     },
     {
       "match": 24,
       "date": "2021-10-13",
       "tilt": 0.31587,
-      "cumulative": 1.9473
+      "cumulative": 1.95313
     },
     {
       "match": 25,
       "date": "2022-04-07",
       "tilt": -0.09245,
-      "cumulative": 1.85485
+      "cumulative": 1.86068
     },
     {
       "match": 26,
       "date": "2022-05-05",
       "tilt": 0.03339,
-      "cumulative": 1.88824
+      "cumulative": 1.89407
     },
     {
       "match": 27,
       "date": "2022-05-08",
-      "tilt": -0.12346,
-      "cumulative": 1.76478
+      "tilt": -0.11763,
+      "cumulative": 1.77645
     },
     {
       "match": 28,
       "date": "2022-05-11",
       "tilt": -0.03213,
-      "cumulative": 1.73265
+      "cumulative": 1.74432
     },
     {
       "match": 29,
       "date": "2022-05-16",
       "tilt": 0.04645,
-      "cumulative": 1.7791
+      "cumulative": 1.79076
     },
     {
       "match": 30,
       "date": "2022-05-21",
       "tilt": 0.00547,
-      "cumulative": 1.78457
+      "cumulative": 1.79624
     },
     {
       "match": 31,
       "date": "2023-04-04",
       "tilt": -0.0352,
-      "cumulative": 1.74937
+      "cumulative": 1.76103
     },
     {
       "match": 32,
       "date": "2023-04-08",
-      "tilt": -0.06536,
-      "cumulative": 1.68401
+      "tilt": -0.05953,
+      "cumulative": 1.70151
     },
     {
       "match": 33,
       "date": "2023-04-11",
       "tilt": 0.10065,
-      "cumulative": 1.78466
+      "cumulative": 1.80216
     },
     {
       "match": 34,
       "date": "2023-04-15",
-      "tilt": 0.18231,
-      "cumulative": 1.96697
+      "tilt": 0.18394,
+      "cumulative": 1.98609
     },
     {
       "match": 35,
       "date": "2023-04-20",
       "tilt": 0.00562,
-      "cumulative": 1.97259
+      "cumulative": 1.99171
     },
     {
       "match": 36,
       "date": "2023-04-24",
       "tilt": 0.07008,
-      "cumulative": 2.04267
+      "cumulative": 2.0618
     },
     {
       "match": 37,
       "date": "2023-04-29",
-      "tilt": -0.24617,
-      "cumulative": 1.79651
+      "tilt": -0.24454,
+      "cumulative": 1.81725
     },
     {
       "match": 38,
       "date": "2023-05-02",
       "tilt": -0.08404,
-      "cumulative": 1.71246
+      "cumulative": 1.73321
     },
     {
       "match": 39,
       "date": "2023-05-17",
       "tilt": 0.21206,
-      "cumulative": 1.92453
+      "cumulative": 1.94527
     },
     {
       "match": 40,
       "date": "2023-05-20",
       "tilt": -0.01212,
-      "cumulative": 1.91241
+      "cumulative": 1.93316
     },
     {
       "match": 41,
       "date": "2024-03-28",
       "tilt": -0.09896,
-      "cumulative": 1.81345
+      "cumulative": 1.8342
     },
     {
       "match": 42,
       "date": "2024-03-31",
       "tilt": -0.06189,
-      "cumulative": 1.75156
+      "cumulative": 1.77231
     },
     {
       "match": 43,
       "date": "2024-04-03",
       "tilt": 0.02962,
-      "cumulative": 1.78119
+      "cumulative": 1.80194
     },
     {
       "match": 44,
       "date": "2024-04-07",
       "tilt": -0.07118,
-      "cumulative": 1.71001
+      "cumulative": 1.73076
     },
     {
       "match": 45,
       "date": "2024-04-20",
       "tilt": -0.01946,
-      "cumulative": 1.69054
+      "cumulative": 1.71129
     },
     {
       "match": 46,
       "date": "2024-04-24",
       "tilt": -0.01218,
-      "cumulative": 1.67836
+      "cumulative": 1.69911
     },
     {
       "match": 47,
       "date": "2025-04-15",
       "tilt": -0.02068,
-      "cumulative": 1.65768
+      "cumulative": 1.67843
     },
     {
       "match": 48,
       "date": "2025-05-25",
       "tilt": -0.29595,
-      "cumulative": 1.36173
+      "cumulative": 1.38248
     },
     {
       "match": 49,
       "date": "2026-04-01",
       "tilt": -0.14198,
-      "cumulative": 1.21975
+      "cumulative": 1.2405
     }
   ],
   "team_matchups": [
@@ -1734,7 +1734,7 @@
     0.02135,
     -0.02741,
     0.17005,
-    -0.14162,
+    -0.13579,
     -0.03189,
     -0.03046,
     0.08918,
@@ -1747,17 +1747,17 @@
     0.31587,
     -0.09245,
     0.03339,
-    -0.12346,
+    -0.11763,
     -0.03213,
     0.04645,
     0.00547,
     -0.0352,
-    -0.06536,
+    -0.05953,
     0.10065,
-    0.18231,
+    0.18394,
     0.00562,
     0.07008,
-    -0.24617,
+    -0.24454,
     -0.08404,
     0.21206,
     -0.01212,

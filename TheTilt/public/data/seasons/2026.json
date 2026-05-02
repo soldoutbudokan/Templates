@@ -1,7 +1,7 @@
 {
   "season": "2026",
   "season_year": 2026,
-  "matches": 41,
+  "matches": 42,
   "champion": null,
   "team_table": [
     {
@@ -35,21 +35,6 @@
       "position_est": 2
     },
     {
-      "team": "Rajasthan Royals",
-      "slug": "rr",
-      "label": "Rajasthan Royals",
-      "matches": 9,
-      "wins": 6,
-      "losses": 3,
-      "no_results": 0,
-      "points": 12,
-      "win_pct": 0.6667,
-      "nrr": 0.49,
-      "team_total_tilt": 0.90909,
-      "team_tilt_per_match": 0.10101,
-      "position_est": 3
-    },
-    {
       "team": "Sunrisers Hyderabad",
       "slug": "srh",
       "label": "Sunrisers Hyderabad",
@@ -60,8 +45,23 @@
       "points": 12,
       "win_pct": 0.6667,
       "nrr": 0.485,
-      "team_total_tilt": 1.45436,
-      "team_tilt_per_match": 0.1616,
+      "team_total_tilt": 1.45433,
+      "team_tilt_per_match": 0.16159,
+      "position_est": 3
+    },
+    {
+      "team": "Rajasthan Royals",
+      "slug": "rr",
+      "label": "Rajasthan Royals",
+      "matches": 10,
+      "wins": 6,
+      "losses": 4,
+      "no_results": 0,
+      "points": 12,
+      "win_pct": 0.6,
+      "nrr": 0.414,
+      "team_total_tilt": 0.47446,
+      "team_tilt_per_match": 0.04745,
       "position_est": 4
     },
     {
@@ -80,6 +80,21 @@
       "position_est": 5
     },
     {
+      "team": "Delhi Capitals",
+      "slug": "dc",
+      "label": "Delhi Capitals",
+      "matches": 9,
+      "wins": 4,
+      "losses": 5,
+      "no_results": 0,
+      "points": 8,
+      "win_pct": 0.4444,
+      "nrr": -0.822,
+      "team_total_tilt": -0.80678,
+      "team_tilt_per_match": -0.08964,
+      "position_est": 6
+    },
+    {
       "team": "Chennai Super Kings",
       "slug": "csk",
       "label": "Chennai Super Kings",
@@ -92,21 +107,6 @@
       "nrr": -0.332,
       "team_total_tilt": -0.54854,
       "team_tilt_per_match": -0.06857,
-      "position_est": 6
-    },
-    {
-      "team": "Delhi Capitals",
-      "slug": "dc",
-      "label": "Delhi Capitals",
-      "matches": 8,
-      "wins": 3,
-      "losses": 5,
-      "no_results": 0,
-      "points": 6,
-      "win_pct": 0.375,
-      "nrr": -0.957,
-      "team_total_tilt": -1.2418,
-      "team_tilt_per_match": -0.15522,
       "position_est": 7
     },
     {
@@ -150,13 +150,24 @@
       "points": 4,
       "win_pct": 0.25,
       "nrr": -0.804,
-      "team_total_tilt": -0.82294,
-      "team_tilt_per_match": -0.10287,
+      "team_total_tilt": -0.8233,
+      "team_tilt_per_match": -0.10291,
       "position_est": 10
     }
   ],
   "leaders": {
     "runs": [
+      {
+        "player": "KL Rahul",
+        "slug": "kl-rahul-b17e2f24",
+        "country": "IN",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 433,
+        "balls": 233,
+        "sr": 185.84,
+        "innings": 9
+      },
       {
         "player": "Abhishek Sharma",
         "slug": "abhishek-sharma-f29185a1",
@@ -185,10 +196,10 @@
         "country": "IN",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 400,
-        "balls": 168,
-        "sr": 238.1,
-        "innings": 9
+        "value": 404,
+        "balls": 170,
+        "sr": 237.65,
+        "innings": 10
       },
       {
         "player": "Virat Kohli",
@@ -200,20 +211,19 @@
         "balls": 229,
         "sr": 165.5,
         "innings": 9
-      },
-      {
-        "player": "Shubman Gill",
-        "slug": "shubman-gill-b4b99816",
-        "country": "IN",
-        "team": "Gujarat Titans",
-        "team_slug": "gt",
-        "value": 373,
-        "balls": 240,
-        "sr": 155.42,
-        "innings": 8
       }
     ],
     "fours": [
+      {
+        "player": "KL Rahul",
+        "slug": "kl-rahul-b17e2f24",
+        "country": "IN",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 42,
+        "balls": 233,
+        "runs": 433
+      },
       {
         "player": "Virat Kohli",
         "slug": "v-kohli-ba607b88",
@@ -251,18 +261,8 @@
         "team": "Rajasthan Royals",
         "team_slug": "rr",
         "value": 36,
-        "balls": 193,
-        "runs": 306
-      },
-      {
-        "player": "KL Rahul",
-        "slug": "kl-rahul-b17e2f24",
-        "country": "IN",
-        "team": "Delhi Capitals",
-        "team_slug": "dc",
-        "value": 36,
-        "balls": 193,
-        "runs": 358
+        "balls": 196,
+        "runs": 312
       }
     ],
     "sixes": [
@@ -273,8 +273,8 @@
         "team": "Rajasthan Royals",
         "team_slug": "rr",
         "value": 37,
-        "balls": 168,
-        "runs": 400
+        "balls": 170,
+        "runs": 404
       },
       {
         "player": "Abhishek Sharma",
@@ -297,6 +297,16 @@
         "runs": 283
       },
       {
+        "player": "KL Rahul",
+        "slug": "kl-rahul-b17e2f24",
+        "country": "IN",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 24,
+        "balls": 233,
+        "runs": 433
+      },
+      {
         "player": "Rajat Patidar",
         "slug": "rm-patidar-c740ea83",
         "country": "IN",
@@ -305,16 +315,6 @@
         "value": 24,
         "balls": 128,
         "runs": 257
-      },
-      {
-        "player": "Shreyas Iyer",
-        "slug": "ss-iyer-85ec8e33",
-        "country": "IN",
-        "team": "Punjab Kings",
-        "team_slug": "pbks",
-        "value": 22,
-        "balls": 177,
-        "runs": 309
       }
     ],
     "fifties": [
@@ -349,6 +349,16 @@
         "innings": 7
       },
       {
+        "player": "KL Rahul",
+        "slug": "kl-rahul-b17e2f24",
+        "country": "IN",
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 4,
+        "hundreds": 1,
+        "innings": 9
+      },
+      {
         "player": "Abhishek Sharma",
         "slug": "abhishek-sharma-f29185a1",
         "country": "IN",
@@ -357,16 +367,6 @@
         "value": 4,
         "hundreds": 1,
         "innings": 9
-      },
-      {
-        "player": "Devdutt Padikkal",
-        "slug": "d-padikkal-2c25d4f5",
-        "country": "IN",
-        "team": "Royal Challengers Bangalore",
-        "team_slug": "rcb",
-        "value": 3,
-        "hundreds": 0,
-        "innings": 8
       }
     ],
     "hundreds": [
@@ -398,7 +398,7 @@
         "team_slug": "rr",
         "value": 1,
         "fifties": 3,
-        "innings": 9
+        "innings": 10
       },
       {
         "player": "Tilak Varma",
@@ -417,8 +417,8 @@
         "team": "Delhi Capitals",
         "team_slug": "dc",
         "value": 1,
-        "fifties": 3,
-        "innings": 8
+        "fifties": 4,
+        "innings": 9
       }
     ],
     "sr": [
@@ -438,9 +438,9 @@
         "country": "IN",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 238.1,
-        "runs": 400,
-        "balls": 168
+        "value": 237.65,
+        "runs": 404,
+        "balls": 170
       },
       {
         "player": "Abhishek Sharma",
@@ -491,10 +491,10 @@
         "country": "EN",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 16,
-        "balls": 198,
-        "economy": 8.45,
-        "innings": 9
+        "value": 17,
+        "balls": 222,
+        "economy": 8.78,
+        "innings": 10
       },
       {
         "player": "Eshan Malinga",
@@ -542,16 +542,6 @@
         "balls": 162
       },
       {
-        "player": "Ravindra Jadeja",
-        "slug": "ra-jadeja-fe93fd9d",
-        "country": "IN",
-        "team": "Rajasthan Royals",
-        "team_slug": "rr",
-        "value": 7.53,
-        "wickets": 6,
-        "balls": 114
-      },
-      {
         "player": "Bhuvneshwar Kumar",
         "slug": "b-kumar-2e81a32d",
         "country": "IN",
@@ -560,6 +550,16 @@
         "value": 7.63,
         "wickets": 18,
         "balls": 210
+      },
+      {
+        "player": "Ravindra Jadeja",
+        "slug": "ra-jadeja-fe93fd9d",
+        "country": "IN",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 8.0,
+        "wickets": 7,
+        "balls": 132
       },
       {
         "player": "Prince Yadav",
@@ -600,10 +600,10 @@
         "country": "IN",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.42909,
-        "per_match": 0.15879,
-        "matches": 9,
-        "balls": 168
+        "value": 1.37491,
+        "per_match": 0.13749,
+        "matches": 10,
+        "balls": 170
       },
       {
         "player": "Priyansh Arya",
@@ -611,8 +611,8 @@
         "country": "IN",
         "team": "Punjab Kings",
         "team_slug": "pbks",
-        "value": 1.16746,
-        "per_match": 0.16678,
+        "value": 1.16584,
+        "per_match": 0.16655,
         "matches": 7,
         "balls": 113
       },
@@ -633,8 +633,8 @@
         "country": "IN",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 1.04137,
-        "per_match": 0.11571,
+        "value": 1.04023,
+        "per_match": 0.11558,
         "matches": 9,
         "balls": 203
       }
@@ -657,8 +657,8 @@
         "country": "IN",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 0.60006,
-        "per_match": 0.06667,
+        "value": 0.60752,
+        "per_match": 0.0675,
         "matches": 9,
         "balls": 210
       },
@@ -674,26 +674,26 @@
         "balls": 120
       },
       {
+        "player": "Jofra Archer",
+        "slug": "jc-archer-5574750c",
+        "country": "EN",
+        "team": "Rajasthan Royals",
+        "team_slug": "rr",
+        "value": 0.47707,
+        "per_match": 0.04771,
+        "matches": 10,
+        "balls": 222
+      },
+      {
         "player": "Ravindra Jadeja",
         "slug": "ra-jadeja-fe93fd9d",
         "country": "IN",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 0.42595,
-        "per_match": 0.06085,
-        "matches": 7,
-        "balls": 114
-      },
-      {
-        "player": "Khaleel Ahmed",
-        "slug": "kk-ahmed-a2f46292",
-        "country": "IN",
-        "team": "Chennai Super Kings",
-        "team_slug": "csk",
-        "value": 0.38996,
-        "per_match": 0.07799,
-        "matches": 5,
-        "balls": 101
+        "value": 0.39671,
+        "per_match": 0.04959,
+        "matches": 8,
+        "balls": 132
       }
     ],
     "total_tilt": [
@@ -713,9 +713,9 @@
         "country": "IN",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.42909,
-        "per_match": 0.15879,
-        "matches": 9
+        "value": 1.37491,
+        "per_match": 0.13749,
+        "matches": 10
       },
       {
         "player": "Priyansh Arya",
@@ -723,8 +723,8 @@
         "country": "IN",
         "team": "Punjab Kings",
         "team_slug": "pbks",
-        "value": 1.16746,
-        "per_match": 0.16678,
+        "value": 1.16584,
+        "per_match": 0.16655,
         "matches": 7
       },
       {
@@ -738,13 +738,13 @@
         "matches": 9
       },
       {
-        "player": "Abhishek Sharma",
-        "slug": "abhishek-sharma-f29185a1",
+        "player": "KL Rahul",
+        "slug": "kl-rahul-b17e2f24",
         "country": "IN",
-        "team": "Sunrisers Hyderabad",
-        "team_slug": "srh",
-        "value": 0.9199,
-        "per_match": 0.10221,
+        "team": "Delhi Capitals",
+        "team_slug": "dc",
+        "value": 0.91975,
+        "per_match": 0.10219,
         "matches": 9
       }
     ]
@@ -1486,6 +1486,24 @@
       "result_margin": "won by 4 wickets",
       "toss_winner": "Gujarat Titans",
       "toss_decision": "field",
+      "event_stage": null
+    },
+    {
+      "match_id": "1529286",
+      "date": "2026-05-01",
+      "venue": "Sawai Mansingh Stadium",
+      "teams": [
+        "Rajasthan Royals",
+        "Delhi Capitals"
+      ],
+      "scores": {
+        "Rajasthan Royals": "225/6",
+        "Delhi Capitals": "226/3"
+      },
+      "winner": "Delhi Capitals",
+      "result_margin": "won by 7 wickets",
+      "toss_winner": "Rajasthan Royals",
+      "toss_decision": "bat",
       "event_stage": null
     }
   ],

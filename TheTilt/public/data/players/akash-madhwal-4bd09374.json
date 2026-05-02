@@ -9,18 +9,18 @@
     "Mumbai Indians",
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.00124,
+  "total_tilt_per_match": -0.00046,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.00437,
-  "shrunk_total_tilt_per_match": -0.00633,
+  "bowling_tilt_per_match": 0.00515,
+  "shrunk_total_tilt_per_match": -0.00575,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.0002,
-  "tilt_ci_lower": -0.06542,
-  "tilt_ci_upper": 0.05276,
-  "tilt_ci_lower_90": -0.05592,
-  "tilt_ci_upper_90": 0.04326,
+  "shrunk_bowling_tilt_per_match": 0.00078,
+  "tilt_ci_lower": -0.06454,
+  "tilt_ci_upper": 0.05304,
+  "tilt_ci_lower_90": -0.0551,
+  "tilt_ci_upper_90": 0.0436,
   "confidence": "low",
-  "total_tilt": -0.02104,
+  "total_tilt": -0.00775,
   "total_matches": 17,
   "batting_balls": 14,
   "bowling_balls": 352,
@@ -329,7 +329,7 @@
       "season": "2025",
       "team": "Rajasthan Royals",
       "batting_tilt_per_match": -0.00543,
-      "bowling_tilt_per_match": -0.04647,
+      "bowling_tilt_per_match": -0.04314,
       "batting_matches": 1,
       "bowling_matches": 4,
       "batting_balls": 9,
@@ -351,8 +351,8 @@
           "bowl_balls": 24,
           "bowl_runs": 39,
           "bowl_econ": 9.75,
-          "bowl_tilt": -0.11189,
-          "total_tilt": -0.11732
+          "bowl_tilt": -0.10443,
+          "total_tilt": -0.10986
         },
         {
           "match_id": "1473490",
@@ -370,8 +370,8 @@
           "bowl_balls": 18,
           "bowl_runs": 50,
           "bowl_econ": 16.67,
-          "bowl_tilt": -0.11998,
-          "total_tilt": -0.11998
+          "bowl_tilt": -0.11415,
+          "total_tilt": -0.11415
         },
         {
           "match_id": "1473497",
@@ -463,9 +463,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.15812,
+      "tilt": -0.14483,
       "balls": 136,
-      "avg_delta": -0.00102
+      "avg_delta": -0.000934
     }
   ],
   "best_matches": [
@@ -559,17 +559,9 @@
       "match_id": "1473490",
       "date": "2025-05-04",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.11998,
+      "tilt": -0.11415,
       "wickets": 0,
       "balls": 18
-    },
-    {
-      "match_id": "1473487",
-      "date": "2025-05-01",
-      "vs": "Mumbai Indians",
-      "tilt": -0.11189,
-      "wickets": 0,
-      "balls": 24
     },
     {
       "match_id": "1426271",
@@ -585,6 +577,14 @@
       "vs": "Royal Challengers Bangalore",
       "tilt": -0.10856,
       "wickets": 1,
+      "balls": 24
+    },
+    {
+      "match_id": "1473487",
+      "date": "2025-05-01",
+      "vs": "Mumbai Indians",
+      "tilt": -0.10443,
+      "wickets": 0,
       "balls": 24
     }
   ],
@@ -670,26 +670,26 @@
     {
       "match": 14,
       "date": "2025-05-01",
-      "tilt": -0.11732,
-      "cumulative": 0.05294
+      "tilt": -0.10986,
+      "cumulative": 0.0604
     },
     {
       "match": 15,
       "date": "2025-05-04",
-      "tilt": -0.11998,
-      "cumulative": -0.06704
+      "tilt": -0.11415,
+      "cumulative": -0.05375
     },
     {
       "match": 16,
       "date": "2025-05-18",
       "tilt": -0.04512,
-      "cumulative": -0.11216
+      "cumulative": -0.09887
     },
     {
       "match": 17,
       "date": "2025-05-20",
       "tilt": 0.09112,
-      "cumulative": -0.02104
+      "cumulative": -0.00775
     }
   ],
   "team_matchups": [
@@ -739,8 +739,8 @@
     -0.10856,
     -0.09674,
     -0.111,
-    -0.11732,
-    -0.11998,
+    -0.10986,
+    -0.11415,
     -0.04512,
     0.09112
   ]
