@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TILT | Rankings</title>
+    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+    <nav class="top-nav"></nav>
+    <script src="common.js"></script>
+    <script>initNav('rankings');</script>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>TILT</h1>
+            <div class="subtitle">win probability added for IPL cricket</div>
+            <div class="meta" id="meta"></div>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="search players by name or team..." autocomplete="off">
+        </div>
+
+        <div class="season-picker">
+            <label for="seasonJump">jump to season:</label>
+            <select id="seasonJump">
+                <option value="">choose a season…</option>
+            </select>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-filter="all">all</button>
+            <button class="tab" data-filter="batter">batsmen</button>
+            <button class="tab" data-filter="bowler">bowlers</button>
+            <button class="tab" data-filter="all-rounder">all-rounders</button>
+        </div>
+
+        <div class="rank-toggle">
+            <button class="rank-btn active" data-rank="floor">rank by floor</button>
+            <button class="rank-btn" data-rank="estimate">rank by estimate</button>
+        </div>
+
+        <div class="confidence-legend">
+            <span class="confidence-dot" style="color:var(--accent-green)">&#9679;</span> high (100+ matches)
+            <span class="confidence-dot" style="color:var(--accent-yellow)">&#9679;</span> medium (30–99 matches)
+            <span class="confidence-dot" style="color:var(--text-muted)">&#9679;</span> low (10–29 matches)
+        </div>
+
+        <div id="content">
+            <div class="loading">loading rankings...</div>
+        </div>
+
+        <div class="footer">
+            data from <a href="https://cricsheet.org">cricsheet.org</a> |
+            <a href="about.html">methodology</a>
+        </div>
+    </div>
+
+<script>
+let allPlayers = [];
+let rankMode = 'floor';
+let currentSort = { key: 'tilt_ci_lower_90', desc: true };
+let currentFilter = 'all';
+let searchQuery = '';
+let teamIndex = new Map();
+
+async function init() {
+    try {
+        const [rankingsRes, metaRes, ti] = await Promise.all([
+            fetch('data/tilt_rankings.json'),
+            fetch('data/meta.json'),
+            loadTeamIndex(),
+        ]);
+        teamIndex = ti;
+
+        if (!rankingsRes.ok) {
+            document.getElementById('content').innerHTML =
+                '<div class="loading">rankings not yet generated. run the pipeline first.</div>';
+            return;
+        }
+
+        allPlayers = await rankingsRes.json();
+
+        if (metaRes.ok) {
+            const meta = await metaRes.json();
+            document.getElementById('meta').textContent =
+                `${meta.matches_count} matches | ${meta.seasons[0]}\u2013${meta.seasons[meta.seasons.length-1]} | updated ${meta.last_updated}`;
+            const sel = document.getElementById('seasonJump');
+            (meta.seasons || []).slice().reverse().forEach((s) => {
+                const opt = document.createElement('option');
+                opt.value = s;
+                opt.textContent = s;
+                sel.appendChild(opt);
+            });
+            sel.addEventListener('change', () => {
+                if (sel.value) window.location.href = `season.html?season=${encodeURIComponent(sel.value)}`;
+            });
+        }
+
+        render();
+    } catch (e) {
+        document.getElementById('content').innerHTML =
+            '<div class="loading">error loading data</div>';
+    }
+}
+
+function getFilteredPlayers() {
+    let players = [...allPlayers];
+
+    if (currentFilter !== 'all') {
+        players = players.filter(p => p.role === currentFilter);
+    }
+
+    if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        players = players.filter(p =>
+            p.player.toLowerCase().includes(q) ||
+            (p.full_name && p.full_name.toLowerCase().includes(q)) ||
+            p.team.toLowerCase().includes(q) ||
+            (p.teams && p.teams.some(t => t.toLowerCase().includes(q)))
+        );
+    }
+
+    players.sort((a, b) => {
+        const va = a[currentSort.key];
+        const vb = b[currentSort.key];
+        if (typeof va === 'string') {
+            return currentSort.desc ? vb.localeCompare(va) : va.localeCompare(vb);
+        }
+        return currentSort.desc ? vb - va : va - vb;
+    });
+
+    return players;
+}
+
+function render() {
+    const players = getFilteredPlayers();
+    const tiltKey = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
+    const tiltLabel = rankMode === 'floor' ? 'TILT floor' : 'TILT/match';
+    const maxTilt = Math.max(...allPlayers.map(p => Math.abs(p[tiltKey] || p.total_tilt_per_match)), 0.01);
+
+    function sortCls(key) {
+        return currentSort.key === key ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : '';
+    }
+
+    let html = `
+        <div class="table-wrap">
+        <table class="rankings-table">
+            <thead>
+                <tr>
+                    <th data-sort="rank">#</th>
+                    <th data-sort="player">player</th>
+                    <th data-sort="${tiltKey}" class="${sortCls(tiltKey)}">${tiltLabel}</th>
+                    <th data-sort="batting_tilt_per_match" class="hide-mobile ${sortCls('batting_tilt_per_match')}">bat TILT</th>
+                    <th data-sort="bowling_tilt_per_match" class="hide-mobile ${sortCls('bowling_tilt_per_match')}">bowl TILT</th>
+                    <th data-sort="total_tilt" class="hide-mobile ${sortCls('total_tilt')}">career TILT</th>
+                    <th data-sort="total_matches" class="${sortCls('total_matches')}">matches</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    const cs = getComputedStyle(document.documentElement);
+    const confColor = { high: cs.getPropertyValue('--accent-green').trim(), medium: cs.getPropertyValue('--accent-yellow').trim(), low: cs.getPropertyValue('--text-muted').trim() };
+
+    players.forEach((p, i) => {
+        const tilt = p[tiltKey] || p.total_tilt_per_match;
+        const barWidth = Math.abs(tilt) / maxTilt * 60;
+        const barClass = tilt >= 0 ? 'positive' : 'negative';
+        const conf = p.confidence || 'low';
+        const displayName = p.full_name && p.full_name !== p.player ? p.full_name : p.player;
+
+        html += `
+            <tr>
+                <td>${i + 1}</td>
+                <td>
+                    <a href="player.html?player=${p.slug}" class="row-link" style="text-decoration:none;color:inherit">
+                        <span class="player-name">${flagSpan(p.country)}${displayName}</span>
+                    </a><br>
+                    <span class="player-team">${
+                        p.teams && p.teams.length > 1
+                            ? `<span title="${p.teams.join(', ')}" style="cursor:help">${p.teams.length} Teams</span>`
+                            : teamLink(p.team, null, teamIndex, { cls: 'team-link' })
+                    }</span>
+                    <span class="role-badge">${p.role === 'batter' ? 'batsman' : p.role}</span>
+                </td>
+                <td>
+                    ${formatTilt(tilt)}
+                    <span class="tilt-bar ${barClass}" style="width:${barWidth}px"></span>
+                    <span style="color:${confColor[conf]};font-size:0.6rem;margin-left:4px" title="${conf} confidence (${p.total_matches}m)">\u25CF</span>
+                </td>
+                <td class="hide-mobile">${p.batting_tilt_per_match != null ? formatTilt(p.batting_tilt_per_match) : '<span class="tilt-neutral">\u2014</span>'}</td>
+                <td class="hide-mobile">${p.bowling_tilt_per_match != null ? formatTilt(p.bowling_tilt_per_match) : '<span class="tilt-neutral">\u2014</span>'}</td>
+                <td class="hide-mobile">${formatTilt(p.total_tilt || 0)}</td>
+                <td>${p.total_matches}</td>
+            </tr>
+        `;
+    });
+
+    html += '</tbody></table></div>';
+
+    if (players.length === 0) {
+        html = '<div class="loading">no players found</div>';
+    }
+
+    document.getElementById('content').innerHTML = html;
+
+    document.querySelectorAll('[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+            const key = th.dataset.sort;
+            if (currentSort.key === key) {
+                currentSort.desc = !currentSort.desc;
+            } else {
+                currentSort.key = key;
+                currentSort.desc = key !== 'player' && key !== 'rank';
+            }
+            render();
+        });
+    });
+}
+
+// Tab handlers
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        render();
+    });
+});
+
+// Search handler
+document.getElementById('search').addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    render();
+});
+
+// Rank toggle handler
+document.querySelectorAll('.rank-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.rank-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        rankMode = btn.dataset.rank;
+        currentSort.key = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
+        currentSort.desc = true;
+        render();
+    });
+});
+
+init();
+</script>
+</body>
+</html>

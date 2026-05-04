@@ -11,46 +11,17 @@
 <body>
     <nav class="top-nav"></nav>
     <script src="common.js"></script>
-    <script>initNav('leaderboard');</script>
+    <script>initNav('home');</script>
 
     <div class="container">
-        <div class="page-header">
+        <div class="page-header home-hero">
             <h1>TILT</h1>
             <div class="subtitle">win probability added for IPL cricket</div>
             <div class="meta" id="meta"></div>
         </div>
 
-        <div class="search-bar">
-            <input type="text" id="search" placeholder="search players by name or team..." autocomplete="off">
-        </div>
-
-        <div class="season-picker">
-            <label for="seasonJump">jump to season:</label>
-            <select id="seasonJump">
-                <option value="">choose a season…</option>
-            </select>
-        </div>
-
-        <div class="tabs">
-            <button class="tab active" data-filter="all">all</button>
-            <button class="tab" data-filter="batter">batsmen</button>
-            <button class="tab" data-filter="bowler">bowlers</button>
-            <button class="tab" data-filter="all-rounder">all-rounders</button>
-        </div>
-
-        <div class="rank-toggle">
-            <button class="rank-btn active" data-rank="floor">rank by floor</button>
-            <button class="rank-btn" data-rank="estimate">rank by estimate</button>
-        </div>
-
-        <div class="confidence-legend">
-            <span class="confidence-dot" style="color:var(--accent-green)">&#9679;</span> high (100+ matches)
-            <span class="confidence-dot" style="color:var(--accent-yellow)">&#9679;</span> medium (30–99 matches)
-            <span class="confidence-dot" style="color:var(--text-muted)">&#9679;</span> low (10–29 matches)
-        </div>
-
         <div id="content">
-            <div class="loading">loading rankings...</div>
+            <div class="loading">loading…</div>
         </div>
 
         <div class="footer">
@@ -60,197 +31,292 @@
     </div>
 
 <script>
-let allPlayers = [];
-let rankMode = 'floor';
-let currentSort = { key: 'tilt_ci_lower_90', desc: true };
-let currentFilter = 'all';
-let searchQuery = '';
-let teamIndex = new Map();
+async function loadHome() {
+    let teamIndex;
+    let meta, rankings, matchIndex, goats, season;
 
-async function init() {
     try {
-        const [rankingsRes, metaRes, ti] = await Promise.all([
-            fetch('data/tilt_rankings.json'),
+        const [metaRes, rankRes, miRes, goatsRes, ti] = await Promise.all([
             fetch('data/meta.json'),
+            fetch('data/tilt_rankings.json'),
+            fetch('data/match_index.json'),
+            fetch('data/goats.json'),
             loadTeamIndex(),
         ]);
         teamIndex = ti;
+        meta = await metaRes.json();
+        rankings = await rankRes.json();
+        matchIndex = await miRes.json();
+        goats = await goatsRes.json();
+        const currentSeason = meta.seasons[meta.seasons.length - 1];
+        const seasonRes = await fetch(`data/seasons/${currentSeason.replace('/', '-')}.json`);
+        season = seasonRes.ok ? await seasonRes.json() : null;
 
-        if (!rankingsRes.ok) {
-            document.getElementById('content').innerHTML =
-                '<div class="loading">rankings not yet generated. run the pipeline first.</div>';
-            return;
-        }
+        document.getElementById('meta').textContent =
+            `${meta.matches_count} matches | ${meta.seasons[0]}–${meta.seasons[meta.seasons.length-1]} | updated ${meta.last_updated}`;
 
-        allPlayers = await rankingsRes.json();
+        // Build a match_id → match-info lookup so GOAT cards can resolve opponents.
+        const matchById = new Map();
+        for (const m of matchIndex) matchById.set(m.match_id, m);
 
-        if (metaRes.ok) {
-            const meta = await metaRes.json();
-            document.getElementById('meta').textContent =
-                `${meta.matches_count} matches | ${meta.seasons[0]}\u2013${meta.seasons[meta.seasons.length-1]} | updated ${meta.last_updated}`;
-            const sel = document.getElementById('seasonJump');
-            (meta.seasons || []).slice().reverse().forEach((s) => {
-                const opt = document.createElement('option');
-                opt.value = s;
-                opt.textContent = s;
-                sel.appendChild(opt);
-            });
-            sel.addEventListener('change', () => {
-                if (sel.value) window.location.href = `season.html?season=${encodeURIComponent(sel.value)}`;
-            });
-        }
-
-        render();
+        renderHome({ meta, rankings, matchIndex, matchById, goats, season, teamIndex });
     } catch (e) {
         document.getElementById('content').innerHTML =
-            '<div class="loading">error loading data</div>';
+            '<div class="loading">error loading homepage data</div>';
+        console.error(e);
     }
 }
 
-function getFilteredPlayers() {
-    let players = [...allPlayers];
+function renderHome({ meta, rankings, matchIndex, matchById, goats, season, teamIndex }) {
+    const html = [
+        renderCurrentSeason(season, teamIndex),
+        renderRecentMatches(matchIndex, teamIndex),
+        renderTopRankings(rankings),
+        renderGoats(goats, matchById, teamIndex),
+        renderBlogPosts(),
+    ].join('');
 
-    if (currentFilter !== 'all') {
-        players = players.filter(p => p.role === currentFilter);
-    }
-
-    if (searchQuery) {
-        const q = searchQuery.toLowerCase();
-        players = players.filter(p =>
-            p.player.toLowerCase().includes(q) ||
-            (p.full_name && p.full_name.toLowerCase().includes(q)) ||
-            p.team.toLowerCase().includes(q) ||
-            (p.teams && p.teams.some(t => t.toLowerCase().includes(q)))
-        );
-    }
-
-    players.sort((a, b) => {
-        const va = a[currentSort.key];
-        const vb = b[currentSort.key];
-        if (typeof va === 'string') {
-            return currentSort.desc ? vb.localeCompare(va) : va.localeCompare(vb);
-        }
-        return currentSort.desc ? vb - va : va - vb;
-    });
-
-    return players;
+    document.getElementById('content').innerHTML = html;
 }
 
-function render() {
-    const players = getFilteredPlayers();
-    const tiltKey = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
-    const tiltLabel = rankMode === 'floor' ? 'TILT floor' : 'TILT/match';
-    const maxTilt = Math.max(...allPlayers.map(p => Math.abs(p[tiltKey] || p.total_tilt_per_match)), 0.01);
+function renderCurrentSeason(season, teamIndex) {
+    if (!season || !season.team_table || season.team_table.length === 0) return '';
 
-    function sortCls(key) {
-        return currentSort.key === key ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : '';
-    }
+    const inProgress = season.champion === null;
+    const subtitle = inProgress
+        ? `Season in progress · ${season.matches} matches played`
+        : `${season.matches} matches · ${season.champion} won`;
 
-    let html = `
-        <div class="table-wrap">
-        <table class="rankings-table">
-            <thead>
-                <tr>
-                    <th data-sort="rank">#</th>
-                    <th data-sort="player">player</th>
-                    <th data-sort="${tiltKey}" class="${sortCls(tiltKey)}">${tiltLabel}</th>
-                    <th data-sort="batting_tilt_per_match" class="hide-mobile ${sortCls('batting_tilt_per_match')}">bat TILT</th>
-                    <th data-sort="bowling_tilt_per_match" class="hide-mobile ${sortCls('bowling_tilt_per_match')}">bowl TILT</th>
-                    <th data-sort="total_tilt" class="hide-mobile ${sortCls('total_tilt')}">career TILT</th>
-                    <th data-sort="total_matches" class="${sortCls('total_matches')}">matches</th>
-                </tr>
-            </thead>
-            <tbody>
+    const rows = season.team_table.map((t) => {
+        const pts = (t.points != null) ? t.points : (t.wins * 2 + (t.no_results || 0));
+        return `
+            <tr>
+                <td>${t.position_est}</td>
+                <td>${teamLink(t.team, season.season, teamIndex)}</td>
+                <td>${t.matches}</td>
+                <td>${t.wins}</td>
+                <td>${t.losses}</td>
+                <td>${t.no_results || 0}</td>
+                <td>${pts}</td>
+                <td>${t.nrr != null ? (t.nrr > 0 ? '+' : '') + t.nrr.toFixed(2) : '—'}</td>
+                <td>${formatTilt(t.team_tilt_per_match)}</td>
+            </tr>
+        `;
+    }).join('');
+
+    return `
+        <section class="home-section">
+            <div class="home-section-head">
+                <h2 class="section-title">IPL ${season.season} ${inProgress ? 'Standings' : 'Final Standings'}</h2>
+                <a class="home-link" href="season.html?season=${encodeURIComponent(season.season)}">Full Season →</a>
+            </div>
+            <div class="meta">${subtitle}</div>
+            <div class="table-wrap">
+                <table class="detail-table">
+                    <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th><th>Team TILT/m</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        </section>
     `;
+}
 
-    const cs = getComputedStyle(document.documentElement);
-    const confColor = { high: cs.getPropertyValue('--accent-green').trim(), medium: cs.getPropertyValue('--accent-yellow').trim(), low: cs.getPropertyValue('--text-muted').trim() };
+function renderRecentMatches(matchIndex, teamIndex) {
+    if (!matchIndex || matchIndex.length === 0) return '';
+    const recent = matchIndex.slice(0, 10);
 
-    players.forEach((p, i) => {
-        const tilt = p[tiltKey] || p.total_tilt_per_match;
-        const barWidth = Math.abs(tilt) / maxTilt * 60;
-        const barClass = tilt >= 0 ? 'positive' : 'negative';
-        const conf = p.confidence || 'low';
-        const displayName = p.full_name && p.full_name !== p.player ? p.full_name : p.player;
+    const cards = recent.map((m) => {
+        const teams = m.teams || [];
+        const scores = m.scores || {};
+        const teamRow = (name) => {
+            if (!name) return '';
+            const code = teamAbbrev(name, teamIndex);
+            const score = scores[name] || '';
+            const isWinner = name === m.winner;
+            const tdLink = `<a href="team.html?team=${(teamIndex.get(name) || {}).slug || ''}&season=${encodeURIComponent(m.season)}" class="team-link" title="${name}">${code}</a>`;
+            return `<div class="recent-match-team-row${isWinner ? ' winner' : ''}"><span class="recent-match-team">${tdLink}</span><span class="recent-match-score">${score}</span></div>`;
+        };
+        const margin = m.result_margin || (m.winner ? 'won' : 'no result');
+        return `
+            <div class="recent-match-card">
+                <div class="recent-match-date">
+                    <a href="match.html?id=${m.match_id}">${m.date}</a>
+                </div>
+                ${teamRow(teams[0])}
+                ${teamRow(teams[1])}
+                <div class="recent-match-result">${margin}</div>
+            </div>
+        `;
+    }).join('');
 
-        html += `
+    return `
+        <section class="home-section">
+            <div class="home-section-head">
+                <h2 class="section-title">Recent Matches</h2>
+                <a class="home-link" href="season.html">All Seasons →</a>
+            </div>
+            <div class="recent-match-grid">${cards}</div>
+        </section>
+    `;
+}
+
+function renderTopRankings(rankings) {
+    if (!rankings || rankings.length === 0) return '';
+    const sorted = [...rankings].sort(
+        (a, b) => (b.total_tilt ?? -1e9) - (a.total_tilt ?? -1e9)
+    );
+    const top5 = sorted.slice(0, 5);
+
+    const rows = top5.map((p, i) => {
+        const display = p.full_name && p.full_name !== p.player ? p.full_name : p.player;
+        return `
             <tr>
                 <td>${i + 1}</td>
-                <td>
-                    <a href="player.html?player=${p.slug}" class="row-link" style="text-decoration:none;color:inherit">
-                        <span class="player-name">${flagSpan(p.country)}${displayName}</span>
-                    </a><br>
-                    <span class="player-team">${
-                        p.teams && p.teams.length > 1
-                            ? `<span title="${p.teams.join(', ')}" style="cursor:help">${p.teams.length} Teams</span>`
-                            : teamLink(p.team, null, teamIndex, { cls: 'team-link' })
-                    }</span>
-                    <span class="role-badge">${p.role === 'batter' ? 'batsman' : p.role}</span>
-                </td>
-                <td>
-                    ${formatTilt(tilt)}
-                    <span class="tilt-bar ${barClass}" style="width:${barWidth}px"></span>
-                    <span style="color:${confColor[conf]};font-size:0.6rem;margin-left:4px" title="${conf} confidence (${p.total_matches}m)">\u25CF</span>
-                </td>
-                <td class="hide-mobile">${p.batting_tilt_per_match != null ? formatTilt(p.batting_tilt_per_match) : '<span class="tilt-neutral">\u2014</span>'}</td>
-                <td class="hide-mobile">${p.bowling_tilt_per_match != null ? formatTilt(p.bowling_tilt_per_match) : '<span class="tilt-neutral">\u2014</span>'}</td>
-                <td class="hide-mobile">${formatTilt(p.total_tilt || 0)}</td>
+                <td><a href="player.html?player=${p.slug}">${flagSpan(p.country)}${display}</a></td>
+                <td>${formatTilt(p.total_tilt)}</td>
+                <td>${formatTilt(p.tilt_ci_lower_90)}</td>
                 <td>${p.total_matches}</td>
             </tr>
         `;
-    });
+    }).join('');
 
-    html += '</tbody></table></div>';
-
-    if (players.length === 0) {
-        html = '<div class="loading">no players found</div>';
-    }
-
-    document.getElementById('content').innerHTML = html;
-
-    document.querySelectorAll('[data-sort]').forEach(th => {
-        th.addEventListener('click', () => {
-            const key = th.dataset.sort;
-            if (currentSort.key === key) {
-                currentSort.desc = !currentSort.desc;
-            } else {
-                currentSort.key = key;
-                currentSort.desc = key !== 'player' && key !== 'rank';
-            }
-            render();
-        });
-    });
+    return `
+        <section class="home-section">
+            <div class="home-section-head">
+                <h2 class="section-title">Top Career TILT (All-Time)</h2>
+                <a class="home-link" href="rankings.html">Full Rankings →</a>
+            </div>
+            <div class="meta">Ranked by total career TILT (sum of all match contributions)</div>
+            <div class="table-wrap">
+                <table class="detail-table">
+                    <thead><tr><th>#</th><th>Player</th><th>Total TILT</th><th>TILT Floor</th><th>Matches</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        </section>
+    `;
 }
 
-// Tab handlers
-document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        currentFilter = tab.dataset.filter;
-        render();
-    });
-});
+// Resolve the opponent of a player's GOAT match by looking up match_index.
+function opponentFor(g, matchById) {
+    const m = matchById.get(g.match_id);
+    if (!m || !m.teams) return null;
+    return m.teams.find((t) => t !== g.team) || null;
+}
 
-// Search handler
-document.getElementById('search').addEventListener('input', (e) => {
-    searchQuery = e.target.value;
-    render();
-});
+// Short team code from the team index (mi, rcb, srh…). Uppercased for display.
+function teamAbbrev(name, teamIndex) {
+    const t = teamIndex && teamIndex.get(name);
+    const slug = t && t.slug;
+    return slug ? slug.toUpperCase() : (name || '');
+}
 
-// Rank toggle handler
-document.querySelectorAll('.rank-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.rank-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        rankMode = btn.dataset.rank;
-        currentSort.key = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
-        currentSort.desc = true;
-        render();
-    });
-});
+function goatCard(g, label, statLine, matchById, teamIndex) {
+    const opponent = opponentFor(g, matchById);
+    const teamCode = g.team ? teamAbbrev(g.team, teamIndex) : '';
+    const oppCode = opponent ? teamAbbrev(opponent, teamIndex) : '';
+    const teamSpan = teamCode
+        ? ` <span class="goat-team-code" title="${g.team}">${teamCode}</span>`
+        : '';
+    const oppSpan = oppCode
+        ? ` <span class="goat-opp" title="vs ${opponent}">vs ${oppCode}</span>`
+        : '';
+    const playerLink = g.slug
+        ? `<a href="player.html?player=${g.slug}">${flagSpan(g.country)}${g.player}</a>`
+        : `${flagSpan(g.country)}${g.player}`;
+    const venueLine = g.venue ? `<div class="goat-venue">${g.venue}</div>` : '';
+    return `
+        <div class="goat-card">
+            <div class="goat-label">${label}</div>
+            <div class="goat-player">${playerLink}${teamSpan}</div>
+            <div class="goat-stat">${statLine}${oppSpan}</div>
+            ${venueLine}
+            <div class="goat-foot">
+                <span>${g.season} · ${formatTilt(g.tilt)} TILT</span>
+                <a class="goat-match-link" href="match.html?id=${g.match_id}">match →</a>
+            </div>
+        </div>
+    `;
+}
 
-init();
+// Convert legal-balls to over format ("4.0" for 24 balls, "3.4" for 22 balls).
+function ballsToOvers(balls) {
+    const b = Number(balls) || 0;
+    return `${Math.floor(b / 6)}.${b % 6}`;
+}
+
+function battingStat(g) {
+    const notOut = g.not_out ? '*' : '';
+    return `${g.runs}${notOut} (${g.balls})`;
+}
+
+function bowlingStat(g) {
+    return `${g.wickets}/${g.runs_conceded} (${ballsToOvers(g.balls)} ov)`;
+}
+
+function renderGoats(goats, matchById, teamIndex) {
+    if (!goats) return '';
+
+    const sections = [];
+
+    const TOP_N = 10;
+    if (goats.match_batting && goats.match_batting.length) {
+        const cards = goats.match_batting.slice(0, TOP_N).map((g, i) =>
+            goatCard(g, `#${i + 1}`, battingStat(g), matchById, teamIndex)
+        ).join('');
+        sections.push(`<div class="goat-subhead">Batting</div><div class="goat-grid">${cards}</div>`);
+    }
+
+    if (goats.match_bowling && goats.match_bowling.length) {
+        const cards = goats.match_bowling.slice(0, TOP_N).map((g, i) =>
+            goatCard(g, `#${i + 1}`, bowlingStat(g), matchById, teamIndex)
+        ).join('');
+        sections.push(`<div class="goat-subhead">Bowling</div><div class="goat-grid">${cards}</div>`);
+    }
+
+    if (goats.match_allround && goats.match_allround.length) {
+        const cards = goats.match_allround.slice(0, TOP_N).map((g, i) => {
+            const stat = `${formatTilt(g.bat_tilt)} bat · ${formatTilt(g.bowl_tilt)} bowl`;
+            return goatCard(g, `#${i + 1}`, stat, matchById, teamIndex);
+        }).join('');
+        sections.push(`<div class="goat-subhead">All-Round</div><div class="goat-grid">${cards}</div>`);
+    }
+
+    return `
+        <section class="home-section">
+            <div class="home-section-head">
+                <h2 class="section-title">\u{1F410} GOAT Performances (All-Time)</h2>
+                <a class="home-link" href="goats.html">All GOATs →</a>
+            </div>
+            ${sections.join('')}
+        </section>
+    `;
+}
+
+function renderBlogPosts() {
+    const posts = window.BLOG_NOTES || [];
+    if (posts.length === 0) return '';
+
+    const cards = posts.map((n) => `
+        <a class="blog-card" href="notes.html?note=${n.id}">
+            <div class="blog-date">${n.date}</div>
+            <h3 class="blog-title">${n.title}</h3>
+            <p class="blog-summary">${n.summary}</p>
+        </a>
+    `).join('');
+
+    return `
+        <section class="home-section">
+            <div class="home-section-head">
+                <h2 class="section-title">Latest From The Blog</h2>
+                <a class="home-link" href="notes.html">All Posts →</a>
+            </div>
+            <div class="blog-scroll">${cards}</div>
+        </section>
+    `;
+}
+
+loadHome();
 </script>
 </body>
 </html>
