@@ -745,6 +745,39 @@ a:hover {
     background: var(--bg-hover);
 }
 
+.champion-row {
+    background: rgba(251, 191, 36, 0.10);
+}
+
+.champion-row:hover {
+    background: rgba(251, 191, 36, 0.18);
+}
+
+[data-theme="light"] .champion-row {
+    background: rgba(217, 119, 6, 0.10);
+}
+
+[data-theme="light"] .champion-row:hover {
+    background: rgba(217, 119, 6, 0.18);
+}
+
+.champion-badge {
+    display: inline-block;
+    margin-right: 4px;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.legend-row {
+    margin-top: 6px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.legend-row .champion-badge {
+    margin-right: 6px;
+}
+
 .season-chevron {
     display: inline-block;
     font-size: 0.6rem;

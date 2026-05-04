@@ -1281,6 +1281,20 @@ def export_team_details(
     name_lookup = _build_player_name_lookup(player_tilt)
     match_info = _build_match_info_cache(deltas_df)
 
+    completed_seasons = load_completed_seasons()
+    season_champions: dict = {}
+    for season_value in deltas_df["season"].unique():
+        season_str = str(season_value)
+        if season_str not in completed_seasons:
+            season_champions[season_str] = None
+            continue
+        sm = deltas_df[deltas_df["season"] == season_value].sort_values("date")
+        if len(sm) == 0:
+            season_champions[season_str] = None
+            continue
+        last_match_id = sm.iloc[-1]["match_id"]
+        season_champions[season_str] = match_info.get(last_match_id, {}).get("winner")
+
     exported = 0
     for canonical, slug in TEAM_SLUG.items():
         team_row = team_tilt[team_tilt["team"] == canonical]
@@ -1335,6 +1349,7 @@ def export_team_details(
                 "team_total_tilt": round(float(r["team_total_tilt"]), 5),
                 "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
                 "position_est": int(r["position_est"]),
+                "champion": season_champions.get(season_str) == canonical,
                 "match_log": season_matches,
             })
 
@@ -1381,6 +1396,7 @@ def export_team_details(
             n = int(r["total_matches_for_team"])
             bat_tpm = round(float(r.get("bat_total_tilt") or 0) / max(n, 1), 5) if bat_balls >= 50 else None
             bowl_tpm = round(float(r.get("bowl_total_tilt") or 0) / max(n, 1), 5) if bowl_balls >= 50 else None
+            total_tilt_value = float(r.get("bat_total_tilt") or 0) + float(r.get("bowl_total_tilt") or 0)
             roster_records.append({
                 "player": name_lookup.get(pid, r["player"]),
                 "slug": slug_lookup.get(pid, ""),
@@ -1392,7 +1408,8 @@ def export_team_details(
                 "bowling_balls": bowl_balls,
                 "batting_tilt_per_match": bat_tpm,
                 "bowling_tilt_per_match": bowl_tpm,
-                "total_tilt_per_match": round((float(r.get("bat_total_tilt") or 0) + float(r.get("bowl_total_tilt") or 0)) / max(n, 1), 5),
+                "total_tilt": round(total_tilt_value, 5),
+                "total_tilt_per_match": round(total_tilt_value / max(n, 1), 5),
             })
 
         team_doc = {

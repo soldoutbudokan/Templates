@@ -131,10 +131,12 @@ async function renderTeamCareer(slug) {
                     ${team.seasons.slice().reverse().map((s) => {
                         const seasonId = `team-season-${team.slug}-${String(s.season).replace('/', '-')}`;
                         const hasMatches = Array.isArray(s.match_log) && s.match_log.length > 0;
+                        const rowClasses = [hasMatches ? 'season-row-expandable' : '', s.champion ? 'champion-row' : ''].filter(Boolean).join(' ');
+                        const champBadge = s.champion ? '<span class="champion-badge" title="Won the championship">🏆</span> ' : '';
                         const summaryRow = `
-                            <tr class="${hasMatches ? 'season-row-expandable' : ''}" ${hasMatches ? `onclick="toggleSeason('${seasonId}')"` : ''}>
+                            <tr class="${rowClasses}" ${hasMatches ? `onclick="toggleSeason('${seasonId}')"` : ''}>
                                 <td>${hasMatches ? `<span class="season-chevron" id="${seasonId}-chev">&#9654;</span>` : ''}</td>
-                                <td><a href="team.html?team=${team.slug}&season=${encodeURIComponent(s.season)}" onclick="event.stopPropagation()">${s.season}</a></td>
+                                <td>${champBadge}<a href="team.html?team=${team.slug}&season=${encodeURIComponent(s.season)}" onclick="event.stopPropagation()">${s.season}</a></td>
                                 <td>${s.label}</td>
                                 <td>${s.wins}</td>
                                 <td>${s.losses}</td>
@@ -167,14 +169,15 @@ async function renderTeamCareer(slug) {
                     }).join('')}
                 </tbody>
             </table>
+            <div class="legend-row"><span class="champion-badge">🏆</span> championship-winning season</div>
         </div>
 
         <h2 class="section-title">All-Time Roster</h2>
         <div class="table-wrap">
             <table class="detail-table sortable">
-                <thead><tr><th>Player</th><th>Matches</th><th>Runs</th><th>Wickets</th><th>Bat TILT/m</th><th>Bowl TILT/m</th></tr></thead>
+                <thead><tr><th>Player</th><th>Matches</th><th>Runs</th><th>Wickets</th><th>Bat TILT/m</th><th>Bowl TILT/m</th><th>Total TILT</th><th>Total TILT/Game</th></tr></thead>
                 <tbody>
-                    ${team.all_time_roster.map((r) => `
+                    ${team.all_time_roster.slice().sort((a, b) => (b.total_tilt || 0) - (a.total_tilt || 0)).map((r) => `
                         <tr>
                             <td><a href="player.html?player=${r.slug}">${flagSpan(r.country)}${r.player}</a></td>
                             <td>${r.matches}</td>
@@ -182,6 +185,8 @@ async function renderTeamCareer(slug) {
                             <td>${r.wickets}</td>
                             <td>${formatTilt(r.batting_tilt_per_match)}</td>
                             <td>${formatTilt(r.bowling_tilt_per_match)}</td>
+                            <td>${formatTilt(r.total_tilt)}</td>
+                            <td>${formatTilt(r.total_tilt_per_match)}</td>
                         </tr>
                     `).join('')}
                 </tbody>
