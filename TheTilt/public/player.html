@@ -319,6 +319,14 @@ async function loadPlayer() {
                 </div></div>`;
         }
 
+        // Bowling team matchups chart
+        if (p.bowling_team_matchups && p.bowling_team_matchups.length > 0) {
+            html += `<div class="section"><h3>bowling TILT by opponent</h3>
+                <div class="chart-container" style="height:${Math.max(150, p.bowling_team_matchups.length * 28)}px">
+                    <canvas id="bowlingMatchupChart"></canvas>
+                </div></div>`;
+        }
+
         document.getElementById('content').innerHTML = html;
 
         // Render distribution histogram
@@ -442,9 +450,8 @@ async function loadPlayer() {
         }
 
         // Render matchup chart
-        if (p.team_matchups && p.team_matchups.length > 0) {
-            const matchups = p.team_matchups;
-            new Chart(document.getElementById('matchupChart'), {
+        const renderMatchupChart = (canvasId, matchups) => {
+            new Chart(document.getElementById(canvasId), {
                 type: 'bar',
                 data: {
                     labels: matchups.map(m => m.opponent),
@@ -478,6 +485,12 @@ async function loadPlayer() {
                     }
                 }
             });
+        };
+        if (p.team_matchups && p.team_matchups.length > 0) {
+            renderMatchupChart('matchupChart', p.team_matchups);
+        }
+        if (p.bowling_team_matchups && p.bowling_team_matchups.length > 0) {
+            renderMatchupChart('bowlingMatchupChart', p.bowling_team_matchups);
         }
 
     } catch (e) {
