@@ -58,4 +58,8 @@ If your life today costs $80k and the model says you could sustain $400k in reti
 
 ## File contents
 
-`retirement_planner.xlsx` contains the workbook. Open it in Excel, Numbers, or LibreOffice. All formulas are visible. Click any cell to see what it depends on.
+- `retirement_planner.html` — single-file interactive version. Double-click to open in any modern browser; no install, no build step. Inputs update the chart and headline numbers in real time. Self-contained except for Google Fonts (loads online).
+- `retirement_planner.xlsx` — the same model as a workbook. Open in Excel, Numbers, or LibreOffice. All formulas are visible; click any cell to trace dependencies.
+- `retirement_planner.jsx` — the original React component, included for reference and embeddable in a Vite/Next project.
+
+The HTML version uses a slightly tightened present-value formula so the projected portfolio depletes to exactly zero at lifespan (the JSX and xlsx have a small off-by-one in the CPP/OAS PV that leaves a phantom residual; the headline income is within ~0.3% across versions).

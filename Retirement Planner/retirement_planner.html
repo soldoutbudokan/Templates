@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Years of Plenty, Years of Bread — A Retirement Almanac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f0eadb;
+    --bg-deep: #e8dfc9;
+    --paper: #faf6ec;
+    --ink: #1c1814;
+    --ink-soft: #4a4136;
+    --rule: #8b7d5e;
+    --rule-soft: #c9bd9a;
+    --accent: #7a1f2b;
+    --accent-light: #a83847;
+    --navy: #1f3a5c;
+    --ocre: #b08020;
+    --green: #3d6b3d;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+    padding: 32px 24px 64px;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+
+  /* Masthead */
+  header.mast {
+    border-top: 4px double var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 20px 0 16px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .kicker {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(36px, 6vw, 64px);
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .dateline {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .card h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    margin: 0 0 4px;
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 8px;
+  }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 28px;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .age-display {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 96px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .income-display {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .verdict {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .hero-right {
+    border-left: 1px solid var(--rule-soft);
+    padding-left: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .hero-stats {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    font-size: 12px;
+  }
+  .stat-label {
+    color: var(--ink-soft);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .stat-value {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .scale-hints {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  /* Inputs */
+  .inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .inputs-grid h3 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0 0 16px;
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 8px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .field-label {
+    color: var(--ink-soft);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .field-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .field-suffix {
+    color: var(--ink-soft);
+    font-size: 12px;
+    font-family: "JetBrains Mono", monospace;
+  }
+  .field-hint {
+    color: var(--ink-soft);
+    font-size: 10px;
+    font-style: italic;
+  }
+  .field-value-readout {
+    color: var(--ink);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+  }
+  .field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  input[type="number"] {
+    background: var(--paper);
+    border: 1px solid var(--rule-soft);
+    color: var(--ink);
+    padding: 6px 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+  }
+  input[type="number"]:focus {
+    border-color: var(--ink);
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] { -moz-appearance: textfield; }
+  input[type="range"] {
+    accent-color: var(--accent);
+    width: 100%;
+    height: 4px;
+  }
+
+  /* Tables */
+  table.breakdown {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  table.breakdown thead tr {
+    color: var(--ink-soft);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  table.breakdown th, table.breakdown td {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  table.breakdown th:first-child, table.breakdown td:first-child { text-align: left; }
+  table.breakdown th:not(:first-child), table.breakdown td:not(:first-child) { text-align: right; }
+  table.breakdown tr.total td {
+    border-top: 2px solid var(--ink);
+    border-bottom: none;
+    font-weight: 700;
+    padding: 12px 0;
+  }
+  table.breakdown tr.total td:nth-child(2) { font-size: 16px; }
+  table.breakdown tr.clawback td {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .breakdown-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 16px;
+    border-top: 1px solid var(--rule-soft);
+    padding-top: 12px;
+  }
+
+  /* Chart */
+  .chart-frame {
+    width: 100%;
+    height: 320px;
+    position: relative;
+  }
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 8px;
+  }
+  .chart-header span.note {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  svg.chart {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .chart text {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    fill: var(--ink-soft);
+  }
+  .gridline { stroke: var(--rule-soft); stroke-width: 1; stroke-dasharray: 2 4; }
+  .axis-line { stroke: var(--rule); stroke-width: 1; }
+  .area-fill { fill: var(--navy); fill-opacity: 0.18; }
+  .area-line { fill: none; stroke: var(--navy); stroke-width: 2; }
+  .ref-retire { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 4 3; }
+  .ref-cpp { stroke: var(--ocre); stroke-width: 1.5; stroke-dasharray: 2 4; }
+  .ref-label { font-family: "JetBrains Mono", monospace; font-size: 11px; }
+  .tooltip {
+    position: absolute;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 6px 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    pointer-events: none;
+    transform: translate(-50%, -110%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 80ms;
+  }
+  .hover-line { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 2 2; opacity: 0.4; }
+
+  /* Footer */
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  footer p { margin: 0 0 8px; }
+  footer strong { font-style: normal; color: var(--ink); }
+
+  @media (max-width: 800px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right {
+      border-left: none;
+      padding-left: 0;
+      border-top: 1px solid var(--rule-soft);
+      padding-top: 20px;
+    }
+    .inputs-grid { grid-template-columns: 1fr; }
+    .age-display { font-size: 72px; }
+    .income-display { font-size: 44px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">A Retirement Almanac and Calculator</div>
+    <h1>Years of Plenty,<br/>Years of Bread</h1>
+    <div class="dateline">All figures stated in 2026 dollars. Returns are real, net of inflation.</div>
+  </header>
+
+  <!-- Hero -->
+  <section class="card hero">
+    <div>
+      <div class="hero-label">The age you stop working</div>
+      <div id="ageDisplay" class="age-display">60</div>
+      <input id="retirementAge" type="range" min="45" max="75" value="60" />
+      <div class="scale-hints"><span>45</span><span>60</span><span>75</span></div>
+    </div>
+    <div class="hero-right">
+      <div>
+        <div class="hero-label">Annual income, in retirement</div>
+        <div id="incomeDisplay" class="income-display">$0</div>
+        <div class="verdict"><span id="verdictTag">pre-tax</span></div>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-label">Portfolio at retirement</div>
+          <div id="portfolioDisplay" class="stat-value">$0M</div>
+        </div>
+        <div>
+          <div class="stat-label">Years of accumulation</div>
+          <div id="accumulationDisplay" class="stat-value">0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chart -->
+  <section class="card">
+    <div class="chart-header">
+      <h2 style="border:none; padding:0; margin:0;">The portfolio, age by age</h2>
+      <span class="note">Real dollars · oxblood marks retirement</span>
+    </div>
+    <div class="chart-frame" id="chartFrame">
+      <svg class="chart" id="chart" viewBox="0 0 800 320" preserveAspectRatio="none"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </section>
+
+  <!-- Income breakdown -->
+  <section class="card">
+    <h2>Where the income comes from</h2>
+    <table class="breakdown">
+      <thead>
+        <tr><th>Source</th><th>Annual</th><th>Begins at age</th></tr>
+      </thead>
+      <tbody id="breakdownBody"></tbody>
+    </table>
+    <p class="breakdown-note">
+      The model finds a level real income for life, treating CPP and OAS as deferred annuities and
+      drawing the portfolio to fill the rest. Tax on RRSP withdrawals is not subtracted; held in a TFSA
+      or non-registered accounts the bite is smaller. The clawback figure is rough.
+    </p>
+  </section>
+
+  <!-- Inputs -->
+  <section class="inputs-grid">
+    <div class="card">
+      <h3>You</h3>
+      <div class="field">
+        <span class="field-label">Current age</span>
+        <input id="currentAge" type="number" min="18" max="70" value="29" />
+      </div>
+      <div class="field">
+        <span class="field-label">Net worth today</span>
+        <div class="field-row">
+          <input id="netWorth" type="number" step="10000" value="400000" />
+          <span class="field-suffix">CAD</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-header">
+          <span class="field-label">Live until</span>
+          <span class="field-value-readout"><span id="lifespanReadout">95</span></span>
+        </div>
+        <input id="lifespan" type="range" min="75" max="105" value="95" />
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>The career</h3>
+      <div class="field">
+        <span class="field-label">Income now</span>
+        <div class="field-row">
+          <input id="currentIncome" type="number" step="5000" value="190000" />
+          <span class="field-suffix">CAD</span>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">Peak income</span>
+        <div class="field-row">
+          <input id="peakIncome" type="number" step="5000" value="215000" />
+          <span class="field-suffix">CAD</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-header">
+          <span class="field-label">Years until peak</span>
+          <span class="field-value-readout"><span id="yearsToPeakReadout">5</span> yrs</span>
+        </div>
+        <input id="yearsToPeak" type="range" min="0" max="20" value="5" />
+      </div>
+      <div class="field">
+        <div class="field-header">
+          <span class="field-label">Years held at peak</span>
+          <span class="field-value-readout"><span id="yearsAtPeakReadout">5</span> yrs</span>
+        </div>
+        <input id="yearsAtPeak" type="range" min="0" max="30" value="5" />
+      </div>
+      <div class="field">
+        <span class="field-label">Income after step-down</span>
+        <div class="field-row">
+          <input id="postIncome" type="number" step="5000" value="130000" />
+          <span class="field-suffix">CAD</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-header">
+          <span class="field-label">Saving rate (after-tax)</span>
+          <span class="field-value-readout"><span id="savingsRateReadout">28</span>%</span>
+        </div>
+        <input id="savingsRate" type="range" min="0" max="70" value="28" />
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Markets and the state</h3>
+      <div class="field">
+        <div class="field-header">
+          <span class="field-label">Real return</span>
+          <span class="field-value-readout"><span id="realReturnReadout">7</span>%</span>
+        </div>
+        <input id="realReturn" type="range" min="2" max="10" step="0.5" value="7" />
+      </div>
+      <div class="field">
+        <div class="field-header">
+          <span class="field-label">Career start age</span>
+          <span class="field-value-readout"><span id="careerStartReadout">22</span></span>
+        </div>
+        <input id="careerStart" type="range" min="16" max="30" value="22" />
+        <span class="field-hint">When you started CPP contributions</span>
+      </div>
+      <div class="field">
+        <div class="field-header">
+          <span class="field-label">CPP claim age</span>
+          <span class="field-value-readout"><span id="cppStartReadout">70</span></span>
+        </div>
+        <input id="cppStart" type="range" min="60" max="70" value="70" />
+      </div>
+      <div class="field">
+        <span class="field-label">CPP at age 65 (full career)</span>
+        <div class="field-row">
+          <input id="cppAt65" type="number" step="1000" value="22000" />
+          <span class="field-suffix">CAD</span>
+        </div>
+        <span class="field-hint">Max contributor with 39+ years. Scales down if you retire early.</span>
+      </div>
+      <div class="field">
+        <span class="field-label">OAS at age 65</span>
+        <div class="field-row">
+          <input id="oasAt65" type="number" step="500" value="9000" />
+          <span class="field-suffix">CAD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      <strong>Caveats.</strong> Real returns of 7% are the long-run average for stocks. A balanced
+      portfolio with bonds runs closer to 5%. The first decade after you retire matters most: a bad
+      sequence of returns can wreck a plan that looks healthy on paper. Income tax in retirement is not
+      modelled and depends on whether the money sits in a TFSA, RRSP, or non-registered account.
+    </p>
+    <p>
+      <strong>Method.</strong> Income trajectory is linear from current to peak, then flat at peak, then
+      a step down. Tax uses Ontario combined marginal brackets (an approximation, editable in source).
+      Saving is a fixed share of after-tax income. CPP scales with contribution years (39 years at the
+      max earnings ceiling gets you the full benefit, fewer years prorate it). CPP and OAS are then
+      valued as deferred life annuities and pooled with the portfolio to find a level lifetime real
+      income. OAS clawback is an estimate above the threshold.
+    </p>
+  </footer>
+</div>
+
+<script>
+  // ----- Tax: Ontario combined federal+provincial marginal brackets (approximation) -----
+  const TAX_BRACKETS = [
+    [15000, 0],
+    [53359, 0.2005],
+    [90599, 0.2965],
+    [106717, 0.3148],
+    [111733, 0.3389],
+    [150000, 0.3791],
+    [173205, 0.4341],
+    [220000, 0.4497],
+    [246752, 0.4829],
+    [Infinity, 0.5353],
+  ];
+
+  function afterTax(gross) {
+    if (gross <= 0) return 0;
+    let tax = 0, prev = 0;
+    for (const [top, rate] of TAX_BRACKETS) {
+      if (gross <= top) { tax += (gross - prev) * rate; break; }
+      tax += (top - prev) * rate;
+      prev = top;
+    }
+    return gross - tax;
+  }
+
+  const fmt = (n) => (n == null || isNaN(n)) ? "n/a" : "$" + Math.round(n).toLocaleString();
+  const fmtM = (n) => "$" + (n / 1e6).toFixed(2) + "M";
+
+  // ----- Inputs registry -----
+  const ids = [
+    "currentAge","netWorth","lifespan","currentIncome","peakIncome","yearsToPeak",
+    "yearsAtPeak","postIncome","savingsRate","realReturn","retirementAge",
+    "cppStart","cppAt65","oasAt65","careerStart"
+  ];
+  const el = {};
+  ids.forEach(id => el[id] = document.getElementById(id));
+
+  function readInputs() {
+    return {
+      currentAge:    +el.currentAge.value,
+      netWorth:      +el.netWorth.value,
+      lifespan:      +el.lifespan.value,
+      currentIncome: +el.currentIncome.value,
+      peakIncome:    +el.peakIncome.value,
+      yearsToPeak:   +el.yearsToPeak.value,
+      yearsAtPeak:   +el.yearsAtPeak.value,
+      postIncome:    +el.postIncome.value,
+      savingsRate:   +el.savingsRate.value,
+      realReturn:    +el.realReturn.value,
+      retirementAge: +el.retirementAge.value,
+      cppStart:      +el.cppStart.value,
+      cppAt65:       +el.cppAt65.value,
+      oasAt65:       +el.oasAt65.value,
+      careerStart:   +el.careerStart.value,
+    };
+  }
+
+  // ----- Simulation -----
+  function simulate(inp) {
+    const r = inp.realReturn / 100;
+    const data = [];
+    let portfolio = inp.netWorth;
+
+    function incomeAt(age) {
+      const y = age - inp.currentAge;
+      if (y < 0) return 0;
+      if (y < inp.yearsToPeak)
+        return inp.currentIncome + (inp.peakIncome - inp.currentIncome) * (y / inp.yearsToPeak);
+      if (y < inp.yearsToPeak + inp.yearsAtPeak) return inp.peakIncome;
+      return inp.postIncome;
+    }
+
+    // Accumulation: grow then push (so the chart at retirementAge shows the value
+    // actually used in the sustainable-income calculation).
+    data.push({ age: inp.currentAge, portfolio: Math.round(portfolio), phase: "accumulate" });
+    for (let age = inp.currentAge; age < inp.retirementAge; age++) {
+      const gross = incomeAt(age);
+      const net   = afterTax(gross);
+      const save  = net * (inp.savingsRate / 100);
+      portfolio   = portfolio * (1 + r) + save;
+      data.push({ age: age + 1, portfolio: Math.round(portfolio), phase: "accumulate" });
+    }
+    const portfolioAtRetirement = portfolio;
+
+    const yearsRetired   = inp.lifespan - inp.retirementAge;
+    const workingYears   = Math.max(0, inp.retirementAge - inp.careerStart);
+    const cppContribFactor = Math.min(1, workingYears / 39);
+
+    const cppFactor =
+      inp.cppStart < 65
+        ? Math.max(0.5, 1 - (65 - inp.cppStart) * 0.072)
+        : Math.min(1.42, 1 + (inp.cppStart - 65) * 0.084);
+    const cppAnnual = inp.cppAt65 * cppContribFactor * cppFactor;
+
+    const oasStartAge = Math.max(65, Math.min(70, inp.retirementAge < 65 ? 65 : inp.retirementAge));
+    const oasFactor   = 1 + Math.max(0, oasStartAge - 65) * 0.072;
+    const oasAnnual   = inp.oasAt65 * oasFactor;
+
+    const pvAnnuity = (n, rate) => (rate === 0) ? n : (1 - Math.pow(1 + rate, -n)) / rate;
+
+    // PV at retirement of a stream paid at ages [first..lifespan] inclusive.
+    // The drawdown loop pays starting at age=cppStart (likewise oasStart), so the
+    // PV must match: count payments at t = first..last where t = age - retirementAge.
+    function pvStream(annual, startAge) {
+      const firstT = Math.max(startAge - inp.retirementAge, 1);
+      const lastT  = inp.lifespan - inp.retirementAge;
+      const n = Math.max(0, lastT - firstT + 1);
+      if (n === 0) return 0;
+      return annual * pvAnnuity(n, r) / Math.pow(1 + r, firstT - 1);
+    }
+
+    const pvCpp = pvStream(cppAnnual, inp.cppStart);
+    const pvOas = pvStream(oasAnnual, oasStartAge);
+    const pvTotal = portfolioAtRetirement + pvCpp + pvOas;
+
+    const sustainableTotal = yearsRetired > 0 ? pvTotal / pvAnnuity(yearsRetired, r) : 0;
+
+    const clawbackThreshold = 93000;
+    const oasClawback = sustainableTotal > clawbackThreshold
+      ? Math.min(oasAnnual, (sustainableTotal - clawbackThreshold) * 0.15)
+      : 0;
+    const sustainableNetGov = sustainableTotal - oasClawback;
+
+    // Drawdown sim (gross-draw approach: depletes to ~0 at lifespan;
+    // clawback is treated as a tax on spending shown separately).
+    let p = portfolio;
+    for (let age = inp.retirementAge + 1; age <= inp.lifespan; age++) {
+      const cpp = age >= inp.cppStart ? cppAnnual : 0;
+      const oas = age >= oasStartAge  ? oasAnnual : 0;
+      const draw = sustainableTotal - cpp - oas;
+      p = p * (1 + r) - draw;
+      data.push({ age, portfolio: Math.round(Math.max(0, p)), phase: "retire" });
+    }
+
+    return {
+      data, portfolioAtRetirement, yearsRetired, sustainableTotal, sustainableNetGov,
+      cppAnnual, oasAnnual, cppStartAge: inp.cppStart, oasStartAge, oasClawback,
+      workingYears, cppContribFactor, retirementAge: inp.retirementAge,
+    };
+  }
+
+  // ----- Verdict (color + label) -----
+  function verdict(inc) {
+    if (inc >= 250000) return { label: "lavish",     color: "var(--accent)" };
+    if (inc >= 175000) return { label: "comfortable",color: "var(--green)"  };
+    if (inc >= 110000) return { label: "solid",      color: "var(--navy)"   };
+    if (inc >=  75000) return { label: "adequate",   color: "var(--ocre)"   };
+    return                       { label: "tight",      color: "var(--accent)" };
+  }
+
+  // ----- Chart (vanilla SVG) -----
+  const chartEl   = document.getElementById("chart");
+  const tooltipEl = document.getElementById("tooltip");
+  const frameEl   = document.getElementById("chartFrame");
+
+  function drawChart(sim) {
+    const W = 800, H = 320;
+    const M = { top: 20, right: 24, bottom: 28, left: 60 };
+    const innerW = W - M.left - M.right;
+    const innerH = H - M.top - M.bottom;
+
+    const ages = sim.data.map(d => d.age);
+    const ports = sim.data.map(d => d.portfolio);
+    const xMin = Math.min(...ages), xMax = Math.max(...ages);
+    const yMax = Math.max(1, ...ports);
+
+    const x = a => M.left + ((a - xMin) / Math.max(1, xMax - xMin)) * innerW;
+    const y = v => M.top  + innerH - (v / yMax) * innerH;
+
+    // y-ticks
+    const yTicks = 4;
+    const yTickStep = yMax / yTicks;
+    const niceTicks = [];
+    for (let i = 0; i <= yTicks; i++) niceTicks.push(i * yTickStep);
+
+    // x-ticks every 5 years
+    const xTicks = [];
+    for (let a = Math.ceil(xMin / 5) * 5; a <= xMax; a += 5) xTicks.push(a);
+
+    // path
+    const linePts = sim.data.map(d => `${x(d.age)},${y(d.portfolio)}`);
+    const linePath = "M" + linePts.join(" L");
+    const areaPath = `M${x(xMin)},${y(0)} L${linePts.join(" L")} L${x(xMax)},${y(0)} Z`;
+
+    // ref line: retirement
+    const refX = x(sim.retirementAge);
+    const cppX = x(sim.cppStartAge);
+
+    let svg = "";
+    // gridlines + y labels
+    niceTicks.forEach(v => {
+      const yy = y(v);
+      svg += `<line class="gridline" x1="${M.left}" x2="${W - M.right}" y1="${yy}" y2="${yy}" />`;
+      svg += `<text x="${M.left - 8}" y="${yy + 4}" text-anchor="end">$${(v/1e6).toFixed(1)}M</text>`;
+    });
+    // x labels
+    xTicks.forEach(a => {
+      svg += `<text x="${x(a)}" y="${M.top + innerH + 18}" text-anchor="middle">${a}</text>`;
+    });
+    // axes
+    svg += `<line class="axis-line" x1="${M.left}" x2="${W - M.right}" y1="${M.top + innerH}" y2="${M.top + innerH}" />`;
+    svg += `<line class="axis-line" x1="${M.left}" x2="${M.left}" y1="${M.top}" y2="${M.top + innerH}" />`;
+    // area + line
+    svg += `<path class="area-fill" d="${areaPath}" />`;
+    svg += `<path class="area-line" d="${linePath}" />`;
+    // ref lines
+    svg += `<line class="ref-retire" x1="${refX}" x2="${refX}" y1="${M.top}" y2="${M.top + innerH}" />`;
+    svg += `<text class="ref-label" x="${refX}" y="${M.top - 6}" text-anchor="middle" fill="var(--accent)">retire</text>`;
+    if (sim.cppStartAge >= xMin && sim.cppStartAge <= xMax) {
+      svg += `<line class="ref-cpp" x1="${cppX}" x2="${cppX}" y1="${M.top}" y2="${M.top + innerH}" />`;
+      svg += `<text class="ref-label" x="${cppX}" y="${M.top - 6}" text-anchor="middle" fill="var(--ocre)">CPP</text>`;
+    }
+    // hover line + invisible hover targets
+    svg += `<line id="hoverLine" class="hover-line" x1="0" x2="0" y1="${M.top}" y2="${M.top + innerH}" style="opacity:0" />`;
+    sim.data.forEach((d, i) => {
+      svg += `<rect data-i="${i}" x="${x(d.age) - 6}" y="${M.top}" width="12" height="${innerH}" fill="transparent" />`;
+    });
+
+    chartEl.innerHTML = svg;
+
+    // hover handlers
+    const rects = chartEl.querySelectorAll("rect[data-i]");
+    const hoverLine = chartEl.querySelector("#hoverLine");
+    rects.forEach(rect => {
+      rect.addEventListener("mouseenter", e => {
+        const i = +rect.dataset.i;
+        const d = sim.data[i];
+        const cx = x(d.age);
+        hoverLine.setAttribute("x1", cx);
+        hoverLine.setAttribute("x2", cx);
+        hoverLine.style.opacity = 1;
+
+        // position tooltip in pixel-space of the frame
+        const frameRect = frameEl.getBoundingClientRect();
+        const svgRect = chartEl.getBoundingClientRect();
+        const px = (cx / W) * svgRect.width;
+        const py = (y(d.portfolio) / H) * svgRect.height;
+        tooltipEl.style.left = px + "px";
+        tooltipEl.style.top  = py + "px";
+        tooltipEl.innerHTML = `Age ${d.age}<br/>${fmt(d.portfolio)}`;
+        tooltipEl.style.opacity = 1;
+      });
+      rect.addEventListener("mouseleave", () => {
+        hoverLine.style.opacity = 0;
+        tooltipEl.style.opacity = 0;
+      });
+    });
+  }
+
+  // ----- Render -----
+  function render() {
+    const inp = readInputs();
+
+    // Guard rails
+    if (inp.lifespan <= inp.retirementAge) {
+      el.lifespan.value = inp.retirementAge + 1;
+      inp.lifespan = inp.retirementAge + 1;
+    }
+    if (inp.retirementAge < inp.currentAge) {
+      el.retirementAge.value = inp.currentAge;
+      inp.retirementAge = inp.currentAge;
+    }
+
+    // Readouts
+    document.getElementById("ageDisplay").textContent       = inp.retirementAge;
+    document.getElementById("lifespanReadout").textContent  = inp.lifespan;
+    document.getElementById("yearsToPeakReadout").textContent = inp.yearsToPeak;
+    document.getElementById("yearsAtPeakReadout").textContent = inp.yearsAtPeak;
+    document.getElementById("savingsRateReadout").textContent = inp.savingsRate;
+    document.getElementById("realReturnReadout").textContent  = inp.realReturn;
+    document.getElementById("careerStartReadout").textContent = inp.careerStart;
+    document.getElementById("cppStartReadout").textContent    = inp.cppStart;
+
+    const sim = simulate(inp);
+    const v = verdict(sim.sustainableNetGov);
+
+    // Hero
+    const incomeEl = document.getElementById("incomeDisplay");
+    incomeEl.textContent = fmt(sim.sustainableNetGov);
+    incomeEl.style.color = v.color;
+    document.getElementById("verdictTag").innerHTML =
+      `pre-tax, level for ${sim.yearsRetired} years &nbsp;·&nbsp; ${v.label}`;
+    document.getElementById("portfolioDisplay").textContent   = fmtM(sim.portfolioAtRetirement);
+    document.getElementById("accumulationDisplay").textContent = inp.retirementAge - inp.currentAge;
+
+    // Breakdown table
+    const portfolioDraw = sim.sustainableTotal - sim.cppAnnual - sim.oasAnnual;
+    const cppDetail = sim.cppContribFactor < 1
+      ? ` <span style="color:var(--ink-soft); font-size:11px; font-style:italic;">(${Math.round(sim.cppContribFactor*100)}% of max, ${sim.workingYears} contribution years)</span>`
+      : "";
+    let rows = "";
+    rows += `<tr><td>Portfolio draw (level)</td><td>${fmt(portfolioDraw)}</td><td style="color:var(--ink-soft)">${inp.retirementAge}</td></tr>`;
+    rows += `<tr><td>Canada Pension Plan${cppDetail}</td><td>${fmt(sim.cppAnnual)}</td><td style="color:var(--ink-soft)">${sim.cppStartAge}</td></tr>`;
+    rows += `<tr><td>Old Age Security</td><td>${fmt(sim.oasAnnual)}</td><td style="color:var(--ink-soft)">${sim.oasStartAge}</td></tr>`;
+    if (sim.oasClawback > 0) {
+      rows += `<tr class="clawback"><td>OAS clawback (estimate)</td><td>−${fmt(sim.oasClawback)}</td><td></td></tr>`;
+    }
+    rows += `<tr class="total"><td>Net annual income, level</td><td>${fmt(sim.sustainableNetGov)}</td><td></td></tr>`;
+    document.getElementById("breakdownBody").innerHTML = rows;
+
+    drawChart(sim);
+  }
+
+  // Hook up listeners
+  ids.forEach(id => {
+    el[id].addEventListener("input", render);
+    el[id].addEventListener("change", render);
+  });
+  window.addEventListener("resize", () => render());
+
+  render();
+</script>
+</body>
+</html>
