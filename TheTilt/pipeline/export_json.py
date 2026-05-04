@@ -613,6 +613,22 @@ def export_player_details(
         else:
             team_matchups = []
 
+        # Bowling team matchups: bowling TILT per match vs each batting opponent
+        if len(bowl_df_copy) > 0:
+            bowl_opp_tilt = (
+                bowl_df_copy.groupby("batting_team")
+                .agg(tilt=("bowling_delta", "sum"), matches=("match_id", "nunique"))
+                .reset_index()
+            )
+            bowl_opp_tilt["tilt_per_match"] = bowl_opp_tilt["tilt"] / bowl_opp_tilt["matches"]
+            bowl_opp_tilt = bowl_opp_tilt.sort_values("tilt_per_match", ascending=False)
+            bowling_team_matchups = [
+                {"opponent": r["batting_team"], "tilt_per_match": round(r["tilt_per_match"], 5), "matches": int(r["matches"])}
+                for _, r in bowl_opp_tilt.iterrows()
+            ]
+        else:
+            bowling_team_matchups = []
+
         # Traditional counting stats (career-level)
         batting_stats = _batting_counting_stats(bat_df, player_id, player_name, include_dismissals=True)
         bowling_stats = _bowling_counting_stats(bowl_df)
@@ -700,6 +716,7 @@ def export_player_details(
             ],
             "career_trend": career_trend,
             "team_matchups": team_matchups,
+            "bowling_team_matchups": bowling_team_matchups,
             "batting_stats": batting_stats,
             "bowling_stats": bowling_stats,
             "match_tilt_distribution": match_tilt_distribution,
