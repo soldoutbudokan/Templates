@@ -8,18 +8,18 @@
   "teams": [
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.01512,
+  "total_tilt_per_match": -0.01445,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.00885,
-  "shrunk_total_tilt_per_match": -0.0194,
+  "bowling_tilt_per_match": -0.00819,
+  "shrunk_total_tilt_per_match": -0.01899,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01095,
-  "tilt_ci_lower": -0.09222,
-  "tilt_ci_upper": 0.05343,
-  "tilt_ci_lower_90": -0.08052,
-  "tilt_ci_upper_90": 0.04173,
+  "shrunk_bowling_tilt_per_match": -0.01066,
+  "tilt_ci_lower": -0.09186,
+  "tilt_ci_upper": 0.05388,
+  "tilt_ci_lower_90": -0.08015,
+  "tilt_ci_upper_90": 0.04217,
   "confidence": "low",
-  "total_tilt": -0.07558,
+  "total_tilt": -0.07226,
   "total_matches": 5,
   "batting_balls": 20,
   "bowling_balls": 101,
@@ -28,7 +28,7 @@
       "season": "2017",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": -0.01044,
-      "bowling_tilt_per_match": -0.00885,
+      "bowling_tilt_per_match": -0.00819,
       "batting_matches": 3,
       "bowling_matches": 5,
       "batting_balls": 20,
@@ -88,8 +88,8 @@
           "bowl_balls": 24,
           "bowl_runs": 32,
           "bowl_econ": 8.0,
-          "bowl_tilt": 0.01384,
-          "total_tilt": 0.01384
+          "bowl_tilt": 0.0155,
+          "total_tilt": 0.0155
         },
         {
           "match_id": "1082633",
@@ -126,8 +126,8 @@
           "bowl_balls": 17,
           "bowl_runs": 19,
           "bowl_econ": 6.71,
-          "bowl_tilt": -0.02535,
-          "total_tilt": -0.02535
+          "bowl_tilt": -0.02369,
+          "total_tilt": -0.02369
         }
       ],
       "batting_stats": {
@@ -163,9 +163,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.06663,
+      "tilt": 0.06994,
       "balls": 36,
-      "avg_delta": 0.001801
+      "avg_delta": 0.00189
     },
     {
       "phase": "middle",
@@ -245,9 +245,17 @@
       "match_id": "1082628",
       "date": "2017-05-01",
       "vs": "Mumbai Indians",
-      "tilt": 0.01384,
+      "tilt": 0.0155,
       "wickets": 1,
       "balls": 24
+    },
+    {
+      "match_id": "1082636",
+      "date": "2017-05-07",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.02369,
+      "wickets": 1,
+      "balls": 17
     },
     {
       "match_id": "1082621",
@@ -256,14 +264,6 @@
       "tilt": -0.02475,
       "wickets": 0,
       "balls": 12
-    },
-    {
-      "match_id": "1082636",
-      "date": "2017-05-07",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.02535,
-      "wickets": 1,
-      "balls": 17
     },
     {
       "match_id": "1082591",
@@ -284,14 +284,6 @@
       "balls": 24
     },
     {
-      "match_id": "1082636",
-      "date": "2017-05-07",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.02535,
-      "wickets": 1,
-      "balls": 17
-    },
-    {
       "match_id": "1082621",
       "date": "2017-04-27",
       "vs": "Gujarat Lions",
@@ -300,10 +292,18 @@
       "balls": 12
     },
     {
+      "match_id": "1082636",
+      "date": "2017-05-07",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.02369,
+      "wickets": 1,
+      "balls": 17
+    },
+    {
       "match_id": "1082628",
       "date": "2017-05-01",
       "vs": "Mumbai Indians",
-      "tilt": 0.01384,
+      "tilt": 0.0155,
       "wickets": 1,
       "balls": 24
     },
@@ -332,20 +332,20 @@
     {
       "match": 3,
       "date": "2017-05-01",
-      "tilt": 0.01384,
-      "cumulative": -0.19419
+      "tilt": 0.0155,
+      "cumulative": -0.19253
     },
     {
       "match": 4,
       "date": "2017-05-05",
       "tilt": 0.14396,
-      "cumulative": -0.05023
+      "cumulative": -0.04857
     },
     {
       "match": 5,
       "date": "2017-05-07",
-      "tilt": -0.02535,
-      "cumulative": -0.07558
+      "tilt": -0.02369,
+      "cumulative": -0.07226
     }
   ],
   "team_matchups": [
@@ -389,8 +389,8 @@
   "match_tilt_distribution": [
     -0.1856,
     -0.02243,
-    0.01384,
+    0.0155,
     0.14396,
-    -0.02535
+    -0.02369
   ]
 }

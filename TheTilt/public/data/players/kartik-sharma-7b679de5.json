@@ -8,30 +8,30 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": -0.0401,
-  "batting_tilt_per_match": null,
+  "total_tilt_per_match": -0.0222,
+  "batting_tilt_per_match": -0.0222,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03186,
-  "shrunk_batting_tilt_per_match": null,
+  "shrunk_total_tilt_per_match": -0.02279,
+  "shrunk_batting_tilt_per_match": -0.01995,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.06319,
-  "tilt_ci_upper": -0.00052,
-  "tilt_ci_lower_90": -0.05816,
-  "tilt_ci_upper_90": -0.00556,
+  "tilt_ci_lower": -0.06,
+  "tilt_ci_upper": 0.01441,
+  "tilt_ci_lower_90": -0.05402,
+  "tilt_ci_upper_90": 0.00843,
   "confidence": "low",
-  "total_tilt": -0.2005,
-  "total_matches": 5,
-  "batting_balls": 49,
+  "total_tilt": -0.13318,
+  "total_matches": 6,
+  "batting_balls": 89,
   "bowling_balls": 0,
   "seasons": [
     {
       "season": "2026",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": -0.0401,
+      "batting_tilt_per_match": -0.0222,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 5,
+      "batting_matches": 6,
       "bowling_matches": 0,
-      "batting_balls": 49,
+      "batting_balls": 89,
       "bowling_balls": 0,
       "matches": [
         {
@@ -128,17 +128,36 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": 0.00611
+        },
+        {
+          "match_id": "1529287",
+          "date": "2026-05-02",
+          "opponent": "Mumbai Indians",
+          "venue": "MA Chidambaram Stadium, Chepauk",
+          "team_score": "160/2",
+          "opponent_score": "159/7",
+          "winner": "Chennai Super Kings",
+          "bat_runs": 54,
+          "bat_balls": 40,
+          "bat_sr": 135.0,
+          "bat_tilt": 0.06731,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.06731
         }
       ],
       "batting_stats": {
-        "runs": 58,
-        "innings": 5,
-        "balls": 49,
-        "avg": 11.6,
-        "sr": 118.37,
-        "hs": 18,
-        "not_outs": 0,
-        "fifties": 0,
+        "runs": 112,
+        "innings": 6,
+        "balls": 89,
+        "avg": 22.4,
+        "sr": 125.84,
+        "hs": 54,
+        "not_outs": 1,
+        "fifties": 1,
         "hundreds": 0
       }
     }
@@ -146,25 +165,33 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.00681,
-      "balls": 4,
-      "avg_delta": 0.001703
+      "tilt": -0.02687,
+      "balls": 6,
+      "avg_delta": -0.004478
     },
     {
       "phase": "middle",
-      "tilt": -0.14471,
-      "balls": 32,
-      "avg_delta": -0.004256
+      "tilt": -0.06164,
+      "balls": 57,
+      "avg_delta": -0.001045
     },
     {
       "phase": "death",
-      "tilt": -0.0626,
-      "balls": 13,
-      "avg_delta": -0.004815
+      "tilt": -0.04468,
+      "balls": 26,
+      "avg_delta": -0.001719
     }
   ],
   "bowling_phases": [],
   "best_matches": [
+    {
+      "match_id": "1529287",
+      "date": "2026-05-02",
+      "vs": "Mumbai Indians",
+      "tilt": 0.06731,
+      "runs": 54,
+      "balls": 40
+    },
     {
       "match_id": "1529280",
       "date": "2026-04-26",
@@ -196,14 +223,6 @@
       "tilt": -0.06928,
       "runs": 18,
       "balls": 19
-    },
-    {
-      "match_id": "1527680",
-      "date": "2026-04-03",
-      "vs": "Punjab Kings",
-      "tilt": -0.11443,
-      "runs": 1,
-      "balls": 3
     }
   ],
   "worst_matches": [
@@ -280,6 +299,12 @@
       "date": "2026-04-26",
       "tilt": 0.00611,
       "cumulative": -0.2005
+    },
+    {
+      "match": 6,
+      "date": "2026-05-02",
+      "tilt": 0.06731,
+      "cumulative": -0.13318
     }
   ],
   "team_matchups": [
@@ -287,6 +312,11 @@
       "opponent": "Gujarat Titans",
       "tilt_per_match": 0.00611,
       "matches": 1
+    },
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.00098,
+      "matches": 2
     },
     {
       "opponent": "Royal Challengers Bangalore",
@@ -299,26 +329,21 @@
       "matches": 1
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.06928,
-      "matches": 1
-    },
-    {
       "opponent": "Punjab Kings",
       "tilt_per_match": -0.11443,
       "matches": 1
     }
   ],
   "batting_stats": {
-    "runs": 58,
-    "innings": 5,
-    "balls": 49,
-    "avg": 11.6,
-    "sr": 118.37,
-    "hs": 18,
+    "runs": 112,
+    "innings": 6,
+    "balls": 89,
+    "avg": 22.4,
+    "sr": 125.84,
+    "hs": 54,
     "dismissals": 5,
-    "not_outs": 0,
-    "fifties": 0,
+    "not_outs": 1,
+    "fifties": 1,
     "hundreds": 0
   },
   "bowling_stats": null,
@@ -327,6 +352,7 @@
     -0.11443,
     -0.00448,
     -0.06928,
-    0.00611
+    0.00611,
+    0.06731
   ]
 }

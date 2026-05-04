@@ -8,20 +8,20 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": -0.0638,
+  "total_tilt_per_match": -0.02653,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.04145,
+  "shrunk_total_tilt_per_match": -0.02501,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.09692,
-  "tilt_ci_upper": 0.01403,
-  "tilt_ci_lower_90": -0.088,
-  "tilt_ci_upper_90": 0.00511,
+  "tilt_ci_lower": -0.09385,
+  "tilt_ci_upper": 0.04383,
+  "tilt_ci_lower_90": -0.08279,
+  "tilt_ci_upper_90": 0.03276,
   "confidence": "low",
-  "total_tilt": -0.25519,
-  "total_matches": 4,
-  "batting_balls": 13,
+  "total_tilt": -0.13265,
+  "total_matches": 5,
+  "batting_balls": 42,
   "bowling_balls": 18,
   "seasons": [
     {
@@ -116,11 +116,11 @@
     {
       "season": "2026",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": 0.0,
+      "batting_tilt_per_match": 0.06127,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 1,
+      "batting_matches": 2,
       "bowling_matches": 0,
-      "batting_balls": 2,
+      "batting_balls": 31,
       "bowling_balls": 0,
       "matches": [
         {
@@ -141,17 +141,36 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": 0
+        },
+        {
+          "match_id": "1529289",
+          "date": "2026-05-03",
+          "opponent": "Gujarat Titans",
+          "venue": "Narendra Modi Stadium, Ahmedabad",
+          "team_score": "163/9",
+          "opponent_score": "167/6",
+          "winner": "Gujarat Titans",
+          "bat_runs": 57,
+          "bat_balls": 29,
+          "bat_sr": 196.6,
+          "bat_tilt": 0.12254,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.12254
         }
       ],
       "batting_stats": {
-        "runs": 3,
-        "innings": 1,
-        "balls": 2,
-        "avg": 3.0,
-        "sr": 150.0,
-        "hs": 3,
+        "runs": 60,
+        "innings": 2,
+        "balls": 31,
+        "avg": 60.0,
+        "sr": 193.55,
+        "hs": 57,
         "not_outs": 1,
-        "fifties": 0,
+        "fifties": 1,
         "hundreds": 0
       }
     }
@@ -159,15 +178,15 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.05484,
-      "balls": 4,
-      "avg_delta": -0.01371
+      "tilt": 0.08949,
+      "balls": 28,
+      "avg_delta": 0.003196
     },
     {
       "phase": "death",
-      "tilt": -0.0366,
-      "balls": 9,
-      "avg_delta": -0.00366
+      "tilt": -0.05839,
+      "balls": 14,
+      "avg_delta": -0.003893
     }
   ],
   "bowling_phases": [
@@ -185,6 +204,14 @@
     }
   ],
   "best_matches": [
+    {
+      "match_id": "1529289",
+      "date": "2026-05-03",
+      "vs": "Gujarat Titans",
+      "tilt": 0.12254,
+      "runs": 57,
+      "balls": 29
+    },
     {
       "match_id": "1529283",
       "date": "2026-04-28",
@@ -250,6 +277,14 @@
       "tilt": 0.0,
       "runs": 3,
       "balls": 2
+    },
+    {
+      "match_id": "1529289",
+      "date": "2026-05-03",
+      "vs": "Gujarat Titans",
+      "tilt": 0.12254,
+      "runs": 57,
+      "balls": 29
     }
   ],
   "bowling_best_matches": [
@@ -296,9 +331,20 @@
       "date": "2026-04-28",
       "tilt": 0.0,
       "cumulative": -0.25519
+    },
+    {
+      "match": 5,
+      "date": "2026-05-03",
+      "tilt": 0.12254,
+      "cumulative": -0.13265
     }
   ],
   "team_matchups": [
+    {
+      "opponent": "Gujarat Titans",
+      "tilt_per_match": 0.12254,
+      "matches": 1
+    },
     {
       "opponent": "Rajasthan Royals",
       "tilt_per_match": -0.00694,
@@ -316,15 +362,15 @@
     }
   ],
   "batting_stats": {
-    "runs": 10,
-    "innings": 4,
-    "balls": 13,
-    "avg": 3.33,
-    "sr": 76.92,
-    "hs": 4,
-    "dismissals": 3,
+    "runs": 67,
+    "innings": 5,
+    "balls": 42,
+    "avg": 16.75,
+    "sr": 159.52,
+    "hs": 57,
+    "dismissals": 4,
     "not_outs": 1,
-    "fifties": 0,
+    "fifties": 1,
     "hundreds": 0
   },
   "bowling_stats": {
@@ -340,6 +386,7 @@
     -0.01388,
     -0.05484,
     -0.18647,
-    0.0
+    0.0,
+    0.12254
   ]
 }
