@@ -751,6 +751,10 @@ def export_match_details(
     match_ids = deltas_df["match_id"].unique()
     print(f"  Exporting {len(match_ids)} match detail files...")
 
+    # Pre-compute match_info for every match so result_margin / event_stage /
+    # scores flow into both the per-match JSONs and match_index.json.
+    match_info_cache = _build_match_info_cache(deltas_df)
+
     match_index = []
 
     for match_id in match_ids:
@@ -760,6 +764,7 @@ def export_match_details(
         first_row = mdf.iloc[0]
         teams = sorted(mdf["batting_team"].unique().tolist())
         winner = str(first_row["winner"]) if pd.notna(first_row["winner"]) else None
+        cached = match_info_cache.get(match_id, {})
 
         match_info = {
             "match_id": str(match_id),
@@ -770,6 +775,9 @@ def export_match_details(
             "winner": winner,
             "toss_winner": str(first_row.get("toss_winner", "")) if pd.notna(first_row.get("toss_winner")) else None,
             "toss_decision": str(first_row.get("toss_decision", "")) if pd.notna(first_row.get("toss_decision")) else None,
+            "result_margin": cached.get("result_margin"),
+            "event_stage": cached.get("event_stage"),
+            "scores": cached.get("scores"),
         }
 
         # Per-innings data
@@ -950,6 +958,9 @@ def export_match_details(
             "teams": teams,
             "venue": str(first_row["venue"]),
             "winner": winner,
+            "result_margin": match_info.get("result_margin"),
+            "event_stage": match_info.get("event_stage"),
+            "scores": match_info.get("scores"),
         })
 
     # Sort index by date descending
@@ -1006,12 +1017,29 @@ def export_goats(
 
     deltas_df = _add_legal_flags(deltas_df)
 
+    # --- Per-match dismissal + venue lookup so we can stamp not_out and venue
+    # onto every GOAT row. dismissals: True if the batter was dismissed in
+    # that (match_id, innings).
+    dismissals_df = (
+        deltas_df[deltas_df["player_dismissed_id"].notna()]
+        [["match_id", "innings", "player_dismissed_id"]]
+        .rename(columns={"player_dismissed_id": "batter_id"})
+        .drop_duplicates()
+        .assign(_dismissed=True)
+    )
+    venue_lookup = deltas_df.groupby("match_id")["venue"].first().to_dict()
+
     # --- Single-match batting ---
     bat_match = (
         deltas_df.groupby(["batter_id", "batter", "match_id", "date", "season", "batting_team", "innings"])
         .agg(tilt=("delta_wp", "sum"), runs=("runs_batter", "sum"), balls=("legal_bat", "sum"))
         .reset_index()
     )
+    bat_match = bat_match.merge(
+        dismissals_df, on=["batter_id", "match_id", "innings"], how="left"
+    )
+    bat_match["not_out"] = bat_match["_dismissed"].isna()
+    bat_match = bat_match.drop(columns=["_dismissed"])
 
     def _bat_match_row(r):
         return {
@@ -1022,9 +1050,11 @@ def export_goats(
             "season": str(r["season"]),
             "date": str(r["date"]),
             "match_id": str(r["match_id"]),
+            "venue": venue_lookup.get(r["match_id"], ""),
             "tilt": round(r["tilt"], 5),
             "runs": int(r["runs"]),
             "balls": int(r["balls"]),
+            "not_out": bool(r["not_out"]),
             "innings": int(r["innings"]),
         }
 
@@ -1063,6 +1093,7 @@ def export_goats(
             "season": str(r["season"]),
             "date": str(r["date"]),
             "match_id": str(r["match_id"]),
+            "venue": venue_lookup.get(r["match_id"], ""),
             "tilt": round(r["tilt"], 5),
             "wickets": int(r["wickets"]),
             "runs_conceded": int(r["runs_conceded"]),
@@ -1117,6 +1148,7 @@ def export_goats(
             "season": str(r["season"]),
             "date": str(r["date"]),
             "match_id": str(r["match_id"]),
+            "venue": venue_lookup.get(r["match_id"], ""),
             "tilt": round(r["total_tilt"], 5),
             "bat_tilt": round(r["bat_tilt"], 5),
             "bowl_tilt": round(r["bowl_tilt"], 5),
