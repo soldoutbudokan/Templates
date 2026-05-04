@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The TILT — Notes</title>
+    <title>The TILT | Notes</title>
     <link rel="stylesheet" href="style.css">
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -178,7 +178,7 @@ async function loadNote(id) {
 
         // Update page title
         const note = NOTES.find(n => n.id === id);
-        if (note) document.title = `The TILT — ${note.title}`;
+        if (note) document.title = `The TILT | ${note.title}`;
 
         // Update URL without reload
         history.pushState({ note: id }, '', `notes.html?note=${id}`);
@@ -192,7 +192,7 @@ async function loadNote(id) {
 function showListing() {
     document.getElementById('listing').style.display = '';
     document.getElementById('article').style.display = 'none';
-    document.title = 'The TILT — Notes';
+    document.title = 'The TILT | Notes';
     history.pushState({}, '', 'notes.html');
 }
 

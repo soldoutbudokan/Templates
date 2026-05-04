@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The TILT — Player</title>
+    <title>The TILT | Player</title>
     <link rel="stylesheet" href="style.css">
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -59,7 +59,7 @@ async function loadPlayer() {
 
         const teamIndex = await loadTeamIndex();
         const displayName = p.full_name && p.full_name !== p.player ? p.full_name : p.player;
-        document.title = `The TILT — ${displayName}`;
+        document.title = `The TILT | ${displayName}`;
 
         let html = `
             <div class="player-header">
@@ -488,13 +488,13 @@ async function loadPlayer() {
 async function renderPlayerSeason(p, season, slug) {
     const teamIndex = await loadTeamIndex();
     const displayName = p.full_name && p.full_name !== p.player ? p.full_name : p.player;
-    document.title = `The TILT — ${displayName} ${season}`;
+    document.title = `The TILT | ${displayName} ${season}`;
     const s = (p.seasons || []).find((x) => x.season === season);
     if (!s) {
         document.getElementById('content').innerHTML = `
             <div class="player-header">
                 <h2>${displayName}</h2>
-                <div class="meta">no data for season ${season} — <a href="player.html?player=${slug}" class="match-link">back to career</a></div>
+                <div class="meta">no data for season ${season} | <a href="player.html?player=${slug}" class="match-link">back to career</a></div>
             </div>`;
         return;
     }
@@ -504,7 +504,7 @@ async function renderPlayerSeason(p, season, slug) {
 
     let html = `
         <div class="player-header">
-            <h2>${flagSpan(p.country)}${displayName} — ${season}</h2>
+            <h2>${flagSpan(p.country)}${displayName} | ${season}</h2>
             <div class="team">${teamLabel} · ${totalMatches} matches</div>
             <div class="meta">
                 <a href="player.html?player=${slug}" class="match-link">back to ${displayName}'s career</a> ·

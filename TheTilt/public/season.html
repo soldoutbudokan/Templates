@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The TILT — Season</title>
+    <title>The TILT | Season</title>
     <link rel="stylesheet" href="style.css">
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -98,7 +98,7 @@ async function loadSeason() {
     }).join('');
 
     const inProgress = data.matches < 60 && Number(data.season_year) >= new Date().getFullYear() - 1
-        ? `<div class="subtitle">season in progress — ${data.matches} matches played</div>`
+        ? `<div class="subtitle">season in progress | ${data.matches} matches played</div>`
         : `<div class="subtitle">${data.matches} matches</div>`;
 
     let html = `

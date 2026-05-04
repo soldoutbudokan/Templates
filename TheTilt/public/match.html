@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The TILT — Match</title>
+    <title>The TILT | Match</title>
     <link rel="stylesheet" href="style.css">
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -64,7 +64,7 @@ async function loadMatch() {
         if (!res.ok) throw new Error('not found');
         const m = await res.json();
 
-        document.title = `The TILT — ${m.teams[0]} vs ${m.teams[1]}`;
+        document.title = `The TILT | ${m.teams[0]} vs ${m.teams[1]}`;
         const refTeam = m.innings && m.innings.length > 0 ? m.innings[0].batting_team : m.teams[0];
         const teamLnk = (name) => teamLink(name, m.season, teamIndex);
 
@@ -111,7 +111,7 @@ async function loadMatch() {
         // Innings scorecards
         if (m.innings && m.innings.length > 0) {
             for (const inn of m.innings) {
-                html += `<div class="section"><h3>${teamLnk(inn.batting_team)} — ${inn.total} (innings ${inn.innings})</h3>`;
+                html += `<div class="section"><h3>${teamLnk(inn.batting_team)} | ${inn.total} (innings ${inn.innings})</h3>`;
 
                 // Batting card
                 html += `<div class="table-wrap"><table class="detail-table">
