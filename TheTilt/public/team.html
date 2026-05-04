@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The TILT — Team</title>
+    <title>The TILT | Team</title>
     <link rel="stylesheet" href="style.css">
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -236,7 +236,7 @@ async function renderTeamSeason(slug, season) {
     const nrSummary = ts.header.no_results > 0 ? `–${ts.header.no_results} NR` : '';
     let html = `
         <div class="page-header">
-            <h1>${ts.label} — ${ts.season}</h1>
+            <h1>${ts.label} | ${ts.season}</h1>
             <div class="subtitle">
                 ${ts.header.wins}–${ts.header.losses}${nrSummary} · ${(ts.header.win_pct * 100).toFixed(1)}% wins · position #${ts.header.position_est}
             </div>

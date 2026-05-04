@@ -320,7 +320,7 @@
                 return;
             }
             if (q.length === 1) {
-                panel.innerHTML = `<div class="gs-hint">Keep typing — 2+ characters.</div>`;
+                panel.innerHTML = `<div class="gs-hint">Keep typing | 2+ characters.</div>`;
                 state.flat = [];
                 state.active = -1;
                 _openPanel(input, panel);
