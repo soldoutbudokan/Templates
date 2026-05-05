@@ -10,18 +10,18 @@
     "Rajasthan Royals",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.00625,
-  "batting_tilt_per_match": 0.00336,
-  "bowling_tilt_per_match": 0.00409,
-  "shrunk_total_tilt_per_match": 0.00525,
-  "shrunk_batting_tilt_per_match": 0.00248,
-  "shrunk_bowling_tilt_per_match": 0.00347,
-  "tilt_ci_lower": -0.02529,
-  "tilt_ci_upper": 0.03578,
-  "tilt_ci_lower_90": -0.02038,
-  "tilt_ci_upper_90": 0.03087,
+  "total_tilt_per_match": 0.0063,
+  "batting_tilt_per_match": 0.00332,
+  "bowling_tilt_per_match": 0.00422,
+  "shrunk_total_tilt_per_match": 0.0053,
+  "shrunk_batting_tilt_per_match": 0.00243,
+  "shrunk_bowling_tilt_per_match": 0.0036,
+  "tilt_ci_lower": -0.0252,
+  "tilt_ci_upper": 0.0358,
+  "tilt_ci_lower_90": -0.0203,
+  "tilt_ci_upper_90": 0.0309,
   "confidence": "high",
-  "total_tilt": 0.90003,
+  "total_tilt": 0.9071,
   "total_matches": 144,
   "batting_balls": 2809,
   "bowling_balls": 2011,
@@ -30,7 +30,7 @@
       "season": "2008",
       "team": "Rajasthan Royals",
       "batting_tilt_per_match": 0.04573,
-      "bowling_tilt_per_match": 0.06592,
+      "bowling_tilt_per_match": 0.06639,
       "batting_matches": 15,
       "bowling_matches": 15,
       "batting_balls": 311,
@@ -280,8 +280,8 @@
           "bowl_balls": 24,
           "bowl_runs": 41,
           "bowl_econ": 10.25,
-          "bowl_tilt": -0.10635,
-          "total_tilt": -0.13427
+          "bowl_tilt": -0.09928,
+          "total_tilt": -0.1272
         },
         {
           "match_id": "336038",
@@ -1717,7 +1717,7 @@
       "season": "2016",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": -0.01229,
-      "bowling_tilt_per_match": 0.00609,
+      "bowling_tilt_per_match": 0.0065,
       "batting_matches": 15,
       "bowling_matches": 16,
       "batting_balls": 134,
@@ -2024,8 +2024,8 @@
           "bowl_balls": 24,
           "bowl_runs": 61,
           "bowl_econ": 15.25,
-          "bowl_tilt": -0.28467,
-          "total_tilt": -0.45274
+          "bowl_tilt": -0.27818,
+          "total_tilt": -0.44625
         }
       ],
       "batting_stats": {
@@ -2236,7 +2236,7 @@
     {
       "season": "2018",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": 0.10766,
+      "batting_tilt_per_match": 0.10723,
       "bowling_tilt_per_match": -0.0174,
       "batting_matches": 15,
       "bowling_matches": 11,
@@ -2292,13 +2292,13 @@
           "bat_runs": 11,
           "bat_balls": 9,
           "bat_sr": 122.2,
-          "bat_tilt": 0.19468,
+          "bat_tilt": 0.18819,
           "bowl_wkts": 1,
           "bowl_balls": 12,
           "bowl_runs": 15,
           "bowl_econ": 7.5,
           "bowl_tilt": -0.00134,
-          "total_tilt": 0.19334
+          "total_tilt": 0.18685
         },
         {
           "match_id": "1136577",
@@ -3132,9 +3132,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.85451,
+      "tilt": -0.861,
       "balls": 1257,
-      "avg_delta": -0.000663
+      "avg_delta": -0.000668
     },
     {
       "phase": "middle",
@@ -3164,9 +3164,9 @@
     },
     {
       "phase": "death",
-      "tilt": -1.14847,
+      "tilt": -1.13491,
       "balls": 571,
-      "avg_delta": -0.001843
+      "avg_delta": -0.001822
     }
   ],
   "best_matches": [
@@ -3321,20 +3321,20 @@
       "balls": 11
     },
     {
-      "match_id": "981019",
-      "date": "2016-05-29",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.28467,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "1082591",
       "date": "2017-04-05",
       "vs": "Sunrisers Hyderabad",
       "tilt": -0.27902,
       "wickets": 0,
       "balls": 18
+    },
+    {
+      "match_id": "981019",
+      "date": "2016-05-29",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.27818,
+      "wickets": 1,
+      "balls": 24
     }
   ],
   "career_trend": [
@@ -3413,794 +3413,794 @@
     {
       "match": 13,
       "date": "2008-05-28",
-      "tilt": -0.13427,
-      "cumulative": 1.29565
+      "tilt": -0.1272,
+      "cumulative": 1.30271
     },
     {
       "match": 14,
       "date": "2008-05-30",
       "tilt": 0.41768,
-      "cumulative": 1.71333
+      "cumulative": 1.7204
     },
     {
       "match": 15,
       "date": "2008-06-01",
       "tilt": -0.03857,
-      "cumulative": 1.67476
+      "cumulative": 1.68183
     },
     {
       "match": 16,
       "date": "2010-04-03",
       "tilt": -0.08815,
-      "cumulative": 1.58661
+      "cumulative": 1.59368
     },
     {
       "match": 17,
       "date": "2010-04-05",
       "tilt": -0.10538,
-      "cumulative": 1.48122
+      "cumulative": 1.48829
     },
     {
       "match": 18,
       "date": "2010-04-07",
       "tilt": 0.08826,
-      "cumulative": 1.56949
+      "cumulative": 1.57655
     },
     {
       "match": 19,
       "date": "2010-04-11",
       "tilt": -0.00247,
-      "cumulative": 1.56701
+      "cumulative": 1.57408
     },
     {
       "match": 20,
       "date": "2010-04-14",
       "tilt": -0.19212,
-      "cumulative": 1.37489
+      "cumulative": 1.38196
     },
     {
       "match": 21,
       "date": "2010-04-17",
       "tilt": 0.15316,
-      "cumulative": 1.52805
+      "cumulative": 1.53512
     },
     {
       "match": 22,
       "date": "2011-04-15",
       "tilt": 0.0128,
-      "cumulative": 1.54085
+      "cumulative": 1.54792
     },
     {
       "match": 23,
       "date": "2011-04-17",
       "tilt": -0.11416,
-      "cumulative": 1.42669
+      "cumulative": 1.43376
     },
     {
       "match": 24,
       "date": "2011-04-21",
       "tilt": 0.19,
-      "cumulative": 1.61669
+      "cumulative": 1.62376
     },
     {
       "match": 25,
       "date": "2011-04-24",
       "tilt": -0.00208,
-      "cumulative": 1.61461
+      "cumulative": 1.62167
     },
     {
       "match": 26,
       "date": "2011-04-29",
       "tilt": -0.15519,
-      "cumulative": 1.45941
+      "cumulative": 1.46648
     },
     {
       "match": 27,
       "date": "2011-05-01",
       "tilt": -0.01093,
-      "cumulative": 1.44848
+      "cumulative": 1.45555
     },
     {
       "match": 28,
       "date": "2011-05-04",
       "tilt": -0.04038,
-      "cumulative": 1.4081
+      "cumulative": 1.41517
     },
     {
       "match": 29,
       "date": "2011-05-09",
       "tilt": 0.11223,
-      "cumulative": 1.52034
+      "cumulative": 1.52741
     },
     {
       "match": 30,
       "date": "2011-05-11",
       "tilt": -0.02753,
-      "cumulative": 1.4928
+      "cumulative": 1.49987
     },
     {
       "match": 31,
       "date": "2011-05-15",
       "tilt": -0.0264,
-      "cumulative": 1.4664
+      "cumulative": 1.47347
     },
     {
       "match": 32,
       "date": "2011-05-20",
       "tilt": 0.34883,
-      "cumulative": 1.81523
+      "cumulative": 1.8223
     },
     {
       "match": 33,
       "date": "2012-05-01",
       "tilt": -0.07853,
-      "cumulative": 1.7367
+      "cumulative": 1.74377
     },
     {
       "match": 34,
       "date": "2012-05-05",
       "tilt": 0.34136,
-      "cumulative": 2.07806
+      "cumulative": 2.08513
     },
     {
       "match": 35,
       "date": "2012-05-08",
       "tilt": 0.11895,
-      "cumulative": 2.19702
+      "cumulative": 2.20409
     },
     {
       "match": 36,
       "date": "2012-05-10",
       "tilt": -0.206,
-      "cumulative": 1.99101
+      "cumulative": 1.99808
     },
     {
       "match": 37,
       "date": "2012-05-13",
       "tilt": 0.09729,
-      "cumulative": 2.0883
+      "cumulative": 2.09537
     },
     {
       "match": 38,
       "date": "2012-05-18",
       "tilt": -0.07328,
-      "cumulative": 2.01503
+      "cumulative": 2.0221
     },
     {
       "match": 39,
       "date": "2012-05-20",
       "tilt": 0.07452,
-      "cumulative": 2.08955
+      "cumulative": 2.09662
     },
     {
       "match": 40,
       "date": "2013-04-08",
       "tilt": -0.07078,
-      "cumulative": 2.01877
+      "cumulative": 2.02584
     },
     {
       "match": 41,
       "date": "2013-04-14",
       "tilt": -0.11187,
-      "cumulative": 1.9069
+      "cumulative": 1.91397
     },
     {
       "match": 42,
       "date": "2013-04-17",
       "tilt": 0.06549,
-      "cumulative": 1.97239
+      "cumulative": 1.97946
     },
     {
       "match": 43,
       "date": "2013-04-20",
       "tilt": 0.01953,
-      "cumulative": 1.99192
+      "cumulative": 1.99899
     },
     {
       "match": 44,
       "date": "2013-04-22",
       "tilt": -0.11769,
-      "cumulative": 1.87423
+      "cumulative": 1.8813
     },
     {
       "match": 45,
       "date": "2013-04-27",
       "tilt": 0.24203,
-      "cumulative": 2.11627
+      "cumulative": 2.12333
     },
     {
       "match": 46,
       "date": "2013-04-29",
       "tilt": 0.13089,
-      "cumulative": 2.24716
+      "cumulative": 2.25423
     },
     {
       "match": 47,
       "date": "2013-05-03",
       "tilt": -0.01106,
-      "cumulative": 2.23609
+      "cumulative": 2.24316
     },
     {
       "match": 48,
       "date": "2013-05-05",
       "tilt": -0.13417,
-      "cumulative": 2.10192
+      "cumulative": 2.10899
     },
     {
       "match": 49,
       "date": "2013-05-07",
       "tilt": 0.11187,
-      "cumulative": 2.21379
+      "cumulative": 2.22086
     },
     {
       "match": 50,
       "date": "2013-05-09",
       "tilt": 0.0146,
-      "cumulative": 2.22839
+      "cumulative": 2.23546
     },
     {
       "match": 51,
       "date": "2013-05-12",
       "tilt": 0.30947,
-      "cumulative": 2.53785
+      "cumulative": 2.54492
     },
     {
       "match": 52,
       "date": "2013-05-15",
       "tilt": -0.03781,
-      "cumulative": 2.50004
+      "cumulative": 2.50711
     },
     {
       "match": 53,
       "date": "2013-05-17",
       "tilt": -0.28146,
-      "cumulative": 2.21859
+      "cumulative": 2.22565
     },
     {
       "match": 54,
       "date": "2013-05-22",
       "tilt": -0.04842,
-      "cumulative": 2.17016
+      "cumulative": 2.17723
     },
     {
       "match": 55,
       "date": "2013-05-24",
       "tilt": -0.61876,
-      "cumulative": 1.55141
+      "cumulative": 1.55848
     },
     {
       "match": 56,
       "date": "2014-04-18",
       "tilt": -0.2291,
-      "cumulative": 1.32231
+      "cumulative": 1.32937
     },
     {
       "match": 57,
       "date": "2014-04-20",
       "tilt": 0.13053,
-      "cumulative": 1.45283
+      "cumulative": 1.4599
     },
     {
       "match": 58,
       "date": "2014-04-23",
       "tilt": -0.08926,
-      "cumulative": 1.36357
+      "cumulative": 1.37064
     },
     {
       "match": 59,
       "date": "2014-04-26",
       "tilt": -0.21411,
-      "cumulative": 1.14946
+      "cumulative": 1.15653
     },
     {
       "match": 60,
       "date": "2014-04-29",
       "tilt": 0.01151,
-      "cumulative": 1.16096
+      "cumulative": 1.16803
     },
     {
       "match": 61,
       "date": "2014-05-03",
       "tilt": -0.00242,
-      "cumulative": 1.15854
+      "cumulative": 1.16561
     },
     {
       "match": 62,
       "date": "2014-05-05",
       "tilt": 0.11214,
-      "cumulative": 1.27069
+      "cumulative": 1.27775
     },
     {
       "match": 63,
       "date": "2014-05-08",
       "tilt": 0.0009,
-      "cumulative": 1.27158
+      "cumulative": 1.27865
     },
     {
       "match": 64,
       "date": "2014-05-11",
       "tilt": -0.17583,
-      "cumulative": 1.09575
+      "cumulative": 1.10282
     },
     {
       "match": 65,
       "date": "2014-05-13",
       "tilt": 0.09281,
-      "cumulative": 1.18856
+      "cumulative": 1.19563
     },
     {
       "match": 66,
       "date": "2014-05-19",
       "tilt": -0.12051,
-      "cumulative": 1.06805
+      "cumulative": 1.07512
     },
     {
       "match": 67,
       "date": "2014-05-23",
       "tilt": 0.121,
-      "cumulative": 1.18905
+      "cumulative": 1.19612
     },
     {
       "match": 68,
       "date": "2014-05-25",
       "tilt": -0.14914,
-      "cumulative": 1.03991
+      "cumulative": 1.04698
     },
     {
       "match": 69,
       "date": "2015-04-19",
       "tilt": 0.12544,
-      "cumulative": 1.16535
+      "cumulative": 1.17242
     },
     {
       "match": 70,
       "date": "2015-04-21",
       "tilt": -0.12486,
-      "cumulative": 1.0405
+      "cumulative": 1.04756
     },
     {
       "match": 71,
       "date": "2015-04-24",
       "tilt": -0.00145,
-      "cumulative": 1.03904
+      "cumulative": 1.04611
     },
     {
       "match": 72,
       "date": "2015-05-01",
       "tilt": -0.15658,
-      "cumulative": 0.88246
+      "cumulative": 0.88953
     },
     {
       "match": 73,
       "date": "2015-05-03",
       "tilt": 0.02961,
-      "cumulative": 0.91207
+      "cumulative": 0.91914
     },
     {
       "match": 74,
       "date": "2015-05-07",
       "tilt": -0.17234,
-      "cumulative": 0.73973
+      "cumulative": 0.7468
     },
     {
       "match": 75,
       "date": "2015-05-10",
       "tilt": -0.15435,
-      "cumulative": 0.58538
+      "cumulative": 0.59245
     },
     {
       "match": 76,
       "date": "2015-05-16",
       "tilt": 0.10996,
-      "cumulative": 0.69534
+      "cumulative": 0.70241
     },
     {
       "match": 77,
       "date": "2015-05-20",
       "tilt": 0.00737,
-      "cumulative": 0.70271
+      "cumulative": 0.70978
     },
     {
       "match": 78,
       "date": "2016-04-12",
       "tilt": 0.03202,
-      "cumulative": 0.73473
+      "cumulative": 0.7418
     },
     {
       "match": 79,
       "date": "2016-04-17",
       "tilt": 0.23124,
-      "cumulative": 0.96596
+      "cumulative": 0.97303
     },
     {
       "match": 80,
       "date": "2016-04-20",
       "tilt": -0.09983,
-      "cumulative": 0.86614
+      "cumulative": 0.87321
     },
     {
       "match": 81,
       "date": "2016-04-22",
       "tilt": 0.19363,
-      "cumulative": 1.05977
+      "cumulative": 1.06684
     },
     {
       "match": 82,
       "date": "2016-04-24",
       "tilt": -0.44847,
-      "cumulative": 0.6113
+      "cumulative": 0.61837
     },
     {
       "match": 83,
       "date": "2016-04-30",
       "tilt": -0.05959,
-      "cumulative": 0.55171
+      "cumulative": 0.55878
     },
     {
       "match": 84,
       "date": "2016-05-02",
       "tilt": -0.15152,
-      "cumulative": 0.40019
+      "cumulative": 0.40726
     },
     {
       "match": 85,
       "date": "2016-05-07",
       "tilt": 0.47581,
-      "cumulative": 0.876
+      "cumulative": 0.88307
     },
     {
       "match": 86,
       "date": "2016-05-09",
       "tilt": 0.26807,
-      "cumulative": 1.14407
+      "cumulative": 1.15114
     },
     {
       "match": 87,
       "date": "2016-05-11",
       "tilt": -0.14212,
-      "cumulative": 1.00195
+      "cumulative": 1.00902
     },
     {
       "match": 88,
       "date": "2016-05-14",
       "tilt": 0.08635,
-      "cumulative": 1.0883
+      "cumulative": 1.09537
     },
     {
       "match": 89,
       "date": "2016-05-16",
       "tilt": -0.07897,
-      "cumulative": 1.00934
+      "cumulative": 1.0164
     },
     {
       "match": 90,
       "date": "2016-05-18",
       "tilt": 0.08063,
-      "cumulative": 1.08996
+      "cumulative": 1.09703
     },
     {
       "match": 91,
       "date": "2016-05-22",
       "tilt": 0.00674,
-      "cumulative": 1.0967
+      "cumulative": 1.10377
     },
     {
       "match": 92,
       "date": "2016-05-24",
       "tilt": -0.02814,
-      "cumulative": 1.06856
+      "cumulative": 1.07563
     },
     {
       "match": 93,
       "date": "2016-05-29",
-      "tilt": -0.45274,
-      "cumulative": 0.61582
+      "tilt": -0.44625,
+      "cumulative": 0.62938
     },
     {
       "match": 94,
       "date": "2017-04-05",
       "tilt": -0.33843,
-      "cumulative": 0.27739
+      "cumulative": 0.29096
     },
     {
       "match": 95,
       "date": "2017-04-08",
       "tilt": 0.24356,
-      "cumulative": 0.52095
+      "cumulative": 0.53451
     },
     {
       "match": 96,
       "date": "2017-04-10",
       "tilt": -0.12213,
-      "cumulative": 0.39882
+      "cumulative": 0.41238
     },
     {
       "match": 97,
       "date": "2017-04-16",
       "tilt": -0.15913,
-      "cumulative": 0.23969
+      "cumulative": 0.25325
     },
     {
       "match": 98,
       "date": "2017-04-18",
       "tilt": -0.0339,
-      "cumulative": 0.20579
+      "cumulative": 0.21935
     },
     {
       "match": 99,
       "date": "2017-05-01",
       "tilt": -0.28628,
-      "cumulative": -0.08049
+      "cumulative": -0.06693
     },
     {
       "match": 100,
       "date": "2017-05-05",
       "tilt": -0.05612,
-      "cumulative": -0.13662
+      "cumulative": -0.12305
     },
     {
       "match": 101,
       "date": "2017-05-14",
       "tilt": 0.26853,
-      "cumulative": 0.13192
+      "cumulative": 0.14548
     },
     {
       "match": 102,
       "date": "2018-04-07",
       "tilt": 0.11091,
-      "cumulative": 0.24283
+      "cumulative": 0.25639
     },
     {
       "match": 103,
       "date": "2018-04-10",
       "tilt": 0.47685,
-      "cumulative": 0.71968
+      "cumulative": 0.73324
     },
     {
       "match": 104,
       "date": "2018-04-15",
-      "tilt": 0.19335,
-      "cumulative": 0.91303
+      "tilt": 0.18685,
+      "cumulative": 0.9201
     },
     {
       "match": 105,
       "date": "2018-04-20",
       "tilt": 0.3702,
-      "cumulative": 1.28323
+      "cumulative": 1.2903
     },
     {
       "match": 106,
       "date": "2018-04-22",
       "tilt": -0.12607,
-      "cumulative": 1.15715
+      "cumulative": 1.16422
     },
     {
       "match": 107,
       "date": "2018-04-25",
       "tilt": 0.07091,
-      "cumulative": 1.22806
+      "cumulative": 1.23513
     },
     {
       "match": 108,
       "date": "2018-04-28",
       "tilt": -0.24044,
-      "cumulative": 0.98763
+      "cumulative": 0.9947
     },
     {
       "match": 109,
       "date": "2018-04-30",
       "tilt": 0.25034,
-      "cumulative": 1.23797
+      "cumulative": 1.24503
     },
     {
       "match": 110,
       "date": "2018-05-03",
       "tilt": -0.06944,
-      "cumulative": 1.16853
+      "cumulative": 1.17559
     },
     {
       "match": 111,
       "date": "2018-05-05",
       "tilt": -0.01277,
-      "cumulative": 1.15576
+      "cumulative": 1.16283
     },
     {
       "match": 112,
       "date": "2018-05-11",
       "tilt": -0.1053,
-      "cumulative": 1.05045
+      "cumulative": 1.05752
     },
     {
       "match": 113,
       "date": "2018-05-13",
       "tilt": 0.25175,
-      "cumulative": 1.3022
+      "cumulative": 1.30927
     },
     {
       "match": 114,
       "date": "2018-05-18",
       "tilt": -0.14868,
-      "cumulative": 1.15353
+      "cumulative": 1.16059
     },
     {
       "match": 115,
       "date": "2018-05-22",
       "tilt": 0.00261,
-      "cumulative": 1.15614
+      "cumulative": 1.1632
     },
     {
       "match": 116,
       "date": "2018-05-27",
       "tilt": 0.39927,
-      "cumulative": 1.55541
+      "cumulative": 1.56248
     },
     {
       "match": 117,
       "date": "2019-03-23",
       "tilt": -0.17535,
-      "cumulative": 1.38007
+      "cumulative": 1.38713
     },
     {
       "match": 118,
       "date": "2019-03-26",
       "tilt": 0.06139,
-      "cumulative": 1.44145
+      "cumulative": 1.44852
     },
     {
       "match": 119,
       "date": "2019-03-31",
       "tilt": -0.11817,
-      "cumulative": 1.32328
+      "cumulative": 1.33035
     },
     {
       "match": 120,
       "date": "2019-04-03",
       "tilt": -0.03874,
-      "cumulative": 1.28454
+      "cumulative": 1.29161
     },
     {
       "match": 121,
       "date": "2019-04-06",
       "tilt": -0.04821,
-      "cumulative": 1.23632
+      "cumulative": 1.24339
     },
     {
       "match": 122,
       "date": "2019-04-09",
       "tilt": -0.16394,
-      "cumulative": 1.07238
+      "cumulative": 1.07945
     },
     {
       "match": 123,
       "date": "2019-04-11",
       "tilt": -0.01621,
-      "cumulative": 1.05616
+      "cumulative": 1.06323
     },
     {
       "match": 124,
       "date": "2019-04-14",
       "tilt": -0.03727,
-      "cumulative": 1.01889
+      "cumulative": 1.02596
     },
     {
       "match": 125,
       "date": "2019-04-17",
       "tilt": -0.08773,
-      "cumulative": 0.93116
+      "cumulative": 0.93823
     },
     {
       "match": 126,
       "date": "2019-04-21",
       "tilt": -0.08035,
-      "cumulative": 0.85081
+      "cumulative": 0.85788
     },
     {
       "match": 127,
       "date": "2019-04-23",
       "tilt": 0.53662,
-      "cumulative": 1.38743
+      "cumulative": 1.3945
     },
     {
       "match": 128,
       "date": "2019-04-26",
       "tilt": -0.01929,
-      "cumulative": 1.36815
+      "cumulative": 1.37521
     },
     {
       "match": 129,
       "date": "2019-05-01",
       "tilt": 0.01866,
-      "cumulative": 1.3868
+      "cumulative": 1.39387
     },
     {
       "match": 130,
       "date": "2019-05-05",
       "tilt": -0.15267,
-      "cumulative": 1.23414
+      "cumulative": 1.24121
     },
     {
       "match": 131,
       "date": "2019-05-07",
       "tilt": -0.04756,
-      "cumulative": 1.18658
+      "cumulative": 1.19365
     },
     {
       "match": 132,
       "date": "2019-05-10",
       "tilt": 0.09417,
-      "cumulative": 1.28075
+      "cumulative": 1.28782
     },
     {
       "match": 133,
       "date": "2019-05-12",
       "tilt": -0.06573,
-      "cumulative": 1.21502
+      "cumulative": 1.22208
     },
     {
       "match": 134,
       "date": "2020-09-19",
       "tilt": -0.05081,
-      "cumulative": 1.1642
+      "cumulative": 1.17127
     },
     {
       "match": 135,
       "date": "2020-09-22",
       "tilt": -0.00364,
-      "cumulative": 1.16056
+      "cumulative": 1.16763
     },
     {
       "match": 136,
       "date": "2020-09-25",
       "tilt": -0.13452,
-      "cumulative": 1.02605
+      "cumulative": 1.03311
     },
     {
       "match": 137,
       "date": "2020-10-02",
       "tilt": -0.07026,
-      "cumulative": 0.95579
+      "cumulative": 0.96286
     },
     {
       "match": 138,
       "date": "2020-10-04",
       "tilt": 0.33256,
-      "cumulative": 1.28834
+      "cumulative": 1.29541
     },
     {
       "match": 139,
       "date": "2020-10-07",
       "tilt": -0.14906,
-      "cumulative": 1.13928
+      "cumulative": 1.14635
     },
     {
       "match": 140,
       "date": "2020-10-10",
       "tilt": -0.08487,
-      "cumulative": 1.05442
+      "cumulative": 1.06149
     },
     {
       "match": 141,
       "date": "2020-10-13",
       "tilt": -0.00311,
-      "cumulative": 1.05131
+      "cumulative": 1.05837
     },
     {
       "match": 142,
       "date": "2020-10-17",
       "tilt": 0.02347,
-      "cumulative": 1.07478
+      "cumulative": 1.08185
     },
     {
       "match": 143,
       "date": "2020-10-19",
       "tilt": -0.03955,
-      "cumulative": 1.03523
+      "cumulative": 1.0423
     },
     {
       "match": 144,
       "date": "2020-10-29",
       "tilt": -0.1352,
-      "cumulative": 0.90003
+      "cumulative": 0.9071
     }
   ],
   "team_matchups": [
@@ -4221,7 +4221,7 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.03845,
+      "tilt_per_match": 0.03807,
       "matches": 17
     },
     {
@@ -4283,7 +4283,7 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.0596,
+      "tilt_per_match": 0.06014,
       "matches": 13
     },
     {
@@ -4318,7 +4318,7 @@
     },
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.04048,
+      "tilt_per_match": -0.03989,
       "matches": 11
     },
     {
@@ -4371,7 +4371,7 @@
     0.04038,
     -0.10508,
     -0.18765,
-    -0.13427,
+    -0.1272,
     0.41768,
     -0.03857,
     -0.08815,
@@ -4451,7 +4451,7 @@
     0.08063,
     0.00674,
     -0.02814,
-    -0.45274,
+    -0.44625,
     -0.33843,
     0.24356,
     -0.12213,
@@ -4462,7 +4462,7 @@
     0.26853,
     0.11091,
     0.47685,
-    0.19335,
+    0.18685,
     0.3702,
     -0.12607,
     0.07091,
