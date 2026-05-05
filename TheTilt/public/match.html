@@ -115,7 +115,7 @@ async function loadMatch() {
 
                 // Batting card
                 html += `<div class="table-wrap"><table class="detail-table">
-                    <tr><th>batsman</th><th>dismissal</th><th>runs</th><th>balls</th><th>SR</th><th>TILT</th></tr>`;
+                    <tr><th>batsman</th><th class="hide-mobile">dismissal</th><th>runs</th><th>balls</th><th class="hide-mobile">SR</th><th>TILT</th></tr>`;
                 for (const b of inn.batting) {
                     const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
                     const nameInner = `${flagSpan(b.country)}${b.player}`;
@@ -124,8 +124,8 @@ async function loadMatch() {
                         : `<a href="${playerLink}" class="player-link">${nameInner}</a>`;
                     html += `<tr>
                         <td>${nameCell}</td>
-                        <td class="dismissal-cell">${formatDismissal(b)}</td>
-                        <td>${b.runs}</td><td>${b.balls}</td><td>${b.sr}</td><td>${formatTilt(b.tilt)}</td>
+                        <td class="dismissal-cell hide-mobile">${formatDismissal(b)}</td>
+                        <td>${b.runs}</td><td>${b.balls}</td><td class="hide-mobile">${b.sr}</td><td>${formatTilt(b.tilt)}</td>
                     </tr>`;
                 }
                 html += '</table></div>';
@@ -140,12 +140,12 @@ async function loadMatch() {
 
                 // Bowling card
                 html += `<div class="table-wrap"><table class="detail-table" style="margin-top:12px">
-                    <tr><th>bowler</th><th>overs</th><th>runs</th><th>wkts</th><th>econ</th><th>TILT</th></tr>`;
+                    <tr><th>bowler</th><th>overs</th><th>runs</th><th>wkts</th><th class="hide-mobile">econ</th><th>TILT</th></tr>`;
                 for (const b of inn.bowling) {
                     const playerLink = b.slug ? `player.html?player=${b.slug}` : '#';
                     html += `<tr>
                         <td><a href="${playerLink}" class="player-link">${flagSpan(b.country)}${b.player}</a></td>
-                        <td>${b.overs}</td><td>${b.runs}</td><td>${b.wickets}</td><td>${b.economy}</td><td>${formatTilt(b.tilt)}</td>
+                        <td>${b.overs}</td><td>${b.runs}</td><td>${b.wickets}</td><td class="hide-mobile">${b.economy}</td><td>${formatTilt(b.tilt)}</td>
                     </tr>`;
                 }
                 html += '</table></div></div>';
