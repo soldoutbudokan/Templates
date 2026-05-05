@@ -126,7 +126,7 @@ async function renderTeamCareer(slug) {
         <h2 class="section-title">Season-By-Season</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th></th><th>Season</th><th>Team Name</th><th>W</th><th>L</th><th>Win%</th><th>NRR</th><th>TILT/m</th><th>Position</th></tr></thead>
+                <thead><tr><th></th><th>Season</th><th class="hide-mobile">Team Name</th><th class="hide-mobile">W</th><th class="hide-mobile">L</th><th>Win%</th><th class="hide-mobile">NRR</th><th>TILT/m</th><th class="hide-mobile">Position</th></tr></thead>
                 <tbody>
                     ${team.seasons.slice().reverse().map((s) => {
                         const seasonId = `team-season-${team.slug}-${String(s.season).replace('/', '-')}`;
@@ -137,13 +137,13 @@ async function renderTeamCareer(slug) {
                             <tr class="${rowClasses}" ${hasMatches ? `onclick="toggleSeason('${seasonId}')"` : ''}>
                                 <td>${hasMatches ? `<span class="season-chevron" id="${seasonId}-chev">&#9654;</span>` : ''}</td>
                                 <td>${champBadge}<a href="team.html?team=${team.slug}&season=${encodeURIComponent(s.season)}" onclick="event.stopPropagation()">${s.season}</a></td>
-                                <td>${s.label}</td>
-                                <td>${s.wins}</td>
-                                <td>${s.losses}</td>
+                                <td class="hide-mobile">${s.label}</td>
+                                <td class="hide-mobile">${s.wins}</td>
+                                <td class="hide-mobile">${s.losses}</td>
                                 <td>${(s.win_pct * 100).toFixed(1)}%</td>
-                                <td>${s.nrr != null ? (s.nrr > 0 ? '+' : '') + s.nrr.toFixed(2) : '—'}</td>
+                                <td class="hide-mobile">${s.nrr != null ? (s.nrr > 0 ? '+' : '') + s.nrr.toFixed(2) : '—'}</td>
                                 <td>${formatTilt(s.team_tilt_per_match)}</td>
-                                <td>${s.position_est}</td>
+                                <td class="hide-mobile">${s.position_est}</td>
                             </tr>`;
                         if (!hasMatches) return summaryRow;
                         const matchRows = s.match_log.map((m) => {
@@ -175,18 +175,18 @@ async function renderTeamCareer(slug) {
         <h2 class="section-title">All-Time Roster</h2>
         <div class="table-wrap">
             <table class="detail-table sortable">
-                <thead><tr><th>Player</th><th>Matches</th><th>Runs</th><th>Wickets</th><th>Bat TILT/m</th><th>Bowl TILT/m</th><th>Total TILT</th><th>Total TILT/Game</th></tr></thead>
+                <thead><tr><th>Player</th><th class="hide-mobile">Matches</th><th class="hide-mobile">Runs</th><th class="hide-mobile">Wickets</th><th class="hide-mobile">Bat TILT/m</th><th class="hide-mobile">Bowl TILT/m</th><th>Total TILT</th><th class="hide-mobile">Total TILT/Game</th></tr></thead>
                 <tbody>
                     ${team.all_time_roster.slice().sort((a, b) => (b.total_tilt || 0) - (a.total_tilt || 0)).map((r) => `
                         <tr>
                             <td><a href="player.html?player=${r.slug}">${flagSpan(r.country)}${r.player}</a></td>
-                            <td>${r.matches}</td>
-                            <td>${r.runs}</td>
-                            <td>${r.wickets}</td>
-                            <td>${formatTilt(r.batting_tilt_per_match)}</td>
-                            <td>${formatTilt(r.bowling_tilt_per_match)}</td>
+                            <td class="hide-mobile">${r.matches}</td>
+                            <td class="hide-mobile">${r.runs}</td>
+                            <td class="hide-mobile">${r.wickets}</td>
+                            <td class="hide-mobile">${formatTilt(r.batting_tilt_per_match)}</td>
+                            <td class="hide-mobile">${formatTilt(r.bowling_tilt_per_match)}</td>
                             <td>${formatTilt(r.total_tilt)}</td>
-                            <td>${formatTilt(r.total_tilt_per_match)}</td>
+                            <td class="hide-mobile">${formatTilt(r.total_tilt_per_match)}</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -297,19 +297,19 @@ async function renderTeamSeason(slug, season) {
         <h2 class="section-title">Season Roster</h2>
         <div class="table-wrap">
             <table class="detail-table sortable">
-                <thead><tr><th>Player</th><th>Matches</th><th>Runs</th><th>Balls</th><th>SR</th><th>Wkts</th><th>Econ</th><th>Bat TILT/m</th><th>Bowl TILT/m</th><th>Total TILT</th></tr></thead>
+                <thead><tr><th>Player</th><th class="hide-mobile">Matches</th><th>Runs</th><th class="hide-mobile">Balls</th><th class="hide-mobile">SR</th><th>Wkts</th><th class="hide-mobile">Econ</th><th class="hide-mobile">Bat TILT/m</th><th class="hide-mobile">Bowl TILT/m</th><th>Total TILT</th></tr></thead>
                 <tbody>
                     ${ts.roster.map((r) => `
                         <tr>
                             <td><a href="player.html?player=${r.slug}&season=${encodeURIComponent(ts.season)}">${flagSpan(r.country)}${r.player}</a></td>
-                            <td>${r.matches}</td>
+                            <td class="hide-mobile">${r.matches}</td>
                             <td>${r.batting_stats ? r.batting_stats.runs : '—'}</td>
-                            <td>${r.batting_stats ? r.batting_stats.balls : '—'}</td>
-                            <td>${r.batting_stats ? r.batting_stats.sr.toFixed(2) : '—'}</td>
+                            <td class="hide-mobile">${r.batting_stats ? r.batting_stats.balls : '—'}</td>
+                            <td class="hide-mobile">${r.batting_stats ? r.batting_stats.sr.toFixed(2) : '—'}</td>
                             <td>${r.bowling_stats ? r.bowling_stats.wickets : '—'}</td>
-                            <td>${r.bowling_stats ? r.bowling_stats.economy.toFixed(2) : '—'}</td>
-                            <td>${formatTilt(r.batting_tilt_per_match)}</td>
-                            <td>${formatTilt(r.bowling_tilt_per_match)}</td>
+                            <td class="hide-mobile">${r.bowling_stats ? r.bowling_stats.economy.toFixed(2) : '—'}</td>
+                            <td class="hide-mobile">${formatTilt(r.batting_tilt_per_match)}</td>
+                            <td class="hide-mobile">${formatTilt(r.bowling_tilt_per_match)}</td>
                             <td>${formatTilt(r.total_tilt)}</td>
                         </tr>
                     `).join('')}

@@ -1201,6 +1201,44 @@ a:hover {
         padding: 12px;
         height: 220px !important;
     }
+
+    /* Tighter detail tables on phones */
+    .detail-table {
+        font-size: 0.72rem;
+    }
+    .detail-table th,
+    .detail-table td {
+        padding: 6px 4px;
+    }
+    .match-sub-table {
+        font-size: 0.65rem;
+    }
+    .match-sub-table th,
+    .match-sub-table td {
+        padding: 3px 3px;
+    }
+
+    /* Match header: stop big team names from making the page too tall */
+    .match-header {
+        padding: 14px 14px;
+    }
+    .match-header .teams {
+        font-size: 0.95rem;
+        line-height: 1.3;
+    }
+    .match-header .vs {
+        margin: 0 4px;
+    }
+
+    /* Nav: when the row gets crowded, let it scroll horizontally
+       so every item stays reachable instead of clipping the last few. */
+    .nav-links {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -1236,6 +1274,19 @@ a:hover {
     .chart-container {
         padding: 10px;
         height: 200px !important;
+    }
+
+    /* Recent-match cards on the homepage are flex 0 0 200px. Below
+       480px the viewport is narrower than two cards side-by-side, so
+       drop card width to fit two without forcing a full-row scroll. */
+    .recent-match-card {
+        flex: 0 0 160px;
+    }
+
+    /* GOAT cards: same — squeeze a bit so the card surface stays usable
+       without dragging the carousel into a single-card-per-row state. */
+    .goat-card {
+        flex: 0 0 240px;
     }
 }
 

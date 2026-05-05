@@ -96,10 +96,10 @@ function renderCurrentSeason(season, teamIndex) {
                 <td>${t.matches}</td>
                 <td>${t.wins}</td>
                 <td>${t.losses}</td>
-                <td>${t.no_results || 0}</td>
+                <td class="hide-mobile">${t.no_results || 0}</td>
                 <td>${pts}</td>
-                <td>${t.nrr != null ? (t.nrr > 0 ? '+' : '') + t.nrr.toFixed(2) : '—'}</td>
-                <td>${formatTilt(t.team_tilt_per_match)}</td>
+                <td class="hide-mobile">${t.nrr != null ? (t.nrr > 0 ? '+' : '') + t.nrr.toFixed(2) : '—'}</td>
+                <td class="hide-mobile">${formatTilt(t.team_tilt_per_match)}</td>
             </tr>
         `;
     }).join('');
@@ -113,7 +113,7 @@ function renderCurrentSeason(season, teamIndex) {
             <div class="meta">${subtitle}</div>
             <div class="table-wrap">
                 <table class="detail-table">
-                    <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th><th>Team TILT/m</th></tr></thead>
+                    <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th class="hide-mobile">NR</th><th>Pts</th><th class="hide-mobile">NRR</th><th class="hide-mobile">Team TILT/m</th></tr></thead>
                     <tbody>${rows}</tbody>
                 </table>
             </div>
@@ -174,8 +174,8 @@ function renderTopRankings(rankings) {
                 <td>${i + 1}</td>
                 <td><a href="player.html?player=${p.slug}">${flagSpan(p.country)}${display}</a></td>
                 <td>${formatTilt(p.total_tilt)}</td>
-                <td>${formatTilt(p.tilt_ci_lower_90)}</td>
-                <td>${p.total_matches}</td>
+                <td class="hide-mobile">${formatTilt(p.tilt_ci_lower_90)}</td>
+                <td class="hide-mobile">${p.total_matches}</td>
             </tr>
         `;
     }).join('');
@@ -189,7 +189,7 @@ function renderTopRankings(rankings) {
             <div class="meta">Ranked by total career TILT (sum of all match contributions)</div>
             <div class="table-wrap">
                 <table class="detail-table">
-                    <thead><tr><th>#</th><th>Player</th><th>Total TILT</th><th>TILT Floor</th><th>Matches</th></tr></thead>
+                    <thead><tr><th>#</th><th>Player</th><th>Total TILT</th><th class="hide-mobile">TILT Floor</th><th class="hide-mobile">Matches</th></tr></thead>
                     <tbody>${rows}</tbody>
                 </table>
             </div>
