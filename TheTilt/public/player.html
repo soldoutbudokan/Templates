@@ -141,13 +141,16 @@ async function loadPlayer() {
             html += '</table></div></div>';
         }
 
-        // Match TILT distribution histogram
-        if (p.match_tilt_distribution && p.match_tilt_distribution.length > 3) {
-            html += `<div class="section"><h3>match TILT distribution</h3>
-                <div class="chart-container" style="height:220px">
-                    <canvas id="distChart"></canvas>
+        // Career ribbon — one bar per match, in chronological order.
+        const ribbonMatches = (p.seasons || [])
+            .flatMap(s => (s.matches || []).map(m => ({ ...m, season: s.season })))
+            .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+        if (ribbonMatches.length > 3) {
+            html += `<div class="section"><h3>career ribbon</h3>
+                <div class="chart-container" style="height:140px">
+                    <canvas id="ribbonChart"></canvas>
                 </div>
-                <div style="color:var(--text-dim);font-size:0.65rem;margin-top:6px">each bar represents matches where this player's total TILT fell in that range</div>
+                <div style="color:var(--text-dim);font-size:0.65rem;margin-top:6px">each bar is one match in chronological order | bar height = total TILT, green positive / red negative | click a bar to open the match</div>
             </div>`;
         }
 
@@ -331,34 +334,32 @@ async function loadPlayer() {
 
         document.getElementById('content').innerHTML = html;
 
-        // Render distribution histogram
-        if (p.match_tilt_distribution && p.match_tilt_distribution.length > 3) {
-            const data = p.match_tilt_distribution.map(v => v * 100);
-            // Universal x-axis across all players: full ±100% range, 5% bins, no clipping.
-            const DIST_MIN = -100, DIST_MAX = 100, BIN_WIDTH = 5;
-            const binCount = (DIST_MAX - DIST_MIN) / BIN_WIDTH;
-            const bins = Array(binCount).fill(0);
-            const binLabels = [];
-            for (let i = 0; i < binCount; i++) {
-                binLabels.push(DIST_MIN + i * BIN_WIDTH);
+        // Render career ribbon — chronological bar chart of per-match total TILT.
+        // Y-axis intentionally hidden: viewers read shape and sign, not exact %.
+        // Hover for date/opponent/TILT, click to open the match.
+        if (ribbonMatches.length > 3) {
+            const ribbonData = ribbonMatches.map(m => +(((m.total_tilt) || 0) * 100).toFixed(2));
+            const greenStrong = cssVar('--accent-green');
+            const redStrong = cssVar('--accent-red');
+            const colors = ribbonMatches.map(m =>
+                ((m.total_tilt || 0) >= 0 ? greenStrong : redStrong) + 'cc');
+            // Year-boundary tick labels: only show the year on the first match
+            // of each new calendar year (so 168 matches → ~14 sparse labels).
+            const yearTickLabels = [];
+            let lastYear = null;
+            for (const m of ribbonMatches) {
+                const y = (m.date || '').slice(0, 4);
+                yearTickLabels.push(y && y !== lastYear ? y : '');
+                if (y) lastYear = y;
             }
-            data.forEach(v => {
-                let idx = Math.floor((v - DIST_MIN) / BIN_WIDTH);
-                if (idx < 0) idx = 0;
-                if (idx >= binCount) idx = binCount - 1;
-                bins[idx]++;
-            });
-            // Zero sits on the boundary between two bins.
-            const zeroBoundaryIndex = (-DIST_MIN / BIN_WIDTH) - 0.5;
 
-            new Chart(document.getElementById('distChart'), {
+            new Chart(document.getElementById('ribbonChart'), {
                 type: 'bar',
                 data: {
-                    labels: binLabels.map(lo => lo.toString()),
+                    labels: yearTickLabels,
                     datasets: [{
-                        data: bins,
-                        backgroundColor: binLabels.map(lo =>
-                            (lo >= 0 ? cssVar('--accent-green') : cssVar('--accent-red')) + '99'),
+                        data: ribbonData,
+                        backgroundColor: colors,
                         borderWidth: 0,
                         borderRadius: 0,
                         barPercentage: 1.0,
@@ -368,42 +369,43 @@ async function loadPlayer() {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    onClick: (_evt, items) => {
+                        if (!items || items.length === 0) return;
+                        const m = ribbonMatches[items[0].index];
+                        if (m && m.match_id) window.location.href = `match.html?id=${m.match_id}`;
+                    },
+                    onHover: (evt, items) => {
+                        evt.native.target.style.cursor = items.length ? 'pointer' : 'default';
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
                                 title: (items) => {
-                                    const i = items[0].dataIndex;
-                                    const lo = binLabels[i];
-                                    return `${lo}% to ${lo + BIN_WIDTH}%`;
+                                    const m = ribbonMatches[items[0].dataIndex];
+                                    return `${m.date} vs ${m.opponent || '?'}`;
                                 },
-                                label: (item) => `${item.raw} matches`
-                            }
-                        },
-                        annotation: {
-                            annotations: {
-                                zeroLine: { type: 'line', xMin: zeroBoundaryIndex, xMax: zeroBoundaryIndex, borderColor: '#aaa', borderWidth: 1 },
+                                label: (item) => {
+                                    const v = item.raw;
+                                    const sign = v >= 0 ? '+' : '';
+                                    return `TILT ${sign}${v.toFixed(2)}%`;
+                                }
                             }
                         }
                     },
                     scales: {
                         x: {
-                            title: { display: true, text: 'Match TILT %', color: cssVar('--text-muted'), font: { size: 11 } },
                             ticks: {
                                 color: cssVar('--text-muted'),
                                 font: { size: 10 },
                                 maxRotation: 0,
                                 autoSkip: false,
-                                callback: function(val, i) {
-                                    const lo = binLabels[i];
-                                    return lo % 25 === 0 ? lo : '';
-                                }
+                                callback: function(_val, i) { return yearTickLabels[i] || ''; }
                             },
                             grid: { display: false }
                         },
                         y: {
-                            title: { display: true, text: 'Matches', color: cssVar('--text-muted'), font: { size: 11 } },
-                            ticks: { color: cssVar('--text-muted'), font: { size: 10 } },
+                            display: false,
                             grid: { display: false }
                         }
                     }
