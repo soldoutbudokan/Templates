@@ -62,7 +62,7 @@
             .join('');
         const navHtml = `
       <div class="top-nav-inner">
-        <div class="logo"><a href="index.html">THE TILT</a></div>
+        <div class="logo"><a href="index.html"><img src="assets/crest-icon.svg" alt="" class="logo-mark" width="28" height="28"><span class="logo-word">THE TILT</span></a></div>
         <div class="global-search" id="globalSearch">
           <input type="search" id="navSearch"
                  placeholder="Search players and teams…"
