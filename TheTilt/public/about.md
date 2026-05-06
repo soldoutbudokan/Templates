@@ -71,6 +71,21 @@ Cricsheet is excellent but raw cricket data is messy. The pipeline does a few cl
 
 The cleaned dataset is what every downstream stage sees.
 
+### A note on Net Run Rate
+
+NRR on standings tables follows the IPL convention: bowled-out teams use the
+full innings allocation as the denominator, DLS-revised chases use the
+revised allocation, and chases won early use actual overs. For matches
+decided by DLS mid-innings, the IPL playing conditions also call for a
+"DLS-equivalent overs" adjustment to the team batting first's bowling-side
+denominator — that adjustment requires the ICC's T20 Standard Edition
+resource table, which is not publicly published (only the 50-over
+Standard table is). We use the simpler symmetric rule (revised allocation
+on both sides) and accept residuals of up to ~0.08 NRR units against
+Wikipedia in DLS-affected seasons. **All standings positions still match
+Wikipedia exactly** — the residuals are too small to flip team rankings.
+See `notebooks/nrr_audit.py` for the per-season Wikipedia cross-check.
+
 ---
 
 ## 3. Feature Engineering
