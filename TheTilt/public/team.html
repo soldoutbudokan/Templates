@@ -126,9 +126,9 @@ async function renderTeamCareer(slug) {
         <h2 class="section-title">Season-By-Season</h2>
         <div class="table-wrap">
             <table class="detail-table">
-                <thead><tr><th></th><th>Season</th><th class="hide-mobile">Team Name</th><th class="hide-mobile">W</th><th class="hide-mobile">L</th><th>Win%</th><th class="hide-mobile">NRR</th><th>TILT/m</th><th class="hide-mobile">Position</th></tr></thead>
+                <thead><tr><th></th><th>Season</th><th class="hide-mobile">Team Name</th><th class="hide-mobile">W</th><th class="hide-mobile">L</th><th class="hide-mobile">NR</th><th>Pts</th><th>Win%</th><th class="hide-mobile">NRR</th><th>TILT/m</th><th class="hide-mobile">Position</th></tr></thead>
                 <tbody>
-                    ${team.seasons.slice().reverse().map((s) => {
+                    ${team.seasons.slice().map((s) => {
                         const seasonId = `team-season-${team.slug}-${String(s.season).replace('/', '-')}`;
                         const hasMatches = Array.isArray(s.match_log) && s.match_log.length > 0;
                         const rowClasses = [hasMatches ? 'season-row-expandable' : '', s.champion ? 'champion-row' : ''].filter(Boolean).join(' ');
@@ -140,6 +140,8 @@ async function renderTeamCareer(slug) {
                                 <td class="hide-mobile">${s.label}</td>
                                 <td class="hide-mobile">${s.wins}</td>
                                 <td class="hide-mobile">${s.losses}</td>
+                                <td class="hide-mobile">${s.no_results || 0}</td>
+                                <td>${s.wins * 2 + (s.no_results || 0)}</td>
                                 <td>${(s.win_pct * 100).toFixed(1)}%</td>
                                 <td class="hide-mobile">${s.nrr != null ? (s.nrr > 0 ? '+' : '') + s.nrr.toFixed(2) : '—'}</td>
                                 <td>${formatTilt(s.team_tilt_per_match)}</td>
@@ -159,7 +161,7 @@ async function renderTeamCareer(slug) {
                         }).join('');
                         return summaryRow + `
                             <tr class="season-detail-row" id="${seasonId}" style="display:none">
-                                <td colspan="9">
+                                <td colspan="11">
                                     <table class="match-sub-table">
                                         <thead><tr><th>Date</th><th>Opponent</th><th>Scores</th><th>Result</th><th>Team TILT</th></tr></thead>
                                         <tbody>${matchRows}</tbody>
@@ -170,6 +172,7 @@ async function renderTeamCareer(slug) {
                 </tbody>
             </table>
             <div class="legend-row"><span class="champion-badge">🏆</span> championship-winning season</div>
+            <div class="nrr-note">NRR may differ from official sources by a few hundredths in DLS-affected matches — see the <a href="about.html">about page</a>.</div>
         </div>
 
         <h2 class="section-title">All-Time Roster</h2>
@@ -246,7 +249,7 @@ async function renderTeamSeason(slug, season) {
                 ${ts.header.wins}–${ts.header.losses}${nrSummary} · ${(ts.header.win_pct * 100).toFixed(1)}% wins · position #${ts.header.position_est}
             </div>
             <div class="meta">
-                <a href="team.html?team=${ts.slug}">back to ${ts.label} career</a> ·
+                <a href="team.html?team=${ts.slug}">Back to Full ${ts.label} Historical Overview</a> ·
                 <a href="season.html?season=${encodeURIComponent(ts.season)}">all of IPL ${ts.season}</a>
             </div>
         </div>
@@ -265,6 +268,7 @@ async function renderTeamSeason(slug, season) {
                 <div class="stat-card-value">${ts.header.nrr != null ? (ts.header.nrr > 0 ? '+' : '') + ts.header.nrr.toFixed(2) : '—'}</div>
             </div>
         </div>
+        <div class="nrr-note">NRR may differ from official sources by a few hundredths in DLS-affected matches — see the <a href="about.html">about page</a>.</div>
 
         <h2 class="section-title">Season Batting</h2>
         <div class="table-wrap">

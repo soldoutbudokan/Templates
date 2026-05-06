@@ -2,8 +2,10 @@ name: Refresh Tilt Data
 
 on:
   schedule:
-    # Twice daily (02:00 and 14:00 UTC) — covers the window after IPL evening matches
-    - cron: '0 2,14 * * *'
+    # Twice daily, locked to EDT (3 PM and 10 PM EDT = 19:00 UTC and 02:00 UTC).
+    # GitHub Actions cron is UTC and ignores DST; this drifts to 2 PM / 9 PM
+    # during EST winter, which is fine — IPL season is during EDT.
+    - cron: '0 19,2 * * *'
   workflow_dispatch:
 
 permissions:
