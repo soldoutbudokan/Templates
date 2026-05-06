@@ -132,13 +132,20 @@ async function loadMatch() {
                 }
                 // Innings total row (cricbuzz-style): runs/wickets, overs faced
                 // (legal balls / 6), run rate, and the sum of every batter's
-                // TILT. Sits just above the Fall of wickets line.
-                const totalBalls = inn.batting.reduce((s, b) => s + (b.balls || 0), 0);
+                // TILT. Legal balls bowled is the canonical innings denominator
+                // (sum of bowling.overs); summing batters' faced-balls can drift
+                // by 1–2 in matches where a no-ball leaks into the batter's
+                // count via the export, while overs are always right.
+                const oversToBalls = (overs) => {
+                    if (overs == null) return 0;
+                    const [w, p] = String(overs).split('.');
+                    return (parseInt(w, 10) || 0) * 6 + (parseInt(p, 10) || 0);
+                };
+                const totalBalls = inn.bowling.reduce((s, b) => s + oversToBalls(b.overs), 0);
+                const totalRuns = inn.batting.reduce((s, b) => s + (b.runs || 0), 0);
                 const totalTilt = inn.batting.reduce((s, b) => s + (b.tilt || 0), 0);
                 const oversFaced = totalBalls > 0 ? (Math.floor(totalBalls / 6) + (totalBalls % 6) / 10).toFixed(1) : '0.0';
-                const innRR = totalBalls > 0
-                    ? (inn.batting.reduce((s, b) => s + (b.runs || 0), 0) / (totalBalls / 6)).toFixed(2)
-                    : '—';
+                const innRR = totalBalls > 0 ? (totalRuns / (totalBalls / 6)).toFixed(2) : '—';
                 html += `<tr class="total-row">
                     <td><strong>Total</strong></td>
                     <td class="hide-mobile">(${oversFaced} Ov, RR ${innRR})</td>
