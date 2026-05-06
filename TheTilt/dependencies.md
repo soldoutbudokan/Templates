@@ -211,6 +211,60 @@ Re-run `python pipeline/run_pipeline.py` (or `refresh_tilt_data_only`). Every pa
 
 - Nothing else needs refreshing. But re-test with `python3 -m http.server` from `public/` to confirm the page still renders.
 
+### Notes on NRR computation and tie-breakers (issue #102, #107)
+
+`pipeline/export_json._compute_team_season_nrr` follows the IPL convention: a
+team's NRR denominator is its **full innings allocation** when bowled out and
+**actual overs faced** otherwise. Allocation is per-innings: 20 by default,
+DLS-revised for truncated chases (`innings.target.overs`), or actual played
+overs for inn 1 of rain-affected matches. The allocation is persisted in
+`ball_events.parquet` as `innings_allocation` (set in `parse_matches.py`)
+and flows through `featured_balls.parquet` and `deltas.parquet`.
+
+Tie-breaker order in season standings (`export_json.py:1819`): **points desc,
+wins desc, NRR desc**. Wins is the primary tie-breaker on equal points (e.g.
+2015 MI 8W/0NR vs RCB 7W/2NR both = 16 pts → MI ranks above on more wins).
+
+Validation: run `notebooks/nrr_audit.py` to cross-check every season-final
+NRR against Wikipedia's league tables. Tolerance is 0.005 (3-decimal
+rounding). Current state: ~111 of 166 team-seasons match exactly (~67%);
+the remaining 36 divergences (median 0.026, max 0.083 outside in-progress
+seasons) are **confined to DLS-affected matches**. Non-DLS seasons match
+Wikipedia perfectly — 2024 (zero DLS-decided matches) is 10/10 exact.
+
+The residuals come from the IPL playing condition that says, for chases
+decided by DLS mid-innings, the team batting first's overs should be
+"adjusted to the equivalent overs faced under the DLS method" — using
+the DLS resource-percentage table to compute par-equivalent overs. Two
+obstacles:
+
+1. **The ICC's T20 Standard Edition resource table is not publicly
+   published.** Wikipedia and ICC documentation publish only the 50-over
+   Standard Edition table; the T20 form (re-scaled with R(20, 0) = 100%)
+   is not. `pipeline/dls_resources.py` re-scales the 50-over values, but
+   the result is approximate (errors of ~5% in resource percentages
+   compound to ~0.05 NRR units per affected match).
+2. **The asymmetric T1/T2 denominator rule introduces new outliers** when
+   applied with approximate values. We tested it in the codebase; the
+   median residual improved (0.030 → 0.025) but the max grew (0.083 →
+   0.129). The simpler symmetric rule (chase allocation as denominator
+   on both sides for DLS-decided chases) was kept as a more reliable
+   trade-off.
+
+Important: the residuals do **not** change standings positions in any
+season audited — W/L counts match Wikipedia exactly for every team
+because the 9 cricsheet "no result" matches all flow correctly through
+`parse_no_results_from_raw` + `config/no_results_supplement.yaml`.
+
+If exact ICC T20 Standard Edition values become available, swap them
+into `pipeline/dls_resources.t20_resource_pct` and re-enable the
+asymmetric formula in `pipeline/export_json._compute_team_season_nrr`
+(commit history has the version with sanity bounds). Expect the
+remaining DLS residuals to drop to a few hundredths of an NRR unit.
+
+Live (in-progress) seasons may also show large residuals if Wikipedia is
+more recent than the most recent local pipeline run.
+
 ### Notes on team_season_tilt scope (issue #75)
 
 `team_season_tilt.parquet` is **regular-season only** as of issue #75 — playoff matches (event_stage set in cricsheet) are filtered out, and NR matches are injected from `no_results.parquet`. The new schema includes `no_results` and `points` (W*2 + NR) columns; `position_est` ranks by points desc. Consumers:

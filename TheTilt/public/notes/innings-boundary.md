@@ -128,3 +128,34 @@ About 30 lines added to `pipeline/compute_tilt.py` (a new `apply_boundary_calibr
 The original analysis that drove this fix is preserved as the diagnostic notebook `notebooks/innings_boundary_analysis.py`. It can be re-run against the current pipeline output and will report a median |cliff| of 0.0pp, mean signed cliff of 0.0pp, and zero matches with |cliff| ≥ 5pp — confirming the fix is working as intended. The pre-calibration values are stashed in `deltas.parquet` as `wp_after_raw` and `wp_before_raw` (only populated on the two boundary rows per match) so the notebook can also produce before/after diagnostics.
 
 The four model-rewrite attempts that failed, the per-team-carry experiment that ranked ABD #39, and the trade-off matrix between cliff-closure and ranking validity are all in [issue #62](https://github.com/soldoutbudokan/Templates/issues/62) for anyone who wants the full backstory.
+
+---
+
+## Update: alpha-decay across the first over (issue #71)
+
+The two-step calibration above kills the inn1/inn2 cliff but leaves a fresh discontinuity at the next ball. inn1.last and inn2.first agree on a midpoint (mathematically zero gap), but inn2.first.wp_after and the rest of the chase still come from the raw model — and the model's natural "chase has just started" state is systematically a few percentage points off the calibrated midpoint. The chart smooths the boundary, then jumps a few points on the next ball.
+
+The fix shipped for [issue #71](https://github.com/soldoutbudokan/Templates/issues/71) is a third step layered on top of the two above: a linear-decay blend of wp_before and wp_after across balls 1–6 of innings 2, with weight `alpha = (6 − ball)/5`. Ball 1 stays at the calibrated midpoint (alpha = 1.0, full bridge — same behavior as before). Balls 2 through 5 progressively let the raw model take over. Ball 6 is the raw model unchanged. By the start of over 2 the calibration has zero influence, and by ball 1's delta_wp ends at exactly 0 by construction.
+
+### What changed in the rankings (post-#71)
+
+Top-10 movement is small once you sort by the website's primary leaderboard ordering (`tilt_ci_lower_90`). The biggest shift is GD McGrath rising from #30 to #3 in bowling — his short 2008–2009 stint had high point-estimate TILT but high variance, and the calibration's influence on early-chase variance reduces his uncertainty interval. Beyond that, Sohail Tanvir enters the top 10 overall (was #26), and most others move 0–2 spots.
+
+Ranked by **total career TILT** (the same lens the tables above use):
+
+| Rank | After #71 |
+|:--|:--|
+| 1 | SP Narine |
+| 2 | JJ Bumrah |
+| 3 | AB de Villiers ⬆ |
+| 4 | SL Malinga |
+| 5 | Rashid Khan ⬇ |
+| 6 | YS Chahal |
+| 7 | B Kumar ⬆ |
+| 8 | JC Buttler |
+| 9 | CH Gayle ⬇ |
+| 10 | Harbhajan Singh ⬆ |
+
+B Kumar climbs from #9 back to #7 — the alpha-decay returns some of the early-chase credit that the per-match midpoint snap was zeroing out. The names that exit (DW Steyn) had benefited from the model's chase pessimism on a few specific deliveries that no longer carry full weight.
+
+The fix is reversible: drop the third step (lines marked "Step 3" in `apply_boundary_calibration`) and the system reverts to the post-#62 calibration above.

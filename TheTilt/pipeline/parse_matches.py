@@ -43,6 +43,12 @@ class BallEvent:
     is_impact_sub_match: bool
     event_stage: Optional[str]
     event_match_number: Optional[int]
+    # Per-innings overs allocation for this team. Default to info.overs (20 in
+    # IPL T20). DLS-truncated chases use innings.target.overs; DLS-truncated
+    # first innings (rain forces an early close before all-out) use the actual
+    # overs played. Used by NRR (#107): bowled-out teams get the full
+    # allocation as the denominator regardless of when they were dismissed.
+    innings_allocation: int
 
 
 # %% Team name normalization
@@ -216,6 +222,28 @@ def parse_match(filepath: Path) -> List[BallEvent]:
 
     events: List[BallEvent] = []
 
+    # Default match overs allocation (20 in IPL). Used as the per-innings
+    # default unless DLS revisions kick in (issue #107). Detect a rain-
+    # affected match either by an explicit DLS-decided outcome OR by any
+    # innings carrying a DLS-revised target — a match where rain only cut
+    # inn 1 short and the chase still completed normally (e.g. KKR-MI 2024)
+    # has no `outcome.method` but the inn-2 target.overs is reduced.
+    default_allocation = int(info.get("overs", 20))
+    # A match is DLS-truncated if either (a) DLS decided the win or (b) any
+    # innings carries a target.overs *below* the default — cricsheet sets
+    # target.overs on every chase (even non-DLS, with target.overs ==
+    # default), so we have to compare to the default rather than just
+    # checking presence.
+    has_dls_in_match = (
+        dls_method is not None
+        or any(
+            (i.get("target") or {}).get("overs") is not None
+            and int(i["target"]["overs"]) < default_allocation
+            for i in data.get("innings", [])
+            if not i.get("super_over")
+        )
+    )
+
     for innings_idx, innings_data in enumerate(data.get("innings", []), start=1):
         # Drop Super Over innings (issue #84). They're a 1-over tiebreaker with
         # a known target from ball 1; including them would pollute career
@@ -227,6 +255,29 @@ def parse_match(filepath: Path) -> List[BallEvent]:
         batting_team = normalize_team(innings_data.get("team", ""))
         bowling_team = [t for t in teams if t != batting_team]
         bowling_team = bowling_team[0] if bowling_team else "unknown"
+
+        # Determine this innings' overs allocation for NRR (#107). Inn-2 with
+        # a DLS-revised target uses target.overs; inn-1 in a DLS match where
+        # rain shortened the innings uses the actual played overs; otherwise
+        # default. Bowled-out teams fall through here using the full
+        # allocation in the formula even though their actual overs were
+        # fewer.
+        target = innings_data.get("target") or {}
+        target_overs = target.get("overs")
+        if target_overs is not None and int(target_overs) < default_allocation:
+            # DLS-revised chase allocation
+            innings_allocation = int(target_overs)
+        elif has_dls_in_match and innings_idx == 1:
+            # Inn 1 of a rain-affected match: use actual overs played as
+            # the allocation (rain stopped them short of the default 20).
+            actual_overs_played = len(innings_data.get("overs", []))
+            innings_allocation = (
+                actual_overs_played
+                if actual_overs_played < default_allocation
+                else default_allocation
+            )
+        else:
+            innings_allocation = default_allocation
 
         for over_data in innings_data.get("overs", []):
             over_num = over_data.get("over", 0)
@@ -287,6 +338,7 @@ def parse_match(filepath: Path) -> List[BallEvent]:
                     event_stage=event_stage,
                     event_match_number=event_match_number,
                     is_impact_sub_match=is_impact_sub_match,
+                    innings_allocation=innings_allocation,
                 ))
 
     return events

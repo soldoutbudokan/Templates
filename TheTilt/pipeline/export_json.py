@@ -74,26 +74,78 @@ def load_completed_seasons(config_path: str = "config/seasons.yaml") -> set:
 
 
 def _compute_team_season_nrr(deltas_df: pd.DataFrame, team: str, season: str) -> Optional[float]:
-    """Season-final NRR for a (team, season): runs/over scored minus runs/over conceded.
+    """Season-final NRR for a (team, season), per IPL convention (issue #107).
+
+    For each regular-season match the team played:
+      * Runs scored / conceded use every-delivery totals (extras included).
+      * Overs use legal deliveries only (wides + no-balls don't count toward
+        overs faced/bowled, matching the IPL formula).
+      * If a batting side is bowled out, its denominator is the full innings
+        allocation (20 in T20, or the DLS-revised allocation for chases /
+        rain-cut first innings — see `parse_matches.parse_match` for how
+        `innings_allocation` is set per ball event).
+      * If a chasing side wins early, its denominator is the actual overs
+        faced — they didn't need their full allocation.
+      * For DLS-decided chases (cricsheet flags `outcome.method == "D/L"`),
+        both sides use the revised allocation as the denominator. The IPL
+        playing conditions reference a "DLS-equivalent overs" formula for
+        the team-batting-first that would shrink the residual further but
+        requires the ICC's T20 Standard Edition resource table — that
+        table is not publicly available, only the 50-over Standard table
+        is published. We approximate with allocation-as-denominator on
+        both sides; residuals against Wikipedia for DLS-heavy seasons are
+        ≤0.083 NRR units and confined to the bowled-first team.
 
     Restricted to regular-season balls (issue #75) so the NRR matches the
-    points-table convention used by IPL standings. Uses every legal-or-extras
-    delivery as one ball (matches `build_features.py` so the model and the
-    website tell the same story). Returns None if the team didn't play any
-    regular-season game (avoids division by zero on empty slices).
+    league-table convention. Returns None if the team didn't play any
+    regular-season game.
     """
     df = deltas_df
     if "event_stage" in df.columns:
         df = df[df["event_stage"].isna()]
-    bat = df[(df["batting_team"] == team) & (df["season"] == season)]
-    bowl = df[(df["bowling_team"] == team) & (df["season"] == season)]
+    df = df[df["season"] == season]
+    if len(df) == 0:
+        return None
+
+    df = df.copy()
+    df["_legal_ball"] = (~df["is_wide"] & ~df["is_noball"]).astype(int)
+
+    def per_innings(side_mask: pd.Series) -> pd.DataFrame:
+        sub = df[side_mask].groupby(["match_id", "innings"], as_index=False).agg(
+            runs=("runs_total", "sum"),
+            legal_balls=("_legal_ball", "sum"),
+            allocation=("innings_allocation", "first"),
+            batting_team=("batting_team", "first"),
+            winner=("winner", "first"),
+            dls_method=("dls_method", "first"),
+        )
+        sub["actual_overs"] = sub["legal_balls"] / 6.0
+        team_batting_won = sub["winner"] == sub["batting_team"]
+        ended_early = sub["actual_overs"] < sub["allocation"] - 0.01
+        dls_decided = sub["dls_method"].notna()
+        bowled_out_or_dls = ended_early & (
+            (sub["innings"] == 1)
+            | ((sub["innings"] == 2) & ~team_batting_won)
+            | ((sub["innings"] == 2) & dls_decided)
+        )
+        sub["denominator"] = sub["actual_overs"]
+        sub.loc[bowled_out_or_dls, "denominator"] = (
+            sub.loc[bowled_out_or_dls, "allocation"].astype(float)
+        )
+        return sub
+
+    bat = per_innings(df["batting_team"] == team)
+    bowl = per_innings(df["bowling_team"] == team)
     if len(bat) == 0 or len(bowl) == 0:
         return None
-    overs_faced = len(bat) / 6.0
-    overs_bowled = len(bowl) / 6.0
-    runs_scored = float(bat["runs_total"].sum())
-    runs_conceded = float(bowl["runs_total"].sum())
-    return round((runs_scored / overs_faced) - (runs_conceded / overs_bowled), 3)
+
+    runs_for = float(bat["runs"].sum())
+    overs_for = float(bat["denominator"].sum())
+    runs_against = float(bowl["runs"].sum())
+    overs_against = float(bowl["denominator"].sum())
+    if overs_for == 0 or overs_against == 0:
+        return None
+    return round(runs_for / overs_for - runs_against / overs_against, 3)
 
 
 # %% Legal-delivery flags
@@ -1814,13 +1866,15 @@ def export_seasons(
                 "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
             })
 
-        # Re-rank by IPL convention: points desc, then NRR desc. Teams that
-        # genuinely tie on both share the position (rank.method='min').
-        team_table.sort(key=lambda t: (-t["points"], -(t["nrr"] if t["nrr"] is not None else -99)))
+        # Re-rank by IPL convention: points desc, then wins desc, then NRR
+        # desc (issue #102). Wins is the primary tie-breaker on equal points
+        # — only matters when teams have different NR counts (e.g. 2015 MI
+        # 8W/0NR=16pts vs RCB 7W/2NR=16pts). Genuine ties share rank.
+        team_table.sort(key=lambda t: (-t["points"], -t["wins"], -(t["nrr"] if t["nrr"] is not None else -99)))
         prev_key = None
         prev_pos = 0
         for i, t in enumerate(team_table, 1):
-            key = (t["points"], t["nrr"])
+            key = (t["points"], t["wins"], t["nrr"])
             if key != prev_key:
                 prev_pos = i
                 prev_key = key

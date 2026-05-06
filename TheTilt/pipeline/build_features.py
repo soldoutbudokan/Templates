@@ -252,6 +252,9 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
     for optional_col in [
         "dls_method", "is_impact_sub_match", "toss_winner", "toss_decision",
         "event_stage", "event_match_number",
+        # Per-innings overs allocation, used by NRR (#107). Default 20 for
+        # IPL T20; DLS-revised on truncated chases / rain-cut innings.
+        "innings_allocation",
     ]:
         if optional_col in result.columns:
             feature_cols.append(optional_col)
