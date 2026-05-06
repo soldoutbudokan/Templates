@@ -128,6 +128,23 @@ async function loadMatch() {
                         <td>${b.runs}</td><td>${b.balls}</td><td class="hide-mobile">${b.sr}</td><td>${formatTilt(b.tilt)}</td>
                     </tr>`;
                 }
+                // Innings total row (cricbuzz-style): runs/wickets, overs faced
+                // (legal balls / 6), run rate, and the sum of every batter's
+                // TILT. Sits just above the Fall of wickets line.
+                const totalBalls = inn.batting.reduce((s, b) => s + (b.balls || 0), 0);
+                const totalTilt = inn.batting.reduce((s, b) => s + (b.tilt || 0), 0);
+                const oversFaced = totalBalls > 0 ? (Math.floor(totalBalls / 6) + (totalBalls % 6) / 10).toFixed(1) : '0.0';
+                const innRR = totalBalls > 0
+                    ? (inn.batting.reduce((s, b) => s + (b.runs || 0), 0) / (totalBalls / 6)).toFixed(2)
+                    : '—';
+                html += `<tr class="total-row">
+                    <td><strong>Total</strong></td>
+                    <td class="hide-mobile">(${oversFaced} Ov, RR ${innRR})</td>
+                    <td><strong>${inn.total || ''}</strong></td>
+                    <td>${totalBalls}</td>
+                    <td class="hide-mobile"></td>
+                    <td><strong>${formatTilt(totalTilt)}</strong></td>
+                </tr>`;
                 html += '</table></div>';
 
                 // Fall of wickets line

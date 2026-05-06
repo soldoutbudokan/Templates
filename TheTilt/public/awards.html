@@ -46,31 +46,121 @@ async function fetchTopAward(season, stat) {
     }
 }
 
-function awardTile(award, winner, season, teamIndex) {
-    if (!winner) {
-        return `
-            <article class="award-tile award-tile-empty">
-                <div class="award-label">${award.label}</div>
-                <div class="award-empty">no qualifier</div>
-                <div class="award-meta">${award.note || award.valueLabel}</div>
-            </article>
-        `;
-    }
-    return `
-        <article class="award-tile">
-            <div class="award-label">${award.label}</div>
-            <div class="award-winner">
-                <a href="player.html?player=${winner.slug}">${flagSpan(winner.country)}${winner.player}</a>
-            </div>
-            <div class="award-team">${teamLink(winner.team, season, teamIndex, { cls: 'team-link-subtle' })}</div>
-            <div class="award-value">${award.format(winner.value)}</div>
-            <div class="award-meta">${award.valueLabel}${award.note ? ` · ${award.note}` : ''}</div>
-        </article>
-    `;
+// Lazy-loaded player season match logs. Keyed by `${slug}|${season}`.
+const _matchLogCache = new Map();
+
+async function loadPlayerSeasonMatches(slug, season) {
+    const key = `${slug}|${season}`;
+    if (_matchLogCache.has(key)) return _matchLogCache.get(key);
+    const promise = (async () => {
+        try {
+            const res = await fetch(`data/players/${slug}.json`);
+            if (!res.ok) return [];
+            const player = await res.json();
+            const seasonRow = (player.seasons || []).find((s) => String(s.season) === String(season));
+            return (seasonRow && Array.isArray(seasonRow.matches)) ? seasonRow.matches : [];
+        } catch (e) {
+            return [];
+        }
+    })();
+    _matchLogCache.set(key, promise);
+    return promise;
 }
 
+function awardRowId(awardKey, season, slug) {
+    return `award-${awardKey}-${String(season).replace('/', '-')}-${slug}`;
+}
+
+async function toggleAwardRow(awardKey, season, slug, teamIndex) {
+    const detailId = awardRowId(awardKey, season, slug) + '-detail';
+    const chevId = awardRowId(awardKey, season, slug) + '-chev';
+    const detail = document.getElementById(detailId);
+    const chev = document.getElementById(chevId);
+    if (!detail) return;
+    if (detail.style.display !== 'none') {
+        detail.style.display = 'none';
+        if (chev) chev.classList.remove('open');
+        return;
+    }
+    detail.style.display = '';
+    if (chev) chev.classList.add('open');
+    const body = detail.querySelector('.award-detail-body');
+    if (body && body.dataset.loaded !== 'true') {
+        body.innerHTML = '<div class="loading">loading…</div>';
+        const matches = await loadPlayerSeasonMatches(slug, season);
+        body.innerHTML = renderAwardDetail(matches, season, teamIndex);
+        body.dataset.loaded = 'true';
+    }
+}
+
+function renderAwardDetail(matches, season, teamIndex) {
+    if (!matches || matches.length === 0) {
+        return `<div class="award-detail-empty">no per-match log found for this player–season</div>
+                <div class="award-detail-foot"><a href="season.html?season=${encodeURIComponent(season)}">view ${season} season →</a></div>`;
+    }
+    const sorted = matches.slice().sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    const rows = sorted.map((m) => {
+        const result = m.winner
+            ? (m.winner === m.opponent ? 'L' : 'W')
+            : '—';
+        const bat = (m.bat_runs != null) ? `${m.bat_runs}(${m.bat_balls})` : '—';
+        const bowl = (m.bowl_wkts != null) ? `${m.bowl_wkts}/${m.bowl_runs} (${(m.bowl_balls / 6).toFixed(0)}ov)` : '—';
+        return `<tr>
+            <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
+            <td>${teamLink(m.opponent, season, teamIndex)}</td>
+            <td class="hide-mobile">${m.team_score || '—'} vs ${m.opponent_score || '—'}</td>
+            <td class="hide-mobile">${result}</td>
+            <td>${bat}</td>
+            <td class="hide-mobile">${bowl}</td>
+            <td>${formatTilt(m.total_tilt)}</td>
+        </tr>`;
+    }).join('');
+    return `<table class="match-sub-table">
+        <thead><tr><th>Date</th><th>Opponent</th><th class="hide-mobile">Scores</th><th class="hide-mobile">Result</th><th>Bat</th><th class="hide-mobile">Bowl</th><th>TILT</th></tr></thead>
+        <tbody>${rows}</tbody>
+    </table>
+    <div class="award-detail-foot"><a href="season.html?season=${encodeURIComponent(season)}">view ${season} season →</a></div>`;
+}
+
+function awardCategoryTable(award, rows, teamIndex) {
+    const body = rows.map(({ season, winner }) => {
+        if (!winner) {
+            return `<tr class="award-empty-row">
+                <td>${season}</td>
+                <td colspan="3" class="award-empty">no qualifier</td>
+                <td></td>
+            </tr>`;
+        }
+        const rowId = awardRowId(award.key, season, winner.slug);
+        return `<tr class="award-row" onclick="toggleAwardRow('${award.key}', '${season}', '${winner.slug}', _teamIndex)">
+                <td>${season}</td>
+                <td><a href="player.html?player=${winner.slug}" onclick="event.stopPropagation()">${flagSpan(winner.country)}${winner.player}</a></td>
+                <td>${teamLink(winner.team, season, teamIndex, { cls: 'team-link-subtle' })}</td>
+                <td>${award.format(winner.value)}</td>
+                <td><span class="season-chevron" id="${rowId}-chev">&#9654;</span></td>
+            </tr>
+            <tr class="award-detail-row" id="${rowId}-detail" style="display:none">
+                <td colspan="5"><div class="award-detail-body" data-loaded="false"></div></td>
+            </tr>`;
+    }).join('');
+
+    return `<section class="awards-table-section" id="award-${award.key}">
+        <h2 class="awards-category-title">${award.label}<span class="awards-category-note">${award.note ? ' · ' + award.note : ''}</span></h2>
+        <div class="table-wrap">
+            <table class="detail-table awards-table">
+                <thead><tr>
+                    <th>Season</th><th>Player</th><th>Team</th><th>${award.valueLabel}</th><th></th>
+                </tr></thead>
+                <tbody>${body}</tbody>
+            </table>
+        </div>
+    </section>`;
+}
+
+let _teamIndex = null;
+
 async function loadAwards() {
-    const teamIndex = await loadTeamIndex();
+    _teamIndex = await loadTeamIndex();
 
     let seasons = [];
     try {
@@ -83,15 +173,14 @@ async function loadAwards() {
         return;
     }
 
-    // Build a sticky season anchor strip — clicking jumps to that season's section.
-    const seasonStrip = seasons.map((s) =>
-        `<a href="#season-${s}" class="picker-chip">${s}</a>`
+    const seasonStrip = AWARDS.map((a) =>
+        `<a href="#award-${a.key}" class="picker-chip">${a.label}</a>`
     ).join('');
 
     const headerHtml = `
         <div class="page-header">
             <h1>Awards</h1>
-            <div class="subtitle">season-by-season top performers across the headline categories</div>
+            <div class="subtitle">season-by-season top performers across the headline categories. click any row to expand the player's full season game log.</div>
         </div>
         <div class="awards-season-strip">${seasonStrip}</div>
     `;
@@ -105,16 +194,13 @@ async function loadAwards() {
         return { season, winners };
     }));
 
-    body.innerHTML = seasonPayloads.map(({ season, winners }) => `
-        <section class="awards-season-card" id="season-${season}">
-            <div class="awards-season-header">
-                <h2 class="awards-season-title">IPL ${season}</h2>
-            </div>
-            <div class="awards-grid">
-                ${AWARDS.map((a, i) => awardTile(a, winners[i], season, teamIndex)).join('')}
-            </div>
-        </section>
-    `).join('');
+    // Pivot from per-season to per-category for table rendering.
+    body.innerHTML = AWARDS.map((award, awardIdx) => {
+        const rows = seasonPayloads.map(({ season, winners }) => ({
+            season, winner: winners[awardIdx],
+        }));
+        return awardCategoryTable(award, rows, _teamIndex);
+    }).join('');
 }
 
 loadAwards();

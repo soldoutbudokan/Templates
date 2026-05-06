@@ -1561,6 +1561,57 @@ img, pre, code {
     margin-top: 4px;
 }
 
+/* Awards page v2 (issue #106): per-category tables with expandable rows. */
+.awards-table-section {
+    margin: 22px 0 28px;
+    scroll-margin-top: 70px;
+}
+.awards-category-title {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.awards-category-note {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+.awards-table .award-row {
+    cursor: pointer;
+}
+.awards-table .award-row:hover {
+    background: var(--bg-hover);
+}
+.awards-table .award-detail-row {
+    background: var(--bg-surface);
+}
+.awards-table .award-detail-row td {
+    padding: 0;
+}
+.awards-table .award-detail-body {
+    padding: 12px 14px 14px;
+}
+.awards-table .award-empty-row td.award-empty {
+    margin-top: 0;
+}
+.award-detail-foot {
+    margin-top: 8px;
+    font-size: 0.78rem;
+}
+.award-detail-foot a {
+    color: var(--accent-green);
+    text-decoration: none;
+}
+.award-detail-foot a:hover {
+    text-decoration: underline;
+}
+.award-detail-empty {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    padding: 8px 0;
+}
+
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -1671,6 +1722,24 @@ span.flag-text {
     color: var(--text-dim);
     border-left: 2px solid var(--border);
     line-height: 1.5;
+}
+.detail-table .total-row {
+    border-top: 2px solid var(--border-light);
+    background: var(--bg-surface);
+}
+.nrr-note {
+    margin-top: 6px;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    font-style: italic;
+}
+.nrr-note a {
+    color: var(--text-muted);
+    text-decoration: underline;
+}
+.detail-table .total-row td {
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 .fow-label {
     color: var(--text-muted);
