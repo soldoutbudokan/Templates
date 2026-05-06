@@ -1988,28 +1988,35 @@ span.flag-text {
    ============================================ */
 .home-hero {
     margin-bottom: 32px;
-    text-align: center;
     padding: 8px 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.home-hero-text {
+    flex: 1;
+    min-width: 0;
 }
 
 .home-hero h1 {
     font-size: 1.4rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    margin-top: 12px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
-.home-hero .subtitle,
-.home-hero .meta {
-    text-align: center;
+.home-hero .subtitle {
+    line-height: 1.5;
+    max-width: 70ch;
+    margin-bottom: 6px;
 }
 
 .home-crest {
     display: block;
-    margin: 0 auto;
-    height: 180px;
+    height: 120px;
     width: auto;
+    flex-shrink: 0;
     filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35));
 }
 
@@ -2018,8 +2025,11 @@ span.flag-text {
 }
 
 @media (max-width: 600px) {
+    .home-hero {
+        gap: 14px;
+    }
     .home-crest {
-        height: 140px;
+        height: 90px;
     }
     .home-hero h1 {
         font-size: 1.2rem;
