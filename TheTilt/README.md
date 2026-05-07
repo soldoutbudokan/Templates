@@ -91,37 +91,37 @@ Output: P(batting team wins) ∈ [0, 1]
 
 **Training details:**
 - Train/test split: **80/20 by match** (not by ball — splitting by ball would leak information since balls within the same match are correlated)
-- 2000 trees (with early stopping), learning rate 0.03, max depth 4, num_leaves 16
-- Strong L2 regularization (reg_lambda=5.0, min_child_samples=500) to prevent sharp split boundary cliffs that cause unrealistic per-ball volatility
+- 2000 trees (with early stopping), learning rate 0.03, max depth 6, num_leaves 64
+- Light L2 regularization (reg_lambda=1.0, min_child_samples=100) — enough capacity to carve sharp endpoint splits in resolved chase states (heavier regularization was forcing a hard last-ball snap downstream and concentrating model error on one bowler per match)
 - Venue names deduplicated (59 raw → 38 canonical) to reduce categorical overfitting
-- DLS-affected matches excluded from training (22 matches)
-- No post-hoc calibration needed — the regularized model is well-calibrated out of the box (max calibration error ~4.5%)
+- DLS-affected matches excluded from training (22 matches); their balls are still scored using the per-innings DLS allocation so revised chases aren't treated as full T20s
+- No post-hoc calibration needed — the LightGBM probabilities are well-calibrated (max calibration error ~5%)
 
 **Model performance:**
 
 | Metric | Value |
 |--------|-------|
-| Brier Score | 0.198 (lower is better, perfect = 0) |
-| AUC | 0.761 |
+| Brier Score | 0.178 (lower is better, perfect = 0) |
+| AUC | 0.820 |
 
 **Feature importances** (what matters most for predicting the winner):
 
 ```
-venue                        ████████████████████████████████  (711)
-batting_team_nrr             ██████████████                    (325)
-required_run_rate            ████████████                      (270)
-wickets_in_hand              ███████████                       (258)
-target                       ███████████                       (254)
-run_rate                     █████████                         (206)
-runs_needed                  █████████                         (205)
-runs_scored                  ████████                          (191)
-innings                      ██████                            (153)
-season_numeric               ██                                ( 54)
-opponent_bowler_economy      ██                                ( 46)
-recent_wickets               █                                 ( 26)
-batting_team_chose_to_bat    █                                 ( 19)
-over                         █                                 ( 16)
-balls_remaining              ▏                                 ( 11)
+venue                        ████████████████████████████████  (1006)
+batting_team_nrr             █████████████████████              (654)
+target                       █████████████████                  (523)
+season_numeric               ██████████                         (310)
+run_rate                     █████████                          (283)
+required_run_rate            █████████                          (272)
+wickets_in_hand              █████████                          (269)
+runs_scored                  ████████                           (228)
+runs_needed                  ███████                            (221)
+innings                      █████                              (152)
+recent_wickets               █                                   (25)
+balls_remaining              █                                   (24)
+opponent_bowler_economy      █                                   (24)
+batting_team_chose_to_bat    ▏                                   (20)
+over                         ▏                                    (8)
 ```
 
 Venue dominates — ground conditions significantly affect win probability. Team-strength (batting_team_nrr) is the #2 signal, followed by chase-state features (required run rate, wickets, target). Season captures era effects.
@@ -180,24 +180,24 @@ Rankings use **Bayesian shrinkage** (empirical Bayes) to stabilize small-sample 
 
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |------|--------|------------|-----|------------|---------|
-| 1 | Lasith Malinga | +5.98% | +6.32% | **high** | 120 |
-| 2 | Sunil Narine | +5.50% | +5.70% | **high** | 190 |
-| 3 | Jasprit Bumrah | +5.41% | +5.67% | **high** | 146 |
-| 4 | Rashid Khan | +5.30% | +5.58% | **high** | 137 |
-| 5 | AB de Villiers | +4.27% | +4.46% | **high** | 166 |
-| 6 | Philip Salt | +5.70% | +6.70% | medium | 39 |
-| 7 | Yuzvendra Chahal | +3.56% | +3.73% | **high** | 173 |
-| 8 | Ayush Mhatre | +7.78% | +11.89% | low | 12 |
-| 9 | Doug Bollinger | +4.98% | +6.30% | low | 27 |
-| 10 | Munaf Patel | +3.74% | +4.21% | medium | 62 |
+| 1 | Sunil Narine | +6.03% | +6.22% | **high** | 195 |
+| 2 | Ayush Mhatre | +7.79% | +11.21% | low | 13 |
+| 3 | Jasprit Bumrah | +4.50% | +4.69% | **high** | 154 |
+| 4 | Lasith Malinga | +4.15% | +4.38% | **high** | 122 |
+| 5 | Rashid Khan | +4.21% | +4.40% | **high** | 146 |
+| 6 | Philip Salt | +4.83% | +5.61% | medium | 40 |
+| 7 | Morné Morkel | +3.98% | +4.37% | medium | 70 |
+| 8 | Ravichandran Ashwin | +2.85% | +2.95% | **high** | 217 |
+| 9 | Yuzvendra Chahal | +2.75% | +2.87% | **high** | 178 |
+| 10 | Jos Buttler | +3.36% | +3.55% | **high** | 129 |
 
 ### Notable Observations
 
-- **Malinga** tops the floor ranking — high per-match TILT plus a 120-match sample tightens the interval enough to clear Narine's slightly larger but less per-match-impactful career
-- **Sunil Narine** (#2 by floor, #1 by raw career total TILT) — the most consistent all-round impact player in IPL history
-- **Bumrah climbs to #3** after the [boundary-calibration fix](public/notes/innings-boundary.md) — the inn1-end overconfidence had been suppressing his bowling tilt
-- **Rashid Khan** (#4) is elite in both batting and bowling TILT
-- The floor ranking naturally rewards consistency: Mhatre (#8) and Bollinger (#9) have very high raw TILT but small samples widen their intervals
+- **Sunil Narine** tops both the floor ranking and the raw career total TILT — the most consistent all-round impact player in IPL history
+- **Bumrah, Malinga, Rashid Khan** in the next tier — the death-overs / strike-bowler archetype dominates once the floor adjusts for confidence
+- **Mhatre at #2 with 13 matches** is what the floor sort produces when a young player posts an extreme raw number — the shrinkage pulls hard but the lower bound still clears most veterans
+- **Ashwin #8 across 217 matches** is the largest sample on the list, surfacing on certainty rather than per-match impact
+- The floor ranking naturally rewards consistency: Salt (#6) and Morkel (#7) have very high raw TILT but smaller samples widen their intervals
 - **Venue matters most**: The venue feature has the highest importance, confirming that ground conditions significantly affect match outcomes
 - **Era adjustment works**: Old-era players are not disproportionately penalized — the season_numeric feature captures evolving T20 scoring rates
 

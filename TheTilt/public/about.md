@@ -160,11 +160,11 @@ These are the production hyperparameters from `config/pipeline_config.yaml`:
 | Hyperparameter | Value | Rationale |
 |:--|:--|:--|
 | `n_estimators` | 2000 | Big upper bound; early stopping picks the actual count |
-| `learning_rate` | 0.03 | Low — paired with strong regularization for smoother probabilities |
-| `max_depth` | 4 | Shallow trees prevent feature-interaction over-fitting |
-| `num_leaves` | 16 | Matches the depth cap |
-| `min_child_samples` | 500 | Heavy minimum-leaf-size to forbid tiny splits that produce ball-to-ball cliffs |
-| `reg_lambda` | 5.0 | Strong L2 to flatten leaf values |
+| `learning_rate` | 0.03 | Low and steady |
+| `max_depth` | 6 | Enough depth for the model to carve sharp endpoint splits in tight finishes |
+| `num_leaves` | 64 | Matches the depth cap |
+| `min_child_samples` | 100 | Permits small endpoint leaves so wp can push toward 0/1 in resolved chase states |
+| `reg_lambda` | 1.0 | Light L2 — heavier shrinkage was suppressing endpoint confidence and forcing a hard last-ball snap downstream |
 | `test_size` | 0.2 | 80/20 split |
 | `random_state` | 42 | Reproducibility |
 
@@ -180,7 +180,7 @@ Matches affected by DLS recalculation have unreliable "fair" outcomes — the ac
 
 ### No post-hoc calibration
 
-Older iterations applied Platt scaling on top of the raw classifier. With the current strong-regularization configuration that step is unnecessary — and it was actively harmful, because Platt amplifies mid-range probabilities and the resulting deltas were too volatile ball to ball. The committed model is the raw LightGBM probabilities, with calibration error empirically capped at ~4.5% across the predicted-probability bins.
+Older iterations applied Platt scaling on top of the raw classifier. The committed model is the raw LightGBM probabilities — Platt amplified mid-range probabilities in a way that made per-ball deltas too volatile, and the calibration the boosted trees give natively is good enough that the per-bin gap stays within ~5 percentage points across the full 0–1 range.
 
 ---
 
@@ -190,10 +190,10 @@ The model is evaluated on the held-out 20% of matches (~235 games, ~57K balls).
 
 | Metric | Value | Notes |
 |:--|:--|:--|
-| **Brier score** | 0.198 | Mean squared error between predicted prob and outcome. 0 is perfect; 0.25 is "always predict 0.5". |
-| **Log loss** | ≈ 0.58 | Cross-entropy. Lower is better. |
-| **AUC** | 0.761 | Discrimination — given a ball with a winner-side and loser-side, the model orders them correctly 76% of the time. |
-| **Calibration error (max)** | ~4.5% | Across 10 probability bins, the largest gap between predicted and observed win rate. |
+| **Brier score** | 0.178 | Mean squared error between predicted prob and outcome. 0 is perfect; 0.25 is "always predict 0.5". |
+| **Log loss** | 0.530 | Cross-entropy. Lower is better. |
+| **AUC** | 0.820 | Discrimination — given a ball with a winner-side and loser-side, the model orders them correctly 82% of the time. |
+| **Calibration error (max)** | ~5% | Across 10 probability bins, the largest gap between predicted and observed win rate. |
 
 Brier under 0.20 is the implicit target for a usable WPA model — much above that and the per-ball deltas become too noisy to produce a meaningful aggregate. The current model clears it.
 
@@ -225,21 +225,21 @@ If any of these flips after a retrain, the deploy doesn't ship.
 Default LightGBM split-count importances on the production model:
 
 ```
-venue                        ████████████████████████████████  711
-batting_team_nrr             ██████████████                    325
-required_run_rate            ████████████                      270
-wickets_in_hand              ███████████                       258
-target                       ███████████                       254
-run_rate                     █████████                         206
-runs_needed                  █████████                         205
-runs_scored                  ████████                          191
-innings                      ██████                            153
-season_numeric               ██                                 54
-opponent_bowler_economy      ██                                 46
-recent_wickets               █                                  26
-batting_team_chose_to_bat    █                                  19
-over                         █                                  16
-balls_remaining              ▏                                  11
+venue                        ████████████████████████████████  1006
+batting_team_nrr             █████████████████████              654
+target                       █████████████████                  523
+season_numeric               ██████████                         310
+run_rate                     █████████                          283
+required_run_rate            █████████                          272
+wickets_in_hand              █████████                          269
+runs_scored                  ████████                           228
+runs_needed                  ███████                            221
+innings                      █████                              152
+recent_wickets               █                                   25
+balls_remaining              █                                   24
+opponent_bowler_economy      █                                   24
+batting_team_chose_to_bat    ▏                                   20
+over                         ▏                                    8
 ```
 
 A few things to read out of this:
@@ -272,7 +272,7 @@ A few details that matter for fair attribution:
 - **Wides and no-balls.** Wides aren't credited to the batsman (they didn't face it); no-balls aren't counted against the bowler's *legal-delivery* count for per-ball stats. Both still produce a `delta_wp` and both still flow into the batting/bowling totals — the legal flags only affect denominators in per-ball reporting.
 - **Wickets are credited to the bowler regardless of wicket-kind.** Run-outs are an exception flagged in the parsing step but credited the same way at the WP layer; a future model could reattribute based on fielder.
 - **The non-striker gets nothing.** TILT only credits the two players directly involved in the delivery.
-- **Match-terminal snap on the final ball.** The win-probability model is trained on intra-innings states and never sees the literal end of the match — its `wp_after` on the last ball of innings 2 averages 0.928 on winning chases (truth: 1.0) and 0.161 on losing ones (truth: 0.0). To stop the deciding delivery from being undercredited by 7–16pp, `wp_after` on each match's final innings-2 ball is snapped to its actual outcome (1.0, 0.0, or 0.5 for a regulation tie) and `delta_wp` is recomputed. Touches one ball per match. Full diagnostic: [Snapping the Final Ball](notes.html?note=last-ball-snap).
+- **DLS-revised innings carry their reduced ball allocation through `balls_remaining`.** A 12-over chase is 72 balls, not 120 — feeding the model the default 120 made truncated chases look chaseable late on, which previously inflated the bowler-of-the-final-ball's TILT enormously.
 
 ### What this looks like across a match
 
@@ -369,9 +369,9 @@ TILT is honest about what it doesn't see.
 
 ### The second-innings asymmetry
 
-Win probability swings are **structurally larger in the 2nd innings**, because the target is known and every ball directly resolves the chase math. On average, a 2nd-innings ball produces a `|delta_wp|` that is **1.54×** a 1st-innings ball. This is concentrated in the death overs — **2.66× in overs 16–20** — while powerplay overs are essentially equal (1.07×).
+Win probability swings are **structurally larger in the 2nd innings**, because the target is known and every ball directly resolves the chase math. On average, a 2nd-innings ball produces a `|delta_wp|` that is **1.34×** a 1st-innings ball. This is concentrated in the death overs — **2.00× in overs 16–20** — while powerplay overs actually run slightly the other way (0.88×).
 
-The downstream effect on single-match GOAT-type rankings is large: 94% of the top-50 batting GOAT performances and 98% of the top-50 bowling GOAT performances are from 2nd innings. The GOAT page therefore exposes innings-filtered views so within-innings comparisons are fair.
+The downstream effect on single-match GOAT-type rankings is large: 100% of the top-50 batting GOAT performances and 84% of the top-50 bowling GOAT performances are from 2nd innings. The GOAT page therefore exposes innings-filtered views so within-innings comparisons are fair.
 
 The effect on **career** rankings is small. The Spearman rank correlation between raw and innings-normalized career TILT is **ρ = 0.99** — careers wash out the per-match asymmetry.
 
@@ -379,7 +379,7 @@ The full diagnostic, including per-phase breakdowns and the qq-plot above, is at
 
 ### The innings-boundary recalibration
 
-The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and historically those two predictions disagreed by a median of **8.4 pp** with a mean signed gap of **−5.1 pp** (the model was systematically more pessimistic about the batting-first team at chase-start than at innings-1-end).
+The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **7.5 pp** with a mean signed gap of **+5.2 pp** (the model is systematically more optimistic about the batting-first team at chase-start than at innings-1-end — direction depends on the trained model's tilt and is monitored on every retrain).
 
 We close that gap with a two-step post-processing layer in `compute_tilt.apply_boundary_calibration`, applied only to the two boundary balls per match (~1.4% of all deliveries):
 
@@ -411,29 +411,29 @@ These are tractable upgrades that future iterations may chase.
 
 ## 11. Top Results (Sanity Check)
 
-Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-04-26.*
+Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-05-06.*
 
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |:--|:--|:--|:--|:--|:--|
-| 1 | Lasith Malinga | +5.98% | +6.32% | **high** | 120 |
-| 2 | Sunil Narine | +5.50% | +5.70% | **high** | 190 |
-| 3 | Jasprit Bumrah | +5.41% | +5.67% | **high** | 146 |
-| 4 | Rashid Khan | +5.30% | +5.58% | **high** | 137 |
-| 5 | AB de Villiers | +4.27% | +4.46% | **high** | 166 |
-| 6 | Philip Salt | +5.70% | +6.70% | medium | 39 |
-| 7 | Yuzvendra Chahal | +3.56% | +3.73% | **high** | 173 |
-| 8 | Ayush Mhatre | +7.78% | +11.89% | low | 12 |
-| 9 | Doug Bollinger | +4.98% | +6.30% | low | 27 |
-| 10 | Munaf Patel | +3.74% | +4.21% | medium | 62 |
+| 1 | Sunil Narine | +6.03% | +6.22% | **high** | 195 |
+| 2 | Ayush Mhatre | +7.79% | +11.21% | low | 13 |
+| 3 | Jasprit Bumrah | +4.50% | +4.69% | **high** | 154 |
+| 4 | Lasith Malinga | +4.15% | +4.38% | **high** | 122 |
+| 5 | Rashid Khan | +4.21% | +4.40% | **high** | 146 |
+| 6 | Philip Salt | +4.83% | +5.61% | medium | 40 |
+| 7 | Morné Morkel | +3.98% | +4.37% | medium | 70 |
+| 8 | Ravichandran Ashwin | +2.85% | +2.95% | **high** | 217 |
+| 9 | Yuzvendra Chahal | +2.75% | +2.87% | **high** | 178 |
+| 10 | Jos Buttler | +3.36% | +3.55% | **high** | 129 |
 
 A few sanity reads on this list:
 
-- **Malinga #1 across 120 matches** — the floor ranking rewards both production *and* certainty. Malinga's per-match TILT is among the highest, and his 120-match sample tightens the interval enough to surface him above Narine's larger but slightly less per-match-impactful career.
-- **Narine #2 across 190 matches** — the most consistent all-round impact in IPL history sits one spot below by floor and #1 by raw career total TILT.
-- **Bumrah #3** climbs after the [boundary calibration fix](notes.html?note=innings-boundary) — the inn1-end overconfidence was suppressing his bowling tilt slightly.
-- **Salt at #6 with 39 matches** is the floor ranking working: his raw TILT is among the highest on the page, but the smaller sample widens his interval and he sits behind four veterans with tighter intervals.
-- **Old-era players are not punished.** AB de Villiers ranks #5 across an era spanning multiple T20 generations; the `season_numeric` feature successfully neutralises era effects.
-- **Spinners and fast bowlers both surface.** Narine, Rashid, Malinga, Chahal — different bowling styles, all rated. The model isn't biased toward one type.
+- **Narine #1 across 195 matches** — the most consistent all-round impact in IPL history. Top of the floor ranking and top of raw career total TILT.
+- **Bumrah, Malinga, Rashid Khan in the next tier** — the death-overs / strike-bowler archetype dominates once you adjust for confidence. Spinners and fast bowlers both surface; the model isn't biased toward one type.
+- **Ashwin #8 across 217 matches** — the largest sample on the list, edges in on certainty rather than per-match impact.
+- **Salt at #6 with 40 matches** is the floor ranking working: his raw TILT is among the highest on the page, but the smaller sample widens his interval and he sits behind veterans with tighter intervals.
+- **Mhatre at #2 with only 13 matches** is what the floor sort produces when a young player posts an extreme raw number — the shrinkage pulls him hard, but his raw is high enough that even the lower bound clears most veterans.
+- **Old-era players are not punished.** Malinga's 2008–2019 career still floors at +4.15%; the `season_numeric` feature neutralises era effects.
 
 ---
 

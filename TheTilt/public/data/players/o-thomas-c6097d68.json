@@ -8,18 +8,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.00547,
+  "total_tilt_per_match": 0.02531,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.00547,
-  "shrunk_total_tilt_per_match": -0.01802,
+  "bowling_tilt_per_match": 0.02531,
+  "shrunk_total_tilt_per_match": -0.00249,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01112,
-  "tilt_ci_lower": -0.03028,
-  "tilt_ci_upper": -0.00575,
-  "tilt_ci_lower_90": -0.02831,
-  "tilt_ci_upper_90": -0.00772,
+  "shrunk_bowling_tilt_per_match": 0.00271,
+  "tilt_ci_lower": -0.01534,
+  "tilt_ci_upper": 0.01036,
+  "tilt_ci_lower_90": -0.01328,
+  "tilt_ci_upper_90": 0.0083,
   "confidence": "low",
-  "total_tilt": -0.01641,
+  "total_tilt": 0.07593,
   "total_matches": 3,
   "batting_balls": 0,
   "bowling_balls": 54,
@@ -28,7 +28,7 @@
       "season": "2019",
       "team": "Rajasthan Royals",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.00547,
+      "bowling_tilt_per_match": 0.02531,
       "batting_matches": 0,
       "bowling_matches": 3,
       "batting_balls": 0,
@@ -50,8 +50,8 @@
           "bowl_balls": 24,
           "bowl_runs": 34,
           "bowl_econ": 8.5,
-          "bowl_tilt": -0.02583,
-          "total_tilt": -0.02583
+          "bowl_tilt": 0.03744,
+          "total_tilt": 0.03744
         },
         {
           "match_id": "1178420",
@@ -69,8 +69,8 @@
           "bowl_balls": 24,
           "bowl_runs": 30,
           "bowl_econ": 7.5,
-          "bowl_tilt": 0.00527,
-          "total_tilt": 0.00527
+          "bowl_tilt": 0.03381,
+          "total_tilt": 0.03381
         },
         {
           "match_id": "1178428",
@@ -88,8 +88,8 @@
           "bowl_balls": 6,
           "bowl_runs": 13,
           "bowl_econ": 13.0,
-          "bowl_tilt": 0.00416,
-          "total_tilt": 0.00416
+          "bowl_tilt": 0.00468,
+          "total_tilt": 0.00468
         }
       ],
       "bowling_stats": {
@@ -107,31 +107,39 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.02017,
+      "tilt": -0.04291,
       "balls": 30,
-      "avg_delta": -0.000672
+      "avg_delta": -0.00143
     },
     {
       "phase": "middle",
-      "tilt": -0.03577,
+      "tilt": 0.01818,
       "balls": 12,
-      "avg_delta": -0.00298
+      "avg_delta": 0.001515
     },
     {
       "phase": "death",
-      "tilt": 0.03953,
+      "tilt": 0.10065,
       "balls": 12,
-      "avg_delta": 0.002824
+      "avg_delta": 0.00719
     }
   ],
   "best_matches": [],
   "worst_matches": [],
   "bowling_best_matches": [
     {
+      "match_id": "1178418",
+      "date": "2019-04-25",
+      "vs": "Kolkata Knight Riders",
+      "tilt": 0.03744,
+      "wickets": 1,
+      "balls": 24
+    },
+    {
       "match_id": "1178420",
       "date": "2019-04-27",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.00527,
+      "tilt": 0.03381,
       "wickets": 2,
       "balls": 24
     },
@@ -139,33 +147,17 @@
       "match_id": "1178428",
       "date": "2019-05-04",
       "vs": "Delhi Capitals",
-      "tilt": 0.00416,
+      "tilt": 0.00468,
       "wickets": 0,
       "balls": 6
-    },
-    {
-      "match_id": "1178418",
-      "date": "2019-04-25",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.02583,
-      "wickets": 1,
-      "balls": 24
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "1178418",
-      "date": "2019-04-25",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.02583,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "1178428",
       "date": "2019-05-04",
       "vs": "Delhi Capitals",
-      "tilt": 0.00416,
+      "tilt": 0.00468,
       "wickets": 0,
       "balls": 6
     },
@@ -173,8 +165,16 @@
       "match_id": "1178420",
       "date": "2019-04-27",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.00527,
+      "tilt": 0.03381,
       "wickets": 2,
+      "balls": 24
+    },
+    {
+      "match_id": "1178418",
+      "date": "2019-04-25",
+      "vs": "Kolkata Knight Riders",
+      "tilt": 0.03744,
+      "wickets": 1,
       "balls": 24
     }
   ],
@@ -182,37 +182,37 @@
     {
       "match": 1,
       "date": "2019-04-25",
-      "tilt": -0.02583,
-      "cumulative": -0.02583
+      "tilt": 0.03744,
+      "cumulative": 0.03744
     },
     {
       "match": 2,
       "date": "2019-04-27",
-      "tilt": 0.00527,
-      "cumulative": -0.02056
+      "tilt": 0.03381,
+      "cumulative": 0.07125
     },
     {
       "match": 3,
       "date": "2019-05-04",
-      "tilt": 0.00416,
-      "cumulative": -0.01641
+      "tilt": 0.00468,
+      "cumulative": 0.07593
     }
   ],
   "team_matchups": [],
   "bowling_team_matchups": [
     {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": 0.03744,
+      "matches": 1
+    },
+    {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": 0.00527,
+      "tilt_per_match": 0.03381,
       "matches": 1
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.00416,
-      "matches": 1
-    },
-    {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.02583,
+      "tilt_per_match": 0.00468,
       "matches": 1
     }
   ],
@@ -227,8 +227,8 @@
     "best_figures": "2/30"
   },
   "match_tilt_distribution": [
-    -0.02583,
-    0.00527,
-    0.00416
+    0.03744,
+    0.03381,
+    0.00468
   ]
 }

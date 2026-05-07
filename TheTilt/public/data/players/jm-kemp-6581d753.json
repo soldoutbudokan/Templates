@@ -8,18 +8,18 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": -0.11397,
+  "total_tilt_per_match": -0.06133,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.07003,
+  "shrunk_total_tilt_per_match": -0.04224,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.21483,
-  "tilt_ci_upper": 0.07477,
-  "tilt_ci_lower_90": -0.19155,
-  "tilt_ci_upper_90": 0.0515,
+  "tilt_ci_lower": -0.16307,
+  "tilt_ci_upper": 0.07859,
+  "tilt_ci_lower_90": -0.14365,
+  "tilt_ci_upper_90": 0.05918,
   "confidence": "low",
-  "total_tilt": -0.56983,
+  "total_tilt": -0.30664,
   "total_matches": 5,
   "batting_balls": 24,
   "bowling_balls": 44,
@@ -27,8 +27,8 @@
     {
       "season": "2010",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": -0.16665,
-      "bowling_tilt_per_match": -0.0473,
+      "batting_tilt_per_match": -0.1356,
+      "bowling_tilt_per_match": -0.00709,
       "batting_matches": 2,
       "bowling_matches": 5,
       "batting_balls": 24,
@@ -45,13 +45,13 @@
           "bat_runs": 22,
           "bat_balls": 16,
           "bat_sr": 137.5,
-          "bat_tilt": -0.04987,
+          "bat_tilt": -0.02815,
           "bowl_wkts": 0,
           "bowl_balls": 13,
           "bowl_runs": 15,
           "bowl_econ": 6.92,
-          "bowl_tilt": -0.13046,
-          "total_tilt": -0.18033
+          "bowl_tilt": 0.01685,
+          "total_tilt": -0.0113
         },
         {
           "match_id": "419113",
@@ -69,8 +69,8 @@
           "bowl_balls": 18,
           "bowl_runs": 15,
           "bowl_econ": 5.0,
-          "bowl_tilt": 0.14376,
-          "total_tilt": 0.14376
+          "bowl_tilt": 0.1892,
+          "total_tilt": 0.1892
         },
         {
           "match_id": "419116",
@@ -83,13 +83,13 @@
           "bat_runs": 4,
           "bat_balls": 8,
           "bat_sr": 50.0,
-          "bat_tilt": -0.28343,
+          "bat_tilt": -0.24305,
           "bowl_wkts": 0,
           "bowl_balls": 6,
           "bowl_runs": 15,
           "bowl_econ": 15.0,
-          "bowl_tilt": -0.19324,
-          "total_tilt": -0.47667
+          "bowl_tilt": -0.08587,
+          "total_tilt": -0.32892
         },
         {
           "match_id": "419121",
@@ -107,8 +107,8 @@
           "bowl_balls": 1,
           "bowl_runs": 1,
           "bowl_econ": 6.0,
-          "bowl_tilt": -0.02039,
-          "total_tilt": -0.02039
+          "bowl_tilt": -0.01865,
+          "total_tilt": -0.01865
         },
         {
           "match_id": "419159",
@@ -126,8 +126,8 @@
           "bowl_balls": 6,
           "bowl_runs": 12,
           "bowl_econ": 12.0,
-          "bowl_tilt": -0.0362,
-          "total_tilt": -0.0362
+          "bowl_tilt": -0.13698,
+          "total_tilt": -0.13698
         }
       ],
       "batting_stats": {
@@ -155,35 +155,35 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.01431,
+      "tilt": -0.00048,
       "balls": 3,
-      "avg_delta": -0.004771
+      "avg_delta": -0.000159
     },
     {
       "phase": "middle",
-      "tilt": -0.03556,
+      "tilt": -0.02767,
       "balls": 13,
-      "avg_delta": -0.002735
+      "avg_delta": -0.002128
     },
     {
       "phase": "death",
-      "tilt": -0.28343,
+      "tilt": -0.24305,
       "balls": 8,
-      "avg_delta": -0.031492
+      "avg_delta": -0.027006
     }
   ],
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": -0.13119,
+      "tilt": -0.00436,
       "balls": 43,
-      "avg_delta": -0.002852
+      "avg_delta": -9.5e-05
     },
     {
       "phase": "death",
-      "tilt": -0.10534,
+      "tilt": -0.03108,
       "balls": 1,
-      "avg_delta": -0.105337
+      "avg_delta": -0.031084
     }
   ],
   "best_matches": [
@@ -191,7 +191,7 @@
       "match_id": "419110",
       "date": "2010-03-14",
       "vs": "Deccan Chargers",
-      "tilt": -0.04987,
+      "tilt": -0.02815,
       "runs": 22,
       "balls": 16
     },
@@ -199,7 +199,7 @@
       "match_id": "419116",
       "date": "2010-03-19",
       "vs": "Delhi Capitals",
-      "tilt": -0.28343,
+      "tilt": -0.24305,
       "runs": 4,
       "balls": 8
     }
@@ -209,7 +209,7 @@
       "match_id": "419116",
       "date": "2010-03-19",
       "vs": "Delhi Capitals",
-      "tilt": -0.28343,
+      "tilt": -0.24305,
       "runs": 4,
       "balls": 8
     },
@@ -217,7 +217,7 @@
       "match_id": "419110",
       "date": "2010-03-14",
       "vs": "Deccan Chargers",
-      "tilt": -0.04987,
+      "tilt": -0.02815,
       "runs": 22,
       "balls": 16
     }
@@ -227,65 +227,57 @@
       "match_id": "419113",
       "date": "2010-03-16",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.14376,
+      "tilt": 0.1892,
       "wickets": 3,
       "balls": 18
-    },
-    {
-      "match_id": "419121",
-      "date": "2010-03-21",
-      "vs": "Punjab Kings",
-      "tilt": -0.02039,
-      "wickets": 0,
-      "balls": 1
-    },
-    {
-      "match_id": "419159",
-      "date": "2010-04-18",
-      "vs": "Punjab Kings",
-      "tilt": -0.0362,
-      "wickets": 0,
-      "balls": 6
     },
     {
       "match_id": "419110",
       "date": "2010-03-14",
       "vs": "Deccan Chargers",
-      "tilt": -0.13046,
+      "tilt": 0.01685,
       "wickets": 0,
       "balls": 13
+    },
+    {
+      "match_id": "419121",
+      "date": "2010-03-21",
+      "vs": "Punjab Kings",
+      "tilt": -0.01865,
+      "wickets": 0,
+      "balls": 1
     },
     {
       "match_id": "419116",
       "date": "2010-03-19",
       "vs": "Delhi Capitals",
-      "tilt": -0.19324,
+      "tilt": -0.08587,
+      "wickets": 0,
+      "balls": 6
+    },
+    {
+      "match_id": "419159",
+      "date": "2010-04-18",
+      "vs": "Punjab Kings",
+      "tilt": -0.13698,
       "wickets": 0,
       "balls": 6
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "419116",
-      "date": "2010-03-19",
-      "vs": "Delhi Capitals",
-      "tilt": -0.19324,
+      "match_id": "419159",
+      "date": "2010-04-18",
+      "vs": "Punjab Kings",
+      "tilt": -0.13698,
       "wickets": 0,
       "balls": 6
     },
     {
-      "match_id": "419110",
-      "date": "2010-03-14",
-      "vs": "Deccan Chargers",
-      "tilt": -0.13046,
-      "wickets": 0,
-      "balls": 13
-    },
-    {
-      "match_id": "419159",
-      "date": "2010-04-18",
-      "vs": "Punjab Kings",
-      "tilt": -0.0362,
+      "match_id": "419116",
+      "date": "2010-03-19",
+      "vs": "Delhi Capitals",
+      "tilt": -0.08587,
       "wickets": 0,
       "balls": 6
     },
@@ -293,15 +285,23 @@
       "match_id": "419121",
       "date": "2010-03-21",
       "vs": "Punjab Kings",
-      "tilt": -0.02039,
+      "tilt": -0.01865,
       "wickets": 0,
       "balls": 1
+    },
+    {
+      "match_id": "419110",
+      "date": "2010-03-14",
+      "vs": "Deccan Chargers",
+      "tilt": 0.01685,
+      "wickets": 0,
+      "balls": 13
     },
     {
       "match_id": "419113",
       "date": "2010-03-16",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.14376,
+      "tilt": 0.1892,
       "wickets": 3,
       "balls": 18
     }
@@ -310,65 +310,65 @@
     {
       "match": 1,
       "date": "2010-03-14",
-      "tilt": -0.18033,
-      "cumulative": -0.18033
+      "tilt": -0.0113,
+      "cumulative": -0.0113
     },
     {
       "match": 2,
       "date": "2010-03-16",
-      "tilt": 0.14376,
-      "cumulative": -0.03657
+      "tilt": 0.1892,
+      "cumulative": 0.1779
     },
     {
       "match": 3,
       "date": "2010-03-19",
-      "tilt": -0.47667,
-      "cumulative": -0.51324
+      "tilt": -0.32892,
+      "cumulative": -0.15102
     },
     {
       "match": 4,
       "date": "2010-03-21",
-      "tilt": -0.02039,
-      "cumulative": -0.53362
+      "tilt": -0.01865,
+      "cumulative": -0.16967
     },
     {
       "match": 5,
       "date": "2010-04-18",
-      "tilt": -0.0362,
-      "cumulative": -0.56983
+      "tilt": -0.13698,
+      "cumulative": -0.30664
     }
   ],
   "team_matchups": [
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.04987,
+      "tilt_per_match": -0.02815,
       "matches": 1
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.28343,
+      "tilt_per_match": -0.24305,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.14376,
+      "tilt_per_match": 0.1892,
+      "matches": 1
+    },
+    {
+      "opponent": "Deccan Chargers",
+      "tilt_per_match": 0.01685,
       "matches": 1
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.0283,
+      "tilt_per_match": -0.07781,
       "matches": 2
     },
     {
-      "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.13046,
-      "matches": 1
-    },
-    {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.19324,
+      "tilt_per_match": -0.08587,
       "matches": 1
     }
   ],
@@ -394,10 +394,10 @@
     "best_figures": "3/15"
   },
   "match_tilt_distribution": [
-    -0.18033,
-    0.14376,
-    -0.47667,
-    -0.02039,
-    -0.0362
+    -0.0113,
+    0.1892,
+    -0.32892,
+    -0.01865,
+    -0.13698
   ]
 }

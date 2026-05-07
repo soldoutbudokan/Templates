@@ -1,110 +1,79 @@
-# Snapping the Final Ball
+# Snapping the Final Ball — and Why We Reverted It
 
-**The win-probability model never knew the match was over. A six off the last ball that wins the chase scored +5pp instead of +50pp against TILT — until now.**
+**The match-terminal snap looked like a clean fix. It turned into a windfall machine for whoever happened to be bowling the last ball. We replaced it with a more aggressive model and a DLS-allocation fix that solve the underlying problem without dumping the entire correction onto a single delivery.**
 
-The win-probability classifier underlying TILT is trained on intra-innings states. It sees `runs needed`, `balls remaining`, `wickets in hand`, and the rest, and predicts a probability that the batting team will win. What it doesn't see — and was never trained on — is the *terminal* state: balls remaining = 0, match over. So when the chasing team hits the winning run on the very last ball, the model returns a `wp_after` of "this state looks like ~93% to win" rather than the actual answer of 100%.
+The original post (preserved below in spirit) argued that the win-probability classifier never saw the literal end of a match, so its `wp_after` on the final ball of innings 2 averaged 0.928 on winning chases (truth: 1.0) and 0.161 on losing ones (truth: 0.0). The fix it shipped: snap `wp_after` on each match's final innings-2 ball to its actual outcome (1.0 / 0.0 / 0.5 for a regulation tie) and recompute `delta_wp` for that ball.
 
-Across all 1,206 IPL matches with two innings, the model's `wp_after` on the final ball averages **0.928** when the chase succeeded and **0.161** when it failed. Truth: 1.0 and 0.0 respectively. So a winning hit was credited with a `delta_wp` ~7 percentage points smaller than reality, and a chase-ending wicket was credited ~16pp smaller. The most consequential ball of every match was being systematically undercounted.
-
-This post describes the fix: a deterministic snap of `wp_after` on the final ball of innings 2 to its actual outcome. Touches one ball per match (~1,200 balls). Career rankings reshuffle in exactly the directions you'd expect — death-overs specialists rise, "finishers who didn't finish" fall.
+That fix was wrong in a way the original post didn't anticipate.
 
 ---
 
-## The fix in one paragraph
+## What broke
 
-After the model has scored every ball and the boundary calibration has aligned the inn1↔inn2 seam, set `wp_after` on each match's final innings-2 ball to:
+The snap concentrates the entire ~7–16pp model-vs-truth gap onto **one ball, credited to one bowler**. That's fine when the gap is small. It's catastrophic when the gap is large — which happens whenever the model is confidently wrong about the chase state.
 
-- `1.0` if the chasing team won
-- `0.0` if the chasing team lost
-- `0.5` if the regulation result was a tie (these go to a super over, but the regulation match is genuinely a tie at the moment its 240th legal ball is bowled)
+The clearest example: **Trent Boult, RR vs DC, 2 May 2018** ([match 1136592](match.html?id=1136592)). Rajasthan were chasing a DLS-revised target of 197 in 12 overs. They got to 145/5 with one ball left and lost by 50 runs. Boult bowled the last ball (a single).
 
-Recompute `delta_wp = wp_after − wp_before` for that one ball. Done. The structurally analogous step exists already at the inn1↔inn2 seam ([the boundary calibration](notes.html?note=innings-boundary)) — this just extends the same idea to the match terminus.
+Pre-snap, the model's `wp_before` on that ball was **0.89** — it thought RR were almost certainly going to win. They weren't even close. The model was fooled because `balls_remaining` in the feature pipeline ignored `innings_allocation` and defaulted to 120: the model saw "needs 52 from 46 balls with 5 wickets in hand" and shrugged, when in reality there was one ball left in a curtailed chase.
 
-Detection of regulation ties is: `inn1 total runs == inn2 final cumulative runs`. There are 16 such matches in the data.
+The snap then forced `wp_after = 0`, producing a `delta_wp = -0.89` charged to the batting team and `+0.89` to the bowler. Boult's match TILT ballooned to **+0.97** for a 3/26 spell — the all-time #1 single-game bowling performance in the dataset, of which **+0.89 was pure snap windfall**.
+
+A decomposition of every bowler's match TILT into "snap credit" (the wp_before on the last ball, if they bowled it) vs. the rest:
+
+| | Match TILT | Snap credit | Real bowling |
+|:--|--:|--:|--:|
+| TA Boult, 2018-05-02 (DC vs RR) | +0.97 | +0.89 | +0.08 |
+| I Sharma, 2008-05-08 (KKR vs RCB) | +0.95 | +0.91 | +0.04 |
+| L Balaji, 2009-05-07 (CSK vs PBKS) | +0.83 | +0.87 | −0.04 |
+| Z Khan, 2013-05-18 (RCB vs CSK) | +0.78 | +0.83 | −0.05 |
+| B Kumar, 2015-04-22 (SRH vs KKR) | +0.67 | +0.62 | +0.04 |
+
+Every entry in the post-snap top single-game bowling list was dominated by snap credit, not by what the bowler actually did with the ball. **24 matches** had a snap credit greater than +0.50 going to one bowler.
+
+This wasn't a quirk. It was a structural consequence of the snap design: when the model is wrong by 80pp at the end of a one-sided chase, snapping forces the entire 80pp into one player's tilt regardless of whether they did anything special on that ball.
+
+---
+
+## What we did instead
+
+Three changes, applied together:
+
+**1. Fixed the DLS allocation bug in `build_features.py`.** `balls_remaining` now reads `innings_allocation` from the parsed match data rather than defaulting to 120. A 12-over chase is 72 balls; a 6-over slog is 36. The Boult match's `wp_before` on the final ball drops from 0.89 to **0.16** with no other changes — the model now correctly sees a one-ball-left, target-not-close state.
+
+**2. Loosened the LightGBM hyperparameters in `config/pipeline_config.yaml`.** Old: `max_depth=4, num_leaves=16, min_child_samples=500, reg_lambda=5.0`. New: `max_depth=6, num_leaves=64, min_child_samples=100, reg_lambda=1.0`. The old settings were so heavily regularized that even with `balls_remaining=1`, the model couldn't carve a tight enough leaf to push wp toward 0 or 1 in resolved chase states. The new settings let the model express the confidence the data actually supports. Brier improves from 0.198 to 0.178; AUC from 0.761 to 0.820.
+
+**3. Removed `apply_match_terminal_snap` from the tilt pipeline.** Final-ball `wp_after` is now whatever the model says. Across the dataset that's **0.87 on winning chases** (was 1.0 with snap, ~0.93 without snap and old model) and **0.18 on losing chases** (was 0.0 with snap, ~0.16 without snap and old model). The residual gap is a real model-confidence shortfall, but it's now spread across the last few balls of each match rather than dumped onto whoever bowled the literal last ball — and individual leaf predictions of 0.95 / 0.05 are common at terminal states, not capped at 0.93 / 0.16.
 
 ---
 
 ## What changed in the rankings
 
-### Top 10 by Total Career TILT
+The snap's pathological top-of-leaderboard entries are gone. Top single-game bowling now reads like real bowling:
 
-| Rank | Before | After |
-|:--|:--|:--|
-| 1 | SP Narine | **SP Narine** |
-| 2 | JJ Bumrah | **JJ Bumrah** |
-| 3 | AB de Villiers | SL Malinga ⬆ |
-| 4 | SL Malinga | AB de Villiers ⬇ |
-| 5 | Rashid Khan | B Kumar ⬆ |
-| 6 | YS Chahal | Rashid Khan ⬇ |
-| 7 | CH Gayle | YS Chahal ⬇ |
-| 8 | B Kumar | JC Buttler ⬆ |
-| 9 | JC Buttler | CH Gayle ⬇ |
-| 10 | DW Steyn | **DJ Bravo** 🆕 |
+| Rank | Bowler | Match | Figures | TILT |
+|:--|:--|:--|:--|--:|
+| 1 | Bhuvneshwar Kumar | 2017-04-17 SRH vs RCB | 5/19 (4 ov) | +0.67 |
+| 2 | MJ McClenaghan | 2016-04-16 MI vs RCB | 4/24 (4 ov) | +0.57 |
+| 3 | Basil Thampi | 2017-04-29 GL vs MI | 4/24 (4 ov) | +0.56 |
+| 4 | Rashid Khan | 2018-04-24 SRH vs KXIP | 2/24 (4 ov) | +0.56 |
+| 5 | A Nehra | 2015-04-22 CSK vs PBKS | 4/24 (4 ov) | +0.54 |
 
-DJ Bravo entering the all-time top 10 from a previous rank of #62 is the headline. He was IPL's most famous death-overs specialist and the model was systematically undercrediting him by exactly the magnitude this fix corrects: every closed-out tight win that ended on his bowling now gets the full "chased team's WP went from 70% to 0%" credit instead of "70% to 16%."
-
-### Biggest gainers (50+ matches)
-
-| Player | Before | After | Δ |
-|:--|:--:|:--:|:--:|
-| R Vinay Kumar | 119 | 62 | +57 |
-| Avesh Khan | 131 | 76 | +55 |
-| HV Patel | 116 | 66 | +50 |
-| JD Unadkat | 142 | 96 | +46 |
-| **DJ Bravo** | **55** | **10** | **+45** |
-| L Balaji | 130 | 87 | +43 |
-| AD Russell | 58 | 27 | +31 |
-| TG Southee | 70 | 40 | +30 |
-
-Every name on this list is a death- or closing-overs specialist — bowlers who pitched up at the end of tight chases. The pattern is mechanical: their highest-WP-impact moments were exactly the moments the model was failing to snap to the true outcome.
-
-### Biggest losers (50+ matches)
-
-| Player | Before | After | Δ |
-|:--|:--:|:--:|:--:|
-| RV Uthappa | 28 | 84 | −56 |
-| **MS Dhoni** | **33** | **67** | **−34** |
-| **DA Miller** | **35** | **69** | **−34** |
-| MA Agarwal | 107 | 145 | −38 |
-| AR Patel | 78 | 116 | −38 |
-| JP Duminy | 108 | 143 | −35 |
-| S Dube | 97 | 132 | −35 |
-
-Dhoni and Miller dropping 34 spots each is the other half of the story. The "finisher" reputation rests partly on tight wins, but partly on tight losses where the player was at the crease at the end. The model used to credit them with a chasing-team WP of ~16% at the moment the match ended in defeat — credit that doesn't actually exist. The fix reassigns that ~16pp per closing failure to where it belongs (which is nowhere — it's the chasing team's loss, full stop).
-
-This isn't a verdict on Dhoni or Miller as players. It's a correction to a specific arithmetic error in how their losing-chase appearances were being scored.
+Career rankings reshuffle in the opposite direction from the original snap-era post. **DJ Bravo**, who entered the snap-era all-time top 10 from #62 on the strength of his death-overs reputation, drops out again — the snap was inflating his match-end deliveries with credit the model never actually disagreed with. **Dhoni and Miller**, who lost 34 spots each under the snap, partially recover.
 
 ---
 
-## Why this is a real bug
+## What we'd do differently
 
-It's worth being explicit about why the pre-fix state was wrong rather than just "an approximation."
+The original snap post was correct that the model is structurally under-confident at terminal states. The mistake was the prescription: a hard snap that concentrates correction onto one player.
 
-The win-probability model is trained as a binary classifier on `(state, batting_team_won)`. Its training labels are the actual match outcomes. So at every state during a chase, the model is *learning* to predict the eventual binary outcome. The closer to the match end, the closer the model's prediction *should* converge to the actual outcome — and it almost does, but not quite. It maxes out at ~93% because:
+The right shape of fix, in retrospect:
 
-- The model never sees the post-final-ball state during training (there is no such ball-level row).
-- The model's features at the *true* final ball don't encode "we're done" — they encode "1 ball remaining" or "0 balls remaining + score reached" indirectly through `runs_needed` and `required_run_rate`.
-- LightGBM's tree splits aren't designed to push individual leaf predictions to exactly 1.0 or 0.0; they max out at the dataset's empirical winning rate within the relevant leaf, which on close matches is high but never 100%.
+- **Fix any feature bugs that make the model wrong about the state** (the DLS allocation thing). Anything else is layering corrections on top of corrections.
+- **Give the model enough capacity to push toward 0/1 when the chase is mathematically over.** Heavy regularization makes the leaderboard "smooth" in a way that obscures actual gaps in predictive accuracy at the boundary.
+- **If a residual gap remains after that, smooth the correction across the last several balls** rather than snapping one. The model is already mildly under-confident at ball-from-end ∈ {0, 1, 2, 3} on tight finishes; a soft per-ball blend across that window would distribute any leftover correction across the players who were actually involved in those moments. We didn't ship this — the residual after the model retune is small enough not to require it — but it's the shape we'd reach for if we needed more.
 
-So the fix isn't fighting the model — it's adding the one piece of information the model can't have: *the match is over and this is what happened*. Which is exactly the same kind of edit the boundary calibration makes at the innings break.
-
----
-
-## What didn't change
-
-- **The model itself.** No retraining. The committed `models/win_prob_lgbm.pkl` is identical.
-- **All non-final balls.** Every ball except the literal last delivery of innings 2 in each match retains its raw model output.
-- **The cliff at the innings boundary.** Already zero ([per #62 + #71](notes.html?note=innings-boundary)).
-- **The chart on match pages.** It already shows the snapped `wp_after` because the chart reads from the same calibrated `deltas.parquet`. The visual consequence: the chart's final point now lands at exactly 100% or 0% (or 50% on ties), which is what it should always have done.
+The general lesson: **single-row hard corrections to model output produce single-row hard credit windfalls**. If a fix touches 1 row per match and shifts that row's prediction by 20+ percentage points, the credit lands on whichever player happens to be on that row. That's not a methodology — it's a lottery.
 
 ---
 
-## What it cost
-
-About 50 lines added to `pipeline/compute_tilt.py` (a new `apply_match_terminal_snap` function, called between `apply_boundary_calibration` and `aggregate_player_tilt`). Touches one row per match; reversible by dropping the function call. No model retrain, no feature changes, no new training data. The pipeline runtime is unchanged.
-
----
-
-## What's next
-
-This sanity check incidentally exposed a separate issue: the boundary calibration's alpha-decay across balls 1–6 of innings 2 introduces ~0.05–0.10pp telescoping gaps between adjacent ball pairs, because each ball's blended endpoints are independent rather than chained. The next methodology pass will switch to an exponential decay across the full powerplay (balls 1–36) and chain the blend so that `wp_after(ball k) == wp_before(ball k+1)` exactly. That should drive the inn2 telescoping residual to zero and remove the second-over visual jump that motivated this whole investigation.
+*Original publication: 2026-05-06 (snap shipped). Revised: 2026-05-06 (snap reverted, post rewritten as post-mortem).*

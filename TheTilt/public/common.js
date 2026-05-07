@@ -21,8 +21,8 @@
     const BLOG_NOTES = [
         {
             id: 'last-ball-snap',
-            title: 'Snapping the Final Ball',
-            summary: 'The win-probability model never saw the terminal state, so it maxed out at ~93% on a winning chase\'s last ball and ~16% on a losing one. The match-deciding delivery was being undercredited by 7–16pp every game. Fix: snap wp_after on each match\'s final innings-2 ball to its actual outcome. DJ Bravo enters the all-time top 10 from #62; Dhoni and Miller drop 34 spots each.',
+            title: 'Snapping the Final Ball — and Why We Reverted It',
+            summary: 'The match-terminal snap looked like a clean fix to wp_after maxing out below 1.0 on chase-winning balls, but it concentrated the entire model-vs-truth gap onto a single bowler per match — Trent Boult\'s 3/26 in a DLS-shortened 2018 chase ballooned to a +0.97 single-game tilt, of which +0.89 was pure snap windfall. The fix: tune the underlying model to push wp toward 0/1 naturally at the boundary, and feed it the correct ball allocation for DLS-revised innings.',
             tags: ['methodology', 'model'],
             date: '2026-05-06',
         },
