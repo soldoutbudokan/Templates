@@ -8,18 +8,18 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": -0.01432,
+  "total_tilt_per_match": -0.03287,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.01272,
-  "shrunk_total_tilt_per_match": -0.01781,
+  "bowling_tilt_per_match": -0.03127,
+  "shrunk_total_tilt_per_match": -0.02963,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01276,
-  "tilt_ci_lower": -0.06191,
-  "tilt_ci_upper": 0.02629,
-  "tilt_ci_lower_90": -0.05482,
-  "tilt_ci_upper_90": 0.0192,
+  "shrunk_bowling_tilt_per_match": -0.02333,
+  "tilt_ci_lower": -0.08662,
+  "tilt_ci_upper": 0.02736,
+  "tilt_ci_lower_90": -0.07746,
+  "tilt_ci_upper_90": 0.0182,
   "confidence": "low",
-  "total_tilt": -0.11456,
+  "total_tilt": -0.26298,
   "total_matches": 8,
   "batting_balls": 4,
   "bowling_balls": 174,
@@ -28,7 +28,7 @@
       "season": "2011",
       "team": "Chennai Super Kings",
       "batting_tilt_per_match": -0.01279,
-      "bowling_tilt_per_match": -0.01272,
+      "bowling_tilt_per_match": -0.03127,
       "batting_matches": 1,
       "bowling_matches": 8,
       "batting_balls": 4,
@@ -183,8 +183,8 @@
           "bowl_balls": 12,
           "bowl_runs": 14,
           "bowl_econ": 7.0,
-          "bowl_tilt": -0.05694,
-          "total_tilt": -0.05694
+          "bowl_tilt": -0.20535,
+          "total_tilt": -0.20535
         }
       ],
       "batting_stats": {
@@ -226,9 +226,9 @@
     },
     {
       "phase": "middle",
-      "tilt": -0.04328,
+      "tilt": -0.19169,
       "balls": 144,
-      "avg_delta": -0.000292
+      "avg_delta": -0.001295
     },
     {
       "phase": "death",
@@ -301,20 +301,20 @@
   ],
   "bowling_worst_matches": [
     {
+      "match_id": "501245",
+      "date": "2011-05-07",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.20535,
+      "wickets": 0,
+      "balls": 12
+    },
+    {
       "match_id": "501236",
       "date": "2011-05-01",
       "vs": "Deccan Chargers",
       "tilt": -0.16946,
       "wickets": 0,
       "balls": 24
-    },
-    {
-      "match_id": "501245",
-      "date": "2011-05-07",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.05694,
-      "wickets": 0,
-      "balls": 12
     },
     {
       "match_id": "501198",
@@ -387,8 +387,8 @@
     {
       "match": 8,
       "date": "2011-05-07",
-      "tilt": -0.05694,
-      "cumulative": -0.11456
+      "tilt": -0.20535,
+      "cumulative": -0.26298
     }
   ],
   "team_matchups": [
@@ -426,7 +426,7 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.04003,
+      "tilt_per_match": -0.11424,
       "matches": 2
     },
     {
@@ -464,6 +464,6 @@
     0.04659,
     -0.16946,
     0.00906,
-    -0.05694
+    -0.20535
   ]
 }

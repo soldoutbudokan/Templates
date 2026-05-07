@@ -6,21 +6,20 @@
   "country": "IN",
   "team": "Delhi Capitals",
   "teams": [
-    "Delhi Capitals",
-    "Kolkata Knight Riders"
+    "Delhi Capitals"
   ],
-  "total_tilt_per_match": -0.09173,
+  "total_tilt_per_match": -0.09433,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.09021,
-  "shrunk_total_tilt_per_match": -0.07157,
+  "bowling_tilt_per_match": -0.09304,
+  "shrunk_total_tilt_per_match": -0.07329,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.06605,
-  "tilt_ci_lower": -0.14824,
-  "tilt_ci_upper": 0.00511,
-  "tilt_ci_lower_90": -0.13592,
-  "tilt_ci_upper_90": -0.00722,
+  "shrunk_bowling_tilt_per_match": -0.06725,
+  "tilt_ci_lower": -0.15433,
+  "tilt_ci_upper": 0.00776,
+  "tilt_ci_lower_90": -0.14131,
+  "tilt_ci_upper_90": -0.00527,
   "confidence": "low",
-  "total_tilt": -1.10077,
+  "total_tilt": -1.13199,
   "total_matches": 12,
   "batting_balls": 33,
   "bowling_balls": 180,
@@ -29,7 +28,7 @@
       "season": "2020",
       "team": "Kolkata Knight Riders",
       "batting_tilt_per_match": -0.01551,
-      "bowling_tilt_per_match": -0.07829,
+      "bowling_tilt_per_match": -0.08176,
       "batting_matches": 6,
       "bowling_matches": 9,
       "batting_balls": 31,
@@ -203,8 +202,8 @@
           "bowl_balls": 18,
           "bowl_runs": 34,
           "bowl_econ": 11.33,
-          "bowl_tilt": -0.47249,
-          "total_tilt": -0.47249
+          "bowl_tilt": -0.51565,
+          "total_tilt": -0.51565
         },
         {
           "match_id": "1216530",
@@ -222,8 +221,8 @@
           "bowl_balls": 24,
           "bowl_runs": 25,
           "bowl_econ": 6.25,
-          "bowl_tilt": -0.00096,
-          "total_tilt": -0.00704
+          "bowl_tilt": 0.01099,
+          "total_tilt": 0.00491
         }
       ],
       "batting_stats": {
@@ -368,9 +367,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.60453,
+      "tilt": -0.63574,
       "balls": 30,
-      "avg_delta": -0.019501
+      "avg_delta": -0.020508
     }
   ],
   "best_matches": [
@@ -475,6 +474,14 @@
       "balls": 18
     },
     {
+      "match_id": "1216530",
+      "date": "2020-11-01",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.01099,
+      "wickets": 1,
+      "balls": 24
+    },
+    {
       "match_id": "1216497",
       "date": "2020-10-24",
       "vs": "Delhi Capitals",
@@ -489,14 +496,6 @@
       "tilt": 0.00676,
       "wickets": 0,
       "balls": 24
-    },
-    {
-      "match_id": "1216530",
-      "date": "2020-11-01",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.00096,
-      "wickets": 1,
-      "balls": 24
     }
   ],
   "bowling_worst_matches": [
@@ -504,7 +503,7 @@
       "match_id": "1216536",
       "date": "2020-10-29",
       "vs": "Chennai Super Kings",
-      "tilt": -0.47249,
+      "tilt": -0.51565,
       "wickets": 0,
       "balls": 18
     },
@@ -593,26 +592,26 @@
     {
       "match": 9,
       "date": "2020-10-29",
-      "tilt": -0.47249,
-      "cumulative": -0.79063
+      "tilt": -0.51565,
+      "cumulative": -0.83379
     },
     {
       "match": 10,
       "date": "2020-11-01",
-      "tilt": -0.00703,
-      "cumulative": -0.79766
+      "tilt": 0.00491,
+      "cumulative": -0.82887
     },
     {
       "match": 11,
       "date": "2021-04-21",
       "tilt": -0.08345,
-      "cumulative": -0.88112
+      "cumulative": -0.91233
     },
     {
       "match": 12,
       "date": "2022-03-27",
       "tilt": -0.21966,
-      "cumulative": -1.10077
+      "cumulative": -1.13199
     }
   ],
   "team_matchups": [
@@ -645,7 +644,7 @@
   "bowling_team_matchups": [
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.03913,
+      "tilt_per_match": 0.0451,
       "matches": 2
     },
     {
@@ -665,7 +664,7 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.15508,
+      "tilt_per_match": -0.16947,
       "matches": 3
     },
     {
@@ -709,8 +708,8 @@
     0.00483,
     0.01035,
     -0.03739,
-    -0.47249,
-    -0.00703,
+    -0.51565,
+    0.00491,
     -0.08345,
     -0.21966
   ]

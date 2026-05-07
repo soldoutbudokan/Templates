@@ -8,18 +8,18 @@
   "teams": [
     "Pune Warriors India"
   ],
-  "total_tilt_per_match": 0.02473,
+  "total_tilt_per_match": 0.01498,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.0234,
-  "shrunk_total_tilt_per_match": 0.00063,
+  "bowling_tilt_per_match": 0.01365,
+  "shrunk_total_tilt_per_match": -0.0052,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.00452,
-  "tilt_ci_lower": -0.07726,
-  "tilt_ci_upper": 0.07852,
-  "tilt_ci_lower_90": -0.06474,
-  "tilt_ci_upper_90": 0.066,
+  "shrunk_bowling_tilt_per_match": 0.00012,
+  "tilt_ci_lower": -0.08972,
+  "tilt_ci_upper": 0.07932,
+  "tilt_ci_lower_90": -0.07614,
+  "tilt_ci_upper_90": 0.06574,
   "confidence": "low",
-  "total_tilt": 0.12365,
+  "total_tilt": 0.0749,
   "total_matches": 5,
   "batting_balls": 3,
   "bowling_balls": 117,
@@ -28,7 +28,7 @@
       "season": "2011",
       "team": "Pune Warriors India",
       "batting_tilt_per_match": 0.00332,
-      "bowling_tilt_per_match": 0.0234,
+      "bowling_tilt_per_match": 0.01365,
       "batting_matches": 2,
       "bowling_matches": 5,
       "batting_balls": 3,
@@ -107,8 +107,8 @@
           "bowl_balls": 21,
           "bowl_runs": 26,
           "bowl_econ": 7.43,
-          "bowl_tilt": -0.08405,
-          "total_tilt": -0.08405
+          "bowl_tilt": -0.1328,
+          "total_tilt": -0.1328
         },
         {
           "match_id": "501241",
@@ -175,9 +175,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.0805,
+      "tilt": 0.03175,
       "balls": 51,
-      "avg_delta": 0.001519
+      "avg_delta": 0.000599
     }
   ],
   "best_matches": [
@@ -242,38 +242,38 @@
       "balls": 24
     },
     {
-      "match_id": "501235",
-      "date": "2011-05-01",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.08405,
-      "wickets": 0,
-      "balls": 21
-    },
-    {
       "match_id": "501232",
       "date": "2011-04-29",
       "vs": "Royal Challengers Bangalore",
       "tilt": -0.0856,
       "wickets": 1,
       "balls": 24
+    },
+    {
+      "match_id": "501235",
+      "date": "2011-05-01",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.1328,
+      "wickets": 0,
+      "balls": 21
     }
   ],
   "bowling_worst_matches": [
     {
+      "match_id": "501235",
+      "date": "2011-05-01",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.1328,
+      "wickets": 0,
+      "balls": 21
+    },
+    {
       "match_id": "501232",
       "date": "2011-04-29",
       "vs": "Royal Challengers Bangalore",
       "tilt": -0.0856,
       "wickets": 1,
       "balls": 24
-    },
-    {
-      "match_id": "501235",
-      "date": "2011-05-01",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.08405,
-      "wickets": 0,
-      "balls": 21
     },
     {
       "match_id": "501228",
@@ -322,14 +322,14 @@
     {
       "match": 4,
       "date": "2011-05-01",
-      "tilt": -0.08405,
-      "cumulative": 0.06353
+      "tilt": -0.1328,
+      "cumulative": 0.01478
     },
     {
       "match": 5,
       "date": "2011-05-04",
       "tilt": 0.06011,
-      "cumulative": 0.12365
+      "cumulative": 0.0749
     }
   ],
   "team_matchups": [
@@ -351,13 +351,13 @@
       "matches": 1
     },
     {
-      "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.08405,
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.0856,
       "matches": 1
     },
     {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.0856,
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.1328,
       "matches": 1
     }
   ],
@@ -386,7 +386,7 @@
     0.21946,
     0.01373,
     -0.0856,
-    -0.08405,
+    -0.1328,
     0.06011
   ]
 }

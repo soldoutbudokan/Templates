@@ -8,18 +8,18 @@
   "teams": [
     "Mumbai Indians"
   ],
-  "total_tilt_per_match": 0.00547,
+  "total_tilt_per_match": 0.03645,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.00532,
-  "shrunk_total_tilt_per_match": -0.00898,
+  "bowling_tilt_per_match": 0.0363,
+  "shrunk_total_tilt_per_match": 0.00533,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.00414,
-  "tilt_ci_lower": -0.05835,
-  "tilt_ci_upper": 0.04039,
-  "tilt_ci_lower_90": -0.05042,
-  "tilt_ci_upper_90": 0.03246,
+  "shrunk_bowling_tilt_per_match": 0.0108,
+  "tilt_ci_lower": -0.05879,
+  "tilt_ci_upper": 0.06946,
+  "tilt_ci_lower_90": -0.04849,
+  "tilt_ci_upper_90": 0.05915,
   "confidence": "low",
-  "total_tilt": 0.02734,
+  "total_tilt": 0.18223,
   "total_matches": 5,
   "batting_balls": 9,
   "bowling_balls": 73,
@@ -28,7 +28,7 @@
       "season": "2023",
       "team": "Mumbai Indians",
       "batting_tilt_per_match": 0.00073,
-      "bowling_tilt_per_match": 0.02713,
+      "bowling_tilt_per_match": 0.06585,
       "batting_matches": 1,
       "bowling_matches": 4,
       "batting_balls": 9,
@@ -69,8 +69,8 @@
           "bowl_balls": 17,
           "bowl_runs": 20,
           "bowl_econ": 7.06,
-          "bowl_tilt": 0.00226,
-          "total_tilt": 0.00226
+          "bowl_tilt": 0.15715,
+          "total_tilt": 0.15715
         },
         {
           "match_id": "1359505",
@@ -184,9 +184,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.28553,
+      "tilt": 0.34038,
       "balls": 54,
-      "avg_delta": 0.004759
+      "avg_delta": 0.005673
     },
     {
       "phase": "middle",
@@ -196,9 +196,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.09765,
+      "tilt": 0.0024,
       "balls": 11,
-      "avg_delta": -0.006975
+      "avg_delta": 0.000171
     }
   ],
   "best_matches": [
@@ -223,6 +223,14 @@
   ],
   "bowling_best_matches": [
     {
+      "match_id": "1359499",
+      "date": "2023-04-18",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.15715,
+      "wickets": 2,
+      "balls": 17
+    },
+    {
       "match_id": "1359509",
       "date": "2023-04-25",
       "vs": "Gujarat Titans",
@@ -237,14 +245,6 @@
       "tilt": 0.01687,
       "wickets": 0,
       "balls": 12
-    },
-    {
-      "match_id": "1359499",
-      "date": "2023-04-18",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.00226,
-      "wickets": 2,
-      "balls": 17
     },
     {
       "match_id": "1359505",
@@ -281,14 +281,6 @@
       "balls": 18
     },
     {
-      "match_id": "1359499",
-      "date": "2023-04-18",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.00226,
-      "wickets": 2,
-      "balls": 17
-    },
-    {
       "match_id": "1359496",
       "date": "2023-04-16",
       "vs": "Kolkata Knight Riders",
@@ -303,6 +295,14 @@
       "tilt": 0.12954,
       "wickets": 1,
       "balls": 12
+    },
+    {
+      "match_id": "1359499",
+      "date": "2023-04-18",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.15715,
+      "wickets": 2,
+      "balls": 17
     }
   ],
   "career_trend": [
@@ -315,26 +315,26 @@
     {
       "match": 2,
       "date": "2023-04-18",
-      "tilt": 0.00226,
-      "cumulative": 0.01913
+      "tilt": 0.15715,
+      "cumulative": 0.17403
     },
     {
       "match": 3,
       "date": "2023-04-22",
       "tilt": -0.04015,
-      "cumulative": -0.02102
+      "cumulative": 0.13387
     },
     {
       "match": 4,
       "date": "2023-04-25",
       "tilt": 0.13027,
-      "cumulative": 0.10925
+      "cumulative": 0.26414
     },
     {
       "match": 5,
       "date": "2024-05-17",
       "tilt": -0.08191,
-      "cumulative": 0.02734
+      "cumulative": 0.18223
     }
   ],
   "team_matchups": [
@@ -346,6 +346,11 @@
   ],
   "bowling_team_matchups": [
     {
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": 0.15715,
+      "matches": 1
+    },
+    {
       "opponent": "Gujarat Titans",
       "tilt_per_match": 0.12954,
       "matches": 1
@@ -353,11 +358,6 @@
     {
       "opponent": "Kolkata Knight Riders",
       "tilt_per_match": 0.01687,
-      "matches": 1
-    },
-    {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": 0.00226,
       "matches": 1
     },
     {
@@ -394,7 +394,7 @@
   },
   "match_tilt_distribution": [
     0.01687,
-    0.00226,
+    0.15715,
     -0.04015,
     0.13027,
     -0.08191

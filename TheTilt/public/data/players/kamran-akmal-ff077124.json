@@ -8,18 +8,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.01331,
-  "batting_tilt_per_match": -0.01331,
+  "total_tilt_per_match": -0.02021,
+  "batting_tilt_per_match": -0.02021,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.0179,
-  "shrunk_batting_tilt_per_match": -0.01561,
+  "shrunk_total_tilt_per_match": -0.02227,
+  "shrunk_batting_tilt_per_match": -0.02183,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.04606,
-  "tilt_ci_upper": 0.01027,
-  "tilt_ci_lower_90": -0.04154,
-  "tilt_ci_upper_90": 0.00574,
+  "tilt_ci_lower": -0.04318,
+  "tilt_ci_upper": -0.00135,
+  "tilt_ci_lower_90": -0.03982,
+  "tilt_ci_upper_90": -0.00471,
   "confidence": "low",
-  "total_tilt": -0.07989,
+  "total_tilt": -0.12126,
   "total_matches": 6,
   "batting_balls": 78,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2008",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.01331,
+      "batting_tilt_per_match": -0.02021,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 6,
       "bowling_matches": 0,
@@ -64,13 +64,13 @@
           "bat_runs": 12,
           "bat_balls": 9,
           "bat_sr": 133.3,
-          "bat_tilt": 0.06118,
+          "bat_tilt": 0.00832,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.06118
+          "total_tilt": 0.00832
         },
         {
           "match_id": "336033",
@@ -102,13 +102,13 @@
           "bat_runs": 18,
           "bat_balls": 16,
           "bat_sr": 112.5,
-          "bat_tilt": -0.00335,
+          "bat_tilt": 0.00814,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.00335
+          "total_tilt": 0.00814
         },
         {
           "match_id": "336019",
@@ -165,9 +165,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.02318,
+      "tilt": -0.01819,
       "balls": 41,
-      "avg_delta": 0.000565
+      "avg_delta": -0.000444
     },
     {
       "phase": "middle",
@@ -188,7 +188,7 @@
       "match_id": "335990",
       "date": "2008-04-24",
       "vs": "Deccan Chargers",
-      "tilt": 0.06118,
+      "tilt": 0.00832,
       "runs": 12,
       "balls": 9
     },
@@ -196,7 +196,7 @@
       "match_id": "336036",
       "date": "2008-05-26",
       "vs": "Mumbai Indians",
-      "tilt": -0.00335,
+      "tilt": 0.00814,
       "runs": 18,
       "balls": 16
     },
@@ -262,7 +262,7 @@
       "match_id": "336036",
       "date": "2008-05-26",
       "vs": "Mumbai Indians",
-      "tilt": -0.00335,
+      "tilt": 0.00814,
       "runs": 18,
       "balls": 16
     }
@@ -279,43 +279,43 @@
     {
       "match": 2,
       "date": "2008-04-24",
-      "tilt": 0.06118,
-      "cumulative": 0.04147
+      "tilt": 0.00832,
+      "cumulative": -0.01139
     },
     {
       "match": 3,
       "date": "2008-05-24",
       "tilt": -0.01969,
-      "cumulative": 0.02178
+      "cumulative": -0.03108
     },
     {
       "match": 4,
       "date": "2008-05-26",
-      "tilt": -0.00335,
-      "cumulative": 0.01843
+      "tilt": 0.00814,
+      "cumulative": -0.02294
     },
     {
       "match": 5,
       "date": "2008-05-28",
       "tilt": -0.00993,
-      "cumulative": 0.00851
+      "cumulative": -0.03287
     },
     {
       "match": 6,
       "date": "2008-06-01",
       "tilt": -0.08839,
-      "cumulative": -0.07989
+      "cumulative": -0.12126
     }
   ],
   "team_matchups": [
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": 0.06118,
+      "tilt_per_match": 0.00832,
       "matches": 1
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.00335,
+      "tilt_per_match": 0.00814,
       "matches": 1
     },
     {
@@ -345,9 +345,9 @@
   "bowling_stats": null,
   "match_tilt_distribution": [
     -0.01971,
-    0.06118,
+    0.00832,
     -0.01969,
-    -0.00335,
+    0.00814,
     -0.00993,
     -0.08839
   ]

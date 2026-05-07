@@ -8,18 +8,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": -0.05298,
+  "total_tilt_per_match": -0.02687,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.0552,
-  "shrunk_total_tilt_per_match": -0.04653,
+  "bowling_tilt_per_match": -0.02908,
+  "shrunk_total_tilt_per_match": -0.02637,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.04536,
-  "tilt_ci_lower": -0.1402,
-  "tilt_ci_upper": 0.04715,
-  "tilt_ci_lower_90": -0.12515,
-  "tilt_ci_upper_90": 0.0321,
+  "shrunk_bowling_tilt_per_match": -0.02502,
+  "tilt_ci_lower": -0.09273,
+  "tilt_ci_upper": 0.04,
+  "tilt_ci_lower_90": -0.08206,
+  "tilt_ci_upper_90": 0.02933,
   "confidence": "low",
-  "total_tilt": -0.9537,
+  "total_tilt": -0.48358,
   "total_matches": 18,
   "batting_balls": 3,
   "bowling_balls": 360,
@@ -28,7 +28,7 @@
       "season": "2008",
       "team": "Punjab Kings",
       "batting_tilt_per_match": 0.01996,
-      "bowling_tilt_per_match": -0.043,
+      "bowling_tilt_per_match": -0.00684,
       "batting_matches": 2,
       "bowling_matches": 13,
       "batting_balls": 3,
@@ -202,8 +202,8 @@
           "bowl_balls": 24,
           "bowl_runs": 57,
           "bowl_econ": 14.25,
-          "bowl_tilt": -0.74513,
-          "total_tilt": -0.74513
+          "bowl_tilt": -0.27501,
+          "total_tilt": -0.27501
         },
         {
           "match_id": "336031",
@@ -464,9 +464,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.05787,
+      "tilt": 0.41225,
       "balls": 108,
-      "avg_delta": -0.000521
+      "avg_delta": 0.003714
     }
   ],
   "best_matches": [
@@ -549,20 +549,20 @@
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "336028",
-      "date": "2008-05-21",
-      "vs": "Mumbai Indians",
-      "tilt": -0.74513,
-      "wickets": 3,
-      "balls": 24
-    },
-    {
       "match_id": "392214",
       "date": "2009-05-07",
       "vs": "Chennai Super Kings",
       "tilt": -0.31599,
       "wickets": 0,
       "balls": 12
+    },
+    {
+      "match_id": "336028",
+      "date": "2008-05-21",
+      "vs": "Mumbai Indians",
+      "tilt": -0.27501,
+      "wickets": 3,
+      "balls": 24
     },
     {
       "match_id": "336022",
@@ -641,62 +641,62 @@
     {
       "match": 9,
       "date": "2008-05-21",
-      "tilt": -0.74513,
-      "cumulative": -0.72595
+      "tilt": -0.27501,
+      "cumulative": -0.25583
     },
     {
       "match": 10,
       "date": "2008-05-23",
       "tilt": -0.11389,
-      "cumulative": -0.83984
+      "cumulative": -0.36972
     },
     {
       "match": 11,
       "date": "2008-05-25",
       "tilt": 0.32999,
-      "cumulative": -0.50985
+      "cumulative": -0.03973
     },
     {
       "match": 12,
       "date": "2008-05-28",
       "tilt": 0.00203,
-      "cumulative": -0.50782
+      "cumulative": -0.0377
     },
     {
       "match": 13,
       "date": "2008-05-31",
       "tilt": -0.01125,
-      "cumulative": -0.51907
+      "cumulative": -0.04895
     },
     {
       "match": 14,
       "date": "2009-04-19",
       "tilt": 0.03067,
-      "cumulative": -0.48839
+      "cumulative": -0.01827
     },
     {
       "match": 15,
       "date": "2009-04-24",
       "tilt": -0.03614,
-      "cumulative": -0.52453
+      "cumulative": -0.05442
     },
     {
       "match": 16,
       "date": "2009-04-26",
       "tilt": 0.10006,
-      "cumulative": -0.42448
+      "cumulative": 0.04564
     },
     {
       "match": 17,
       "date": "2009-05-07",
       "tilt": -0.31599,
-      "cumulative": -0.74047
+      "cumulative": -0.27035
     },
     {
       "match": 18,
       "date": "2010-04-18",
       "tilt": -0.21323,
-      "cumulative": -0.9537
+      "cumulative": -0.48358
     }
   ],
   "team_matchups": [
@@ -744,7 +744,7 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.38894,
+      "tilt_per_match": -0.15388,
       "matches": 2
     }
   ],
@@ -778,7 +778,7 @@
     -0.00111,
     0.09594,
     -0.24811,
-    -0.74513,
+    -0.27501,
     -0.11389,
     0.32999,
     0.00203,

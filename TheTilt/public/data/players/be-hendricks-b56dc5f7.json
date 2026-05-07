@@ -8,18 +8,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": -0.03783,
+  "total_tilt_per_match": -0.01427,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.02788,
-  "shrunk_total_tilt_per_match": -0.03179,
+  "bowling_tilt_per_match": -0.00433,
+  "shrunk_total_tilt_per_match": -0.01869,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.02129,
-  "tilt_ci_lower": -0.08483,
-  "tilt_ci_upper": 0.02125,
-  "tilt_ci_lower_90": -0.0763,
-  "tilt_ci_upper_90": 0.01272,
+  "shrunk_bowling_tilt_per_match": -0.00772,
+  "tilt_ci_lower": -0.05889,
+  "tilt_ci_upper": 0.02151,
+  "tilt_ci_lower_90": -0.05242,
+  "tilt_ci_upper_90": 0.01505,
   "confidence": "low",
-  "total_tilt": -0.26479,
+  "total_tilt": -0.09989,
   "total_matches": 7,
   "batting_balls": 3,
   "bowling_balls": 150,
@@ -28,7 +28,7 @@
       "season": "2014",
       "team": "Punjab Kings",
       "batting_tilt_per_match": -0.0696,
-      "bowling_tilt_per_match": -0.08488,
+      "bowling_tilt_per_match": -0.02991,
       "batting_matches": 1,
       "bowling_matches": 3,
       "batting_balls": 1,
@@ -88,8 +88,8 @@
           "bowl_balls": 24,
           "bowl_runs": 57,
           "bowl_econ": 14.25,
-          "bowl_tilt": -0.17533,
-          "total_tilt": -0.17533
+          "bowl_tilt": -0.01043,
+          "total_tilt": -0.01043
         }
       ],
       "batting_stats": {
@@ -245,9 +245,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.1903,
+      "tilt": 0.3552,
       "balls": 54,
-      "avg_delta": 0.003398
+      "avg_delta": 0.006343
     }
   ],
   "best_matches": [
@@ -320,23 +320,15 @@
       "balls": 24
     },
     {
-      "match_id": "829791",
-      "date": "2015-05-09",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.04745,
-      "wickets": 2,
+      "match_id": "734033",
+      "date": "2014-05-23",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.01043,
+      "wickets": 0,
       "balls": 24
     }
   ],
   "bowling_worst_matches": [
-    {
-      "match_id": "734033",
-      "date": "2014-05-23",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.17533,
-      "wickets": 0,
-      "balls": 24
-    },
     {
       "match_id": "734025",
       "date": "2014-05-21",
@@ -351,6 +343,14 @@
       "vs": "Kolkata Knight Riders",
       "tilt": -0.04745,
       "wickets": 2,
+      "balls": 24
+    },
+    {
+      "match_id": "734033",
+      "date": "2014-05-23",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.01043,
+      "wickets": 0,
       "balls": 24
     },
     {
@@ -386,32 +386,32 @@
     {
       "match": 3,
       "date": "2014-05-23",
-      "tilt": -0.17533,
-      "cumulative": -0.32423
+      "tilt": -0.01043,
+      "cumulative": -0.15933
     },
     {
       "match": 4,
       "date": "2015-05-09",
       "tilt": -0.04745,
-      "cumulative": -0.37169
+      "cumulative": -0.20678
     },
     {
       "match": 5,
       "date": "2015-05-11",
       "tilt": 0.03756,
-      "cumulative": -0.33413
+      "cumulative": -0.16923
     },
     {
       "match": 6,
       "date": "2015-05-13",
       "tilt": 0.06003,
-      "cumulative": -0.2741
+      "cumulative": -0.1092
     },
     {
       "match": 7,
       "date": "2015-05-16",
       "tilt": 0.00931,
-      "cumulative": -0.26479
+      "cumulative": -0.09989
     }
   ],
   "team_matchups": [
@@ -448,6 +448,11 @@
       "matches": 1
     },
     {
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.01043,
+      "matches": 1
+    },
+    {
       "opponent": "Kolkata Knight Riders",
       "tilt_per_match": -0.04745,
       "matches": 1
@@ -455,11 +460,6 @@
     {
       "opponent": "Mumbai Indians",
       "tilt_per_match": -0.08746,
-      "matches": 1
-    },
-    {
-      "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.17533,
       "matches": 1
     }
   ],
@@ -487,7 +487,7 @@
   "match_tilt_distribution": [
     0.00816,
     -0.15706,
-    -0.17533,
+    -0.01043,
     -0.04745,
     0.03756,
     0.06003,

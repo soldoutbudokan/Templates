@@ -10,9 +10,9 @@
     "losses": 5,
     "no_results": 0,
     "win_pct": 0.6429,
-    "nrr": 0.167,
-    "team_total_tilt": 2.07494,
-    "team_tilt_per_match": 0.14821,
+    "nrr": 0.176,
+    "team_total_tilt": 2.53005,
+    "team_tilt_per_match": 0.18072,
     "position_est": 2
   },
   "batting_stats": {
@@ -30,6 +30,36 @@
     "economy": 7.84
   },
   "roster": [
+    {
+      "player": "Jaydev Unadkat",
+      "slug": "jd-unadkat-1e66c162",
+      "country": "IN",
+      "matches": 12,
+      "batting_stats": {
+        "runs": 2,
+        "innings": 1,
+        "balls": 5,
+        "avg": 2.0,
+        "sr": 40.0,
+        "hs": 2,
+        "not_outs": 1,
+        "fifties": 0,
+        "hundreds": 0
+      },
+      "bowling_stats": {
+        "wickets": 27,
+        "innings": 12,
+        "balls": 275,
+        "runs_conceded": 330,
+        "avg": 12.22,
+        "economy": 7.2,
+        "best_figures": "5/30"
+      },
+      "batting_tilt_per_match": null,
+      "bowling_tilt_per_match": 0.13288,
+      "shrunk_total_tilt_per_match": 0.097,
+      "total_tilt": 1.58943
+    },
     {
       "player": "Lockie Ferguson",
       "slug": "lh-ferguson-2f9d0389",
@@ -56,9 +86,9 @@
         "best_figures": "3/8"
       },
       "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.13242,
-      "shrunk_total_tilt_per_match": 0.06103,
-      "total_tilt": 0.52968
+      "bowling_tilt_per_match": 0.12764,
+      "shrunk_total_tilt_per_match": 0.05775,
+      "total_tilt": 0.51055
     },
     {
       "player": "Imran Tahir",
@@ -87,38 +117,8 @@
       },
       "batting_tilt_per_match": null,
       "bowling_tilt_per_match": 0.08504,
-      "shrunk_total_tilt_per_match": 0.06119,
+      "shrunk_total_tilt_per_match": 0.0608,
       "total_tilt": 1.02046
-    },
-    {
-      "player": "Jaydev Unadkat",
-      "slug": "jd-unadkat-1e66c162",
-      "country": "IN",
-      "matches": 12,
-      "batting_stats": {
-        "runs": 2,
-        "innings": 1,
-        "balls": 5,
-        "avg": 2.0,
-        "sr": 40.0,
-        "hs": 2,
-        "not_outs": 1,
-        "fifties": 0,
-        "hundreds": 0
-      },
-      "bowling_stats": {
-        "wickets": 27,
-        "innings": 12,
-        "balls": 275,
-        "runs_conceded": 330,
-        "avg": 12.22,
-        "economy": 7.2,
-        "best_figures": "5/30"
-      },
-      "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.07389,
-      "shrunk_total_tilt_per_match": 0.05233,
-      "total_tilt": 0.8816
     },
     {
       "player": "Ben Stokes",
@@ -146,9 +146,9 @@
         "best_figures": "3/20"
       },
       "batting_tilt_per_match": 0.01731,
-      "bowling_tilt_per_match": 0.04359,
-      "shrunk_total_tilt_per_match": 0.04161,
-      "total_tilt": 0.71342
+      "bowling_tilt_per_match": 0.04466,
+      "shrunk_total_tilt_per_match": 0.04208,
+      "total_tilt": 0.72626
     },
     {
       "player": "Washington Sundar",
@@ -176,39 +176,9 @@
         "best_figures": "3/16"
       },
       "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.08206,
-      "shrunk_total_tilt_per_match": 0.03839,
-      "total_tilt": 0.5861
-    },
-    {
-      "player": "Daniel Christian",
-      "slug": "dt-christian-2a2e6343",
-      "country": "AU",
-      "matches": 13,
-      "batting_stats": {
-        "runs": 79,
-        "innings": 9,
-        "balls": 49,
-        "avg": 15.8,
-        "sr": 161.22,
-        "hs": 17,
-        "not_outs": 4,
-        "fifties": 0,
-        "hundreds": 0
-      },
-      "bowling_stats": {
-        "wickets": 12,
-        "innings": 13,
-        "balls": 240,
-        "runs_conceded": 303,
-        "avg": 25.25,
-        "economy": 7.57,
-        "best_figures": "2/23"
-      },
-      "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.02857,
-      "shrunk_total_tilt_per_match": 0.03146,
-      "total_tilt": 0.5857
+      "bowling_tilt_per_match": 0.0817,
+      "shrunk_total_tilt_per_match": 0.03773,
+      "total_tilt": 0.58248
     },
     {
       "player": "Shardul Thakur",
@@ -236,9 +206,39 @@
         "best_figures": "4/37"
       },
       "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": 0.04411,
-      "shrunk_total_tilt_per_match": 0.01756,
-      "total_tilt": 0.33622
+      "bowling_tilt_per_match": 0.05222,
+      "shrunk_total_tilt_per_match": 0.02345,
+      "total_tilt": 0.43356
+    },
+    {
+      "player": "Daniel Christian",
+      "slug": "dt-christian-2a2e6343",
+      "country": "AU",
+      "matches": 13,
+      "batting_stats": {
+        "runs": 79,
+        "innings": 9,
+        "balls": 49,
+        "avg": 15.8,
+        "sr": 161.22,
+        "hs": 17,
+        "not_outs": 4,
+        "fifties": 0,
+        "hundreds": 0
+      },
+      "bowling_stats": {
+        "wickets": 12,
+        "innings": 13,
+        "balls": 240,
+        "runs_conceded": 303,
+        "avg": 25.25,
+        "economy": 7.57,
+        "best_figures": "2/23"
+      },
+      "batting_tilt_per_match": null,
+      "bowling_tilt_per_match": 0.03043,
+      "shrunk_total_tilt_per_match": 0.01604,
+      "total_tilt": 0.33321
     },
     {
       "player": "Rahul Tripathi",
@@ -265,32 +265,32 @@
         "economy": 12.0,
         "best_figures": "0/12"
       },
-      "batting_tilt_per_match": 0.02516,
+      "batting_tilt_per_match": 0.02655,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": 0.01328,
-      "total_tilt": 0.29581
+      "shrunk_total_tilt_per_match": 0.01412,
+      "total_tilt": 0.31516
     },
     {
-      "player": "Manoj Tiwary",
-      "slug": "mk-tiwary-26e5cabf",
-      "country": "IN",
-      "matches": 13,
+      "player": "Steve Smith",
+      "slug": "spd-smith-30a45b23",
+      "country": "AU",
+      "matches": 15,
       "batting_stats": {
-        "runs": 324,
-        "innings": 13,
-        "balls": 236,
-        "avg": 36.0,
-        "sr": 137.29,
-        "hs": 60,
-        "not_outs": 4,
-        "fifties": 2,
+        "runs": 472,
+        "innings": 15,
+        "balls": 387,
+        "avg": 39.33,
+        "sr": 121.96,
+        "hs": 84,
+        "not_outs": 3,
+        "fifties": 3,
         "hundreds": 0
       },
       "bowling_stats": null,
-      "batting_tilt_per_match": -0.00072,
+      "batting_tilt_per_match": -0.00017,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.00421,
-      "total_tilt": -0.00935
+      "shrunk_total_tilt_per_match": -0.00361,
+      "total_tilt": -0.00248
     },
     {
       "player": "Adam Zampa",
@@ -319,30 +319,38 @@
       },
       "batting_tilt_per_match": null,
       "bowling_tilt_per_match": 0.00049,
-      "shrunk_total_tilt_per_match": -0.00681,
+      "shrunk_total_tilt_per_match": -0.00721,
       "total_tilt": -0.00496
     },
     {
-      "player": "Steve Smith",
-      "slug": "spd-smith-30a45b23",
-      "country": "AU",
-      "matches": 15,
+      "player": "Ankit Sharma",
+      "slug": "ankit-sharma-24d94623",
+      "country": "IN",
+      "matches": 1,
       "batting_stats": {
-        "runs": 472,
-        "innings": 15,
-        "balls": 387,
-        "avg": 39.33,
-        "sr": 121.96,
-        "hs": 84,
-        "not_outs": 3,
-        "fifties": 3,
+        "runs": 25,
+        "innings": 1,
+        "balls": 15,
+        "avg": 25.0,
+        "sr": 166.67,
+        "hs": 25,
+        "not_outs": 0,
+        "fifties": 0,
         "hundreds": 0
       },
-      "bowling_stats": null,
-      "batting_tilt_per_match": -0.00237,
+      "bowling_stats": {
+        "wickets": 0,
+        "innings": 1,
+        "balls": 6,
+        "runs_conceded": 16,
+        "avg": 16.0,
+        "economy": 16.0,
+        "best_figures": "0/16"
+      },
+      "batting_tilt_per_match": null,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.00517,
-      "total_tilt": -0.03557
+      "shrunk_total_tilt_per_match": -0.01726,
+      "total_tilt": -0.01635
     },
     {
       "player": "Ajinkya Rahane",
@@ -361,10 +369,32 @@
         "hundreds": 0
       },
       "bowling_stats": null,
-      "batting_tilt_per_match": -0.02804,
+      "batting_tilt_per_match": -0.02238,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.02589,
-      "total_tilt": -0.4486
+      "shrunk_total_tilt_per_match": -0.02146,
+      "total_tilt": -0.35801
+    },
+    {
+      "player": "Manoj Tiwary",
+      "slug": "mk-tiwary-26e5cabf",
+      "country": "IN",
+      "matches": 13,
+      "batting_stats": {
+        "runs": 324,
+        "innings": 13,
+        "balls": 236,
+        "avg": 36.0,
+        "sr": 137.29,
+        "hs": 60,
+        "not_outs": 4,
+        "fifties": 2,
+        "hundreds": 0
+      },
+      "bowling_stats": null,
+      "batting_tilt_per_match": -0.02985,
+      "bowling_tilt_per_match": null,
+      "shrunk_total_tilt_per_match": -0.02711,
+      "total_tilt": -0.38807
     },
     {
       "player": "Faf du Plessis",
@@ -385,7 +415,7 @@
       "bowling_stats": null,
       "batting_tilt_per_match": null,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.02154,
+      "shrunk_total_tilt_per_match": -0.02226,
       "total_tilt": -0.0399
     },
     {
@@ -415,60 +445,8 @@
       },
       "batting_tilt_per_match": null,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.02732,
+      "shrunk_total_tilt_per_match": -0.0278,
       "total_tilt": -0.12161
-    },
-    {
-      "player": "Mayank Agarwal",
-      "slug": "ma-agarwal-00ea847a",
-      "country": "IN",
-      "matches": 3,
-      "batting_stats": {
-        "runs": 26,
-        "innings": 3,
-        "balls": 27,
-        "avg": 8.67,
-        "sr": 96.3,
-        "hs": 20,
-        "not_outs": 0,
-        "fifties": 0,
-        "hundreds": 0
-      },
-      "bowling_stats": null,
-      "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.03233,
-      "total_tilt": -0.15508
-    },
-    {
-      "player": "Ankit Sharma",
-      "slug": "ankit-sharma-24d94623",
-      "country": "IN",
-      "matches": 1,
-      "batting_stats": {
-        "runs": 25,
-        "innings": 1,
-        "balls": 15,
-        "avg": 25.0,
-        "sr": 166.67,
-        "hs": 25,
-        "not_outs": 0,
-        "fifties": 0,
-        "hundreds": 0
-      },
-      "bowling_stats": {
-        "wickets": 0,
-        "innings": 1,
-        "balls": 6,
-        "runs_conceded": 16,
-        "avg": 16.0,
-        "economy": 16.0,
-        "best_figures": "0/16"
-      },
-      "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.02598,
-      "total_tilt": -0.06067
     },
     {
       "player": "Mahendra Singh Dhoni",
@@ -487,10 +465,10 @@
         "hundreds": 0
       },
       "bowling_stats": null,
-      "batting_tilt_per_match": -0.06277,
+      "batting_tilt_per_match": -0.06023,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.05366,
-      "total_tilt": -0.94153
+      "shrunk_total_tilt_per_match": -0.05175,
+      "total_tilt": -0.90343
     },
     {
       "player": "Ashok Dinda",
@@ -518,9 +496,31 @@
         "best_figures": "1/58"
       },
       "batting_tilt_per_match": null,
-      "bowling_tilt_per_match": -0.06912,
-      "shrunk_total_tilt_per_match": -0.03977,
-      "total_tilt": -0.2048
+      "bowling_tilt_per_match": -0.07535,
+      "shrunk_total_tilt_per_match": -0.04613,
+      "total_tilt": -0.2447
+    },
+    {
+      "player": "Mayank Agarwal",
+      "slug": "ma-agarwal-00ea847a",
+      "country": "IN",
+      "matches": 3,
+      "batting_stats": {
+        "runs": 26,
+        "innings": 3,
+        "balls": 27,
+        "avg": 8.67,
+        "sr": 96.3,
+        "hs": 20,
+        "not_outs": 0,
+        "fifties": 0,
+        "hundreds": 0
+      },
+      "bowling_stats": null,
+      "batting_tilt_per_match": null,
+      "bowling_tilt_per_match": null,
+      "shrunk_total_tilt_per_match": -0.04638,
+      "total_tilt": -0.24637
     },
     {
       "player": "Deepak Chahar",
@@ -549,8 +549,8 @@
       },
       "batting_tilt_per_match": null,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.04827,
-      "total_tilt": -0.26159
+      "shrunk_total_tilt_per_match": -0.04691,
+      "total_tilt": -0.24992
     },
     {
       "player": "Rahul Chahar",
@@ -579,7 +579,7 @@
       },
       "batting_tilt_per_match": null,
       "bowling_tilt_per_match": null,
-      "shrunk_total_tilt_per_match": -0.04165,
+      "shrunk_total_tilt_per_match": -0.04213,
       "total_tilt": -0.17569
     }
   ],
@@ -592,7 +592,7 @@
       "opponent_score": "184/8",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.4313
+      "team_total_tilt": 0.37489
     },
     {
       "match_id": "1082594",
@@ -602,7 +602,7 @@
       "opponent_score": "164/4",
       "winner": "Punjab Kings",
       "event_stage": null,
-      "team_total_tilt": -0.20043
+      "team_total_tilt": -0.26492
     },
     {
       "match_id": "1082599",
@@ -612,7 +612,7 @@
       "opponent_score": "205/4",
       "winner": "Delhi Capitals",
       "event_stage": null,
-      "team_total_tilt": -0.5157
+      "team_total_tilt": -0.71802
     },
     {
       "match_id": "1082603",
@@ -622,7 +622,7 @@
       "opponent_score": "172/3",
       "winner": "Gujarat Lions",
       "event_stage": null,
-      "team_total_tilt": -0.34176
+      "team_total_tilt": -0.31658
     },
     {
       "match_id": "1082607",
@@ -632,7 +632,7 @@
       "opponent_score": "134/9",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.56403
+      "team_total_tilt": 0.61061
     },
     {
       "match_id": "1082615",
@@ -642,7 +642,7 @@
       "opponent_score": "176/3",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.41387
+      "team_total_tilt": 0.44018
     },
     {
       "match_id": "1082618",
@@ -652,7 +652,7 @@
       "opponent_score": "157/8",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.17789
+      "team_total_tilt": 0.55283
     },
     {
       "match_id": "1082620",
@@ -662,7 +662,7 @@
       "opponent_score": "184/3",
       "winner": "Kolkata Knight Riders",
       "event_stage": null,
-      "team_total_tilt": -0.37074
+      "team_total_tilt": -0.29646
     },
     {
       "match_id": "1082624",
@@ -672,7 +672,7 @@
       "opponent_score": "96/9",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.56369
+      "team_total_tilt": 0.59952
     },
     {
       "match_id": "1082629",
@@ -682,7 +682,7 @@
       "opponent_score": "161/10",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.29702
+      "team_total_tilt": 0.36416
     },
     {
       "match_id": "1082631",
@@ -692,7 +692,7 @@
       "opponent_score": "155/8",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.48735
+      "team_total_tilt": 0.58395
     },
     {
       "match_id": "1082634",
@@ -702,7 +702,7 @@
       "opponent_score": "136/9",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.2267
+      "team_total_tilt": 0.39317
     },
     {
       "match_id": "1082642",
@@ -712,7 +712,7 @@
       "opponent_score": "168/8",
       "winner": "Delhi Capitals",
       "event_stage": null,
-      "team_total_tilt": -0.14977
+      "team_total_tilt": -0.45965
     },
     {
       "match_id": "1082645",
@@ -722,7 +722,7 @@
       "opponent_score": "73/10",
       "winner": "Rising Pune Supergiants",
       "event_stage": null,
-      "team_total_tilt": 0.49149
+      "team_total_tilt": 0.66637
     },
     {
       "match_id": "1082647",
@@ -732,7 +732,7 @@
       "opponent_score": "142/9",
       "winner": "Rising Pune Supergiants",
       "event_stage": "Qualifier 1",
-      "team_total_tilt": 0.34898
+      "team_total_tilt": 0.54687
     },
     {
       "match_id": "1082650",
@@ -742,7 +742,7 @@
       "opponent_score": "129/8",
       "winner": "Mumbai Indians",
       "event_stage": "Final",
-      "team_total_tilt": 0.06572
+      "team_total_tilt": -0.3173
     }
   ]
 }

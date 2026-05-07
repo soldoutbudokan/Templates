@@ -6,21 +6,20 @@
   "country": "IN",
   "team": "Royal Challengers Bangalore",
   "teams": [
-    "Pune Warriors India",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.03987,
+  "total_tilt_per_match": -0.04649,
   "batting_tilt_per_match": -0.03717,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03351,
-  "shrunk_batting_tilt_per_match": -0.02864,
+  "shrunk_total_tilt_per_match": -0.03789,
+  "shrunk_batting_tilt_per_match": -0.03153,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.05969,
-  "tilt_ci_upper": -0.00732,
-  "tilt_ci_lower_90": -0.05548,
-  "tilt_ci_upper_90": -0.01153,
+  "tilt_ci_lower": -0.06569,
+  "tilt_ci_upper": -0.0101,
+  "tilt_ci_lower_90": -0.06122,
+  "tilt_ci_upper_90": -0.01456,
   "confidence": "low",
-  "total_tilt": -0.31897,
+  "total_tilt": -0.37194,
   "total_matches": 8,
   "batting_balls": 81,
   "bowling_balls": 16,
@@ -29,7 +28,7 @@
       "season": "2011",
       "team": "Pune Warriors India",
       "batting_tilt_per_match": -0.03831,
-      "bowling_tilt_per_match": -0.00014,
+      "bowling_tilt_per_match": -0.05311,
       "batting_matches": 1,
       "bowling_matches": 1,
       "batting_balls": 16,
@@ -51,8 +50,8 @@
           "bowl_balls": 4,
           "bowl_runs": 2,
           "bowl_econ": 3.0,
-          "bowl_tilt": -0.00014,
-          "total_tilt": -0.03845
+          "bowl_tilt": -0.05311,
+          "total_tilt": -0.09142
         }
       ],
       "batting_stats": {
@@ -271,9 +270,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.00014,
+      "tilt": -0.05311,
       "balls": 4,
-      "avg_delta": -3.5e-05
+      "avg_delta": -0.013277
     }
   ],
   "best_matches": [
@@ -362,14 +361,6 @@
   ],
   "bowling_best_matches": [
     {
-      "match_id": "501262",
-      "date": "2011-05-19",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.00014,
-      "wickets": 0,
-      "balls": 4
-    },
-    {
       "match_id": "734013",
       "date": "2014-05-18",
       "vs": "Chennai Super Kings",
@@ -384,10 +375,26 @@
       "tilt": -0.01194,
       "wickets": 0,
       "balls": 6
+    },
+    {
+      "match_id": "501262",
+      "date": "2011-05-19",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.05311,
+      "wickets": 0,
+      "balls": 4
     }
   ],
   "bowling_worst_matches": [
     {
+      "match_id": "501262",
+      "date": "2011-05-19",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.05311,
+      "wickets": 0,
+      "balls": 4
+    },
+    {
       "match_id": "734035",
       "date": "2014-05-24",
       "vs": "Chennai Super Kings",
@@ -402,64 +409,56 @@
       "tilt": -0.00955,
       "wickets": 0,
       "balls": 6
-    },
-    {
-      "match_id": "501262",
-      "date": "2011-05-19",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.00014,
-      "wickets": 0,
-      "balls": 4
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2011-05-19",
-      "tilt": -0.03845,
-      "cumulative": -0.03845
+      "tilt": -0.09142,
+      "cumulative": -0.09142
     },
     {
       "match": 2,
       "date": "2014-04-26",
       "tilt": -0.014,
-      "cumulative": -0.05244
+      "cumulative": -0.10541
     },
     {
       "match": 3,
       "date": "2014-05-09",
       "tilt": -0.08008,
-      "cumulative": -0.13252
+      "cumulative": -0.18549
     },
     {
       "match": 4,
       "date": "2014-05-13",
       "tilt": -0.00358,
-      "cumulative": -0.1361
+      "cumulative": -0.18907
     },
     {
       "match": 5,
       "date": "2014-05-18",
       "tilt": -0.06834,
-      "cumulative": -0.20444
+      "cumulative": -0.25741
     },
     {
       "match": 6,
       "date": "2014-05-20",
       "tilt": -0.02812,
-      "cumulative": -0.23256
+      "cumulative": -0.28553
     },
     {
       "match": 7,
       "date": "2014-05-22",
       "tilt": 0.03325,
-      "cumulative": -0.19931
+      "cumulative": -0.25228
     },
     {
       "match": 8,
       "date": "2014-05-24",
       "tilt": -0.11966,
-      "cumulative": -0.31897
+      "cumulative": -0.37194
     }
   ],
   "team_matchups": [
@@ -496,14 +495,14 @@
   ],
   "bowling_team_matchups": [
     {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.00014,
-      "matches": 1
-    },
-    {
       "opponent": "Chennai Super Kings",
       "tilt_per_match": -0.01074,
       "matches": 2
+    },
+    {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": -0.05311,
+      "matches": 1
     }
   ],
   "batting_stats": {
@@ -528,7 +527,7 @@
     "best_figures": "0/2"
   },
   "match_tilt_distribution": [
-    -0.03845,
+    -0.09142,
     -0.014,
     -0.08008,
     -0.00358,

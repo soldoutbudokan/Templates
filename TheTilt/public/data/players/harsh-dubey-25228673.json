@@ -8,18 +8,18 @@
   "teams": [
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.04695,
+  "total_tilt_per_match": 0.02586,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.06005,
-  "shrunk_total_tilt_per_match": 0.02344,
+  "bowling_tilt_per_match": 0.03826,
+  "shrunk_total_tilt_per_match": 0.00861,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.03436,
-  "tilt_ci_lower": -0.06375,
-  "tilt_ci_upper": 0.11064,
-  "tilt_ci_lower_90": -0.04974,
-  "tilt_ci_upper_90": 0.09663,
+  "shrunk_bowling_tilt_per_match": 0.02023,
+  "tilt_ci_lower": -0.06247,
+  "tilt_ci_upper": 0.07968,
+  "tilt_ci_lower_90": -0.05105,
+  "tilt_ci_upper_90": 0.06826,
   "confidence": "low",
-  "total_tilt": 0.46947,
+  "total_tilt": 0.25863,
   "total_matches": 10,
   "batting_balls": 9,
   "bowling_balls": 180,
@@ -105,8 +105,8 @@
     {
       "season": "2026",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": -0.03275,
-      "bowling_tilt_per_match": 0.084,
+      "batting_tilt_per_match": -0.03098,
+      "bowling_tilt_per_match": 0.05287,
       "batting_matches": 4,
       "bowling_matches": 7,
       "batting_balls": 9,
@@ -166,8 +166,8 @@
           "bowl_balls": 24,
           "bowl_runs": 19,
           "bowl_econ": 4.75,
-          "bowl_tilt": 0.22551,
-          "total_tilt": 0.1659
+          "bowl_tilt": 0.10711,
+          "total_tilt": 0.0475
         },
         {
           "match_id": "1527690",
@@ -180,13 +180,13 @@
           "bat_runs": 1,
           "bat_balls": 2,
           "bat_sr": 50.0,
-          "bat_tilt": 0.06904,
+          "bat_tilt": 0.07611,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 38,
           "bowl_econ": 9.5,
-          "bowl_tilt": 0.36355,
-          "total_tilt": 0.43259
+          "bowl_tilt": 0.25413,
+          "total_tilt": 0.33024
         },
         {
           "match_id": "1529264",
@@ -223,8 +223,8 @@
           "bowl_balls": 12,
           "bowl_runs": 13,
           "bowl_econ": 6.5,
-          "bowl_tilt": 0.00676,
-          "total_tilt": 0.00676
+          "bowl_tilt": 0.01666,
+          "total_tilt": 0.01666
         },
         {
           "match_id": "1529284",
@@ -271,17 +271,17 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.13099,
+      "tilt": -0.12393,
       "balls": 9,
-      "avg_delta": -0.011909
+      "avg_delta": -0.011266
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.2257,
+      "tilt": -0.00211,
       "balls": 54,
-      "avg_delta": 0.00403
+      "avg_delta": -3.8e-05
     },
     {
       "phase": "middle",
@@ -291,9 +291,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.18032,
+      "tilt": 0.19022,
       "balls": 24,
-      "avg_delta": 0.007513
+      "avg_delta": 0.007926
     }
   ],
   "best_matches": [
@@ -301,7 +301,7 @@
       "match_id": "1527690",
       "date": "2026-04-11",
       "vs": "Punjab Kings",
-      "tilt": 0.06904,
+      "tilt": 0.07611,
       "runs": 1,
       "balls": 2
     },
@@ -359,7 +359,7 @@
       "match_id": "1527690",
       "date": "2026-04-11",
       "vs": "Punjab Kings",
-      "tilt": 0.06904,
+      "tilt": 0.07611,
       "runs": 1,
       "balls": 2
     }
@@ -369,16 +369,8 @@
       "match_id": "1527690",
       "date": "2026-04-11",
       "vs": "Punjab Kings",
-      "tilt": 0.36355,
+      "tilt": 0.25413,
       "wickets": 1,
-      "balls": 24
-    },
-    {
-      "match_id": "1527683",
-      "date": "2026-04-05",
-      "vs": "Lucknow Super Giants",
-      "tilt": 0.22551,
-      "wickets": 2,
       "balls": 24
     },
     {
@@ -388,6 +380,14 @@
       "tilt": 0.11165,
       "wickets": 1,
       "balls": 12
+    },
+    {
+      "match_id": "1527683",
+      "date": "2026-04-05",
+      "vs": "Lucknow Super Giants",
+      "tilt": 0.10711,
+      "wickets": 2,
+      "balls": 24
     },
     {
       "match_id": "1473505",
@@ -443,7 +443,7 @@
       "match_id": "1529274",
       "date": "2026-04-21",
       "vs": "Delhi Capitals",
-      "tilt": 0.00676,
+      "tilt": 0.01666,
       "wickets": 3,
       "balls": 12
     }
@@ -482,38 +482,38 @@
     {
       "match": 6,
       "date": "2026-04-05",
-      "tilt": 0.1659,
-      "cumulative": 0.08047
+      "tilt": 0.04751,
+      "cumulative": -0.03793
     },
     {
       "match": 7,
       "date": "2026-04-11",
-      "tilt": 0.43259,
-      "cumulative": 0.51306
+      "tilt": 0.33025,
+      "cumulative": 0.29232
     },
     {
       "match": 8,
       "date": "2026-04-13",
       "tilt": -0.00506,
-      "cumulative": 0.508
+      "cumulative": 0.28725
     },
     {
       "match": 9,
       "date": "2026-04-21",
-      "tilt": 0.00676,
-      "cumulative": 0.51476
+      "tilt": 0.01666,
+      "cumulative": 0.30391
     },
     {
       "match": 10,
       "date": "2026-04-29",
       "tilt": -0.04529,
-      "cumulative": 0.46947
+      "cumulative": 0.25863
     }
   ],
   "team_matchups": [
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.06904,
+      "tilt_per_match": 0.07611,
       "matches": 1
     },
     {
@@ -535,7 +535,7 @@
   "bowling_team_matchups": [
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.36355,
+      "tilt_per_match": 0.25413,
       "matches": 1
     },
     {
@@ -544,19 +544,19 @@
       "matches": 2
     },
     {
-      "opponent": "Lucknow Super Giants",
-      "tilt_per_match": 0.05242,
-      "matches": 2
-    },
-    {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.00676,
+      "tilt_per_match": 0.01666,
       "matches": 1
     },
     {
       "opponent": "Rajasthan Royals",
       "tilt_per_match": -0.00506,
       "matches": 1
+    },
+    {
+      "opponent": "Lucknow Super Giants",
+      "tilt_per_match": -0.00678,
+      "matches": 2
     },
     {
       "opponent": "Royal Challengers Bangalore",
@@ -596,10 +596,10 @@
     0.08975,
     -0.19647,
     0.09854,
-    0.1659,
-    0.43259,
+    0.04751,
+    0.33025,
     -0.00506,
-    0.00676,
+    0.01666,
     -0.04529
   ]
 }

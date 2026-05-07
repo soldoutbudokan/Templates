@@ -8,18 +8,18 @@
   "teams": [
     "Mumbai Indians"
   ],
-  "total_tilt_per_match": -0.00028,
+  "total_tilt_per_match": -0.00031,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.00046,
-  "shrunk_total_tilt_per_match": -0.008,
+  "bowling_tilt_per_match": -0.00049,
+  "shrunk_total_tilt_per_match": -0.00863,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.00482,
-  "tilt_ci_lower": -0.07236,
-  "tilt_ci_upper": 0.05636,
-  "tilt_ci_lower_90": -0.06202,
-  "tilt_ci_upper_90": 0.04602,
+  "shrunk_bowling_tilt_per_match": -0.00461,
+  "tilt_ci_lower": -0.07365,
+  "tilt_ci_upper": 0.0564,
+  "tilt_ci_lower_90": -0.0632,
+  "tilt_ci_upper_90": 0.04595,
   "confidence": "low",
-  "total_tilt": -0.00284,
+  "total_tilt": -0.00312,
   "total_matches": 10,
   "batting_balls": 13,
   "bowling_balls": 213,
@@ -28,7 +28,7 @@
       "season": "2020",
       "team": "Mumbai Indians",
       "batting_tilt_per_match": 0.00089,
-      "bowling_tilt_per_match": -0.00046,
+      "bowling_tilt_per_match": -0.00049,
       "batting_matches": 2,
       "bowling_matches": 10,
       "batting_balls": 13,
@@ -145,8 +145,8 @@
           "bowl_balls": 19,
           "bowl_runs": 20,
           "bowl_econ": 6.32,
-          "bowl_tilt": 0.05833,
-          "total_tilt": 0.05833
+          "bowl_tilt": 0.07697,
+          "total_tilt": 0.07697
         },
         {
           "match_id": "1216529",
@@ -183,8 +183,8 @@
           "bowl_balls": 20,
           "bowl_runs": 40,
           "bowl_econ": 12.0,
-          "bowl_tilt": -0.04807,
-          "total_tilt": -0.04807
+          "bowl_tilt": -0.06698,
+          "total_tilt": -0.06698
         },
         {
           "match_id": "1216499",
@@ -270,9 +270,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.188,
+      "tilt": -0.18828,
       "balls": 39,
-      "avg_delta": -0.0047
+      "avg_delta": -0.004707
     }
   ],
   "best_matches": [
@@ -329,20 +329,20 @@
       "balls": 24
     },
     {
+      "match_id": "1216511",
+      "date": "2020-10-06",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.07697,
+      "wickets": 2,
+      "balls": 19
+    },
+    {
       "match_id": "1216503",
       "date": "2020-10-01",
       "vs": "Punjab Kings",
       "tilt": 0.05884,
       "wickets": 2,
       "balls": 24
-    },
-    {
-      "match_id": "1216511",
-      "date": "2020-10-06",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.05833,
-      "wickets": 2,
-      "balls": 19
     },
     {
       "match_id": "1216508",
@@ -382,7 +382,7 @@
       "match_id": "1216541",
       "date": "2020-10-25",
       "vs": "Rajasthan Royals",
-      "tilt": -0.04807,
+      "tilt": -0.06698,
       "wickets": 2,
       "balls": 20
     },
@@ -429,32 +429,32 @@
     {
       "match": 6,
       "date": "2020-10-06",
-      "tilt": 0.05833,
-      "cumulative": 0.34569
+      "tilt": 0.07697,
+      "cumulative": 0.36432
     },
     {
       "match": 7,
       "date": "2020-10-11",
       "tilt": -0.08808,
-      "cumulative": 0.25761
+      "cumulative": 0.27624
     },
     {
       "match": 8,
       "date": "2020-10-25",
-      "tilt": -0.04807,
-      "cumulative": 0.20953
+      "tilt": -0.06698,
+      "cumulative": 0.20926
     },
     {
       "match": 9,
       "date": "2020-10-28",
       "tilt": -0.17741,
-      "cumulative": 0.03213
+      "cumulative": 0.03185
     },
     {
       "match": 10,
       "date": "2020-11-03",
       "tilt": -0.03497,
-      "cumulative": -0.00284
+      "cumulative": -0.00312
     }
   ],
   "team_matchups": [
@@ -492,7 +492,7 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.00513,
+      "tilt_per_match": 0.00499,
       "matches": 2
     },
     {
@@ -533,9 +533,9 @@
     -0.17707,
     0.05884,
     0.1625,
-    0.05833,
+    0.07697,
     -0.08808,
-    -0.04807,
+    -0.06698,
     -0.17741,
     -0.03497
   ]

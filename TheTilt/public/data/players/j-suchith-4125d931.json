@@ -6,22 +6,20 @@
   "country": "IN",
   "team": "Sunrisers Hyderabad",
   "teams": [
-    "Delhi Capitals",
-    "Mumbai Indians",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.0019,
-  "batting_tilt_per_match": 0.06791,
+  "total_tilt_per_match": -0.01864,
+  "batting_tilt_per_match": 0.02,
   "bowling_tilt_per_match": -0.02721,
-  "shrunk_total_tilt_per_match": -0.00298,
-  "shrunk_batting_tilt_per_match": 0.04814,
-  "shrunk_bowling_tilt_per_match": -0.02424,
-  "tilt_ci_lower": -0.08024,
-  "tilt_ci_upper": 0.07429,
-  "tilt_ci_lower_90": -0.06783,
-  "tilt_ci_upper_90": 0.06187,
+  "shrunk_total_tilt_per_match": -0.01983,
+  "shrunk_batting_tilt_per_match": 0.01078,
+  "shrunk_bowling_tilt_per_match": -0.024,
+  "tilt_ci_lower": -0.08178,
+  "tilt_ci_upper": 0.04212,
+  "tilt_ci_lower_90": -0.07182,
+  "tilt_ci_upper_90": 0.03217,
   "confidence": "low",
-  "total_tilt": 0.03983,
+  "total_tilt": -0.39136,
   "total_matches": 21,
   "batting_balls": 61,
   "bowling_balls": 420,
@@ -29,7 +27,7 @@
     {
       "season": "2015",
       "team": "Mumbai Indians",
-      "batting_tilt_per_match": 0.04127,
+      "batting_tilt_per_match": 0.00826,
       "bowling_tilt_per_match": -0.03224,
       "batting_matches": 5,
       "bowling_matches": 12,
@@ -47,13 +45,13 @@
           "bat_runs": 34,
           "bat_balls": 21,
           "bat_sr": 161.9,
-          "bat_tilt": 0.08124,
+          "bat_tilt": -0.08381,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 41,
           "bowl_econ": 10.25,
           "bowl_tilt": -0.04678,
-          "total_tilt": 0.03446
+          "total_tilt": -0.13059
         },
         {
           "match_id": "829721",
@@ -380,7 +378,7 @@
     {
       "season": "2021",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.55648,
+      "batting_tilt_per_match": 0.29035,
       "bowling_tilt_per_match": -0.11603,
       "batting_matches": 1,
       "bowling_matches": 2,
@@ -398,13 +396,13 @@
           "bat_runs": 14,
           "bat_balls": 6,
           "bat_sr": 233.3,
-          "bat_tilt": 0.55648,
+          "bat_tilt": 0.29035,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 21,
           "bowl_econ": 5.25,
           "bowl_tilt": 0.12903,
-          "total_tilt": 0.68551
+          "total_tilt": 0.41938
         },
         {
           "match_id": "1254080",
@@ -584,9 +582,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.70591,
+      "tilt": 0.27472,
       "balls": 31,
-      "avg_delta": 0.02206
+      "avg_delta": 0.008585
     }
   ],
   "bowling_phases": [
@@ -614,7 +612,7 @@
       "match_id": "1254077",
       "date": "2021-04-25",
       "vs": "Delhi Capitals",
-      "tilt": 0.55648,
+      "tilt": 0.29035,
       "runs": 14,
       "balls": 6
     },
@@ -625,14 +623,6 @@
       "tilt": 0.11454,
       "runs": 1,
       "balls": 1
-    },
-    {
-      "match_id": "829717",
-      "date": "2015-04-12",
-      "vs": "Punjab Kings",
-      "tilt": 0.08124,
-      "runs": 34,
-      "balls": 21
     },
     {
       "match_id": "829751",
@@ -649,9 +639,25 @@
       "tilt": -0.00428,
       "runs": 4,
       "balls": 4
+    },
+    {
+      "match_id": "829721",
+      "date": "2015-04-14",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.00767,
+      "runs": 0,
+      "balls": 1
     }
   ],
   "worst_matches": [
+    {
+      "match_id": "829717",
+      "date": "2015-04-12",
+      "vs": "Punjab Kings",
+      "tilt": -0.08381,
+      "runs": 34,
+      "balls": 21
+    },
     {
       "match_id": "1304100",
       "date": "2022-05-08",
@@ -683,14 +689,6 @@
       "tilt": -0.00767,
       "runs": 0,
       "balls": 1
-    },
-    {
-      "match_id": "829795",
-      "date": "2015-05-10",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.00428,
-      "runs": 4,
-      "balls": 4
     }
   ],
   "bowling_best_matches": [
@@ -781,134 +779,134 @@
     {
       "match": 1,
       "date": "2015-04-12",
-      "tilt": 0.03446,
-      "cumulative": 0.03446
+      "tilt": -0.13059,
+      "cumulative": -0.13059
     },
     {
       "match": 2,
       "date": "2015-04-14",
       "tilt": 0.03382,
-      "cumulative": 0.06829
+      "cumulative": -0.09677
     },
     {
       "match": 3,
       "date": "2015-04-17",
       "tilt": -0.18129,
-      "cumulative": -0.11301
+      "cumulative": -0.27806
     },
     {
       "match": 4,
       "date": "2015-04-25",
       "tilt": -0.0429,
-      "cumulative": -0.1559
+      "cumulative": -0.32096
     },
     {
       "match": 5,
       "date": "2015-05-01",
       "tilt": -0.06434,
-      "cumulative": -0.22024
+      "cumulative": -0.3853
     },
     {
       "match": 6,
       "date": "2015-05-03",
       "tilt": -0.01418,
-      "cumulative": -0.23442
+      "cumulative": -0.39947
     },
     {
       "match": 7,
       "date": "2015-05-05",
       "tilt": -0.02335,
-      "cumulative": -0.25777
+      "cumulative": -0.42283
     },
     {
       "match": 8,
       "date": "2015-05-08",
       "tilt": 0.0765,
-      "cumulative": -0.18127
+      "cumulative": -0.34632
     },
     {
       "match": 9,
       "date": "2015-05-10",
       "tilt": -0.11965,
-      "cumulative": -0.30092
+      "cumulative": -0.46597
     },
     {
       "match": 10,
       "date": "2015-05-14",
       "tilt": -0.22244,
-      "cumulative": -0.52336
+      "cumulative": -0.68841
     },
     {
       "match": 11,
       "date": "2015-05-17",
       "tilt": 0.18529,
-      "cumulative": -0.33807
+      "cumulative": -0.50312
     },
     {
       "match": 12,
       "date": "2015-05-19",
       "tilt": 0.15749,
-      "cumulative": -0.18058
+      "cumulative": -0.34563
     },
     {
       "match": 13,
       "date": "2016-04-13",
       "tilt": -0.04237,
-      "cumulative": -0.22295
+      "cumulative": -0.388
     },
     {
       "match": 14,
       "date": "2019-05-01",
       "tilt": -0.02086,
-      "cumulative": -0.24381
+      "cumulative": -0.40886
     },
     {
       "match": 15,
       "date": "2021-04-25",
-      "tilt": 0.68551,
-      "cumulative": 0.4417
+      "tilt": 0.41938,
+      "cumulative": 0.01052
     },
     {
       "match": 16,
       "date": "2021-04-28",
       "tilt": -0.36108,
-      "cumulative": 0.08063
+      "cumulative": -0.35056
     },
     {
       "match": 17,
       "date": "2022-04-15",
       "tilt": -0.01106,
-      "cumulative": 0.06957
+      "cumulative": -0.36162
     },
     {
       "match": 18,
       "date": "2022-04-17",
       "tilt": 0.06484,
-      "cumulative": 0.1344
+      "cumulative": -0.29678
     },
     {
       "match": 19,
       "date": "2022-04-23",
       "tilt": 0.08534,
-      "cumulative": 0.21974
+      "cumulative": -0.21144
     },
     {
       "match": 20,
       "date": "2022-05-08",
       "tilt": -0.02774,
-      "cumulative": 0.19201
+      "cumulative": -0.23918
     },
     {
       "match": 21,
       "date": "2022-05-22",
       "tilt": -0.15218,
-      "cumulative": 0.03983
+      "cumulative": -0.39136
     }
   ],
   "team_matchups": [
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.55648,
+      "tilt_per_match": 0.29035,
       "matches": 1
     },
     {
@@ -922,11 +920,6 @@
       "matches": 1
     },
     {
-      "opponent": "Punjab Kings",
-      "tilt_per_match": 0.01299,
-      "matches": 2
-    },
-    {
       "opponent": "Rajasthan Royals",
       "tilt_per_match": -0.00767,
       "matches": 1
@@ -934,6 +927,11 @@
     {
       "opponent": "Royal Challengers Bangalore",
       "tilt_per_match": -0.03277,
+      "matches": 2
+    },
+    {
+      "opponent": "Punjab Kings",
+      "tilt_per_match": -0.06954,
       "matches": 2
     }
   ],
@@ -996,7 +994,7 @@
     "best_figures": "2/28"
   },
   "match_tilt_distribution": [
-    0.03446,
+    -0.13059,
     0.03382,
     -0.18129,
     -0.0429,
@@ -1010,7 +1008,7 @@
     0.15749,
     -0.04237,
     -0.02086,
-    0.68551,
+    0.41938,
     -0.36108,
     -0.01106,
     0.06484,

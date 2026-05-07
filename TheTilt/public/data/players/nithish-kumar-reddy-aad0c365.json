@@ -8,18 +8,18 @@
   "teams": [
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.00868,
-  "batting_tilt_per_match": -0.01195,
-  "bowling_tilt_per_match": 0.00302,
-  "shrunk_total_tilt_per_match": -0.01057,
-  "shrunk_batting_tilt_per_match": -0.01287,
-  "shrunk_bowling_tilt_per_match": 0.00083,
-  "tilt_ci_lower": -0.05189,
-  "tilt_ci_upper": 0.03074,
-  "tilt_ci_lower_90": -0.04525,
-  "tilt_ci_upper_90": 0.0241,
+  "total_tilt_per_match": -0.00455,
+  "batting_tilt_per_match": -0.00959,
+  "bowling_tilt_per_match": 0.00634,
+  "shrunk_total_tilt_per_match": -0.00721,
+  "shrunk_batting_tilt_per_match": -0.01158,
+  "shrunk_bowling_tilt_per_match": 0.00375,
+  "tilt_ci_lower": -0.04861,
+  "tilt_ci_upper": 0.03419,
+  "tilt_ci_lower_90": -0.04196,
+  "tilt_ci_upper_90": 0.02754,
   "confidence": "medium",
-  "total_tilt": -0.29518,
+  "total_tilt": -0.15467,
   "total_matches": 34,
   "batting_balls": 485,
   "bowling_balls": 265,
@@ -86,8 +86,8 @@
     {
       "season": "2024",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": -0.03594,
-      "bowling_tilt_per_match": -0.02436,
+      "batting_tilt_per_match": -0.03169,
+      "bowling_tilt_per_match": -0.02154,
       "batting_matches": 11,
       "bowling_matches": 7,
       "batting_balls": 212,
@@ -104,13 +104,13 @@
           "bat_runs": 14,
           "bat_balls": 8,
           "bat_sr": 175.0,
-          "bat_tilt": 0.02168,
+          "bat_tilt": 0.06842,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.02168
+          "total_tilt": 0.06842
         },
         {
           "match_id": "1426261",
@@ -147,8 +147,8 @@
           "bowl_balls": 13,
           "bowl_runs": 17,
           "bowl_econ": 7.85,
-          "bowl_tilt": 0.1034,
-          "total_tilt": 0.08991
+          "bowl_tilt": 0.12315,
+          "total_tilt": 0.10966
         },
         {
           "match_id": "1426279",
@@ -327,7 +327,7 @@
     {
       "season": "2025",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": -0.02922,
+      "batting_tilt_per_match": -0.02704,
       "bowling_tilt_per_match": 0.08892,
       "batting_matches": 11,
       "bowling_matches": 3,
@@ -497,13 +497,13 @@
           "bat_runs": 21,
           "bat_balls": 10,
           "bat_sr": 210.0,
-          "bat_tilt": 0.00682,
+          "bat_tilt": -0.02145,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.00682
+          "total_tilt": -0.02145
         },
         {
           "match_id": "1473499",
@@ -516,13 +516,13 @@
           "bat_runs": 5,
           "bat_balls": 2,
           "bat_sr": 250.0,
-          "bat_tilt": 0.07986,
+          "bat_tilt": 0.13215,
           "bowl_wkts": 3,
           "bowl_balls": 12,
           "bowl_runs": 28,
           "bowl_econ": 14.0,
           "bowl_tilt": 0.08703,
-          "total_tilt": 0.16689
+          "total_tilt": 0.21918
         },
         {
           "match_id": "1473503",
@@ -588,7 +588,7 @@
       "season": "2026",
       "team": "Sunrisers Hyderabad",
       "batting_tilt_per_match": 0.04477,
-      "bowling_tilt_per_match": 0.01362,
+      "bowling_tilt_per_match": 0.01917,
       "batting_matches": 8,
       "bowling_matches": 9,
       "batting_balls": 120,
@@ -610,8 +610,8 @@
           "bowl_balls": 12,
           "bowl_runs": 21,
           "bowl_econ": 10.5,
-          "bowl_tilt": -0.16856,
-          "total_tilt": -0.28279
+          "bowl_tilt": -0.11855,
+          "total_tilt": -0.23278
         },
         {
           "match_id": "1527679",
@@ -803,17 +803,17 @@
     },
     {
       "phase": "death",
-      "tilt": 0.35831,
+      "tilt": 0.42906,
       "balls": 92,
-      "avg_delta": 0.003694
+      "avg_delta": 0.004423
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.01247,
+      "tilt": 0.06248,
       "balls": 60,
-      "avg_delta": 0.000195
+      "avg_delta": 0.000976
     },
     {
       "phase": "middle",
@@ -823,9 +823,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.02138,
+      "tilt": -0.00162,
       "balls": 37,
-      "avg_delta": -0.000475
+      "avg_delta": -3.6e-05
     }
   ],
   "best_matches": [
@@ -846,6 +846,14 @@
       "balls": 42
     },
     {
+      "match_id": "1473499",
+      "date": "2025-05-19",
+      "vs": "Lucknow Super Giants",
+      "tilt": 0.13215,
+      "runs": 5,
+      "balls": 2
+    },
+    {
       "match_id": "1527683",
       "date": "2026-04-05",
       "vs": "Lucknow Super Giants",
@@ -860,14 +868,6 @@
       "tilt": 0.08417,
       "runs": 64,
       "balls": 37
-    },
-    {
-      "match_id": "1473499",
-      "date": "2025-05-19",
-      "vs": "Lucknow Super Giants",
-      "tilt": 0.07986,
-      "runs": 5,
-      "balls": 2
     }
   ],
   "worst_matches": [
@@ -933,7 +933,7 @@
       "match_id": "1426273",
       "date": "2024-04-20",
       "vs": "Delhi Capitals",
-      "tilt": 0.1034,
+      "tilt": 0.12315,
       "wickets": 2,
       "balls": 13
     },
@@ -956,14 +956,6 @@
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "1527674",
-      "date": "2026-03-28",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.16856,
-      "wickets": 0,
-      "balls": 12
-    },
-    {
       "match_id": "1359543",
       "date": "2023-05-21",
       "vs": "Mumbai Indians",
@@ -976,6 +968,14 @@
       "date": "2024-05-06",
       "vs": "Mumbai Indians",
       "tilt": -0.12306,
+      "wickets": 0,
+      "balls": 12
+    },
+    {
+      "match_id": "1527674",
+      "date": "2026-03-28",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.11855,
       "wickets": 0,
       "balls": 12
     },
@@ -1012,194 +1012,194 @@
     {
       "match": 3,
       "date": "2024-04-05",
-      "tilt": 0.02168,
-      "cumulative": -0.13368
+      "tilt": 0.06842,
+      "cumulative": -0.08694
     },
     {
       "match": 4,
       "date": "2024-04-09",
       "tilt": 0.07916,
-      "cumulative": -0.05452
+      "cumulative": -0.00778
     },
     {
       "match": 5,
       "date": "2024-04-20",
-      "tilt": 0.08991,
-      "cumulative": 0.03539
+      "tilt": 0.10966,
+      "cumulative": 0.10188
     },
     {
       "match": 6,
       "date": "2024-04-25",
       "tilt": -0.14334,
-      "cumulative": -0.10796
+      "cumulative": -0.04146
     },
     {
       "match": 7,
       "date": "2024-04-28",
       "tilt": -0.07042,
-      "cumulative": -0.17838
+      "cumulative": -0.11188
     },
     {
       "match": 8,
       "date": "2024-05-02",
       "tilt": 0.12086,
-      "cumulative": -0.05751
+      "cumulative": 0.00898
     },
     {
       "match": 9,
       "date": "2024-05-06",
       "tilt": -0.14234,
-      "cumulative": -0.19985
+      "cumulative": -0.13336
     },
     {
       "match": 10,
       "date": "2024-05-19",
       "tilt": -0.16293,
-      "cumulative": -0.36278
+      "cumulative": -0.29629
     },
     {
       "match": 11,
       "date": "2024-05-21",
       "tilt": -0.11829,
-      "cumulative": -0.48107
+      "cumulative": -0.41458
     },
     {
       "match": 12,
       "date": "2024-05-24",
       "tilt": -0.13414,
-      "cumulative": -0.61521
+      "cumulative": -0.54872
     },
     {
       "match": 13,
       "date": "2024-05-26",
       "tilt": -0.10605,
-      "cumulative": -0.72126
+      "cumulative": -0.65477
     },
     {
       "match": 14,
       "date": "2025-03-23",
       "tilt": 0.00078,
-      "cumulative": -0.72048
+      "cumulative": -0.65399
     },
     {
       "match": 15,
       "date": "2025-03-27",
       "tilt": -0.13963,
-      "cumulative": -0.86011
+      "cumulative": -0.79362
     },
     {
       "match": 16,
       "date": "2025-03-30",
       "tilt": -0.04393,
-      "cumulative": -0.90404
+      "cumulative": -0.83755
     },
     {
       "match": 17,
       "date": "2025-04-03",
       "tilt": -0.06024,
-      "cumulative": -0.96428
+      "cumulative": -0.89779
     },
     {
       "match": 18,
       "date": "2025-04-06",
       "tilt": 0.02844,
-      "cumulative": -0.93585
+      "cumulative": -0.86935
     },
     {
       "match": 19,
       "date": "2025-04-17",
       "tilt": -0.06834,
-      "cumulative": -1.00419
+      "cumulative": -0.93769
     },
     {
       "match": 20,
       "date": "2025-04-23",
       "tilt": -0.0706,
-      "cumulative": -1.07479
+      "cumulative": -1.00829
     },
     {
       "match": 21,
       "date": "2025-04-25",
       "tilt": -0.04141,
-      "cumulative": -1.1162
+      "cumulative": -1.0497
     },
     {
       "match": 22,
       "date": "2025-05-02",
-      "tilt": 0.00682,
-      "cumulative": -1.10938
+      "tilt": -0.02145,
+      "cumulative": -1.07115
     },
     {
       "match": 23,
       "date": "2025-05-19",
-      "tilt": 0.16689,
-      "cumulative": -0.94249
+      "tilt": 0.21918,
+      "cumulative": -0.85197
     },
     {
       "match": 24,
       "date": "2025-05-23",
       "tilt": 0.16186,
-      "cumulative": -0.78063
+      "cumulative": -0.69012
     },
     {
       "match": 25,
       "date": "2025-05-25",
       "tilt": 0.00471,
-      "cumulative": -0.77592
+      "cumulative": -0.68541
     },
     {
       "match": 26,
       "date": "2026-03-28",
-      "tilt": -0.28279,
-      "cumulative": -1.05871
+      "tilt": -0.23279,
+      "cumulative": -0.9182
     },
     {
       "match": 27,
       "date": "2026-04-02",
       "tilt": 0.16318,
-      "cumulative": -0.89553
+      "cumulative": -0.75501
     },
     {
       "match": 28,
       "date": "2026-04-05",
       "tilt": 0.05017,
-      "cumulative": -0.84536
+      "cumulative": -0.70485
     },
     {
       "match": 29,
       "date": "2026-04-11",
       "tilt": -0.01729,
-      "cumulative": -0.86265
+      "cumulative": -0.72213
     },
     {
       "match": 30,
       "date": "2026-04-13",
       "tilt": 0.07216,
-      "cumulative": -0.79049
+      "cumulative": -0.64997
     },
     {
       "match": 31,
       "date": "2026-04-18",
       "tilt": 0.27777,
-      "cumulative": -0.51272
+      "cumulative": -0.3722
     },
     {
       "match": 32,
       "date": "2026-04-21",
       "tilt": -0.0103,
-      "cumulative": -0.52302
+      "cumulative": -0.3825
     },
     {
       "match": 33,
       "date": "2026-04-25",
       "tilt": 0.33591,
-      "cumulative": -0.1871
+      "cumulative": -0.04659
     },
     {
       "match": 34,
       "date": "2026-04-29",
       "tilt": -0.10808,
-      "cumulative": -0.29518
+      "cumulative": -0.15467
     }
   ],
   "team_matchups": [
@@ -1209,13 +1209,8 @@
       "matches": 5
     },
     {
-      "opponent": "Gujarat Titans",
-      "tilt_per_match": 0.01763,
-      "matches": 2
-    },
-    {
       "opponent": "Lucknow Super Giants",
-      "tilt_per_match": 0.0149,
+      "tilt_per_match": 0.03232,
       "matches": 3
     },
     {
@@ -1224,8 +1219,13 @@
       "matches": 3
     },
     {
+      "opponent": "Gujarat Titans",
+      "tilt_per_match": 0.00349,
+      "matches": 2
+    },
+    {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.02498,
+      "tilt_per_match": -0.0133,
       "matches": 4
     },
     {
@@ -1257,7 +1257,7 @@
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.04655,
+      "tilt_per_match": 0.05643,
       "matches": 2
     },
     {
@@ -1266,14 +1266,14 @@
       "matches": 3
     },
     {
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": 0.01641,
+      "matches": 3
+    },
+    {
       "opponent": "Lucknow Super Giants",
       "tilt_per_match": 0.01637,
       "matches": 2
-    },
-    {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.00026,
-      "matches": 3
     },
     {
       "opponent": "Rajasthan Royals",
@@ -1315,9 +1315,9 @@
   "match_tilt_distribution": [
     -0.00725,
     -0.1481,
-    0.02168,
+    0.06842,
     0.07916,
-    0.08991,
+    0.10966,
     -0.14334,
     -0.07042,
     0.12086,
@@ -1334,11 +1334,11 @@
     -0.06834,
     -0.0706,
     -0.04141,
-    0.00682,
-    0.16689,
+    -0.02145,
+    0.21918,
     0.16186,
     0.00471,
-    -0.28279,
+    -0.23279,
     0.16318,
     0.05017,
     -0.01729,

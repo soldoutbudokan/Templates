@@ -6,21 +6,20 @@
   "country": "IN",
   "team": "Delhi Capitals",
   "teams": [
-    "Delhi Capitals",
-    "Royal Challengers Bangalore"
+    "Delhi Capitals"
   ],
-  "total_tilt_per_match": 0.04915,
-  "batting_tilt_per_match": 0.04915,
+  "total_tilt_per_match": 0.0446,
+  "batting_tilt_per_match": 0.0446,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.02118,
-  "shrunk_batting_tilt_per_match": 0.01967,
+  "shrunk_total_tilt_per_match": 0.01735,
+  "shrunk_batting_tilt_per_match": 0.01642,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.08389,
-  "tilt_ci_upper": 0.12626,
-  "tilt_ci_lower_90": -0.067,
-  "tilt_ci_upper_90": 0.10937,
+  "tilt_ci_lower": -0.09465,
+  "tilt_ci_upper": 0.12936,
+  "tilt_ci_lower_90": -0.07665,
+  "tilt_ci_upper_90": 0.11136,
   "confidence": "low",
-  "total_tilt": 0.39316,
+  "total_tilt": 0.35683,
   "total_matches": 8,
   "batting_balls": 163,
   "bowling_balls": 0,
@@ -28,7 +27,7 @@
     {
       "season": "2021",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": 0.05584,
+      "batting_tilt_per_match": 0.06298,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 6,
       "bowling_matches": 0,
@@ -122,13 +121,13 @@
           "bat_runs": 78,
           "bat_balls": 52,
           "bat_sr": 150.0,
-          "bat_tilt": 0.45317,
+          "bat_tilt": 0.49604,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.45317
+          "total_tilt": 0.49604
         },
         {
           "match_id": "1254115",
@@ -165,7 +164,7 @@
     {
       "season": "2022",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": 0.02906,
+      "batting_tilt_per_match": -0.01054,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 2,
       "bowling_matches": 0,
@@ -202,13 +201,13 @@
           "bat_runs": 0,
           "bat_balls": 2,
           "bat_sr": 0.0,
-          "bat_tilt": 0.0681,
+          "bat_tilt": -0.01109,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.0681
+          "total_tilt": -0.01109
         }
       ],
       "batting_stats": {
@@ -227,9 +226,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.04965,
+      "tilt": -0.02955,
       "balls": 59,
-      "avg_delta": 0.000814
+      "avg_delta": -0.000484
     },
     {
       "phase": "middle",
@@ -239,9 +238,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.35096,
+      "tilt": 0.39383,
       "balls": 19,
-      "avg_delta": 0.016713
+      "avg_delta": 0.018754
     }
   ],
   "bowling_phases": [],
@@ -250,7 +249,7 @@
       "match_id": "1254101",
       "date": "2021-10-08",
       "vs": "Delhi Capitals",
-      "tilt": 0.45317,
+      "tilt": 0.49604,
       "runs": 78,
       "balls": 52
     },
@@ -261,14 +260,6 @@
       "tilt": 0.18657,
       "runs": 44,
       "balls": 35
-    },
-    {
-      "match_id": "1304104",
-      "date": "2022-05-11",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.0681,
-      "runs": 0,
-      "balls": 2
     },
     {
       "match_id": "1254108",
@@ -285,6 +276,14 @@
       "tilt": -0.00998,
       "runs": 8,
       "balls": 5
+    },
+    {
+      "match_id": "1304104",
+      "date": "2022-05-11",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.01109,
+      "runs": 0,
+      "balls": 2
     }
   ],
   "worst_matches": [
@@ -313,20 +312,20 @@
       "balls": 16
     },
     {
+      "match_id": "1304104",
+      "date": "2022-05-11",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.01109,
+      "runs": 0,
+      "balls": 2
+    },
+    {
       "match_id": "1304101",
       "date": "2022-05-08",
       "vs": "Chennai Super Kings",
       "tilt": -0.00998,
       "runs": 8,
       "balls": 5
-    },
-    {
-      "match_id": "1254108",
-      "date": "2021-09-26",
-      "vs": "Mumbai Indians",
-      "tilt": 0.01187,
-      "runs": 32,
-      "balls": 24
     }
   ],
   "bowling_best_matches": [],
@@ -359,37 +358,37 @@
     {
       "match": 5,
       "date": "2021-10-08",
-      "tilt": 0.45317,
-      "cumulative": 0.40376
+      "tilt": 0.49604,
+      "cumulative": 0.44662
     },
     {
       "match": 6,
       "date": "2021-10-11",
       "tilt": -0.06872,
-      "cumulative": 0.33504
+      "cumulative": 0.37791
     },
     {
       "match": 7,
       "date": "2022-05-08",
       "tilt": -0.00998,
-      "cumulative": 0.32506
+      "cumulative": 0.36792
     },
     {
       "match": 8,
       "date": "2022-05-11",
-      "tilt": 0.0681,
-      "cumulative": 0.39316
+      "tilt": -0.01109,
+      "cumulative": 0.35683
     }
   ],
   "team_matchups": [
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.45317,
+      "tilt_per_match": 0.49604,
       "matches": 1
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.12733,
+      "tilt_per_match": 0.08774,
       "matches": 2
     },
     {
@@ -432,9 +431,9 @@
     0.01187,
     0.18657,
     -0.14371,
-    0.45317,
+    0.49604,
     -0.06872,
     -0.00998,
-    0.0681
+    -0.01109
   ]
 }
