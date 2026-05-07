@@ -89,27 +89,6 @@ async function loadMatch() {
             </div>`;
         }
 
-        // Key moments
-        if (m.key_moments && m.key_moments.length > 0) {
-            html += `<div class="section"><h3>key moments</h3>`;
-            for (const km of m.key_moments) {
-                const desc = km.wicket
-                    ? (km.wicket_kind === 'run out'
-                        ? `${km.player_dismissed || km.batter} run out`
-                        : `${km.player_dismissed || km.batter} ${km.wicket_kind} (${km.bowler})`)
-                    : `${km.batter} hits ${km.runs} off ${km.bowler}`;
-                const overLabel = `${km.inn === 1 ? '1st' : '2nd'} inn, ${km.over}.${km.ball}`;
-                html += `<div class="key-moment">
-                    <div>
-                        <span style="color:var(--text-dim);font-size:0.75rem;margin-right:8px">${overLabel}</span>
-                        <span class="moment-desc">${desc}</span>
-                    </div>
-                    <div class="moment-delta">${formatTilt(km.delta)}</div>
-                </div>`;
-            }
-            html += '</div>';
-        }
-
         // Innings scorecards
         if (m.innings && m.innings.length > 0) {
             for (const inn of m.innings) {
@@ -176,6 +155,28 @@ async function loadMatch() {
                 }
                 html += '</table></div></div>';
             }
+        }
+
+        // Key moments — placed after both scorecards so the page reads:
+        // WP chart → full innings detail → highlight reel.
+        if (m.key_moments && m.key_moments.length > 0) {
+            html += `<div class="section"><h3>key moments</h3>`;
+            for (const km of m.key_moments) {
+                const desc = km.wicket
+                    ? (km.wicket_kind === 'run out'
+                        ? `${km.player_dismissed || km.batter} run out`
+                        : `${km.player_dismissed || km.batter} ${km.wicket_kind} (${km.bowler})`)
+                    : `${km.batter} hits ${km.runs} off ${km.bowler}`;
+                const overLabel = `${km.inn === 1 ? '1st' : '2nd'} inn, ${km.over}.${km.ball}`;
+                html += `<div class="key-moment">
+                    <div>
+                        <span style="color:var(--text-dim);font-size:0.75rem;margin-right:8px">${overLabel}</span>
+                        <span class="moment-desc">${desc}</span>
+                    </div>
+                    <div class="moment-delta">${formatTilt(km.delta)}</div>
+                </div>`;
+            }
+            html += '</div>';
         }
 
         document.getElementById('content').innerHTML = html;
