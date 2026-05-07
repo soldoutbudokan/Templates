@@ -20,6 +20,13 @@
     // here, create public/notes/<id>.md, then add a row in dependencies.md.
     const BLOG_NOTES = [
         {
+            id: 'last-ball-snap',
+            title: 'Snapping the Final Ball',
+            summary: 'The win-probability model never saw the terminal state, so it maxed out at ~93% on a winning chase\'s last ball and ~16% on a losing one. The match-deciding delivery was being undercredited by 7–16pp every game. Fix: snap wp_after on each match\'s final innings-2 ball to its actual outcome. DJ Bravo enters the all-time top 10 from #62; Dhoni and Miller drop 34 spots each.',
+            tags: ['methodology', 'model'],
+            date: '2026-05-06',
+        },
+        {
             id: 'all-rounders',
             title: 'Why TILT Underrates All-Rounders',
             summary: 'Zero all-rounders in the top 50. Maxwell at #92 is the highest-rated career all-rounder; Hardik Pandya sits at #293. The gap is structural: 44.3% of all-rounder matches are mixed-sign, producing a 16.9% cancellation drag, and 45.9% are bad in both roles. Their best matches match specialists for GOAT-tier rate; the floor is the problem.',

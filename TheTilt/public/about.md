@@ -272,6 +272,7 @@ A few details that matter for fair attribution:
 - **Wides and no-balls.** Wides aren't credited to the batsman (they didn't face it); no-balls aren't counted against the bowler's *legal-delivery* count for per-ball stats. Both still produce a `delta_wp` and both still flow into the batting/bowling totals — the legal flags only affect denominators in per-ball reporting.
 - **Wickets are credited to the bowler regardless of wicket-kind.** Run-outs are an exception flagged in the parsing step but credited the same way at the WP layer; a future model could reattribute based on fielder.
 - **The non-striker gets nothing.** TILT only credits the two players directly involved in the delivery.
+- **Match-terminal snap on the final ball.** The win-probability model is trained on intra-innings states and never sees the literal end of the match — its `wp_after` on the last ball of innings 2 averages 0.928 on winning chases (truth: 1.0) and 0.161 on losing ones (truth: 0.0). To stop the deciding delivery from being undercredited by 7–16pp, `wp_after` on each match's final innings-2 ball is snapped to its actual outcome (1.0, 0.0, or 0.5 for a regulation tie) and `delta_wp` is recomputed. Touches one ball per match. Full diagnostic: [Snapping the Final Ball](notes.html?note=last-ball-snap).
 
 ### What this looks like across a match
 

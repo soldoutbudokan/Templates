@@ -257,6 +257,72 @@ def apply_boundary_calibration(deltas_df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+# %% Match-terminal snap
+def apply_match_terminal_snap(deltas_df: pd.DataFrame) -> pd.DataFrame:
+    """Snap the final ball of innings 2 to the actual match outcome.
+
+    The win-probability classifier is trained on intra-innings states; it
+    has no concept of a terminal state. Across all 1,200+ IPL matches with
+    two innings, the model returns wp_after = ~0.93 on average when the
+    chasing team won (truth: 1.0) and ~0.16 when they lost (truth: 0.0).
+    A six off the last ball that wins the match scores +0.05 instead of
+    +0.50 against TILT — the "match-deciding" credit is undercounted by
+    a factor of ~10 in tight finishes.
+
+    Fix: snap wp_after on each match's final inn2 ball to its terminal
+    truth and recompute delta_wp. Regulation ties (inn1 total == inn2
+    final cumulative) snap to 0.5 — the regulation result was a tie
+    regardless of any super-over outcome that follows.
+
+    Symmetric to the inn1↔inn2 boundary calibration shipped for #62/#71:
+    that one snaps the innings boundary, this one snaps the match
+    terminus. Touches one row per match (~1,200 rows).
+    """
+    print("\nApplying match-terminal wp_after snap...")
+
+    df = deltas_df.copy()
+    inn2 = df[df["innings"] == 2]
+    last_idx = (
+        inn2.sort_values(["match_id", "ball_number"])
+        .groupby("match_id")
+        .tail(1)
+        .index
+    )
+    if len(last_idx) == 0:
+        return df
+
+    inn1_totals = (
+        df[df["innings"] == 1].groupby("match_id")["runs_total"].sum()
+    )
+    inn2_totals = (
+        df[df["innings"] == 2].groupby("match_id")["runs_total"].sum()
+    )
+    tied_matches = set(
+        inn1_totals.index[inn1_totals == inn2_totals.reindex(inn1_totals.index)]
+    )
+
+    last_rows = df.loc[last_idx, ["match_id", "batting_team_won", "wp_before"]]
+    new_wp_after = last_rows.apply(
+        lambda r: 0.5 if r["match_id"] in tied_matches else float(r["batting_team_won"]),
+        axis=1,
+    )
+
+    pre_mean_won = df.loc[last_idx][df.loc[last_idx, "batting_team_won"] == 1]["wp_after"].mean()
+    pre_mean_lost = df.loc[last_idx][df.loc[last_idx, "batting_team_won"] == 0]["wp_after"].mean()
+
+    df.loc[last_idx, "wp_after"] = new_wp_after.values
+    df.loc[last_idx, "delta_wp"] = (
+        df.loc[last_idx, "wp_after"] - df.loc[last_idx, "wp_before"]
+    )
+
+    print(
+        f"  Snapped {len(last_idx):,} match-final balls "
+        f"({len(tied_matches)} ties → 0.5). "
+        f"Pre-fix wp_after means: won {pre_mean_won:.3f} (→1.0), lost {pre_mean_lost:.3f} (→0.0)."
+    )
+    return df
+
+
 # %% Aggregate per player
 def aggregate_player_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate ball-level deltas into per-player TILT scores."""
@@ -852,6 +918,7 @@ def compute_tilt(
 
     deltas_df = compute_ball_deltas(model, df)
     deltas_df = apply_boundary_calibration(deltas_df)
+    deltas_df = apply_match_terminal_snap(deltas_df)
     player_tilt = aggregate_player_tilt(deltas_df)
     player_tilt = apply_shrinkage(player_tilt, deltas_df)
 
