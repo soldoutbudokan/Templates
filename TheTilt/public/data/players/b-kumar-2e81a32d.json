@@ -10,21 +10,21 @@
     "Royal Challengers Bangalore",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.03951,
+  "total_tilt_per_match": 0.03919,
   "batting_tilt_per_match": -0.0182,
-  "bowling_tilt_per_match": 0.04628,
-  "shrunk_total_tilt_per_match": 0.038,
+  "bowling_tilt_per_match": 0.04592,
+  "shrunk_total_tilt_per_match": 0.03769,
   "shrunk_batting_tilt_per_match": -0.01823,
-  "shrunk_bowling_tilt_per_match": 0.04484,
-  "tilt_ci_lower": 0.01987,
-  "tilt_ci_upper": 0.05614,
-  "tilt_ci_lower_90": 0.02278,
-  "tilt_ci_upper_90": 0.05322,
+  "shrunk_bowling_tilt_per_match": 0.0445,
+  "tilt_ci_lower": 0.01964,
+  "tilt_ci_upper": 0.05575,
+  "tilt_ci_lower_90": 0.02254,
+  "tilt_ci_upper_90": 0.05285,
   "confidence": "high",
-  "total_tilt": 7.86221,
-  "total_matches": 199,
+  "total_tilt": 7.83709,
+  "total_matches": 200,
   "batting_balls": 375,
-  "bowling_balls": 4432,
+  "bowling_balls": 4456,
   "seasons": [
     {
       "season": "2011",
@@ -4120,11 +4120,11 @@
       "season": "2026",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": -0.0102,
-      "bowling_tilt_per_match": 0.09848,
+      "bowling_tilt_per_match": 0.08612,
       "batting_matches": 3,
-      "bowling_matches": 9,
+      "bowling_matches": 10,
       "batting_balls": 24,
-      "bowling_balls": 210,
+      "bowling_balls": 234,
       "matches": [
         {
           "match_id": "1527674",
@@ -4296,6 +4296,25 @@
           "bowl_econ": 7.0,
           "bowl_tilt": 0.09998,
           "total_tilt": 0.08061
+        },
+        {
+          "match_id": "1529293",
+          "date": "2026-05-07",
+          "opponent": "Lucknow Super Giants",
+          "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow",
+          "team_score": "203/6",
+          "opponent_score": "209/3",
+          "winner": "Lucknow Super Giants",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 0,
+          "bowl_balls": 24,
+          "bowl_runs": 34,
+          "bowl_econ": 8.5,
+          "bowl_tilt": -0.02513,
+          "total_tilt": -0.02513
         }
       ],
       "batting_stats": {
@@ -4311,11 +4330,11 @@
       },
       "bowling_stats": {
         "wickets": 18,
-        "innings": 9,
-        "balls": 210,
-        "runs_conceded": 267,
-        "avg": 14.83,
-        "economy": 7.63,
+        "innings": 10,
+        "balls": 234,
+        "runs_conceded": 301,
+        "avg": 16.72,
+        "economy": 7.72,
         "best_figures": "4/26"
       }
     }
@@ -4337,9 +4356,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 7.44253,
-      "balls": 2453,
-      "avg_delta": 0.002943
+      "tilt": 7.4174,
+      "balls": 2465,
+      "avg_delta": 0.002919
     },
     {
       "phase": "middle",
@@ -4350,8 +4369,8 @@
     {
       "phase": "death",
       "tilt": 1.95754,
-      "balls": 1533,
-      "avg_delta": 0.001215
+      "balls": 1545,
+      "avg_delta": 0.001206
     }
   ],
   "best_matches": [
@@ -5716,6 +5735,12 @@
       "date": "2026-04-30",
       "tilt": 0.08061,
       "cumulative": 7.86221
+    },
+    {
+      "match": 200,
+      "date": "2026-05-07",
+      "tilt": -0.02513,
+      "cumulative": 7.83709
     }
   ],
   "team_matchups": [
@@ -5802,11 +5827,6 @@
       "matches": 25
     },
     {
-      "opponent": "Lucknow Super Giants",
-      "tilt_per_match": 0.0586,
-      "matches": 6
-    },
-    {
       "opponent": "Gujarat Titans",
       "tilt_per_match": 0.05693,
       "matches": 7
@@ -5820,6 +5840,11 @@
       "opponent": "Royal Challengers Bangalore",
       "tilt_per_match": 0.05316,
       "matches": 23
+    },
+    {
+      "opponent": "Lucknow Super Giants",
+      "tilt_per_match": 0.04664,
+      "matches": 7
     },
     {
       "opponent": "Sunrisers Hyderabad",
@@ -5861,11 +5886,11 @@
   },
   "bowling_stats": {
     "wickets": 231,
-    "innings": 199,
-    "balls": 4432,
-    "runs_conceded": 5808,
-    "avg": 25.14,
-    "economy": 7.86,
+    "innings": 200,
+    "balls": 4456,
+    "runs_conceded": 5842,
+    "avg": 25.29,
+    "economy": 7.87,
     "best_figures": "6/31"
   },
   "match_tilt_distribution": [
@@ -6067,6 +6092,7 @@
     0.33608,
     0.02296,
     0.26587,
-    0.08061
+    0.08061,
+    -0.02513
   ]
 }

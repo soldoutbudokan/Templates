@@ -9,20 +9,20 @@
     "Punjab Kings",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.00137,
-  "batting_tilt_per_match": 0.00137,
+  "total_tilt_per_match": -0.00126,
+  "batting_tilt_per_match": -0.00126,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.00066,
-  "shrunk_batting_tilt_per_match": -0.00066,
+  "shrunk_total_tilt_per_match": -0.00305,
+  "shrunk_batting_tilt_per_match": -0.003,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.03184,
-  "tilt_ci_upper": 0.03051,
-  "tilt_ci_lower_90": -0.02683,
-  "tilt_ci_upper_90": 0.0255,
+  "tilt_ci_lower": -0.03407,
+  "tilt_ci_upper": 0.02797,
+  "tilt_ci_lower_90": -0.02908,
+  "tilt_ci_upper_90": 0.02299,
   "confidence": "medium",
-  "total_tilt": 0.07404,
-  "total_matches": 54,
-  "batting_balls": 687,
+  "total_tilt": -0.06928,
+  "total_matches": 55,
+  "batting_balls": 690,
   "bowling_balls": 0,
   "seasons": [
     {
@@ -1013,11 +1013,11 @@
     {
       "season": "2026",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": -0.04726,
+      "batting_tilt_per_match": -0.05927,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 7,
+      "batting_matches": 8,
       "bowling_matches": 0,
-      "batting_balls": 56,
+      "batting_balls": 59,
       "bowling_balls": 0,
       "matches": [
         {
@@ -1152,14 +1152,33 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.1833
+        },
+        {
+          "match_id": "1529293",
+          "date": "2026-05-07",
+          "opponent": "Lucknow Super Giants",
+          "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow",
+          "team_score": "203/6",
+          "opponent_score": "209/3",
+          "winner": "Lucknow Super Giants",
+          "bat_runs": 1,
+          "bat_balls": 3,
+          "bat_sr": 33.3,
+          "bat_tilt": -0.14332,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": -0.14332
         }
       ],
       "batting_stats": {
-        "runs": 63,
-        "innings": 7,
-        "balls": 56,
-        "avg": 9.0,
-        "sr": 112.5,
+        "runs": 64,
+        "innings": 8,
+        "balls": 59,
+        "avg": 8.0,
+        "sr": 108.47,
         "hs": 23,
         "not_outs": 0,
         "fifties": 0,
@@ -1176,9 +1195,9 @@
     },
     {
       "phase": "middle",
-      "tilt": -0.10993,
-      "balls": 422,
-      "avg_delta": -0.000254
+      "tilt": -0.25325,
+      "balls": 425,
+      "avg_delta": -0.000582
     },
     {
       "phase": "death",
@@ -1264,12 +1283,12 @@
       "balls": 5
     },
     {
-      "match_id": "1473461",
-      "date": "2025-04-10",
-      "vs": "Delhi Capitals",
-      "tilt": -0.11965,
-      "runs": 3,
-      "balls": 11
+      "match_id": "1529293",
+      "date": "2026-05-07",
+      "vs": "Lucknow Super Giants",
+      "tilt": -0.14332,
+      "runs": 1,
+      "balls": 3
     }
   ],
   "bowling_best_matches": [],
@@ -1598,6 +1617,12 @@
       "date": "2026-04-30",
       "tilt": -0.1833,
       "cumulative": 0.07404
+    },
+    {
+      "match": 55,
+      "date": "2026-05-07",
+      "tilt": -0.14332,
+      "cumulative": -0.06928
     }
   ],
   "team_matchups": [
@@ -1643,8 +1668,8 @@
     },
     {
       "opponent": "Lucknow Super Giants",
-      "tilt_per_match": -0.02211,
-      "matches": 6
+      "tilt_per_match": -0.03942,
+      "matches": 7
     },
     {
       "opponent": "Delhi Capitals",
@@ -1654,13 +1679,13 @@
   ],
   "bowling_team_matchups": [],
   "batting_stats": {
-    "runs": 1054,
-    "innings": 54,
-    "balls": 687,
-    "avg": 22.91,
-    "sr": 153.42,
+    "runs": 1055,
+    "innings": 55,
+    "balls": 690,
+    "avg": 22.45,
+    "sr": 152.9,
     "hs": 85,
-    "dismissals": 46,
+    "dismissals": 47,
     "not_outs": 8,
     "fifties": 1,
     "hundreds": 0
@@ -1720,6 +1745,7 @@
     0.01944,
     -0.11035,
     -0.00321,
-    -0.1833
+    -0.1833,
+    -0.14332
   ]
 }

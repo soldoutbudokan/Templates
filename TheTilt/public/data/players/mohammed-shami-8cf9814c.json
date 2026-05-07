@@ -13,21 +13,21 @@
     "Punjab Kings",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.01471,
+  "total_tilt_per_match": 0.0146,
   "batting_tilt_per_match": -0.0042,
-  "bowling_tilt_per_match": 0.0158,
-  "shrunk_total_tilt_per_match": 0.01332,
-  "shrunk_batting_tilt_per_match": -0.00486,
-  "shrunk_bowling_tilt_per_match": 0.01476,
-  "tilt_ci_lower": -0.014,
-  "tilt_ci_upper": 0.04064,
-  "tilt_ci_lower_90": -0.00961,
-  "tilt_ci_upper_90": 0.03625,
+  "bowling_tilt_per_match": 0.01568,
+  "shrunk_total_tilt_per_match": 0.01322,
+  "shrunk_batting_tilt_per_match": -0.00485,
+  "shrunk_bowling_tilt_per_match": 0.01465,
+  "tilt_ci_lower": -0.01389,
+  "tilt_ci_upper": 0.04033,
+  "tilt_ci_lower_90": -0.00953,
+  "tilt_ci_upper_90": 0.03597,
   "confidence": "high",
-  "total_tilt": 1.88341,
-  "total_matches": 128,
+  "total_tilt": 1.88366,
+  "total_matches": 129,
   "batting_balls": 110,
-  "bowling_balls": 2816,
+  "bowling_balls": 2840,
   "seasons": [
     {
       "season": "2013",
@@ -2635,11 +2635,11 @@
       "season": "2026",
       "team": "Lucknow Super Giants",
       "batting_tilt_per_match": 0.04645,
-      "bowling_tilt_per_match": -0.0208,
+      "bowling_tilt_per_match": -0.01869,
       "batting_matches": 6,
-      "bowling_matches": 9,
+      "bowling_matches": 10,
       "batting_balls": 21,
-      "bowling_balls": 210,
+      "bowling_balls": 234,
       "matches": [
         {
           "match_id": "1527678",
@@ -2811,6 +2811,25 @@
           "bowl_econ": 13.5,
           "bowl_tilt": -0.26935,
           "total_tilt": -0.26935
+        },
+        {
+          "match_id": "1529293",
+          "date": "2026-05-07",
+          "opponent": "Royal Challengers Bangalore",
+          "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow",
+          "team_score": "209/3",
+          "opponent_score": "203/6",
+          "winner": "Lucknow Super Giants",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 1,
+          "bowl_balls": 24,
+          "bowl_runs": 35,
+          "bowl_econ": 8.75,
+          "bowl_tilt": 0.00025,
+          "total_tilt": 0.00025
         }
       ],
       "batting_stats": {
@@ -2825,12 +2844,12 @@
         "hundreds": 0
       },
       "bowling_stats": {
-        "wickets": 8,
-        "innings": 9,
-        "balls": 210,
-        "runs_conceded": 310,
-        "avg": 38.75,
-        "economy": 8.86,
+        "wickets": 9,
+        "innings": 10,
+        "balls": 234,
+        "runs_conceded": 345,
+        "avg": 38.33,
+        "economy": 8.85,
         "best_figures": "2/9"
       }
     }
@@ -2852,9 +2871,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 1.13193,
-      "balls": 1596,
-      "avg_delta": 0.000682
+      "tilt": 1.21948,
+      "balls": 1614,
+      "avg_delta": 0.000725
     },
     {
       "phase": "middle",
@@ -2864,9 +2883,9 @@
     },
     {
       "phase": "death",
-      "tilt": 1.19081,
-      "balls": 710,
-      "avg_delta": 0.001609
+      "tilt": 1.10351,
+      "balls": 716,
+      "avg_delta": 0.001479
     }
   ],
   "best_matches": [
@@ -3805,6 +3824,12 @@
       "date": "2026-05-04",
       "tilt": -0.26935,
       "cumulative": 1.88341
+    },
+    {
+      "match": 129,
+      "date": "2026-05-07",
+      "tilt": 0.00025,
+      "cumulative": 1.88366
     }
   ],
   "team_matchups": [
@@ -3912,8 +3937,8 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.02934,
-      "matches": 14
+      "tilt_per_match": -0.02737,
+      "matches": 15
     },
     {
       "opponent": "Punjab Kings",
@@ -3944,11 +3969,11 @@
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 157,
-    "innings": 128,
-    "balls": 2816,
-    "runs_conceded": 4136,
-    "avg": 26.34,
+    "wickets": 158,
+    "innings": 129,
+    "balls": 2840,
+    "runs_conceded": 4171,
+    "avg": 26.4,
     "economy": 8.81,
     "best_figures": "4/16"
   },
@@ -4080,6 +4105,7 @@
     -0.0261,
     0.03137,
     0.43263,
-    -0.26935
+    -0.26935,
+    0.00025
   ]
 }

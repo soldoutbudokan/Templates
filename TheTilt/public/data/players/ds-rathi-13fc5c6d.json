@@ -8,21 +8,21 @@
   "teams": [
     "Lucknow Super Giants"
   ],
-  "total_tilt_per_match": 0.04202,
+  "total_tilt_per_match": 0.03731,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.04228,
-  "shrunk_total_tilt_per_match": 0.02867,
+  "bowling_tilt_per_match": 0.03756,
+  "shrunk_total_tilt_per_match": 0.02541,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.03097,
-  "tilt_ci_lower": -0.0086,
-  "tilt_ci_upper": 0.06594,
-  "tilt_ci_lower_90": -0.00261,
-  "tilt_ci_upper_90": 0.05995,
+  "shrunk_bowling_tilt_per_match": 0.02764,
+  "tilt_ci_lower": -0.01108,
+  "tilt_ci_upper": 0.0619,
+  "tilt_ci_lower_90": -0.00522,
+  "tilt_ci_upper_90": 0.05604,
   "confidence": "low",
-  "total_tilt": 0.79846,
-  "total_matches": 19,
+  "total_tilt": 0.74617,
+  "total_matches": 20,
   "batting_balls": 8,
-  "bowling_balls": 456,
+  "bowling_balls": 480,
   "seasons": [
     {
       "season": "2025",
@@ -307,11 +307,11 @@
       "season": "2026",
       "team": "Lucknow Super Giants",
       "batting_tilt_per_match": -0.00178,
-      "bowling_tilt_per_match": -0.01931,
+      "bowling_tilt_per_match": -0.02403,
       "batting_matches": 2,
-      "bowling_matches": 6,
+      "bowling_matches": 7,
       "batting_balls": 5,
-      "bowling_balls": 144,
+      "bowling_balls": 168,
       "matches": [
         {
           "match_id": "1527683",
@@ -426,6 +426,25 @@
           "bowl_econ": 11.5,
           "bowl_tilt": 0.00507,
           "total_tilt": 0.00507
+        },
+        {
+          "match_id": "1529293",
+          "date": "2026-05-07",
+          "opponent": "Royal Challengers Bangalore",
+          "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow",
+          "team_score": "209/3",
+          "opponent_score": "203/6",
+          "winner": "Lucknow Super Giants",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 0,
+          "bowl_balls": 24,
+          "bowl_runs": 51,
+          "bowl_econ": 12.75,
+          "bowl_tilt": -0.05229,
+          "total_tilt": -0.05229
         }
       ],
       "batting_stats": {
@@ -441,11 +460,11 @@
       },
       "bowling_stats": {
         "wickets": 3,
-        "innings": 6,
-        "balls": 144,
-        "runs_conceded": 226,
-        "avg": 75.33,
-        "economy": 9.42,
+        "innings": 7,
+        "balls": 168,
+        "runs_conceded": 277,
+        "avg": 92.33,
+        "economy": 9.89,
         "best_figures": "1/46"
       }
     }
@@ -467,15 +486,15 @@
     },
     {
       "phase": "middle",
-      "tilt": 0.36986,
-      "balls": 264,
-      "avg_delta": 0.00138
+      "tilt": 0.24869,
+      "balls": 282,
+      "avg_delta": 0.00087
     },
     {
       "phase": "death",
-      "tilt": 0.17141,
-      "balls": 72,
-      "avg_delta": 0.002226
+      "tilt": 0.2403,
+      "balls": 78,
+      "avg_delta": 0.002861
     }
   ],
   "best_matches": [
@@ -582,6 +601,14 @@
       "balls": 24
     },
     {
+      "match_id": "1529293",
+      "date": "2026-05-07",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.05229,
+      "wickets": 0,
+      "balls": 24
+    },
+    {
       "match_id": "1529266",
       "date": "2026-04-15",
       "vs": "Royal Challengers Bangalore",
@@ -602,14 +629,6 @@
       "date": "2025-03-27",
       "vs": "Sunrisers Hyderabad",
       "tilt": -0.0452,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
-      "match_id": "1527692",
-      "date": "2026-04-12",
-      "vs": "Gujarat Titans",
-      "tilt": -0.03159,
       "wickets": 1,
       "balls": 24
     }
@@ -728,6 +747,12 @@
       "date": "2026-04-26",
       "tilt": 0.00507,
       "cumulative": 0.79846
+    },
+    {
+      "match": 20,
+      "date": "2026-05-07",
+      "tilt": -0.05229,
+      "cumulative": 0.74617
     }
   ],
   "team_matchups": [
@@ -769,11 +794,6 @@
       "matches": 3
     },
     {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.02153,
-      "matches": 2
-    },
-    {
       "opponent": "Punjab Kings",
       "tilt_per_match": 0.00569,
       "matches": 2
@@ -782,6 +802,11 @@
       "opponent": "Rajasthan Royals",
       "tilt_per_match": -0.00106,
       "matches": 2
+    },
+    {
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.00308,
+      "matches": 3
     },
     {
       "opponent": "Gujarat Titans",
@@ -808,11 +833,11 @@
   },
   "bowling_stats": {
     "wickets": 17,
-    "innings": 19,
-    "balls": 456,
-    "runs_conceded": 661,
-    "avg": 38.88,
-    "economy": 8.7,
+    "innings": 20,
+    "balls": 480,
+    "runs_conceded": 712,
+    "avg": 41.88,
+    "economy": 8.9,
     "best_figures": "2/31"
   },
   "match_tilt_distribution": [
@@ -834,6 +859,7 @@
     -0.03159,
     -0.04864,
     -0.01513,
-    0.00507
+    0.00507,
+    -0.05229
   ]
 }

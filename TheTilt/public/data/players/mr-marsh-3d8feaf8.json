@@ -13,20 +13,20 @@
     "Rising Pune Supergiants",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.00233,
-  "batting_tilt_per_match": -0.00247,
+  "total_tilt_per_match": -0.00091,
+  "batting_tilt_per_match": -0.00094,
   "bowling_tilt_per_match": -0.0001,
-  "shrunk_total_tilt_per_match": -0.00383,
-  "shrunk_batting_tilt_per_match": -0.00391,
+  "shrunk_total_tilt_per_match": -0.00249,
+  "shrunk_batting_tilt_per_match": -0.00248,
   "shrunk_bowling_tilt_per_match": -0.00093,
-  "tilt_ci_lower": -0.03481,
-  "tilt_ci_upper": 0.02716,
-  "tilt_ci_lower_90": -0.02983,
-  "tilt_ci_upper_90": 0.02218,
+  "tilt_ci_lower": -0.03312,
+  "tilt_ci_upper": 0.02814,
+  "tilt_ci_lower_90": -0.0282,
+  "tilt_ci_upper_90": 0.02321,
   "confidence": "medium",
-  "total_tilt": -0.14665,
-  "total_matches": 63,
-  "batting_balls": 1088,
+  "total_tilt": -0.05841,
+  "total_matches": 64,
+  "batting_balls": 1144,
   "bowling_balls": 547,
   "seasons": [
     {
@@ -1337,11 +1337,11 @@
     {
       "season": "2026",
       "team": "Lucknow Super Giants",
-      "batting_tilt_per_match": -0.02921,
+      "batting_tilt_per_match": -0.01746,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 9,
+      "batting_matches": 10,
       "bowling_matches": 0,
-      "batting_balls": 184,
+      "batting_balls": 240,
       "bowling_balls": 0,
       "matches": [
         {
@@ -1514,39 +1514,58 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.06324
+        },
+        {
+          "match_id": "1529293",
+          "date": "2026-05-07",
+          "opponent": "Royal Challengers Bangalore",
+          "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow",
+          "team_score": "209/3",
+          "opponent_score": "203/6",
+          "winner": "Lucknow Super Giants",
+          "bat_runs": 111,
+          "bat_balls": 56,
+          "bat_sr": 198.2,
+          "bat_tilt": 0.08824,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.08824
         }
       ],
       "batting_stats": {
-        "runs": 256,
-        "innings": 9,
-        "balls": 184,
-        "avg": 28.44,
-        "sr": 139.13,
-        "hs": 55,
+        "runs": 367,
+        "innings": 10,
+        "balls": 240,
+        "avg": 36.7,
+        "sr": 152.92,
+        "hs": 111,
         "not_outs": 0,
-        "fifties": 1,
-        "hundreds": 0
+        "fifties": 2,
+        "hundreds": 1
       }
     }
   ],
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.68639,
-      "balls": 467,
-      "avg_delta": 0.001442
+      "tilt": 0.72711,
+      "balls": 491,
+      "avg_delta": 0.001451
     },
     {
       "phase": "middle",
-      "tilt": -0.45205,
-      "balls": 483,
-      "avg_delta": -0.000897
+      "tilt": -0.37451,
+      "balls": 512,
+      "avg_delta": -0.000701
     },
     {
       "phase": "death",
-      "tilt": -0.37776,
-      "balls": 138,
-      "avg_delta": -0.002642
+      "tilt": -0.40778,
+      "balls": 141,
+      "avg_delta": -0.002793
     }
   ],
   "bowling_phases": [
@@ -2115,6 +2134,12 @@
       "date": "2026-05-04",
       "tilt": -0.06324,
       "cumulative": -0.14665
+    },
+    {
+      "match": 64,
+      "date": "2026-05-07",
+      "tilt": 0.08824,
+      "cumulative": -0.05841
     }
   ],
   "team_matchups": [
@@ -2164,14 +2189,14 @@
       "matches": 7
     },
     {
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.03303,
+      "matches": 8
+    },
+    {
       "opponent": "Chennai Super Kings",
       "tilt_per_match": -0.03355,
       "matches": 6
-    },
-    {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.05036,
-      "matches": 7
     },
     {
       "opponent": "Gujarat Lions",
@@ -2237,16 +2262,16 @@
     }
   ],
   "batting_stats": {
-    "runs": 1548,
-    "innings": 58,
-    "balls": 1088,
-    "avg": 29.21,
-    "sr": 142.28,
+    "runs": 1659,
+    "innings": 59,
+    "balls": 1144,
+    "avg": 30.72,
+    "sr": 145.02,
     "hs": 117,
-    "dismissals": 53,
+    "dismissals": 54,
     "not_outs": 5,
-    "fifties": 11,
-    "hundreds": 1
+    "fifties": 12,
+    "hundreds": 2
   },
   "bowling_stats": {
     "wickets": 36,
@@ -2320,6 +2345,7 @@
     0.00322,
     0.05046,
     -0.04677,
-    -0.06324
+    -0.06324,
+    0.08824
   ]
 }
