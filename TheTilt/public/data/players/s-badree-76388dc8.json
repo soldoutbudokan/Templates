@@ -8,18 +8,18 @@
   "teams": [
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.00617,
+  "total_tilt_per_match": 0.01238,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.02381,
-  "shrunk_total_tilt_per_match": -0.00314,
+  "bowling_tilt_per_match": 0.03002,
+  "shrunk_total_tilt_per_match": 0.00128,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.01243,
-  "tilt_ci_lower": -0.07244,
-  "tilt_ci_upper": 0.06616,
-  "tilt_ci_lower_90": -0.0613,
-  "tilt_ci_upper_90": 0.05502,
+  "shrunk_bowling_tilt_per_match": 0.01668,
+  "tilt_ci_lower": -0.05864,
+  "tilt_ci_upper": 0.0612,
+  "tilt_ci_lower_90": -0.04901,
+  "tilt_ci_upper_90": 0.05157,
   "confidence": "low",
-  "total_tilt": 0.07398,
+  "total_tilt": 0.14855,
   "total_matches": 12,
   "batting_balls": 23,
   "bowling_balls": 258,
@@ -28,7 +28,7 @@
       "season": "2013",
       "team": "Rajasthan Royals",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.03638,
+      "bowling_tilt_per_match": 0.06323,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -50,8 +50,8 @@
           "bowl_balls": 24,
           "bowl_runs": 35,
           "bowl_econ": 8.75,
-          "bowl_tilt": -0.03638,
-          "total_tilt": -0.03638
+          "bowl_tilt": 0.06323,
+          "total_tilt": 0.06323
         }
       ],
       "bowling_stats": {
@@ -68,7 +68,7 @@
       "season": "2014",
       "team": "Chennai Super Kings",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.01521,
+      "bowling_tilt_per_match": 0.0152,
       "batting_matches": 0,
       "bowling_matches": 4,
       "batting_balls": 0,
@@ -128,8 +128,8 @@
           "bowl_balls": 18,
           "bowl_runs": 21,
           "bowl_econ": 7.0,
-          "bowl_tilt": 0.00492,
-          "total_tilt": 0.00492
+          "bowl_tilt": 0.00485,
+          "total_tilt": 0.00485
         },
         {
           "match_id": "734035",
@@ -165,7 +165,7 @@
       "season": "2017",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": -0.04234,
-      "bowling_tilt_per_match": 0.03732,
+      "bowling_tilt_per_match": 0.03375,
       "batting_matches": 5,
       "bowling_matches": 7,
       "batting_balls": 23,
@@ -187,8 +187,8 @@
           "bowl_balls": 24,
           "bowl_runs": 10,
           "bowl_econ": 2.5,
-          "bowl_tilt": 0.42855,
-          "total_tilt": 0.42855
+          "bowl_tilt": 0.33428,
+          "total_tilt": 0.33428
         },
         {
           "match_id": "1082607",
@@ -244,8 +244,8 @@
           "bowl_balls": 18,
           "bowl_runs": 29,
           "bowl_econ": 9.67,
-          "bowl_tilt": 0.08453,
-          "total_tilt": 0.0123
+          "bowl_tilt": 0.15903,
+          "total_tilt": 0.0868
         },
         {
           "match_id": "1082624",
@@ -301,8 +301,8 @@
           "bowl_balls": 18,
           "bowl_runs": 42,
           "bowl_econ": 14.0,
-          "bowl_tilt": -0.10277,
-          "total_tilt": -0.10277
+          "bowl_tilt": -0.10796,
+          "total_tilt": -0.10796
         }
       ],
       "batting_stats": {
@@ -344,9 +344,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.28203,
+      "tilt": 0.35661,
       "balls": 156,
-      "avg_delta": 0.001763
+      "avg_delta": 0.002229
     },
     {
       "phase": "middle",
@@ -450,9 +450,17 @@
       "match_id": "1082602",
       "date": "2017-04-14",
       "vs": "Mumbai Indians",
-      "tilt": 0.42855,
+      "tilt": 0.33428,
       "wickets": 4,
       "balls": 24
+    },
+    {
+      "match_id": "1082621",
+      "date": "2017-04-27",
+      "vs": "Gujarat Lions",
+      "tilt": 0.15903,
+      "wickets": 2,
+      "balls": 18
     },
     {
       "match_id": "734003",
@@ -463,12 +471,12 @@
       "balls": 24
     },
     {
-      "match_id": "1082621",
-      "date": "2017-04-27",
-      "vs": "Gujarat Lions",
-      "tilt": 0.08453,
-      "wickets": 2,
-      "balls": 18
+      "match_id": "598001",
+      "date": "2013-04-06",
+      "vs": "Delhi Capitals",
+      "tilt": 0.06323,
+      "wickets": 0,
+      "balls": 24
     },
     {
       "match_id": "733995",
@@ -477,14 +485,6 @@
       "tilt": 0.00748,
       "wickets": 1,
       "balls": 24
-    },
-    {
-      "match_id": "734013",
-      "date": "2014-05-18",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": 0.00492,
-      "wickets": 0,
-      "balls": 18
     }
   ],
   "bowling_worst_matches": [
@@ -492,7 +492,7 @@
       "match_id": "1082636",
       "date": "2017-05-07",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.10277,
+      "tilt": -0.10796,
       "wickets": 0,
       "balls": 18
     },
@@ -521,86 +521,86 @@
       "balls": 24
     },
     {
-      "match_id": "598001",
-      "date": "2013-04-06",
-      "vs": "Delhi Capitals",
-      "tilt": -0.03638,
+      "match_id": "1082633",
+      "date": "2017-05-05",
+      "vs": "Punjab Kings",
+      "tilt": -0.02095,
       "wickets": 0,
-      "balls": 24
+      "balls": 18
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2013-04-06",
-      "tilt": -0.03638,
-      "cumulative": -0.03638
+      "tilt": 0.06323,
+      "cumulative": 0.06323
     },
     {
       "match": 2,
       "date": "2014-05-10",
       "tilt": 0.00748,
-      "cumulative": -0.0289
+      "cumulative": 0.0707
     },
     {
       "match": 3,
       "date": "2014-05-13",
       "tilt": 0.10055,
-      "cumulative": 0.07165
+      "cumulative": 0.17126
     },
     {
       "match": 4,
       "date": "2014-05-18",
-      "tilt": 0.00492,
-      "cumulative": 0.07657
+      "tilt": 0.00485,
+      "cumulative": 0.17611
     },
     {
       "match": 5,
       "date": "2014-05-24",
       "tilt": -0.05209,
-      "cumulative": 0.02448
+      "cumulative": 0.12402
     },
     {
       "match": 6,
       "date": "2017-04-14",
-      "tilt": 0.42855,
-      "cumulative": 0.45303
+      "tilt": 0.33428,
+      "cumulative": 0.4583
     },
     {
       "match": 7,
       "date": "2017-04-16",
       "tilt": -0.1087,
-      "cumulative": 0.34434
+      "cumulative": 0.3496
     },
     {
       "match": 8,
       "date": "2017-04-23",
       "tilt": -0.05849,
-      "cumulative": 0.28585
+      "cumulative": 0.29111
     },
     {
       "match": 9,
       "date": "2017-04-27",
-      "tilt": 0.0123,
-      "cumulative": 0.29815
+      "tilt": 0.0868,
+      "cumulative": 0.37792
     },
     {
       "match": 10,
       "date": "2017-04-29",
       "tilt": -0.00757,
-      "cumulative": 0.29058
+      "cumulative": 0.37035
     },
     {
       "match": 11,
       "date": "2017-05-05",
       "tilt": -0.11383,
-      "cumulative": 0.17675
+      "cumulative": 0.25651
     },
     {
       "match": 12,
       "date": "2017-05-07",
-      "tilt": -0.10277,
-      "cumulative": 0.07398
+      "tilt": -0.10796,
+      "cumulative": 0.14855
     }
   ],
   "team_matchups": [
@@ -628,8 +628,13 @@
   "bowling_team_matchups": [
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.21801,
+      "tilt_per_match": 0.17088,
       "matches": 2
+    },
+    {
+      "opponent": "Gujarat Lions",
+      "tilt_per_match": 0.15903,
+      "matches": 1
     },
     {
       "opponent": "Rajasthan Royals",
@@ -637,8 +642,8 @@
       "matches": 1
     },
     {
-      "opponent": "Gujarat Lions",
-      "tilt_per_match": 0.08453,
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": 0.06323,
       "matches": 1
     },
     {
@@ -648,13 +653,8 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.02359,
+      "tilt_per_match": -0.02362,
       "matches": 2
-    },
-    {
-      "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.03638,
-      "matches": 1
     },
     {
       "opponent": "Rising Pune Supergiants",
@@ -663,7 +663,7 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.07102,
+      "tilt_per_match": -0.07362,
       "matches": 2
     }
   ],
@@ -689,17 +689,17 @@
     "best_figures": "4/10"
   },
   "match_tilt_distribution": [
-    -0.03638,
+    0.06323,
     0.00748,
     0.10055,
-    0.00492,
+    0.00485,
     -0.05209,
-    0.42855,
+    0.33428,
     -0.1087,
     -0.05849,
-    0.0123,
+    0.0868,
     -0.00757,
     -0.11383,
-    -0.10277
+    -0.10796
   ]
 }

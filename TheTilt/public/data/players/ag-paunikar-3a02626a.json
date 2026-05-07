@@ -8,18 +8,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.05539,
-  "batting_tilt_per_match": -0.05539,
+  "total_tilt_per_match": -0.05639,
+  "batting_tilt_per_match": -0.05639,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03973,
-  "shrunk_batting_tilt_per_match": -0.03851,
+  "shrunk_total_tilt_per_match": -0.04109,
+  "shrunk_batting_tilt_per_match": -0.03783,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.04484,
-  "tilt_ci_upper": -0.03462,
-  "tilt_ci_lower_90": -0.04402,
-  "tilt_ci_upper_90": -0.03544,
+  "tilt_ci_lower": -0.04577,
+  "tilt_ci_upper": -0.03641,
+  "tilt_ci_lower_90": -0.04502,
+  "tilt_ci_upper_90": -0.03716,
   "confidence": "low",
-  "total_tilt": -0.27696,
+  "total_tilt": -0.28197,
   "total_matches": 5,
   "batting_balls": 58,
   "bowling_balls": 0,
@@ -69,7 +69,7 @@
     {
       "season": "2011",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.05217,
+      "batting_tilt_per_match": -0.05342,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 4,
       "bowling_matches": 0,
@@ -87,13 +87,13 @@
           "bat_runs": 20,
           "bat_balls": 19,
           "bat_sr": 105.3,
-          "bat_tilt": -0.0478,
+          "bat_tilt": -0.05429,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.0478
+          "total_tilt": -0.05429
         },
         {
           "match_id": "501204",
@@ -106,13 +106,13 @@
           "bat_runs": 5,
           "bat_balls": 8,
           "bat_sr": 62.5,
-          "bat_tilt": -0.05235,
+          "bat_tilt": -0.05087,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.05235
+          "total_tilt": -0.05087
         },
         {
           "match_id": "501209",
@@ -169,21 +169,13 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.27696,
+      "tilt": -0.28197,
       "balls": 58,
-      "avg_delta": -0.00454
+      "avg_delta": -0.004622
     }
   ],
   "bowling_phases": [],
   "best_matches": [
-    {
-      "match_id": "501199",
-      "date": "2011-04-09",
-      "vs": "Deccan Chargers",
-      "tilt": -0.0478,
-      "runs": 20,
-      "balls": 19
-    },
     {
       "match_id": "501209",
       "date": "2011-04-15",
@@ -196,9 +188,17 @@
       "match_id": "501204",
       "date": "2011-04-12",
       "vs": "Delhi Capitals",
-      "tilt": -0.05235,
+      "tilt": -0.05087,
       "runs": 5,
       "balls": 8
+    },
+    {
+      "match_id": "501199",
+      "date": "2011-04-09",
+      "vs": "Deccan Chargers",
+      "tilt": -0.05429,
+      "runs": 20,
+      "balls": 19
     },
     {
       "match_id": "501214",
@@ -235,10 +235,18 @@
       "balls": 15
     },
     {
+      "match_id": "501199",
+      "date": "2011-04-09",
+      "vs": "Deccan Chargers",
+      "tilt": -0.05429,
+      "runs": 20,
+      "balls": 19
+    },
+    {
       "match_id": "501204",
       "date": "2011-04-12",
       "vs": "Delhi Capitals",
-      "tilt": -0.05235,
+      "tilt": -0.05087,
       "runs": 5,
       "balls": 8
     },
@@ -249,14 +257,6 @@
       "tilt": -0.04973,
       "runs": 9,
       "balls": 15
-    },
-    {
-      "match_id": "501199",
-      "date": "2011-04-09",
-      "vs": "Deccan Chargers",
-      "tilt": -0.0478,
-      "runs": 20,
-      "balls": 19
     }
   ],
   "bowling_best_matches": [],
@@ -271,43 +271,43 @@
     {
       "match": 2,
       "date": "2011-04-09",
-      "tilt": -0.0478,
-      "cumulative": -0.1161
+      "tilt": -0.05429,
+      "cumulative": -0.12259
     },
     {
       "match": 3,
       "date": "2011-04-12",
-      "tilt": -0.05235,
-      "cumulative": -0.16845
+      "tilt": -0.05087,
+      "cumulative": -0.17346
     },
     {
       "match": 4,
       "date": "2011-04-15",
       "tilt": -0.04973,
-      "cumulative": -0.21818
+      "cumulative": -0.22319
     },
     {
       "match": 5,
       "date": "2011-04-17",
       "tilt": -0.05878,
-      "cumulative": -0.27696
+      "cumulative": -0.28197
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.0478,
-      "matches": 1
-    },
-    {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.05235,
+      "tilt_per_match": -0.05087,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
       "tilt_per_match": -0.05425,
       "matches": 2
+    },
+    {
+      "opponent": "Deccan Chargers",
+      "tilt_per_match": -0.05429,
+      "matches": 1
     },
     {
       "opponent": "Royal Challengers Bangalore",
@@ -331,8 +331,8 @@
   "bowling_stats": null,
   "match_tilt_distribution": [
     -0.0683,
-    -0.0478,
-    -0.05235,
+    -0.05429,
+    -0.05087,
     -0.04973,
     -0.05878
   ]

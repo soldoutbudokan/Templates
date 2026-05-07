@@ -8,18 +8,18 @@
   "teams": [
     "Kolkata Knight Riders"
   ],
-  "total_tilt_per_match": -0.01376,
+  "total_tilt_per_match": -0.00923,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.01376,
-  "shrunk_total_tilt_per_match": -0.01804,
+  "bowling_tilt_per_match": -0.00923,
+  "shrunk_total_tilt_per_match": -0.0155,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01302,
-  "tilt_ci_lower": -0.05892,
-  "tilt_ci_upper": 0.02283,
-  "tilt_ci_lower_90": -0.05235,
-  "tilt_ci_upper_90": 0.01626,
+  "shrunk_bowling_tilt_per_match": -0.01126,
+  "tilt_ci_lower": -0.05567,
+  "tilt_ci_upper": 0.02468,
+  "tilt_ci_lower_90": -0.04921,
+  "tilt_ci_upper_90": 0.01822,
   "confidence": "low",
-  "total_tilt": -0.1101,
+  "total_tilt": -0.07386,
   "total_matches": 8,
   "batting_balls": 5,
   "bowling_balls": 162,
@@ -28,7 +28,7 @@
       "season": "2019",
       "team": "Kolkata Knight Riders",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.01376,
+      "bowling_tilt_per_match": -0.00923,
       "batting_matches": 1,
       "bowling_matches": 8,
       "batting_balls": 5,
@@ -88,8 +88,8 @@
           "bowl_balls": 24,
           "bowl_runs": 37,
           "bowl_econ": 9.25,
-          "bowl_tilt": -0.1602,
-          "total_tilt": -0.1602
+          "bowl_tilt": -0.148,
+          "total_tilt": -0.148
         },
         {
           "match_id": "1178410",
@@ -126,8 +126,8 @@
           "bowl_balls": 12,
           "bowl_runs": 16,
           "bowl_econ": 8.0,
-          "bowl_tilt": -0.00775,
-          "total_tilt": -0.00775
+          "bowl_tilt": 0.02182,
+          "total_tilt": 0.02182
         },
         {
           "match_id": "1178422",
@@ -145,8 +145,8 @@
           "bowl_balls": 24,
           "bowl_runs": 37,
           "bowl_econ": 9.25,
-          "bowl_tilt": 0.00338,
-          "total_tilt": 0.00338
+          "bowl_tilt": 0.01099,
+          "total_tilt": 0.01099
         },
         {
           "match_id": "1178427",
@@ -183,8 +183,8 @@
           "bowl_balls": 18,
           "bowl_runs": 20,
           "bowl_econ": 6.67,
-          "bowl_tilt": -0.0058,
-          "total_tilt": -0.0058
+          "bowl_tilt": -0.01894,
+          "total_tilt": -0.01894
         }
       ],
       "batting_stats": {
@@ -220,9 +220,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.27196,
+      "tilt": 0.30821,
       "balls": 66,
-      "avg_delta": 0.003885
+      "avg_delta": 0.004403
     },
     {
       "phase": "middle",
@@ -275,10 +275,18 @@
       "balls": 24
     },
     {
+      "match_id": "1178413",
+      "date": "2019-04-21",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.02182,
+      "wickets": 0,
+      "balls": 12
+    },
+    {
       "match_id": "1178422",
       "date": "2019-04-28",
       "vs": "Mumbai Indians",
-      "tilt": 0.00338,
+      "tilt": 0.01099,
       "wickets": 2,
       "balls": 24
     },
@@ -286,17 +294,9 @@
       "match_id": "1178431",
       "date": "2019-05-05",
       "vs": "Mumbai Indians",
-      "tilt": -0.0058,
+      "tilt": -0.01894,
       "wickets": 0,
       "balls": 18
-    },
-    {
-      "match_id": "1178413",
-      "date": "2019-04-21",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.00775,
-      "wickets": 0,
-      "balls": 12
     }
   ],
   "bowling_worst_matches": [
@@ -304,7 +304,7 @@
       "match_id": "1178404",
       "date": "2019-04-14",
       "vs": "Chennai Super Kings",
-      "tilt": -0.1602,
+      "tilt": -0.148,
       "wickets": 1,
       "balls": 24
     },
@@ -325,20 +325,20 @@
       "balls": 24
     },
     {
-      "match_id": "1178413",
-      "date": "2019-04-21",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.00775,
-      "wickets": 0,
-      "balls": 12
-    },
-    {
       "match_id": "1178431",
       "date": "2019-05-05",
       "vs": "Mumbai Indians",
-      "tilt": -0.0058,
+      "tilt": -0.01894,
       "wickets": 0,
       "balls": 18
+    },
+    {
+      "match_id": "1178422",
+      "date": "2019-04-28",
+      "vs": "Mumbai Indians",
+      "tilt": 0.01099,
+      "wickets": 2,
+      "balls": 24
     }
   ],
   "career_trend": [
@@ -357,38 +357,38 @@
     {
       "match": 3,
       "date": "2019-04-14",
-      "tilt": -0.1602,
-      "cumulative": -0.09767
+      "tilt": -0.148,
+      "cumulative": -0.08547
     },
     {
       "match": 4,
       "date": "2019-04-19",
       "tilt": -0.03238,
-      "cumulative": -0.13006
+      "cumulative": -0.11785
     },
     {
       "match": 5,
       "date": "2019-04-21",
-      "tilt": -0.00775,
-      "cumulative": -0.13781
+      "tilt": 0.02182,
+      "cumulative": -0.09603
     },
     {
       "match": 6,
       "date": "2019-04-28",
-      "tilt": 0.00338,
-      "cumulative": -0.13443
+      "tilt": 0.01099,
+      "cumulative": -0.08504
     },
     {
       "match": 7,
       "date": "2019-05-03",
       "tilt": 0.03013,
-      "cumulative": -0.1043
+      "cumulative": -0.05492
     },
     {
       "match": 8,
       "date": "2019-05-05",
-      "tilt": -0.0058,
-      "cumulative": -0.1101
+      "tilt": -0.01894,
+      "cumulative": -0.07386
     }
   ],
   "team_matchups": [
@@ -410,14 +410,14 @@
       "matches": 1
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.00121,
-      "matches": 2
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": 0.02182,
+      "matches": 1
     },
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.00775,
-      "matches": 1
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.00398,
+      "matches": 2
     },
     {
       "opponent": "Royal Challengers Bangalore",
@@ -426,7 +426,7 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.10318,
+      "tilt_per_match": -0.09708,
       "matches": 2
     }
   ],
@@ -454,11 +454,11 @@
   "match_tilt_distribution": [
     0.10868,
     -0.04615,
-    -0.1602,
+    -0.148,
     -0.03238,
-    -0.00775,
-    0.00338,
+    0.02182,
+    0.01099,
     0.03013,
-    -0.0058
+    -0.01894
   ]
 }

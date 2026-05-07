@@ -8,18 +8,18 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": -0.13214,
-  "batting_tilt_per_match": -0.10052,
+  "total_tilt_per_match": -0.14186,
+  "batting_tilt_per_match": -0.10985,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.08984,
-  "shrunk_batting_tilt_per_match": -0.06869,
+  "shrunk_total_tilt_per_match": -0.09744,
+  "shrunk_batting_tilt_per_match": -0.07255,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.187,
-  "tilt_ci_upper": 0.00733,
-  "tilt_ci_lower_90": -0.17139,
-  "tilt_ci_upper_90": -0.00829,
+  "tilt_ci_lower": -0.19154,
+  "tilt_ci_upper": -0.00334,
+  "tilt_ci_lower_90": -0.17642,
+  "tilt_ci_upper_90": -0.01846,
   "confidence": "low",
-  "total_tilt": -1.05715,
+  "total_tilt": -1.13484,
   "total_matches": 8,
   "batting_balls": 129,
   "bowling_balls": 43,
@@ -27,8 +27,8 @@
     {
       "season": "2023",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": -0.06143,
-      "bowling_tilt_per_match": -0.00205,
+      "batting_tilt_per_match": -0.07413,
+      "bowling_tilt_per_match": -0.00307,
       "batting_matches": 6,
       "bowling_matches": 3,
       "batting_balls": 92,
@@ -83,13 +83,13 @@
           "bat_runs": 34,
           "bat_balls": 22,
           "bat_sr": 154.5,
-          "bat_tilt": -0.0311,
+          "bat_tilt": -0.12492,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 10,
           "bowl_econ": 5.0,
           "bowl_tilt": 0.03932,
-          "total_tilt": 0.00822
+          "total_tilt": -0.0856
         },
         {
           "match_id": "1359501",
@@ -102,13 +102,13 @@
           "bat_runs": 8,
           "bat_balls": 7,
           "bat_sr": 114.3,
-          "bat_tilt": -0.07468,
+          "bat_tilt": -0.05707,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.07468
+          "total_tilt": -0.05707
         },
         {
           "match_id": "1359505",
@@ -126,8 +126,8 @@
           "bowl_balls": 6,
           "bowl_runs": 7,
           "bowl_econ": 7.0,
-          "bowl_tilt": 0.01615,
-          "total_tilt": -0.02109
+          "bowl_tilt": 0.01309,
+          "total_tilt": -0.02415
         },
         {
           "match_id": "1359520",
@@ -173,7 +173,7 @@
     {
       "season": "2026",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": -0.2178,
+      "batting_tilt_per_match": -0.21701,
       "bowling_tilt_per_match": -0.12341,
       "batting_matches": 2,
       "bowling_matches": 2,
@@ -210,13 +210,13 @@
           "bat_runs": 34,
           "bat_balls": 30,
           "bat_sr": 113.3,
-          "bat_tilt": -0.3479,
+          "bat_tilt": -0.34631,
           "bowl_wkts": 0,
           "bowl_balls": 18,
           "bowl_runs": 38,
           "bowl_econ": 12.67,
           "bowl_tilt": -0.21643,
-          "total_tilt": -0.56433
+          "total_tilt": -0.56274
         }
       ],
       "batting_stats": {
@@ -244,9 +244,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.34663,
+      "tilt": -0.42126,
       "balls": 89,
-      "avg_delta": -0.003611
+      "avg_delta": -0.004388
     },
     {
       "phase": "middle",
@@ -264,9 +264,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.19771,
+      "tilt": -0.20077,
       "balls": 30,
-      "avg_delta": -0.006178
+      "avg_delta": -0.006274
     },
     {
       "phase": "middle",
@@ -285,14 +285,6 @@
       "balls": 24
     },
     {
-      "match_id": "1359495",
-      "date": "2023-04-15",
-      "vs": "Lucknow Super Giants",
-      "tilt": -0.0311,
-      "runs": 34,
-      "balls": 22
-    },
-    {
       "match_id": "1359505",
       "date": "2023-04-22",
       "vs": "Mumbai Indians",
@@ -304,7 +296,7 @@
       "match_id": "1359501",
       "date": "2023-04-20",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.07468,
+      "tilt": -0.05707,
       "runs": 8,
       "balls": 7
     },
@@ -315,6 +307,14 @@
       "tilt": -0.08771,
       "runs": 2,
       "balls": 7
+    },
+    {
+      "match_id": "1359488",
+      "date": "2023-04-09",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.10217,
+      "runs": 1,
+      "balls": 3
     }
   ],
   "worst_matches": [
@@ -322,9 +322,17 @@
       "match_id": "1529270",
       "date": "2026-04-18",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.3479,
+      "tilt": -0.34631,
       "runs": 34,
       "balls": 30
+    },
+    {
+      "match_id": "1359495",
+      "date": "2023-04-15",
+      "vs": "Lucknow Super Giants",
+      "tilt": -0.12492,
+      "runs": 34,
+      "balls": 22
     },
     {
       "match_id": "1359520",
@@ -349,14 +357,6 @@
       "tilt": -0.08771,
       "runs": 2,
       "balls": 7
-    },
-    {
-      "match_id": "1359501",
-      "date": "2023-04-20",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.07468,
-      "runs": 8,
-      "balls": 7
     }
   ],
   "bowling_best_matches": [
@@ -372,7 +372,7 @@
       "match_id": "1359505",
       "date": "2023-04-22",
       "vs": "Mumbai Indians",
-      "tilt": 0.01615,
+      "tilt": 0.01309,
       "wickets": 0,
       "balls": 6
     },
@@ -430,7 +430,7 @@
       "match_id": "1359505",
       "date": "2023-04-22",
       "vs": "Mumbai Indians",
-      "tilt": 0.01615,
+      "tilt": 0.01309,
       "wickets": 0,
       "balls": 6
     },
@@ -459,38 +459,38 @@
     {
       "match": 3,
       "date": "2023-04-15",
-      "tilt": 0.00822,
-      "cumulative": -0.16958
+      "tilt": -0.0856,
+      "cumulative": -0.26341
     },
     {
       "match": 4,
       "date": "2023-04-20",
-      "tilt": -0.07468,
-      "cumulative": -0.24426
+      "tilt": -0.05707,
+      "cumulative": -0.32048
     },
     {
       "match": 5,
       "date": "2023-04-22",
-      "tilt": -0.02109,
-      "cumulative": -0.26535
+      "tilt": -0.02415,
+      "cumulative": -0.34463
     },
     {
       "match": 6,
       "date": "2023-05-03",
       "tilt": -0.10939,
-      "cumulative": -0.37474
+      "cumulative": -0.45402
     },
     {
       "match": 7,
       "date": "2026-03-30",
       "tilt": -0.11809,
-      "cumulative": -0.49283
+      "cumulative": -0.57211
     },
     {
       "match": 8,
       "date": "2026-04-18",
-      "tilt": -0.56432,
-      "cumulative": -1.05715
+      "tilt": -0.56273,
+      "cumulative": -1.13484
     }
   ],
   "team_matchups": [
@@ -500,8 +500,8 @@
       "matches": 1
     },
     {
-      "opponent": "Lucknow Super Giants",
-      "tilt_per_match": -0.0311,
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.05707,
       "matches": 1
     },
     {
@@ -510,18 +510,18 @@
       "matches": 2
     },
     {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.07468,
-      "matches": 1
-    },
-    {
       "opponent": "Rajasthan Royals",
       "tilt_per_match": -0.08771,
       "matches": 1
     },
     {
+      "opponent": "Lucknow Super Giants",
+      "tilt_per_match": -0.12492,
+      "matches": 1
+    },
+    {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.22504,
+      "tilt_per_match": -0.22424,
       "matches": 2
     }
   ],
@@ -533,7 +533,7 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.01615,
+      "tilt_per_match": 0.01309,
       "matches": 1
     },
     {
@@ -576,11 +576,11 @@
   "match_tilt_distribution": [
     -0.10217,
     -0.07563,
-    0.00822,
-    -0.07468,
-    -0.02109,
+    -0.0856,
+    -0.05707,
+    -0.02415,
     -0.10939,
     -0.11809,
-    -0.56432
+    -0.56273
   ]
 }
