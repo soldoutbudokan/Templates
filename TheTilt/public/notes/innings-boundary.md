@@ -159,3 +159,42 @@ Ranked by **total career TILT** (the same lens the tables above use):
 B Kumar climbs from #9 back to #7 — the alpha-decay returns some of the early-chase credit that the per-match midpoint snap was zeroing out. The names that exit (DW Steyn) had benefited from the model's chase pessimism on a few specific deliveries that no longer carry full weight.
 
 The fix is reversible: drop the third step (lines marked "Step 3" in `apply_boundary_calibration`) and the system reverts to the post-#62 calibration above.
+
+---
+
+## Update: exponential decay across the powerplay + chained endpoints
+
+The linear-decay-over-6-balls fix above closed the visible second-over jump but left two issues. First, by the end of over 1 the alpha had snapped from 0.2 to 0.0 and the model's "after-7-balls chase" prediction would still differ a few percentage points from the calibrated trajectory — a smaller, but still visible, jump. Second, an internal bookkeeping issue: each ball's `wp_before` and `wp_after` were blended *independently*, so within balls 1–6 of innings 2, `wp_after(k) ≠ wp_before(k+1)`. The cumulative gap (~0.05–0.10 percentage points per match) flowed into a residual when summing inn2 deltas — i.e., `(inn2_start) + Σ(inn2 deltas) ≠ inn2_terminal`.
+
+The new third step fixes both at once:
+
+- **Exponential decay across the full powerplay** (balls 1–36 of inn2). `alpha_k = exp(−(k−1) / τ)` with `τ = 7`. Ball 1 still has `alpha = 1.0` (full bridge to midpoint, identical behavior to the previous version). By ball 36 `alpha ≈ 0.007`, so the calibration's influence has effectively faded by the end of the powerplay — no visible jump at any point in the over.
+- **Chained endpoints**. Define a single `boundary_wp(k)` value at each ball boundary; set `wp_after(k) := boundary_wp(k)` and `wp_before(k+1) := boundary_wp(k)`. Within balls 1–36 of inn2, `wp_after(k) = wp_before(k+1)` exactly by construction. The blend region telescopes cleanly.
+
+The remaining residual when summing inn2 deltas is now ~0.038 percentage points per match (down from 0.086 with the linear-over-6 blend), and the leftover is structural: between-over model output gaps where a new bowler comes on and the model's "before-state" features differ slightly from its "after-state" features for the previous bowler. Closing that gap would require redefining `wp_before(k) := wp_after(k−1)` across all balls, which is a deeper methodology change deferred to a future pass.
+
+### What changed in the rankings (post-PP-decay)
+
+Powerplay batters gain visibly. Their early-PP impact had been damped most aggressively by the linear-over-6 blend (alpha collapsed from 1.0 to 0.0 in five balls); the smoother exponential blend distributes that damping more honestly across the full powerplay. The biggest shifts among 50+ match players, ranked by total career TILT:
+
+| Player | Pre-PP | Post-PP | Δ |
+|:--|:--:|:--:|:--:|
+| V Kohli | 141 | 90 | +51 |
+| RV Uthappa | 84 | 55 | +29 |
+| AC Gilchrist | 61 | 36 | +25 |
+| G Gambhir | 115 | 93 | +22 |
+| M Vijay | 166 | 145 | +21 |
+
+Mirror image: bowlers who closed out tight chases give back a portion of their last-ball-snap gains as the credit redistributes more evenly:
+
+| Player | Pre-PP | Post-PP | Δ |
+|:--|:--:|:--:|:--:|
+| MM Sharma | 32 | 68 | −36 |
+| AD Russell | 27 | 56 | −29 |
+| JA Morkel | 78 | 103 | −25 |
+| L Balaji | 87 | 109 | −22 |
+| TG Southee | 40 | 62 | −22 |
+
+Top of the leaderboard is essentially unchanged — Narine #1, Bumrah #2, ABD/Malinga swap #3 and #4. DJ Bravo (who entered the top 10 in the [last-ball snap](notes.html?note=last-ball-snap)) drops from #10 to #12 as some of his early-chase damping gets smoothed out.
+
+The fix is reversible: revert this commit and the system returns to the linear-decay-over-6-balls state.

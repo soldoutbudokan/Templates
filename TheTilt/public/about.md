@@ -385,6 +385,7 @@ We close that gap with a two-step post-processing layer in `compute_tilt.apply_b
 
 1. **Per-side isotonic calibration**. Two `IsotonicRegression`s mapping raw model output → empirical BF-win rate, fit on every non-DLS match. Applied to inn1's last `wp_after` and inn2's first `wp_before` (BF POV) independently. Kills the systematic bias.
 2. **Per-match BF-POV midpoint bridge**. After step 1, the two endpoints are snapped to their average per match. Forces the model to agree with itself across the boundary by construction.
+3. **Exponential decay across the inn2 powerplay**. Steps 1 and 2 close the visible cliff but leave the model's "after one ball of chase" prediction a few percentage points off the calibrated midpoint, producing a fresh discontinuity at ball 2. We blend `wp_after(k)` toward the calibrated midpoint with weight `α_k = exp(−(k−1)/7)` for the first 36 inn2 balls — full bridge at ball 1, fading to ~0.7% at the end of over 6. Endpoints are *chained* (`wp_after(k) := wp_before(k+1)` by construction), so adjacent-ball telescoping holds within the blend region.
 
 Median per-match cliff after the fix: **0.0 pp**. The match-page chart line is now naturally continuous — the dashed marker at the innings break is purely a visual cue. The full diagnostic is at: [Fixing the Innings-Boundary Jump](notes.html?note=innings-boundary).
 
