@@ -8,18 +8,18 @@
   "teams": [
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.02217,
-  "batting_tilt_per_match": -0.02217,
+  "total_tilt_per_match": -0.05089,
+  "batting_tilt_per_match": -0.05089,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02162,
-  "shrunk_batting_tilt_per_match": -0.01896,
+  "shrunk_total_tilt_per_match": -0.03712,
+  "shrunk_batting_tilt_per_match": -0.03352,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.04458,
-  "tilt_ci_upper": 0.00133,
-  "tilt_ci_lower_90": -0.04089,
-  "tilt_ci_upper_90": -0.00236,
+  "tilt_ci_lower": -0.06252,
+  "tilt_ci_upper": -0.01173,
+  "tilt_ci_lower_90": -0.05844,
+  "tilt_ci_upper_90": -0.01581,
   "confidence": "low",
-  "total_tilt": -0.11083,
+  "total_tilt": -0.25443,
   "total_matches": 5,
   "batting_balls": 77,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2020",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": -0.02217,
+      "batting_tilt_per_match": -0.05089,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 5,
       "bowling_matches": 0,
@@ -45,13 +45,13 @@
           "bat_runs": 1,
           "bat_balls": 2,
           "bat_sr": 50.0,
-          "bat_tilt": -0.0049,
+          "bat_tilt": 0.0,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.0049
+          "total_tilt": 0
         },
         {
           "match_id": "1216510",
@@ -64,13 +64,13 @@
           "bat_runs": 0,
           "bat_balls": 3,
           "bat_sr": 0.0,
-          "bat_tilt": 0.00301,
+          "bat_tilt": -0.02461,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.00301
+          "total_tilt": -0.02461
         },
         {
           "match_id": "1216499",
@@ -83,13 +83,13 @@
           "bat_runs": 33,
           "bat_balls": 24,
           "bat_sr": 137.5,
-          "bat_tilt": 0.01247,
+          "bat_tilt": -0.05095,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.01247
+          "total_tilt": -0.05095
         },
         {
           "match_id": "1216502",
@@ -102,13 +102,13 @@
           "bat_runs": 32,
           "bat_balls": 31,
           "bat_sr": 103.2,
-          "bat_tilt": -0.05327,
+          "bat_tilt": -0.07536,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.05327
+          "total_tilt": -0.07536
         },
         {
           "match_id": "1216505",
@@ -121,13 +121,13 @@
           "bat_runs": 12,
           "bat_balls": 17,
           "bat_sr": 70.6,
-          "bat_tilt": -0.06815,
+          "bat_tilt": -0.10351,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.06815
+          "total_tilt": -0.10351
         }
       ],
       "batting_stats": {
@@ -146,54 +146,54 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.11475,
+      "tilt": -0.21396,
       "balls": 55,
-      "avg_delta": -0.002013
+      "avg_delta": -0.003754
     },
     {
       "phase": "middle",
-      "tilt": 0.00881,
+      "tilt": -0.04047,
       "balls": 20,
-      "avg_delta": 0.00042
+      "avg_delta": -0.001927
     },
     {
       "phase": "death",
-      "tilt": -0.0049,
+      "tilt": 0.0,
       "balls": 2,
-      "avg_delta": -0.002448
+      "avg_delta": 0.0
     }
   ],
   "bowling_phases": [],
   "best_matches": [
     {
-      "match_id": "1216499",
-      "date": "2020-10-28",
-      "vs": "Mumbai Indians",
-      "tilt": 0.01247,
-      "runs": 33,
-      "balls": 24
+      "match_id": "1216534",
+      "date": "2020-09-21",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.0,
+      "runs": 1,
+      "balls": 2
     },
     {
       "match_id": "1216510",
       "date": "2020-09-24",
       "vs": "Punjab Kings",
-      "tilt": 0.00301,
+      "tilt": -0.02461,
       "runs": 0,
       "balls": 3
     },
     {
-      "match_id": "1216534",
-      "date": "2020-09-21",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.0049,
-      "runs": 1,
-      "balls": 2
+      "match_id": "1216499",
+      "date": "2020-10-28",
+      "vs": "Mumbai Indians",
+      "tilt": -0.05095,
+      "runs": 33,
+      "balls": 24
     },
     {
       "match_id": "1216502",
       "date": "2020-10-31",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.05327,
+      "tilt": -0.07536,
       "runs": 32,
       "balls": 31
     },
@@ -201,7 +201,7 @@
       "match_id": "1216505",
       "date": "2020-11-02",
       "vs": "Delhi Capitals",
-      "tilt": -0.06815,
+      "tilt": -0.10351,
       "runs": 12,
       "balls": 17
     }
@@ -211,7 +211,7 @@
       "match_id": "1216505",
       "date": "2020-11-02",
       "vs": "Delhi Capitals",
-      "tilt": -0.06815,
+      "tilt": -0.10351,
       "runs": 12,
       "balls": 17
     },
@@ -219,33 +219,33 @@
       "match_id": "1216502",
       "date": "2020-10-31",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.05327,
+      "tilt": -0.07536,
       "runs": 32,
       "balls": 31
-    },
-    {
-      "match_id": "1216534",
-      "date": "2020-09-21",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.0049,
-      "runs": 1,
-      "balls": 2
-    },
-    {
-      "match_id": "1216510",
-      "date": "2020-09-24",
-      "vs": "Punjab Kings",
-      "tilt": 0.00301,
-      "runs": 0,
-      "balls": 3
     },
     {
       "match_id": "1216499",
       "date": "2020-10-28",
       "vs": "Mumbai Indians",
-      "tilt": 0.01247,
+      "tilt": -0.05095,
       "runs": 33,
       "balls": 24
+    },
+    {
+      "match_id": "1216510",
+      "date": "2020-09-24",
+      "vs": "Punjab Kings",
+      "tilt": -0.02461,
+      "runs": 0,
+      "balls": 3
+    },
+    {
+      "match_id": "1216534",
+      "date": "2020-09-21",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.0,
+      "runs": 1,
+      "balls": 2
     }
   ],
   "bowling_best_matches": [],
@@ -254,53 +254,53 @@
     {
       "match": 1,
       "date": "2020-09-21",
-      "tilt": -0.0049,
-      "cumulative": -0.0049
+      "tilt": 0.0,
+      "cumulative": 0.0
     },
     {
       "match": 2,
       "date": "2020-09-24",
-      "tilt": 0.00301,
-      "cumulative": -0.00188
+      "tilt": -0.02461,
+      "cumulative": -0.02461
     },
     {
       "match": 3,
       "date": "2020-10-28",
-      "tilt": 0.01247,
-      "cumulative": 0.01059
+      "tilt": -0.05095,
+      "cumulative": -0.07556
     },
     {
       "match": 4,
       "date": "2020-10-31",
-      "tilt": -0.05327,
-      "cumulative": -0.04269
+      "tilt": -0.07536,
+      "cumulative": -0.15092
     },
     {
       "match": 5,
       "date": "2020-11-02",
-      "tilt": -0.06815,
-      "cumulative": -0.11083
+      "tilt": -0.10351,
+      "cumulative": -0.25443
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.01247,
-      "matches": 1
-    },
-    {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.00301,
+      "tilt_per_match": -0.02461,
       "matches": 1
     },
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.02908,
+      "tilt_per_match": -0.03768,
       "matches": 2
     },
     {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.05095,
+      "matches": 1
+    },
+    {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.06815,
+      "tilt_per_match": -0.10351,
       "matches": 1
     }
   ],
@@ -319,10 +319,10 @@
   },
   "bowling_stats": null,
   "match_tilt_distribution": [
-    -0.0049,
-    0.00301,
-    0.01247,
-    -0.05327,
-    -0.06815
+    0.0,
+    -0.02461,
+    -0.05095,
+    -0.07536,
+    -0.10351
   ]
 }

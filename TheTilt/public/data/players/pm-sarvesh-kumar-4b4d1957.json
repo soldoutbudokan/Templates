@@ -8,18 +8,18 @@
   "teams": [
     "Deccan Chargers"
   ],
-  "total_tilt_per_match": 0.02764,
+  "total_tilt_per_match": 0.03533,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.00605,
+  "shrunk_total_tilt_per_match": -0.00616,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.01708,
-  "tilt_ci_upper": 0.00499,
-  "tilt_ci_lower_90": -0.01531,
-  "tilt_ci_upper_90": 0.00321,
+  "tilt_ci_lower": -0.02787,
+  "tilt_ci_upper": 0.01554,
+  "tilt_ci_lower_90": -0.02438,
+  "tilt_ci_upper_90": 0.01205,
   "confidence": "low",
-  "total_tilt": 0.05528,
+  "total_tilt": 0.07066,
   "total_matches": 2,
   "batting_balls": 2,
   "bowling_balls": 30,
@@ -27,8 +27,8 @@
     {
       "season": "2008",
       "team": "Deccan Chargers",
-      "batting_tilt_per_match": -0.02246,
-      "bowling_tilt_per_match": 0.03887,
+      "batting_tilt_per_match": 0.00585,
+      "bowling_tilt_per_match": 0.03241,
       "batting_matches": 1,
       "bowling_matches": 2,
       "batting_balls": 2,
@@ -45,13 +45,13 @@
           "bat_runs": 1,
           "bat_balls": 2,
           "bat_sr": 50.0,
-          "bat_tilt": -0.02246,
+          "bat_tilt": 0.00585,
           "bowl_wkts": 0,
           "bowl_balls": 18,
           "bowl_runs": 24,
           "bowl_econ": 8.0,
-          "bowl_tilt": 0.03995,
-          "total_tilt": 0.01749
+          "bowl_tilt": 0.00891,
+          "total_tilt": 0.01476
         },
         {
           "match_id": "336037",
@@ -69,8 +69,8 @@
           "bowl_balls": 12,
           "bowl_runs": 18,
           "bowl_econ": 9.0,
-          "bowl_tilt": 0.03779,
-          "total_tilt": 0.03779
+          "bowl_tilt": 0.0559,
+          "total_tilt": 0.0559
         }
       ],
       "batting_stats": {
@@ -98,23 +98,23 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.02246,
+      "tilt": 0.00585,
       "balls": 2,
-      "avg_delta": -0.01123
+      "avg_delta": 0.002923
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.0058,
+      "tilt": 0.02316,
       "balls": 6,
-      "avg_delta": 0.000829
+      "avg_delta": 0.003309
     },
     {
       "phase": "middle",
-      "tilt": 0.07194,
+      "tilt": 0.04165,
       "balls": 24,
-      "avg_delta": 0.002997
+      "avg_delta": 0.001736
     }
   ],
   "best_matches": [
@@ -122,7 +122,7 @@
       "match_id": "336020",
       "date": "2008-05-15",
       "vs": "Delhi Capitals",
-      "tilt": -0.02246,
+      "tilt": 0.00585,
       "runs": 1,
       "balls": 2
     }
@@ -132,77 +132,77 @@
       "match_id": "336020",
       "date": "2008-05-15",
       "vs": "Delhi Capitals",
-      "tilt": -0.02246,
+      "tilt": 0.00585,
       "runs": 1,
       "balls": 2
     }
   ],
   "bowling_best_matches": [
     {
-      "match_id": "336020",
-      "date": "2008-05-15",
-      "vs": "Delhi Capitals",
-      "tilt": 0.03995,
-      "wickets": 0,
-      "balls": 18
-    },
-    {
       "match_id": "336037",
       "date": "2008-05-27",
       "vs": "Chennai Super Kings",
-      "tilt": 0.03779,
+      "tilt": 0.0559,
       "wickets": 1,
       "balls": 12
+    },
+    {
+      "match_id": "336020",
+      "date": "2008-05-15",
+      "vs": "Delhi Capitals",
+      "tilt": 0.00891,
+      "wickets": 0,
+      "balls": 18
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "336037",
-      "date": "2008-05-27",
-      "vs": "Chennai Super Kings",
-      "tilt": 0.03779,
-      "wickets": 1,
-      "balls": 12
-    },
-    {
       "match_id": "336020",
       "date": "2008-05-15",
       "vs": "Delhi Capitals",
-      "tilt": 0.03995,
+      "tilt": 0.00891,
       "wickets": 0,
       "balls": 18
+    },
+    {
+      "match_id": "336037",
+      "date": "2008-05-27",
+      "vs": "Chennai Super Kings",
+      "tilt": 0.0559,
+      "wickets": 1,
+      "balls": 12
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2008-05-15",
-      "tilt": 0.01749,
-      "cumulative": 0.01749
+      "tilt": 0.01476,
+      "cumulative": 0.01476
     },
     {
       "match": 2,
       "date": "2008-05-27",
-      "tilt": 0.03779,
-      "cumulative": 0.05528
+      "tilt": 0.0559,
+      "cumulative": 0.07066
     }
   ],
   "team_matchups": [
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.02246,
+      "tilt_per_match": 0.00585,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
-      "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.03995,
+      "opponent": "Chennai Super Kings",
+      "tilt_per_match": 0.0559,
       "matches": 1
     },
     {
-      "opponent": "Chennai Super Kings",
-      "tilt_per_match": 0.03779,
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": 0.00891,
       "matches": 1
     }
   ],
@@ -228,7 +228,7 @@
     "best_figures": "1/18"
   },
   "match_tilt_distribution": [
-    0.01749,
-    0.03779
+    0.01476,
+    0.0559
   ]
 }

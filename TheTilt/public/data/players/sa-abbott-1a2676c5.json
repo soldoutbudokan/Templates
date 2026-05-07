@@ -9,18 +9,18 @@
     "Royal Challengers Bangalore",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.08912,
+  "total_tilt_per_match": -0.09364,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.06056,
-  "shrunk_total_tilt_per_match": -0.04826,
+  "bowling_tilt_per_match": -0.05611,
+  "shrunk_total_tilt_per_match": -0.04987,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.03117,
-  "tilt_ci_lower": -0.13712,
-  "tilt_ci_upper": 0.0406,
-  "tilt_ci_lower_90": -0.12284,
-  "tilt_ci_upper_90": 0.02632,
+  "shrunk_bowling_tilt_per_match": -0.02792,
+  "tilt_ci_lower": -0.15971,
+  "tilt_ci_upper": 0.05997,
+  "tilt_ci_lower_90": -0.14206,
+  "tilt_ci_upper_90": 0.04231,
   "confidence": "low",
-  "total_tilt": -0.26735,
+  "total_tilt": -0.28092,
   "total_matches": 3,
   "batting_balls": 18,
   "bowling_balls": 54,
@@ -28,8 +28,8 @@
     {
       "season": "2015",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": -0.04069,
-      "bowling_tilt_per_match": -0.0735,
+      "batting_tilt_per_match": -0.04249,
+      "bowling_tilt_per_match": -0.08175,
       "batting_matches": 2,
       "bowling_matches": 2,
       "batting_balls": 13,
@@ -46,13 +46,13 @@
           "bat_runs": 1,
           "bat_balls": 4,
           "bat_sr": 25.0,
-          "bat_tilt": -0.07325,
+          "bat_tilt": -0.10177,
           "bowl_wkts": 0,
           "bowl_balls": 18,
           "bowl_runs": 36,
           "bowl_econ": 12.0,
-          "bowl_tilt": -0.15725,
-          "total_tilt": -0.2305
+          "bowl_tilt": -0.17082,
+          "total_tilt": -0.27259
         },
         {
           "match_id": "829719",
@@ -65,13 +65,13 @@
           "bat_runs": 14,
           "bat_balls": 9,
           "bat_sr": 155.6,
-          "bat_tilt": -0.00814,
+          "bat_tilt": 0.01679,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 21,
           "bowl_econ": 10.5,
-          "bowl_tilt": 0.01026,
-          "total_tilt": 0.00212
+          "bowl_tilt": 0.00733,
+          "total_tilt": 0.02412
         }
       ],
       "batting_stats": {
@@ -98,8 +98,8 @@
     {
       "season": "2022",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": -0.00428,
-      "bowling_tilt_per_match": -0.03468,
+      "batting_tilt_per_match": -0.0276,
+      "bowling_tilt_per_match": -0.00485,
       "batting_matches": 1,
       "bowling_matches": 1,
       "batting_balls": 5,
@@ -116,13 +116,13 @@
           "bat_runs": 7,
           "bat_balls": 5,
           "bat_sr": 140.0,
-          "bat_tilt": -0.00428,
+          "bat_tilt": -0.0276,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 47,
           "bowl_econ": 11.75,
-          "bowl_tilt": -0.03468,
-          "total_tilt": -0.03896
+          "bowl_tilt": -0.00485,
+          "total_tilt": -0.03245
         }
       ],
       "batting_stats": {
@@ -150,59 +150,59 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.04719,
+      "tilt": -0.05912,
       "balls": 3,
-      "avg_delta": -0.015729
+      "avg_delta": -0.019706
     },
     {
       "phase": "death",
-      "tilt": -0.03849,
+      "tilt": -0.05346,
       "balls": 15,
-      "avg_delta": -0.002566
+      "avg_delta": -0.003564
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.0469,
+      "tilt": -0.05726,
       "balls": 30,
-      "avg_delta": -0.001513
+      "avg_delta": -0.001847
     },
     {
       "phase": "middle",
-      "tilt": -0.01008,
+      "tilt": -0.0289,
       "balls": 18,
-      "avg_delta": -0.00048
+      "avg_delta": -0.001376
     },
     {
       "phase": "death",
-      "tilt": -0.1247,
+      "tilt": -0.08218,
       "balls": 6,
-      "avg_delta": -0.017814
+      "avg_delta": -0.011741
     }
   ],
   "best_matches": [
     {
-      "match_id": "1304096",
-      "date": "2022-05-05",
-      "vs": "Delhi Capitals",
-      "tilt": -0.00428,
-      "runs": 7,
-      "balls": 5
-    },
-    {
       "match_id": "829719",
       "date": "2015-04-13",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.00814,
+      "tilt": 0.01679,
       "runs": 14,
       "balls": 9
+    },
+    {
+      "match_id": "1304096",
+      "date": "2022-05-05",
+      "vs": "Delhi Capitals",
+      "tilt": -0.0276,
+      "runs": 7,
+      "balls": 5
     },
     {
       "match_id": "829713",
       "date": "2015-04-11",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.07325,
+      "tilt": -0.10177,
       "runs": 1,
       "balls": 4
     }
@@ -212,25 +212,25 @@
       "match_id": "829713",
       "date": "2015-04-11",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.07325,
+      "tilt": -0.10177,
       "runs": 1,
       "balls": 4
-    },
-    {
-      "match_id": "829719",
-      "date": "2015-04-13",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.00814,
-      "runs": 14,
-      "balls": 9
     },
     {
       "match_id": "1304096",
       "date": "2022-05-05",
       "vs": "Delhi Capitals",
-      "tilt": -0.00428,
+      "tilt": -0.0276,
       "runs": 7,
       "balls": 5
+    },
+    {
+      "match_id": "829719",
+      "date": "2015-04-13",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.01679,
+      "runs": 14,
+      "balls": 9
     }
   ],
   "bowling_best_matches": [
@@ -238,7 +238,7 @@
       "match_id": "829719",
       "date": "2015-04-13",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.01026,
+      "tilt": 0.00733,
       "wickets": 0,
       "balls": 12
     },
@@ -246,7 +246,7 @@
       "match_id": "1304096",
       "date": "2022-05-05",
       "vs": "Delhi Capitals",
-      "tilt": -0.03468,
+      "tilt": -0.00485,
       "wickets": 1,
       "balls": 24
     },
@@ -254,7 +254,7 @@
       "match_id": "829713",
       "date": "2015-04-11",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.15725,
+      "tilt": -0.17082,
       "wickets": 0,
       "balls": 18
     }
@@ -264,7 +264,7 @@
       "match_id": "829713",
       "date": "2015-04-11",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.15725,
+      "tilt": -0.17082,
       "wickets": 0,
       "balls": 18
     },
@@ -272,7 +272,7 @@
       "match_id": "1304096",
       "date": "2022-05-05",
       "vs": "Delhi Capitals",
-      "tilt": -0.03468,
+      "tilt": -0.00485,
       "wickets": 1,
       "balls": 24
     },
@@ -280,7 +280,7 @@
       "match_id": "829719",
       "date": "2015-04-13",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.01026,
+      "tilt": 0.00733,
       "wickets": 0,
       "balls": 12
     }
@@ -289,53 +289,53 @@
     {
       "match": 1,
       "date": "2015-04-11",
-      "tilt": -0.2305,
-      "cumulative": -0.2305
+      "tilt": -0.27259,
+      "cumulative": -0.27259
     },
     {
       "match": 2,
       "date": "2015-04-13",
-      "tilt": 0.00212,
-      "cumulative": -0.22838
+      "tilt": 0.02412,
+      "cumulative": -0.24847
     },
     {
       "match": 3,
       "date": "2022-05-05",
-      "tilt": -0.03897,
-      "cumulative": -0.26735
+      "tilt": -0.03245,
+      "cumulative": -0.28092
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.00428,
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": 0.01679,
       "matches": 1
     },
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.00814,
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": -0.0276,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.07325,
+      "tilt_per_match": -0.10177,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": 0.01026,
+      "tilt_per_match": 0.00733,
       "matches": 1
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.03468,
+      "tilt_per_match": -0.00485,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.15725,
+      "tilt_per_match": -0.17082,
       "matches": 1
     }
   ],
@@ -361,8 +361,8 @@
     "best_figures": "1/47"
   },
   "match_tilt_distribution": [
-    -0.2305,
-    0.00212,
-    -0.03897
+    -0.27259,
+    0.02412,
+    -0.03245
   ]
 }

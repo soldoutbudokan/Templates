@@ -8,18 +8,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.0473,
+  "total_tilt_per_match": 0.01355,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02911,
+  "shrunk_total_tilt_per_match": -0.01247,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.09169,
-  "tilt_ci_upper": 0.03347,
-  "tilt_ci_lower_90": -0.08163,
-  "tilt_ci_upper_90": 0.02341,
+  "tilt_ci_lower": -0.11571,
+  "tilt_ci_upper": 0.09077,
+  "tilt_ci_lower_90": -0.09912,
+  "tilt_ci_upper_90": 0.07417,
   "confidence": "low",
-  "total_tilt": -0.0946,
+  "total_tilt": 0.02711,
   "total_matches": 2,
   "batting_balls": 16,
   "bowling_balls": 36,
@@ -27,8 +27,8 @@
     {
       "season": "2009",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.06589,
-      "bowling_tilt_per_match": 0.01859,
+      "batting_tilt_per_match": -0.03751,
+      "bowling_tilt_per_match": 0.05107,
       "batting_matches": 2,
       "bowling_matches": 2,
       "batting_balls": 16,
@@ -45,13 +45,13 @@
           "bat_runs": 11,
           "bat_balls": 15,
           "bat_sr": 73.3,
-          "bat_tilt": -0.13178,
+          "bat_tilt": -0.07503,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 30,
           "bowl_econ": 7.5,
-          "bowl_tilt": 0.02692,
-          "total_tilt": -0.10486
+          "bowl_tilt": -0.00927,
+          "total_tilt": -0.0843
         },
         {
           "match_id": "392233",
@@ -69,8 +69,8 @@
           "bowl_balls": 12,
           "bowl_runs": 11,
           "bowl_econ": 5.5,
-          "bowl_tilt": 0.01026,
-          "total_tilt": 0.01026
+          "bowl_tilt": 0.11141,
+          "total_tilt": 0.11141
         }
       ],
       "batting_stats": {
@@ -98,29 +98,29 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.04205,
+      "tilt": -0.00433,
       "balls": 10,
-      "avg_delta": -0.004205
+      "avg_delta": -0.000433
     },
     {
       "phase": "middle",
-      "tilt": -0.08973,
+      "tilt": -0.0707,
       "balls": 6,
-      "avg_delta": -0.014954
+      "avg_delta": -0.011783
     }
   ],
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": 0.1876,
+      "tilt": 0.22944,
       "balls": 18,
-      "avg_delta": 0.010422
+      "avg_delta": 0.012747
     },
     {
       "phase": "death",
-      "tilt": -0.15042,
+      "tilt": -0.12731,
       "balls": 18,
-      "avg_delta": -0.008357
+      "avg_delta": -0.007073
     }
   ],
   "best_matches": [
@@ -136,7 +136,7 @@
       "match_id": "392182",
       "date": "2009-04-18",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.13178,
+      "tilt": -0.07503,
       "runs": 11,
       "balls": 15
     }
@@ -146,7 +146,7 @@
       "match_id": "392182",
       "date": "2009-04-18",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.13178,
+      "tilt": -0.07503,
       "runs": 11,
       "balls": 15
     },
@@ -161,52 +161,52 @@
   ],
   "bowling_best_matches": [
     {
-      "match_id": "392182",
-      "date": "2009-04-18",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": 0.02692,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "392233",
       "date": "2009-05-20",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.01026,
+      "tilt": 0.11141,
       "wickets": 0,
       "balls": 12
+    },
+    {
+      "match_id": "392182",
+      "date": "2009-04-18",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.00927,
+      "wickets": 1,
+      "balls": 24
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "392233",
-      "date": "2009-05-20",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.01026,
-      "wickets": 0,
-      "balls": 12
-    },
-    {
       "match_id": "392182",
       "date": "2009-04-18",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.02692,
+      "tilt": -0.00927,
       "wickets": 1,
       "balls": 24
+    },
+    {
+      "match_id": "392233",
+      "date": "2009-05-20",
+      "vs": "Kolkata Knight Riders",
+      "tilt": 0.11141,
+      "wickets": 0,
+      "balls": 12
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2009-04-18",
-      "tilt": -0.10486,
-      "cumulative": -0.10486
+      "tilt": -0.0843,
+      "cumulative": -0.0843
     },
     {
       "match": 2,
       "date": "2009-05-20",
-      "tilt": 0.01026,
-      "cumulative": -0.0946
+      "tilt": 0.11141,
+      "cumulative": 0.02711
     }
   ],
   "team_matchups": [
@@ -217,19 +217,19 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.13178,
+      "tilt_per_match": -0.07503,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.02692,
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": 0.11141,
       "matches": 1
     },
     {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.01026,
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.00927,
       "matches": 1
     }
   ],
@@ -255,7 +255,7 @@
     "best_figures": "1/30"
   },
   "match_tilt_distribution": [
-    -0.10486,
-    0.01026
+    -0.0843,
+    0.11141
   ]
 }

@@ -8,18 +8,18 @@
   "teams": [
     "Delhi Capitals"
   ],
-  "total_tilt_per_match": -0.04838,
+  "total_tilt_per_match": -0.07178,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03197,
+  "shrunk_total_tilt_per_match": -0.04157,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.06362,
-  "tilt_ci_upper": -0.00031,
-  "tilt_ci_lower_90": -0.05853,
-  "tilt_ci_upper_90": -0.0054,
+  "tilt_ci_lower": -0.10499,
+  "tilt_ci_upper": 0.02184,
+  "tilt_ci_lower_90": -0.0948,
+  "tilt_ci_upper_90": 0.01165,
   "confidence": "low",
-  "total_tilt": -0.14515,
+  "total_tilt": -0.21534,
   "total_matches": 3,
   "batting_balls": 27,
   "bowling_balls": 30,
@@ -27,8 +27,8 @@
     {
       "season": "2013",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": -0.0624,
-      "bowling_tilt_per_match": 0.02102,
+      "batting_tilt_per_match": -0.06699,
+      "bowling_tilt_per_match": -0.00718,
       "batting_matches": 3,
       "bowling_matches": 2,
       "batting_balls": 27,
@@ -45,13 +45,13 @@
           "bat_runs": 0,
           "bat_balls": 1,
           "bat_sr": 0.0,
-          "bat_tilt": -0.08616,
+          "bat_tilt": -0.1252,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 20,
           "bowl_econ": 10.0,
-          "bowl_tilt": 0.02474,
-          "total_tilt": -0.06142
+          "bowl_tilt": -0.0374,
+          "total_tilt": -0.1626
         },
         {
           "match_id": "598020",
@@ -64,13 +64,13 @@
           "bat_runs": 12,
           "bat_balls": 17,
           "bat_sr": 70.6,
-          "bat_tilt": -0.08462,
+          "bat_tilt": -0.07205,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.08462
+          "total_tilt": -0.07205
         },
         {
           "match_id": "598044",
@@ -83,13 +83,13 @@
           "bat_runs": 11,
           "bat_balls": 9,
           "bat_sr": 122.2,
-          "bat_tilt": -0.0164,
+          "bat_tilt": -0.00374,
           "bowl_wkts": 1,
           "bowl_balls": 18,
           "bowl_runs": 16,
           "bowl_econ": 5.33,
-          "bowl_tilt": 0.0173,
-          "total_tilt": 0.0009
+          "bowl_tilt": 0.02305,
+          "total_tilt": 0.01931
         }
       ],
       "batting_stats": {
@@ -117,23 +117,23 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.02307,
+      "tilt": -0.00887,
       "balls": 2,
-      "avg_delta": -0.011536
+      "avg_delta": -0.004434
     },
     {
       "phase": "middle",
-      "tilt": -0.16411,
+      "tilt": -0.19211,
       "balls": 25,
-      "avg_delta": -0.006565
+      "avg_delta": -0.007685
     }
   ],
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": 0.04204,
+      "tilt": -0.01435,
       "balls": 30,
-      "avg_delta": 0.001401
+      "avg_delta": -0.000478
     }
   ],
   "best_matches": [
@@ -141,7 +141,7 @@
       "match_id": "598044",
       "date": "2013-05-04",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.0164,
+      "tilt": -0.00374,
       "runs": 11,
       "balls": 9
     },
@@ -149,7 +149,7 @@
       "match_id": "598020",
       "date": "2013-04-18",
       "vs": "Chennai Super Kings",
-      "tilt": -0.08462,
+      "tilt": -0.07205,
       "runs": 12,
       "balls": 17
     },
@@ -157,7 +157,7 @@
       "match_id": "598006",
       "date": "2013-04-09",
       "vs": "Mumbai Indians",
-      "tilt": -0.08616,
+      "tilt": -0.1252,
       "runs": 0,
       "balls": 1
     }
@@ -167,7 +167,7 @@
       "match_id": "598006",
       "date": "2013-04-09",
       "vs": "Mumbai Indians",
-      "tilt": -0.08616,
+      "tilt": -0.1252,
       "runs": 0,
       "balls": 1
     },
@@ -175,7 +175,7 @@
       "match_id": "598020",
       "date": "2013-04-18",
       "vs": "Chennai Super Kings",
-      "tilt": -0.08462,
+      "tilt": -0.07205,
       "runs": 12,
       "balls": 17
     },
@@ -183,93 +183,93 @@
       "match_id": "598044",
       "date": "2013-05-04",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.0164,
+      "tilt": -0.00374,
       "runs": 11,
       "balls": 9
     }
   ],
   "bowling_best_matches": [
     {
-      "match_id": "598006",
-      "date": "2013-04-09",
-      "vs": "Mumbai Indians",
-      "tilt": 0.02474,
-      "wickets": 0,
-      "balls": 12
-    },
-    {
       "match_id": "598044",
       "date": "2013-05-04",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.0173,
+      "tilt": 0.02305,
       "wickets": 1,
       "balls": 18
+    },
+    {
+      "match_id": "598006",
+      "date": "2013-04-09",
+      "vs": "Mumbai Indians",
+      "tilt": -0.0374,
+      "wickets": 0,
+      "balls": 12
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "598044",
-      "date": "2013-05-04",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.0173,
-      "wickets": 1,
-      "balls": 18
-    },
-    {
       "match_id": "598006",
       "date": "2013-04-09",
       "vs": "Mumbai Indians",
-      "tilt": 0.02474,
+      "tilt": -0.0374,
       "wickets": 0,
       "balls": 12
+    },
+    {
+      "match_id": "598044",
+      "date": "2013-05-04",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": 0.02305,
+      "wickets": 1,
+      "balls": 18
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2013-04-09",
-      "tilt": -0.06142,
-      "cumulative": -0.06142
+      "tilt": -0.1626,
+      "cumulative": -0.1626
     },
     {
       "match": 2,
       "date": "2013-04-18",
-      "tilt": -0.08462,
-      "cumulative": -0.14605
+      "tilt": -0.07205,
+      "cumulative": -0.23465
     },
     {
       "match": 3,
       "date": "2013-05-04",
-      "tilt": 0.0009,
-      "cumulative": -0.14515
+      "tilt": 0.01931,
+      "cumulative": -0.21534
     }
   ],
   "team_matchups": [
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.0164,
+      "tilt_per_match": -0.00374,
       "matches": 1
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.08462,
+      "tilt_per_match": -0.07205,
       "matches": 1
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.08616,
+      "tilt_per_match": -0.1252,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.02474,
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": 0.02305,
       "matches": 1
     },
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": 0.0173,
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.0374,
       "matches": 1
     }
   ],
@@ -295,8 +295,8 @@
     "best_figures": "1/16"
   },
   "match_tilt_distribution": [
-    -0.06142,
-    -0.08462,
-    0.0009
+    -0.1626,
+    -0.07205,
+    0.01931
   ]
 }

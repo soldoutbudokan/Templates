@@ -8,18 +8,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.01209,
-  "batting_tilt_per_match": -0.01209,
+  "total_tilt_per_match": -0.13045,
+  "batting_tilt_per_match": -0.13045,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.01745,
-  "shrunk_batting_tilt_per_match": -0.01476,
+  "shrunk_total_tilt_per_match": -0.06385,
+  "shrunk_batting_tilt_per_match": -0.05621,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.037,
-  "tilt_ci_upper": 0.0021,
-  "tilt_ci_lower_90": -0.03386,
-  "tilt_ci_upper_90": -0.00104,
+  "tilt_ci_lower": -0.13789,
+  "tilt_ci_upper": 0.01019,
+  "tilt_ci_lower_90": -0.12599,
+  "tilt_ci_upper_90": -0.00171,
   "confidence": "low",
-  "total_tilt": -0.03626,
+  "total_tilt": -0.39135,
   "total_matches": 3,
   "batting_balls": 54,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2024",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.01209,
+      "batting_tilt_per_match": -0.13045,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 3,
       "bowling_matches": 0,
@@ -45,13 +45,13 @@
           "bat_runs": 18,
           "bat_balls": 23,
           "bat_sr": 78.3,
-          "bat_tilt": -0.0208,
+          "bat_tilt": -0.0805,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.0208
+          "total_tilt": -0.0805
         },
         {
           "match_id": "1426310",
@@ -64,13 +64,13 @@
           "bat_runs": 20,
           "bat_balls": 15,
           "bat_sr": 133.3,
-          "bat_tilt": -0.03398,
+          "bat_tilt": -0.05844,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.03398
+          "total_tilt": -0.05844
         },
         {
           "match_id": "1426311",
@@ -83,13 +83,13 @@
           "bat_runs": 10,
           "bat_balls": 16,
           "bat_sr": 62.5,
-          "bat_tilt": 0.01852,
+          "bat_tilt": -0.2524,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.01852
+          "total_tilt": -0.2524
         }
       ],
       "batting_stats": {
@@ -108,68 +108,68 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.03441,
+      "tilt": -0.35222,
       "balls": 51,
-      "avg_delta": -0.000675
+      "avg_delta": -0.006906
     },
     {
       "phase": "middle",
-      "tilt": -0.00186,
+      "tilt": -0.03913,
       "balls": 3,
-      "avg_delta": -0.000619
+      "avg_delta": -0.013044
     }
   ],
   "bowling_phases": [],
   "best_matches": [
     {
-      "match_id": "1426311",
-      "date": "2024-05-24",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.01852,
-      "runs": 10,
-      "balls": 16
+      "match_id": "1426310",
+      "date": "2024-05-22",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.05844,
+      "runs": 20,
+      "balls": 15
     },
     {
       "match_id": "1426303",
       "date": "2024-05-15",
       "vs": "Punjab Kings",
-      "tilt": -0.0208,
+      "tilt": -0.0805,
       "runs": 18,
       "balls": 23
     },
     {
-      "match_id": "1426310",
-      "date": "2024-05-22",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.03398,
-      "runs": 20,
-      "balls": 15
+      "match_id": "1426311",
+      "date": "2024-05-24",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.2524,
+      "runs": 10,
+      "balls": 16
     }
   ],
   "worst_matches": [
     {
-      "match_id": "1426310",
-      "date": "2024-05-22",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.03398,
-      "runs": 20,
-      "balls": 15
+      "match_id": "1426311",
+      "date": "2024-05-24",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.2524,
+      "runs": 10,
+      "balls": 16
     },
     {
       "match_id": "1426303",
       "date": "2024-05-15",
       "vs": "Punjab Kings",
-      "tilt": -0.0208,
+      "tilt": -0.0805,
       "runs": 18,
       "balls": 23
     },
     {
-      "match_id": "1426311",
-      "date": "2024-05-24",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.01852,
-      "runs": 10,
-      "balls": 16
+      "match_id": "1426310",
+      "date": "2024-05-22",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.05844,
+      "runs": 20,
+      "balls": 15
     }
   ],
   "bowling_best_matches": [],
@@ -178,36 +178,36 @@
     {
       "match": 1,
       "date": "2024-05-15",
-      "tilt": -0.0208,
-      "cumulative": -0.0208
+      "tilt": -0.0805,
+      "cumulative": -0.0805
     },
     {
       "match": 2,
       "date": "2024-05-22",
-      "tilt": -0.03398,
-      "cumulative": -0.05479
+      "tilt": -0.05844,
+      "cumulative": -0.13894
     },
     {
       "match": 3,
       "date": "2024-05-24",
-      "tilt": 0.01852,
-      "cumulative": -0.03626
+      "tilt": -0.2524,
+      "cumulative": -0.39135
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": 0.01852,
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.05844,
       "matches": 1
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.0208,
+      "tilt_per_match": -0.0805,
       "matches": 1
     },
     {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.03398,
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": -0.2524,
       "matches": 1
     }
   ],
@@ -226,8 +226,8 @@
   },
   "bowling_stats": null,
   "match_tilt_distribution": [
-    -0.0208,
-    -0.03398,
-    0.01852
+    -0.0805,
+    -0.05844,
+    -0.2524
   ]
 }

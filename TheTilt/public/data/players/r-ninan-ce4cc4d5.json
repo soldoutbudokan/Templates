@@ -8,18 +8,18 @@
   "teams": [
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.03686,
+  "total_tilt_per_match": -0.03373,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.0259,
+  "shrunk_total_tilt_per_match": -0.02617,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.05083,
-  "tilt_ci_upper": -0.00097,
-  "tilt_ci_lower_90": -0.04682,
-  "tilt_ci_upper_90": -0.00497,
+  "tilt_ci_lower": -0.06143,
+  "tilt_ci_upper": 0.00908,
+  "tilt_ci_lower_90": -0.05577,
+  "tilt_ci_upper_90": 0.00342,
   "confidence": "low",
-  "total_tilt": -0.07373,
+  "total_tilt": -0.06747,
   "total_matches": 2,
   "batting_balls": 6,
   "bowling_balls": 36,
@@ -27,8 +27,8 @@
     {
       "season": "2011",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": -0.01351,
-      "bowling_tilt_per_match": -0.03011,
+      "batting_tilt_per_match": 0.00532,
+      "bowling_tilt_per_match": -0.03639,
       "batting_matches": 1,
       "bowling_matches": 2,
       "batting_balls": 6,
@@ -45,13 +45,13 @@
           "bat_runs": 3,
           "bat_balls": 6,
           "bat_sr": 50.0,
-          "bat_tilt": -0.01351,
+          "bat_tilt": 0.00532,
           "bowl_wkts": 1,
           "bowl_balls": 18,
           "bowl_runs": 34,
           "bowl_econ": 11.33,
-          "bowl_tilt": -0.04628,
-          "total_tilt": -0.05979
+          "bowl_tilt": -0.07247,
+          "total_tilt": -0.06715
         },
         {
           "match_id": "501211",
@@ -69,8 +69,8 @@
           "bowl_balls": 18,
           "bowl_runs": 31,
           "bowl_econ": 10.33,
-          "bowl_tilt": -0.01393,
-          "total_tilt": -0.01393
+          "bowl_tilt": -0.00031,
+          "total_tilt": -0.00031
         }
       ],
       "batting_stats": {
@@ -98,23 +98,23 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.01351,
+      "tilt": 0.00532,
       "balls": 6,
-      "avg_delta": -0.002252
+      "avg_delta": 0.000886
     }
   ],
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": 0.01577,
+      "tilt": 0.01664,
       "balls": 30,
-      "avg_delta": 0.000526
+      "avg_delta": 0.000555
     },
     {
       "phase": "death",
-      "tilt": -0.07599,
+      "tilt": -0.08943,
       "balls": 6,
-      "avg_delta": -0.012664
+      "avg_delta": -0.014904
     }
   ],
   "best_matches": [
@@ -122,7 +122,7 @@
       "match_id": "501208",
       "date": "2011-04-14",
       "vs": "Deccan Chargers",
-      "tilt": -0.01351,
+      "tilt": 0.00532,
       "runs": 3,
       "balls": 6
     }
@@ -132,7 +132,7 @@
       "match_id": "501208",
       "date": "2011-04-14",
       "vs": "Deccan Chargers",
-      "tilt": -0.01351,
+      "tilt": 0.00532,
       "runs": 3,
       "balls": 6
     }
@@ -142,7 +142,7 @@
       "match_id": "501211",
       "date": "2011-04-16",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01393,
+      "tilt": -0.00031,
       "wickets": 2,
       "balls": 18
     },
@@ -150,7 +150,7 @@
       "match_id": "501208",
       "date": "2011-04-14",
       "vs": "Deccan Chargers",
-      "tilt": -0.04628,
+      "tilt": -0.07247,
       "wickets": 1,
       "balls": 18
     }
@@ -160,7 +160,7 @@
       "match_id": "501208",
       "date": "2011-04-14",
       "vs": "Deccan Chargers",
-      "tilt": -0.04628,
+      "tilt": -0.07247,
       "wickets": 1,
       "balls": 18
     },
@@ -168,7 +168,7 @@
       "match_id": "501211",
       "date": "2011-04-16",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01393,
+      "tilt": -0.00031,
       "wickets": 2,
       "balls": 18
     }
@@ -177,32 +177,32 @@
     {
       "match": 1,
       "date": "2011-04-14",
-      "tilt": -0.05979,
-      "cumulative": -0.05979
+      "tilt": -0.06715,
+      "cumulative": -0.06715
     },
     {
       "match": 2,
       "date": "2011-04-16",
-      "tilt": -0.01393,
-      "cumulative": -0.07373
+      "tilt": -0.00031,
+      "cumulative": -0.06747
     }
   ],
   "team_matchups": [
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.01351,
+      "tilt_per_match": 0.00532,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.01393,
+      "tilt_per_match": -0.00031,
       "matches": 1
     },
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.04628,
+      "tilt_per_match": -0.07247,
       "matches": 1
     }
   ],
@@ -228,7 +228,7 @@
     "best_figures": "2/31"
   },
   "match_tilt_distribution": [
-    -0.05979,
-    -0.01393
+    -0.06715,
+    -0.00031
   ]
 }

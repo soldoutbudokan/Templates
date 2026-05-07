@@ -8,18 +8,18 @@
   "teams": [
     "Kolkata Knight Riders"
   ],
-  "total_tilt_per_match": -0.17062,
+  "total_tilt_per_match": -0.19024,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.06705,
+  "shrunk_total_tilt_per_match": -0.07152,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.08466,
-  "tilt_ci_upper": -0.04945,
-  "tilt_ci_lower_90": -0.08183,
-  "tilt_ci_upper_90": -0.05228,
+  "tilt_ci_lower": -0.10247,
+  "tilt_ci_upper": -0.04057,
+  "tilt_ci_lower_90": -0.0975,
+  "tilt_ci_upper_90": -0.04555,
   "confidence": "low",
-  "total_tilt": -0.34123,
+  "total_tilt": -0.38048,
   "total_matches": 2,
   "batting_balls": 0,
   "bowling_balls": 42,
@@ -28,7 +28,7 @@
       "season": "2026",
       "team": "Kolkata Knight Riders",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.17062,
+      "bowling_tilt_per_match": -0.19024,
       "batting_matches": 0,
       "bowling_matches": 2,
       "batting_balls": 0,
@@ -50,8 +50,8 @@
           "bowl_balls": 18,
           "bowl_runs": 34,
           "bowl_econ": 11.33,
-          "bowl_tilt": -0.15442,
-          "total_tilt": -0.15442
+          "bowl_tilt": -0.21958,
+          "total_tilt": -0.21958
         },
         {
           "match_id": "1527679",
@@ -69,8 +69,8 @@
           "bowl_balls": 24,
           "bowl_runs": 45,
           "bowl_econ": 11.25,
-          "bowl_tilt": -0.18681,
-          "total_tilt": -0.18681
+          "bowl_tilt": -0.16091,
+          "total_tilt": -0.16091
         }
       ],
       "bowling_stats": {
@@ -88,85 +88,85 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.18805,
+      "tilt": -0.25015,
       "balls": 18,
-      "avg_delta": -0.010447
+      "avg_delta": -0.013897
     },
     {
       "phase": "middle",
-      "tilt": 0.00937,
+      "tilt": -0.03263,
       "balls": 12,
-      "avg_delta": 0.00072
+      "avg_delta": -0.00251
     },
     {
       "phase": "death",
-      "tilt": -0.16255,
+      "tilt": -0.0977,
       "balls": 12,
-      "avg_delta": -0.012504
+      "avg_delta": -0.007516
     }
   ],
   "best_matches": [],
   "worst_matches": [],
   "bowling_best_matches": [
     {
-      "match_id": "1527675",
-      "date": "2026-03-29",
-      "vs": "Mumbai Indians",
-      "tilt": -0.15442,
-      "wickets": 1,
-      "balls": 18
-    },
-    {
       "match_id": "1527679",
       "date": "2026-04-02",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.18681,
+      "tilt": -0.16091,
       "wickets": 4,
       "balls": 24
+    },
+    {
+      "match_id": "1527675",
+      "date": "2026-03-29",
+      "vs": "Mumbai Indians",
+      "tilt": -0.21958,
+      "wickets": 1,
+      "balls": 18
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "1527679",
-      "date": "2026-04-02",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.18681,
-      "wickets": 4,
-      "balls": 24
-    },
-    {
       "match_id": "1527675",
       "date": "2026-03-29",
       "vs": "Mumbai Indians",
-      "tilt": -0.15442,
+      "tilt": -0.21958,
       "wickets": 1,
       "balls": 18
+    },
+    {
+      "match_id": "1527679",
+      "date": "2026-04-02",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.16091,
+      "wickets": 4,
+      "balls": 24
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2026-03-29",
-      "tilt": -0.15442,
-      "cumulative": -0.15442
+      "tilt": -0.21958,
+      "cumulative": -0.21958
     },
     {
       "match": 2,
       "date": "2026-04-02",
-      "tilt": -0.18681,
-      "cumulative": -0.34123
+      "tilt": -0.16091,
+      "cumulative": -0.38048
     }
   ],
   "team_matchups": [],
   "bowling_team_matchups": [
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.15442,
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": -0.16091,
       "matches": 1
     },
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.18681,
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.21958,
       "matches": 1
     }
   ],
@@ -181,7 +181,7 @@
     "best_figures": "4/45"
   },
   "match_tilt_distribution": [
-    -0.15442,
-    -0.18681
+    -0.21958,
+    -0.16091
   ]
 }

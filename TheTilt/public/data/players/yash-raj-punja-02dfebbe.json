@@ -8,18 +8,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": 0.09013,
+  "total_tilt_per_match": 0.03355,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.01318,
+  "shrunk_total_tilt_per_match": -0.00668,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.04854,
-  "tilt_ci_upper": 0.07489,
-  "tilt_ci_lower_90": -0.03862,
-  "tilt_ci_upper_90": 0.06497,
+  "tilt_ci_lower": -0.04026,
+  "tilt_ci_upper": 0.02691,
+  "tilt_ci_lower_90": -0.03486,
+  "tilt_ci_upper_90": 0.02151,
   "confidence": "low",
-  "total_tilt": 0.18025,
+  "total_tilt": 0.06711,
   "total_matches": 2,
   "batting_balls": 0,
   "bowling_balls": 48,
@@ -28,7 +28,7 @@
       "season": "2026",
       "team": "Rajasthan Royals",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.09013,
+      "bowling_tilt_per_match": 0.03355,
       "batting_matches": 0,
       "bowling_matches": 2,
       "batting_balls": 0,
@@ -50,8 +50,8 @@
           "bowl_balls": 24,
           "bowl_runs": 25,
           "bowl_econ": 6.25,
-          "bowl_tilt": 0.14689,
-          "total_tilt": 0.14689
+          "bowl_tilt": 0.06538,
+          "total_tilt": 0.06538
         },
         {
           "match_id": "1529283",
@@ -69,8 +69,8 @@
           "bowl_balls": 24,
           "bowl_runs": 41,
           "bowl_econ": 10.25,
-          "bowl_tilt": 0.03336,
-          "total_tilt": 0.03336
+          "bowl_tilt": 0.00172,
+          "total_tilt": 0.00172
         }
       ],
       "bowling_stats": {
@@ -88,21 +88,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.05829,
+      "tilt": -0.08898,
       "balls": 6,
-      "avg_delta": -0.009715
+      "avg_delta": -0.014829
     },
     {
       "phase": "middle",
-      "tilt": 0.23854,
+      "tilt": 0.15663,
       "balls": 36,
-      "avg_delta": 0.006626
+      "avg_delta": 0.004351
     },
     {
       "phase": "death",
-      "tilt": 0.0,
+      "tilt": -0.00055,
       "balls": 6,
-      "avg_delta": 0.0
+      "avg_delta": -9.1e-05
     }
   ],
   "best_matches": [],
@@ -112,7 +112,7 @@
       "match_id": "1529271",
       "date": "2026-04-19",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.14689,
+      "tilt": 0.06538,
       "wickets": 1,
       "balls": 24
     },
@@ -120,7 +120,7 @@
       "match_id": "1529283",
       "date": "2026-04-28",
       "vs": "Punjab Kings",
-      "tilt": 0.03336,
+      "tilt": 0.00172,
       "wickets": 2,
       "balls": 24
     }
@@ -130,7 +130,7 @@
       "match_id": "1529283",
       "date": "2026-04-28",
       "vs": "Punjab Kings",
-      "tilt": 0.03336,
+      "tilt": 0.00172,
       "wickets": 2,
       "balls": 24
     },
@@ -138,7 +138,7 @@
       "match_id": "1529271",
       "date": "2026-04-19",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.14689,
+      "tilt": 0.06538,
       "wickets": 1,
       "balls": 24
     }
@@ -147,26 +147,26 @@
     {
       "match": 1,
       "date": "2026-04-19",
-      "tilt": 0.14689,
-      "cumulative": 0.14689
+      "tilt": 0.06538,
+      "cumulative": 0.06538
     },
     {
       "match": 2,
       "date": "2026-04-28",
-      "tilt": 0.03336,
-      "cumulative": 0.18025
+      "tilt": 0.00172,
+      "cumulative": 0.06711
     }
   ],
   "team_matchups": [],
   "bowling_team_matchups": [
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.14689,
+      "tilt_per_match": 0.06538,
       "matches": 1
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.03336,
+      "tilt_per_match": 0.00172,
       "matches": 1
     }
   ],
@@ -181,7 +181,7 @@
     "best_figures": "2/41"
   },
   "match_tilt_distribution": [
-    0.14689,
-    0.03336
+    0.06538,
+    0.00172
   ]
 }

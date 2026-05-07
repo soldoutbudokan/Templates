@@ -202,72 +202,57 @@ def apply_boundary_calibration(deltas_df: pd.DataFrame) -> pd.DataFrame:
     print(f"  Post-fix: median |cliff|={pd.Series(post_cliff).abs().median()*100:.2f}pp, "
           f"mean signed={pd.Series(post_cliff).mean()*100:+.2f}pp")
 
-    # Step 3: exponential-decay blend across the powerplay (first 36 inn2
-    # deliveries) with chained endpoints. Replaces the previous linear-decay-
-    # over-6-balls fix (issue #71). Two corrections:
-    #   (1) Decay is exponential and stretches over the whole powerplay
-    #       (alpha_k = exp(-(k-1)/tau), tau=7) so the calibration's "pull"
-    #       toward the midpoint fades smoothly to ~0.7% by ball 36 — no
-    #       visible second-over jump.
-    #   (2) Endpoints are chained: a single boundary_wp(k) value plays both
-    #       wp_after(k) and wp_before(k+1), so adjacent-ball telescoping is
-    #       exact within the blend region. This drives the inn2 sum-of-deltas
-    #       residual (which under linear-decay-over-6 was averaging ~0.09pp
-    #       per match) to ~0.
-    #
-    # Equivalent semantics to the prior step on ball 1 (wp_before = midpoint,
-    # wp_after = midpoint, delta = 0). Differs from ball 2 onwards: the
-    # chained construction makes wp_before(k+1) = wp_after(k) by construction.
-    PP_BLEND_BALLS = 36
-    TAU = 7.0
-
-    inn2_pp_idx = (
+    # Step 3: linear-decay blend of the calibration's "pull" toward the
+    # midpoint across balls 1..6 of inn2 (issue #71). Step 2 nailed inn2.first
+    # to the midpoint, but the raw model output for "after 1 ball of chase"
+    # was unchanged — the chart cliff between inn1.last and inn2.ball1 was
+    # gone but a fresh discontinuity opened up between inn2.ball1 and
+    # inn2.ball2 because ball 2 inherits the model's natural chase-start
+    # pessimism. We damp that pessimism over the first over by blending
+    # wp_before and wp_after toward the calibrated midpoint with weight
+    # alpha = (6 - ball_in_inn2) / 5: ball 1 = 1.0 (fully bridged, matches
+    # the existing calibration), ball 6 = 0.0 (raw model). Delta_wp for
+    # the touched rows is recomputed; ball 1's delta_wp ends at exactly 0
+    # by construction, balls 2..5 carry a damped fraction of their raw
+    # delta, and ball 6+ is unmodified.
+    inn2_first6 = (
         df[df["innings"] == 2]
         .sort_values(["match_id", "ball_number"])
-        .groupby("match_id").head(PP_BLEND_BALLS)
-        .index
+        .groupby("match_id").head(6)
+        .copy()
     )
-    sub = df.loc[inn2_pp_idx].copy()
-    sub["ball_in_inn2"] = sub.groupby("match_id").cumcount() + 1
-    sub["alpha"] = np.exp(-(sub["ball_in_inn2"] - 1) / TAU)
+    inn2_first6["ball_in_inn2"] = inn2_first6.groupby("match_id").cumcount() + 1
+    inn2_first6["alpha"] = (6 - inn2_first6["ball_in_inn2"]) / 5.0
 
     midpoint_chase_lookup = pd.Series(
         1.0 - midpoint_bf,
         index=df.loc[inn2_first_idx, "match_id"].values,
     )
-    sub["midpoint_chase"] = sub["match_id"].map(midpoint_chase_lookup)
+    inn2_first6["midpoint_chase"] = inn2_first6["match_id"].map(midpoint_chase_lookup)
 
-    # boundary_wp(k) = blended "after" value for ball k.
-    sub["boundary_wp"] = (
-        (1 - sub["alpha"]) * sub["wp_after"]
-        + sub["alpha"] * sub["midpoint_chase"]
+    blended_before = (
+        (1 - inn2_first6["alpha"]) * inn2_first6["wp_before"]
+        + inn2_first6["alpha"] * inn2_first6["midpoint_chase"]
     )
-    # wp_before(k) := boundary_wp(k-1); ball 1 falls back to midpoint_chase
-    # (which Step 2 already wrote there, so this is idempotent on ball 1).
-    sub["prev_boundary_wp"] = sub.groupby("match_id")["boundary_wp"].shift(1)
-    sub["new_wp_before"] = sub["prev_boundary_wp"].fillna(sub["midpoint_chase"])
-
-    df.loc[sub.index, "wp_before"] = sub["new_wp_before"].values
-    df.loc[sub.index, "wp_after"] = sub["boundary_wp"].values
-    df.loc[sub.index, "delta_wp"] = (
-        sub["boundary_wp"].values - sub["new_wp_before"].values
+    blended_after = (
+        (1 - inn2_first6["alpha"]) * inn2_first6["wp_after"]
+        + inn2_first6["alpha"] * inn2_first6["midpoint_chase"]
+    )
+    df.loc[inn2_first6.index, "wp_before"] = blended_before.values
+    df.loc[inn2_first6.index, "wp_after"] = blended_after.values
+    df.loc[inn2_first6.index, "delta_wp"] = (
+        df.loc[inn2_first6.index, "wp_after"] - df.loc[inn2_first6.index, "wp_before"]
     )
 
-    # Sanity: report the residual telescoping gap at the powerplay boundary.
-    # boundary_wp(36) ≈ raw_wp_after(36) up to alpha_36 ≈ 0.007 of the gap
-    # to midpoint, so wp_before(37) (untouched, equals raw_wp_after(36) by
-    # model adjacency) lines up with our blended endpoint to within
-    # ~0.7% × |raw - midpoint| per match.
     early_chase_abs = (
-        df.loc[sub.index].groupby(sub["ball_in_inn2"].values)["delta_wp"]
-        .apply(lambda s: s.abs().mean())
+        df.loc[inn2_first6.index].groupby(
+            inn2_first6["ball_in_inn2"].values
+        )["delta_wp"].apply(lambda s: s.abs().mean())
     )
-    sample = [1, 2, 3, 6, 12, 24, 36]
-    summary = ", ".join(
-        f"ball{k}={early_chase_abs.get(k, 0)*100:.2f}pp"
-        for k in sample if k in early_chase_abs.index
+    print(
+        "  Early-chase blend |delta_wp|: "
+        + ", ".join(f"ball{int(k)}={v*100:.2f}pp" for k, v in early_chase_abs.items())
     )
-    print(f"  PP-decay |delta_wp| (tau={TAU}): {summary}")
 
     return df
 

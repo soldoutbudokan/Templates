@@ -9,18 +9,18 @@
     "Chennai Super Kings",
     "Kolkata Knight Riders"
   ],
-  "total_tilt_per_match": 0.19972,
+  "total_tilt_per_match": 0.13102,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.19972,
-  "shrunk_total_tilt_per_match": 0.06728,
+  "bowling_tilt_per_match": 0.13102,
+  "shrunk_total_tilt_per_match": 0.03541,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.07155,
-  "tilt_ci_lower": -0.06973,
-  "tilt_ci_upper": 0.20428,
-  "tilt_ci_lower_90": -0.04771,
-  "tilt_ci_upper_90": 0.18226,
+  "shrunk_bowling_tilt_per_match": 0.04149,
+  "tilt_ci_lower": -0.07081,
+  "tilt_ci_upper": 0.14164,
+  "tilt_ci_lower_90": -0.05374,
+  "tilt_ci_upper_90": 0.12457,
   "confidence": "low",
-  "total_tilt": 0.59917,
+  "total_tilt": 0.39306,
   "total_matches": 3,
   "batting_balls": 0,
   "bowling_balls": 58,
@@ -29,7 +29,7 @@
       "season": "2014",
       "team": "Chennai Super Kings",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.02091,
+      "bowling_tilt_per_match": -0.04486,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -51,8 +51,8 @@
           "bowl_balls": 18,
           "bowl_runs": 29,
           "bowl_econ": 9.67,
-          "bowl_tilt": -0.02091,
-          "total_tilt": -0.02091
+          "bowl_tilt": -0.04486,
+          "total_tilt": -0.04486
         }
       ],
       "bowling_stats": {
@@ -69,7 +69,7 @@
       "season": "2016",
       "team": "Kolkata Knight Riders",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.31004,
+      "bowling_tilt_per_match": 0.21896,
       "batting_matches": 0,
       "bowling_matches": 2,
       "batting_balls": 0,
@@ -91,8 +91,8 @@
           "bowl_balls": 16,
           "bowl_runs": 6,
           "bowl_econ": 2.25,
-          "bowl_tilt": 0.32161,
-          "total_tilt": 0.32161
+          "bowl_tilt": 0.22195,
+          "total_tilt": 0.22195
         },
         {
           "match_id": "980909",
@@ -110,8 +110,8 @@
           "bowl_balls": 24,
           "bowl_runs": 31,
           "bowl_econ": 7.75,
-          "bowl_tilt": 0.29847,
-          "total_tilt": 0.29847
+          "bowl_tilt": 0.21598,
+          "total_tilt": 0.21598
         }
       ],
       "bowling_stats": {
@@ -129,21 +129,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.04642,
+      "tilt": -0.01116,
       "balls": 36,
-      "avg_delta": 0.00119
+      "avg_delta": -0.000286
     },
     {
       "phase": "middle",
-      "tilt": 0.12993,
+      "tilt": 0.1589,
       "balls": 12,
-      "avg_delta": 0.010827
+      "avg_delta": 0.013242
     },
     {
       "phase": "death",
-      "tilt": 0.42281,
+      "tilt": 0.24531,
       "balls": 10,
-      "avg_delta": 0.042281
+      "avg_delta": 0.024531
     }
   ],
   "best_matches": [],
@@ -153,7 +153,7 @@
       "match_id": "980903",
       "date": "2016-04-10",
       "vs": "Delhi Capitals",
-      "tilt": 0.32161,
+      "tilt": 0.22195,
       "wickets": 2,
       "balls": 16
     },
@@ -161,7 +161,7 @@
       "match_id": "980909",
       "date": "2016-04-13",
       "vs": "Mumbai Indians",
-      "tilt": 0.29847,
+      "tilt": 0.21598,
       "wickets": 0,
       "balls": 24
     },
@@ -169,7 +169,7 @@
       "match_id": "734029",
       "date": "2014-05-22",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.02091,
+      "tilt": -0.04486,
       "wickets": 1,
       "balls": 18
     }
@@ -179,7 +179,7 @@
       "match_id": "734029",
       "date": "2014-05-22",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.02091,
+      "tilt": -0.04486,
       "wickets": 1,
       "balls": 18
     },
@@ -187,7 +187,7 @@
       "match_id": "980909",
       "date": "2016-04-13",
       "vs": "Mumbai Indians",
-      "tilt": 0.29847,
+      "tilt": 0.21598,
       "wickets": 0,
       "balls": 24
     },
@@ -195,7 +195,7 @@
       "match_id": "980903",
       "date": "2016-04-10",
       "vs": "Delhi Capitals",
-      "tilt": 0.32161,
+      "tilt": 0.22195,
       "wickets": 2,
       "balls": 16
     }
@@ -204,37 +204,37 @@
     {
       "match": 1,
       "date": "2014-05-22",
-      "tilt": -0.02091,
-      "cumulative": -0.02091
+      "tilt": -0.04486,
+      "cumulative": -0.04486
     },
     {
       "match": 2,
       "date": "2016-04-10",
-      "tilt": 0.32161,
-      "cumulative": 0.3007
+      "tilt": 0.22195,
+      "cumulative": 0.17708
     },
     {
       "match": 3,
       "date": "2016-04-13",
-      "tilt": 0.29847,
-      "cumulative": 0.59917
+      "tilt": 0.21598,
+      "cumulative": 0.39306
     }
   ],
   "team_matchups": [],
   "bowling_team_matchups": [
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.32161,
+      "tilt_per_match": 0.22195,
       "matches": 1
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.29847,
+      "tilt_per_match": 0.21598,
       "matches": 1
     },
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.02091,
+      "tilt_per_match": -0.04486,
       "matches": 1
     }
   ],
@@ -249,8 +249,8 @@
     "best_figures": "2/6"
   },
   "match_tilt_distribution": [
-    -0.02091,
-    0.32161,
-    0.29847
+    -0.04486,
+    0.22195,
+    0.21598
   ]
 }

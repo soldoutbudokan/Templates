@@ -15,8 +15,8 @@
       "points": 18,
       "win_pct": 0.6429,
       "nrr": 0.709,
-      "team_total_tilt": 0.72046,
-      "team_tilt_per_match": 0.05146,
+      "team_total_tilt": 2.23609,
+      "team_tilt_per_match": 0.15972,
       "position_est": 1
     },
     {
@@ -30,8 +30,8 @@
       "points": 16,
       "win_pct": 0.5714,
       "nrr": -0.043,
-      "team_total_tilt": 0.96056,
-      "team_tilt_per_match": 0.06861,
+      "team_total_tilt": 1.0433,
+      "team_tilt_per_match": 0.07452,
       "position_est": 2
     },
     {
@@ -45,8 +45,8 @@
       "points": 16,
       "win_pct": 0.5,
       "nrr": 0.965,
-      "team_total_tilt": 0.68082,
-      "team_tilt_per_match": 0.05674,
+      "team_total_tilt": 0.52124,
+      "team_tilt_per_match": 0.04344,
       "position_est": 3
     },
     {
@@ -60,8 +60,8 @@
       "points": 16,
       "win_pct": 0.5,
       "nrr": 0.062,
-      "team_total_tilt": 0.60762,
-      "team_tilt_per_match": 0.05063,
+      "team_total_tilt": 0.81861,
+      "team_tilt_per_match": 0.06822,
       "position_est": 4
     },
     {
@@ -75,8 +75,8 @@
       "points": 15,
       "win_pct": 0.5,
       "nrr": 0.286,
-      "team_total_tilt": 1.2279,
-      "team_tilt_per_match": 0.09445,
+      "team_total_tilt": 0.7576,
+      "team_tilt_per_match": 0.05828,
       "position_est": 5
     },
     {
@@ -90,8 +90,8 @@
       "points": 14,
       "win_pct": 0.5,
       "nrr": -0.206,
-      "team_total_tilt": 0.0529,
-      "team_tilt_per_match": 0.00378,
+      "team_total_tilt": -0.44672,
+      "team_tilt_per_match": -0.03191,
       "position_est": 6
     },
     {
@@ -105,8 +105,8 @@
       "points": 11,
       "win_pct": 0.3571,
       "nrr": -0.049,
-      "team_total_tilt": -1.04054,
-      "team_tilt_per_match": -0.08004,
+      "team_total_tilt": -0.69708,
+      "team_tilt_per_match": -0.05362,
       "position_est": 7
     },
     {
@@ -120,8 +120,8 @@
       "points": 6,
       "win_pct": 0.2143,
       "nrr": -1.436,
-      "team_total_tilt": -3.20972,
-      "team_tilt_per_match": -0.22927,
+      "team_total_tilt": -4.23304,
+      "team_tilt_per_match": -0.30236,
       "position_est": 8
     }
   ],
@@ -544,13 +544,24 @@
     ],
     "batting_tilt": [
       {
+        "player": "Kieron Pollard",
+        "slug": "ka-pollard-a757b0d8",
+        "country": "WI",
+        "team": "Mumbai Indians",
+        "team_slug": "mi",
+        "value": 0.85865,
+        "per_match": 0.06133,
+        "matches": 14,
+        "balls": 256
+      },
+      {
         "player": "David Warner",
         "slug": "da-warner-dcce6f09",
         "country": "AU",
         "team": "Sunrisers Hyderabad",
         "team_slug": "srh",
-        "value": 0.96666,
-        "per_match": 0.06905,
+        "value": 0.80507,
+        "per_match": 0.05751,
         "matches": 14,
         "balls": 359
       },
@@ -560,8 +571,8 @@
         "country": "WI",
         "team": "Kolkata Knight Riders",
         "team_slug": "kkr",
-        "value": 0.9062,
-        "per_match": 0.08238,
+        "value": 0.79286,
+        "per_match": 0.07208,
         "matches": 11,
         "balls": 169
       },
@@ -571,21 +582,10 @@
         "country": "WI",
         "team": "Royal Challengers Bangalore",
         "team_slug": "rcb",
-        "value": 0.70262,
-        "per_match": 0.05855,
+        "value": 0.55037,
+        "per_match": 0.04586,
         "matches": 12,
         "balls": 324
-      },
-      {
-        "player": "Kieron Pollard",
-        "slug": "ka-pollard-a757b0d8",
-        "country": "WI",
-        "team": "Mumbai Indians",
-        "team_slug": "mi",
-        "value": 0.67151,
-        "per_match": 0.04797,
-        "matches": 14,
-        "balls": 256
       },
       {
         "player": "Brendon McCullum",
@@ -593,45 +593,34 @@
         "country": "NZ",
         "team": "Chennai Super Kings",
         "team_slug": "csk",
-        "value": 0.59198,
-        "per_match": 0.04228,
+        "value": 0.48137,
+        "per_match": 0.03438,
         "matches": 14,
         "balls": 280
       }
     ],
     "bowling_tilt": [
       {
+        "player": "Mitchell Starc",
+        "slug": "ma-starc-3fb19989",
+        "country": "AU",
+        "team": "Royal Challengers Bangalore",
+        "team_slug": "rcb",
+        "value": 1.5634,
+        "per_match": 0.14213,
+        "matches": 11,
+        "balls": 234
+      },
+      {
         "player": "Ashish Nehra",
         "slug": "a-nehra-96fd40ae",
         "country": "IN",
         "team": "Chennai Super Kings",
         "team_slug": "csk",
-        "value": 1.3341,
-        "per_match": 0.08338,
+        "value": 1.33655,
+        "per_match": 0.08353,
         "matches": 16,
         "balls": 372
-      },
-      {
-        "player": "Nathan Coulter-Nile",
-        "slug": "nm-coulter-nile-56ab442f",
-        "country": "AU",
-        "team": "Delhi Capitals",
-        "team_slug": "dc",
-        "value": 1.01713,
-        "per_match": 0.09247,
-        "matches": 11,
-        "balls": 255
-      },
-      {
-        "player": "Mois\u00e9s Henriques",
-        "slug": "mc-henriques-32198ae0",
-        "country": "AU",
-        "team": "Sunrisers Hyderabad",
-        "team_slug": "srh",
-        "value": 0.98557,
-        "per_match": 0.10951,
-        "matches": 9,
-        "balls": 150
       },
       {
         "player": "Mitchell McClenaghan",
@@ -639,8 +628,8 @@
         "country": "NZ",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.91832,
-        "per_match": 0.07653,
+        "value": 1.19941,
+        "per_match": 0.09995,
         "matches": 12,
         "balls": 282
       },
@@ -650,22 +639,33 @@
         "country": "ZA",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 0.86572,
-        "per_match": 0.0787,
+        "value": 1.19104,
+        "per_match": 0.10828,
         "matches": 11,
         "balls": 252
+      },
+      {
+        "player": "Lasith Malinga",
+        "slug": "sl-malinga-a12e1d51",
+        "country": "LK",
+        "team": "Mumbai Indians",
+        "team_slug": "mi",
+        "value": 1.1789,
+        "per_match": 0.07859,
+        "matches": 15,
+        "balls": 360
       }
     ],
     "total_tilt": [
       {
-        "player": "Ashish Nehra",
-        "slug": "a-nehra-96fd40ae",
-        "country": "IN",
-        "team": "Chennai Super Kings",
-        "team_slug": "csk",
-        "value": 1.33255,
-        "per_match": 0.08328,
-        "matches": 16
+        "player": "Mitchell Starc",
+        "slug": "ma-starc-3fb19989",
+        "country": "AU",
+        "team": "Royal Challengers Bangalore",
+        "team_slug": "rcb",
+        "value": 1.51585,
+        "per_match": 0.1378,
+        "matches": 11
       },
       {
         "player": "Chris Morris",
@@ -673,28 +673,28 @@
         "country": "ZA",
         "team": "Rajasthan Royals",
         "team_slug": "rr",
-        "value": 1.15721,
-        "per_match": 0.1052,
+        "value": 1.4513,
+        "per_match": 0.13194,
         "matches": 11
       },
       {
-        "player": "David Warner",
-        "slug": "da-warner-dcce6f09",
-        "country": "AU",
-        "team": "Sunrisers Hyderabad",
-        "team_slug": "srh",
-        "value": 0.96666,
-        "per_match": 0.06905,
-        "matches": 14
+        "player": "Ashish Nehra",
+        "slug": "a-nehra-96fd40ae",
+        "country": "IN",
+        "team": "Chennai Super Kings",
+        "team_slug": "csk",
+        "value": 1.35846,
+        "per_match": 0.0849,
+        "matches": 16
       },
       {
-        "player": "Kieron Pollard",
-        "slug": "ka-pollard-a757b0d8",
-        "country": "WI",
+        "player": "Lasith Malinga",
+        "slug": "sl-malinga-a12e1d51",
+        "country": "LK",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.96142,
-        "per_match": 0.06409,
+        "value": 1.18018,
+        "per_match": 0.07868,
         "matches": 15
       },
       {
@@ -703,8 +703,8 @@
         "country": "NZ",
         "team": "Mumbai Indians",
         "team_slug": "mi",
-        "value": 0.92769,
-        "per_match": 0.07731,
+        "value": 1.17727,
+        "per_match": 0.09811,
         "matches": 12
       }
     ]

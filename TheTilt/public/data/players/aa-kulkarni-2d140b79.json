@@ -8,18 +8,18 @@
   "teams": [
     "Lucknow Super Giants"
   ],
-  "total_tilt_per_match": -0.01127,
+  "total_tilt_per_match": -0.03635,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.01802,
+  "shrunk_total_tilt_per_match": -0.02693,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.04604,
-  "tilt_ci_upper": 0.01,
-  "tilt_ci_lower_90": -0.04154,
-  "tilt_ci_upper_90": 0.0055,
+  "tilt_ci_lower": -0.03016,
+  "tilt_ci_upper": -0.02371,
+  "tilt_ci_lower_90": -0.02964,
+  "tilt_ci_upper_90": -0.02423,
   "confidence": "low",
-  "total_tilt": -0.02254,
+  "total_tilt": -0.0727,
   "total_matches": 2,
   "batting_balls": 8,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2024",
       "team": "Lucknow Super Giants",
-      "batting_tilt_per_match": -0.01127,
+      "batting_tilt_per_match": -0.03635,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 2,
       "bowling_matches": 0,
@@ -45,13 +45,13 @@
           "bat_runs": 0,
           "bat_balls": 1,
           "bat_sr": 0.0,
-          "bat_tilt": -0.03704,
+          "bat_tilt": -0.0333,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.03704
+          "total_tilt": -0.0333
         },
         {
           "match_id": "1426292",
@@ -64,13 +64,13 @@
           "bat_runs": 9,
           "bat_balls": 7,
           "bat_sr": 128.6,
-          "bat_tilt": 0.0145,
+          "bat_tilt": -0.03941,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.0145
+          "total_tilt": -0.03941
         }
       ],
       "batting_stats": {
@@ -89,46 +89,46 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.02254,
+      "tilt": -0.0727,
       "balls": 8,
-      "avg_delta": -0.002817
+      "avg_delta": -0.009088
     }
   ],
   "bowling_phases": [],
   "best_matches": [
     {
-      "match_id": "1426292",
-      "date": "2024-05-05",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.0145,
-      "runs": 9,
-      "balls": 7
-    },
-    {
       "match_id": "1426286",
       "date": "2024-04-30",
       "vs": "Mumbai Indians",
-      "tilt": -0.03704,
+      "tilt": -0.0333,
       "runs": 0,
       "balls": 1
+    },
+    {
+      "match_id": "1426292",
+      "date": "2024-05-05",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.03941,
+      "runs": 9,
+      "balls": 7
     }
   ],
   "worst_matches": [
     {
-      "match_id": "1426286",
-      "date": "2024-04-30",
-      "vs": "Mumbai Indians",
-      "tilt": -0.03704,
-      "runs": 0,
-      "balls": 1
-    },
-    {
       "match_id": "1426292",
       "date": "2024-05-05",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.0145,
+      "tilt": -0.03941,
       "runs": 9,
       "balls": 7
+    },
+    {
+      "match_id": "1426286",
+      "date": "2024-04-30",
+      "vs": "Mumbai Indians",
+      "tilt": -0.0333,
+      "runs": 0,
+      "balls": 1
     }
   ],
   "bowling_best_matches": [],
@@ -137,25 +137,25 @@
     {
       "match": 1,
       "date": "2024-04-30",
-      "tilt": -0.03704,
-      "cumulative": -0.03704
+      "tilt": -0.0333,
+      "cumulative": -0.0333
     },
     {
       "match": 2,
       "date": "2024-05-05",
-      "tilt": 0.0145,
-      "cumulative": -0.02254
+      "tilt": -0.03941,
+      "cumulative": -0.0727
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.0145,
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.0333,
       "matches": 1
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.03704,
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": -0.03941,
       "matches": 1
     }
   ],
@@ -174,7 +174,7 @@
   },
   "bowling_stats": null,
   "match_tilt_distribution": [
-    -0.03704,
-    0.0145
+    -0.0333,
+    -0.03941
   ]
 }

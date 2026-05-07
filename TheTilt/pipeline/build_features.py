@@ -43,16 +43,10 @@ def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = Non
     # Ball number in innings (1-indexed, legal deliveries only)
     df["ball_number"] = range(1, n + 1)
 
-    # Balls remaining. Default 120 legal deliveries, but DLS-revised innings
-    # carry their reduced allocation in `innings_allocation` (e.g. a 12-over
-    # chase has 72 balls available, not 120). Without this, the model sees a
-    # rain-curtailed chase as if it still had a full T20 to play with, and
-    # massively overstates the batting team's win probability — issue surfaced
-    # by match 1136592 (Boult 3/26 in a 12-over chase).
-    if "innings_allocation" in df.columns and df["innings_allocation"].notna().any():
-        total_balls = int(df["innings_allocation"].iloc[0]) * 6
-    else:
-        total_balls = 120
+    # Balls remaining (T20 = 120 legal deliveries max)
+    # Note: extras like wides/no-balls add extra deliveries, but we approximate
+    # using the over.ball structure. Max 120 balls per innings.
+    total_balls = 120
     df["balls_bowled"] = df["ball_number"] - 1  # Before this ball
     df["balls_remaining"] = total_balls - df["balls_bowled"]
     df["balls_remaining"] = df["balls_remaining"].clip(lower=1)

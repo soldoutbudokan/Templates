@@ -8,18 +8,18 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": 0.07782,
+  "total_tilt_per_match": 0.14817,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.07151,
-  "shrunk_total_tilt_per_match": 0.031,
+  "bowling_tilt_per_match": 0.14388,
+  "shrunk_total_tilt_per_match": 0.06338,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.03148,
-  "tilt_ci_lower": -0.0639,
-  "tilt_ci_upper": 0.1259,
-  "tilt_ci_lower_90": -0.04865,
-  "tilt_ci_upper_90": 0.11065,
+  "shrunk_bowling_tilt_per_match": 0.06561,
+  "tilt_ci_lower": -0.00772,
+  "tilt_ci_upper": 0.13449,
+  "tilt_ci_lower_90": 0.0037,
+  "tilt_ci_upper_90": 0.12306,
   "confidence": "low",
-  "total_tilt": 0.38912,
+  "total_tilt": 0.74083,
   "total_matches": 5,
   "batting_balls": 3,
   "bowling_balls": 102,
@@ -28,7 +28,7 @@
       "season": "2011",
       "team": "Chennai Super Kings",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.13118,
+      "bowling_tilt_per_match": 0.05643,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -50,8 +50,8 @@
           "bowl_balls": 18,
           "bowl_runs": 26,
           "bowl_econ": 8.67,
-          "bowl_tilt": 0.13118,
-          "total_tilt": 0.13118
+          "bowl_tilt": 0.05643,
+          "total_tilt": 0.05643
         }
       ],
       "bowling_stats": {
@@ -67,8 +67,8 @@
     {
       "season": "2012",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": 0.03159,
-      "bowling_tilt_per_match": 0.05659,
+      "batting_tilt_per_match": 0.02145,
+      "bowling_tilt_per_match": 0.16574,
       "batting_matches": 1,
       "bowling_matches": 4,
       "batting_balls": 3,
@@ -90,8 +90,8 @@
           "bowl_balls": 24,
           "bowl_runs": 38,
           "bowl_econ": 9.5,
-          "bowl_tilt": -0.16346,
-          "total_tilt": -0.16346
+          "bowl_tilt": 0.07016,
+          "total_tilt": 0.07016
         },
         {
           "match_id": "548330",
@@ -109,8 +109,8 @@
           "bowl_balls": 12,
           "bowl_runs": 10,
           "bowl_econ": 5.0,
-          "bowl_tilt": 0.08959,
-          "total_tilt": 0.08959
+          "bowl_tilt": 0.2642,
+          "total_tilt": 0.2642
         },
         {
           "match_id": "548332",
@@ -128,8 +128,8 @@
           "bowl_balls": 24,
           "bowl_runs": 19,
           "bowl_econ": 4.75,
-          "bowl_tilt": 0.24455,
-          "total_tilt": 0.24455
+          "bowl_tilt": 0.28161,
+          "total_tilt": 0.28161
         },
         {
           "match_id": "548343",
@@ -142,13 +142,13 @@
           "bat_runs": 5,
           "bat_balls": 3,
           "bat_sr": 166.7,
-          "bat_tilt": 0.03159,
+          "bat_tilt": 0.02145,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 29,
           "bowl_econ": 7.25,
-          "bowl_tilt": 0.05566,
-          "total_tilt": 0.08725
+          "bowl_tilt": 0.04698,
+          "total_tilt": 0.06843
         }
       ],
       "batting_stats": {
@@ -176,29 +176,29 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": 0.03159,
+      "tilt": 0.02145,
       "balls": 3,
-      "avg_delta": 0.01053
+      "avg_delta": 0.007151
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.15706,
+      "tilt": 0.45001,
       "balls": 66,
-      "avg_delta": 0.002212
+      "avg_delta": 0.006338
     },
     {
       "phase": "middle",
-      "tilt": 0.0,
+      "tilt": -0.00413,
       "balls": 6,
-      "avg_delta": 0.0
+      "avg_delta": -0.000688
     },
     {
       "phase": "death",
-      "tilt": 0.20046,
+      "tilt": 0.2735,
       "balls": 30,
-      "avg_delta": 0.006682
+      "avg_delta": 0.009117
     }
   ],
   "best_matches": [
@@ -206,7 +206,7 @@
       "match_id": "548343",
       "date": "2012-04-28",
       "vs": "Punjab Kings",
-      "tilt": 0.03159,
+      "tilt": 0.02145,
       "runs": 5,
       "balls": 3
     }
@@ -216,7 +216,7 @@
       "match_id": "548343",
       "date": "2012-04-28",
       "vs": "Punjab Kings",
-      "tilt": 0.03159,
+      "tilt": 0.02145,
       "runs": 5,
       "balls": 3
     }
@@ -226,7 +226,23 @@
       "match_id": "548332",
       "date": "2012-04-21",
       "vs": "Rajasthan Royals",
-      "tilt": 0.24455,
+      "tilt": 0.28161,
+      "wickets": 1,
+      "balls": 24
+    },
+    {
+      "match_id": "548330",
+      "date": "2012-04-19",
+      "vs": "Pune Warriors India",
+      "tilt": 0.2642,
+      "wickets": 2,
+      "balls": 12
+    },
+    {
+      "match_id": "548322",
+      "date": "2012-04-14",
+      "vs": "Pune Warriors India",
+      "tilt": 0.07016,
       "wickets": 1,
       "balls": 24
     },
@@ -234,49 +250,41 @@
       "match_id": "501228",
       "date": "2011-04-27",
       "vs": "Pune Warriors India",
-      "tilt": 0.13118,
+      "tilt": 0.05643,
       "wickets": 1,
       "balls": 18
-    },
-    {
-      "match_id": "548330",
-      "date": "2012-04-19",
-      "vs": "Pune Warriors India",
-      "tilt": 0.08959,
-      "wickets": 2,
-      "balls": 12
     },
     {
       "match_id": "548343",
       "date": "2012-04-28",
       "vs": "Punjab Kings",
-      "tilt": 0.05566,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
-      "match_id": "548322",
-      "date": "2012-04-14",
-      "vs": "Pune Warriors India",
-      "tilt": -0.16346,
+      "tilt": 0.04698,
       "wickets": 1,
       "balls": 24
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "548322",
-      "date": "2012-04-14",
-      "vs": "Pune Warriors India",
-      "tilt": -0.16346,
+      "match_id": "548343",
+      "date": "2012-04-28",
+      "vs": "Punjab Kings",
+      "tilt": 0.04698,
       "wickets": 1,
       "balls": 24
     },
     {
-      "match_id": "548343",
-      "date": "2012-04-28",
-      "vs": "Punjab Kings",
-      "tilt": 0.05566,
+      "match_id": "501228",
+      "date": "2011-04-27",
+      "vs": "Pune Warriors India",
+      "tilt": 0.05643,
+      "wickets": 1,
+      "balls": 18
+    },
+    {
+      "match_id": "548322",
+      "date": "2012-04-14",
+      "vs": "Pune Warriors India",
+      "tilt": 0.07016,
       "wickets": 1,
       "balls": 24
     },
@@ -284,23 +292,15 @@
       "match_id": "548330",
       "date": "2012-04-19",
       "vs": "Pune Warriors India",
-      "tilt": 0.08959,
+      "tilt": 0.2642,
       "wickets": 2,
       "balls": 12
-    },
-    {
-      "match_id": "501228",
-      "date": "2011-04-27",
-      "vs": "Pune Warriors India",
-      "tilt": 0.13118,
-      "wickets": 1,
-      "balls": 18
     },
     {
       "match_id": "548332",
       "date": "2012-04-21",
       "vs": "Rajasthan Royals",
-      "tilt": 0.24455,
+      "tilt": 0.28161,
       "wickets": 1,
       "balls": 24
     }
@@ -309,56 +309,56 @@
     {
       "match": 1,
       "date": "2011-04-27",
-      "tilt": 0.13118,
-      "cumulative": 0.13118
+      "tilt": 0.05643,
+      "cumulative": 0.05643
     },
     {
       "match": 2,
       "date": "2012-04-14",
-      "tilt": -0.16346,
-      "cumulative": -0.03227
+      "tilt": 0.07016,
+      "cumulative": 0.12659
     },
     {
       "match": 3,
       "date": "2012-04-19",
-      "tilt": 0.08959,
-      "cumulative": 0.05732
+      "tilt": 0.2642,
+      "cumulative": 0.39079
     },
     {
       "match": 4,
       "date": "2012-04-21",
-      "tilt": 0.24455,
-      "cumulative": 0.30187
+      "tilt": 0.28161,
+      "cumulative": 0.6724
     },
     {
       "match": 5,
       "date": "2012-04-28",
-      "tilt": 0.08725,
-      "cumulative": 0.38912
+      "tilt": 0.06843,
+      "cumulative": 0.74083
     }
   ],
   "team_matchups": [
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.03159,
+      "tilt_per_match": 0.02145,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.24455,
-      "matches": 1
-    },
-    {
-      "opponent": "Punjab Kings",
-      "tilt_per_match": 0.05566,
+      "tilt_per_match": 0.28161,
       "matches": 1
     },
     {
       "opponent": "Pune Warriors India",
-      "tilt_per_match": 0.01911,
+      "tilt_per_match": 0.13026,
       "matches": 3
+    },
+    {
+      "opponent": "Punjab Kings",
+      "tilt_per_match": 0.04698,
+      "matches": 1
     }
   ],
   "batting_stats": {
@@ -383,10 +383,10 @@
     "best_figures": "2/10"
   },
   "match_tilt_distribution": [
-    0.13118,
-    -0.16346,
-    0.08959,
-    0.24455,
-    0.08725
+    0.05643,
+    0.07016,
+    0.2642,
+    0.28161,
+    0.06843
   ]
 }
