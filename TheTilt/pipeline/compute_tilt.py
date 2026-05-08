@@ -12,6 +12,7 @@ import yaml
 from sklearn.isotonic import IsotonicRegression
 
 from pipeline.build_features import shrunk_run_rate
+from pipeline.train_win_prob import EnsembleModel  # noqa: F401  (needed for pickle.load)
 
 
 # %% Configuration
@@ -845,6 +846,10 @@ def compute_tilt(
     print(f"Loading model from {model_path}...")
     with open(model_path, "rb") as f:
         model = pickle.load(f)
+    if isinstance(model, EnsembleModel):
+        print(f"  EnsembleModel of {len(model)} members loaded")
+    else:
+        print("  Single LGBM model loaded (legacy pre-ensemble pickle)")
 
     print(f"Loading featured balls from {featured_path}...")
     df = pd.read_parquet(featured_path)

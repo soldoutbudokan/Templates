@@ -198,3 +198,19 @@ Mirror image: bowlers who closed out tight chases give back a portion of their l
 Top of the leaderboard is essentially unchanged — Narine #1, Bumrah #2, ABD/Malinga swap #3 and #4. DJ Bravo (who entered the top 10 in the [last-ball snap](notes.html?note=last-ball-snap)) drops from #10 to #12 as some of his early-chase damping gets smoothed out.
 
 The fix is reversible: revert this commit and the system returns to the linear-decay-over-6-balls state.
+
+---
+
+## Update: K=100 ensemble (issue #111) — variance under retraining
+
+The boundary calibration above is unchanged in the May 2026 ensemble work, but its motivating diagnostic — the 0.038pp telescoping residual between blended and post-blend balls — is now small enough to live below a different and bigger noise source: **the retrain variance of the underlying LightGBM model**.
+
+Issue #111 traced career-rank instability (AB de Villiers bouncing between #3 and #9 across daily refreshes; Bhuvneshwar Kumar above ABD on a +2-match dataset growth) to a single-model retrain producing a substantively different model on the same code, same hyperparameters, same data — only the random train/holdout reshuffle drove the change. On a fully-deterministic ball-0 feature vector (`innings=1, balls_remaining=120, wickets_in_hand=10, runs_scored=0`), two consecutive retrains predicted **0.5158 vs 0.5643** for the same input. That 4.85pp drift, compounded over 290k balls × 168 ABD matches, was enough to swing his career total by −2.29 TILT — about 14× the noise floor of seven days of daily refreshes combined.
+
+The fix shipped in [issue #111](https://github.com/soldoutbudokan/Templates/issues/111) is a **K=100 LightGBM ensemble** averaged at inference (random states 42…141 on a fixed 90/10 holdout split locked at seed=42 forever), plus a `RETRAIN=1` env-var guardrail to prevent ad-hoc local pipeline runs from silently overwriting the committed pickle. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*.
+
+**Why this affects the boundary fix:** with retrain variance under control, the deeper telescoping methodology change discussed above (redefining `wp_before(k) := wp_after(k−1)` across all balls, [issue #110](https://github.com/soldoutbudokan/Templates/issues/110)) becomes A/B-testable for the first time. Previously, any "before/after" comparison of a chained-endpoints fix would have been swamped by the model's own retrain variance — the rankings drift from one retrain alone exceeded the residual the deeper fix is supposed to close. Under K=100, that's no longer true. Whether to ship the deeper fix is a separate decision based on how the rankings move; the methodology now permits a clean read on it.
+
+The boundary calibration itself (steps 1, 2, 3 above) is unchanged. Median per-match cliff is still mathematically zero. The residual numbers in the *PP-decay* update section (0.086 → 0.038 abs mean per match, telescoping in the blend region exact by construction) hold under K=100 too — those numbers are fundamentally about the calibration logic, not the model behind it.
+
+See [Why we ensemble](notes.html?note=ensemble) for the full diagnostic of the retrain-variance issue and the K=100 fix.

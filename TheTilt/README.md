@@ -45,8 +45,8 @@ The stat is denominated in **win probability percentage points per match**. A TI
 
 All data comes from [Cricsheet](https://cricsheet.org), an open cricket data project that provides ball-by-ball JSON files for every IPL match ever played.
 
-- **1,200 matches** parsed (2008-2026)
-- **286,500+ individual deliveries** with batsman, bowler, runs, wickets, and match outcome
+- **1,209 matches** parsed (2008-2026)
+- **288,670 individual deliveries** with batsman, bowler, runs, wickets, and match outcome
 - Each delivery becomes a row with full match context
 - Team-name aliases normalized (e.g. "Royal Challengers Bengaluru" → "Royal Challengers Bangalore")
 
@@ -76,55 +76,59 @@ For each ball, we compute the **match state before the delivery is bowled**:
 
 ### Step 3: Win Probability Model
 
-We train a **LightGBM gradient-boosted classifier** to predict: *will the team currently batting win this match?*
+We train a **K=100 LightGBM ensemble** to predict: *will the team currently batting win this match?*
 
 ```
 Input:  15 match-state features (before each ball)
-Output: P(batting team wins) ∈ [0, 1]
+Output: averaged P(batting team wins) ∈ [0, 1]   ← mean of 100 LGBM members
 ```
 
 **Why LightGBM?**
 - Handles mixed feature types (categorical + continuous) natively
-- Fast to train on 276K rows
+- Fast to train on 256K rows
 - Excellent probability calibration out of the box
 - Easy to inspect feature importances
 
+**Why K=100 ensemble?** A single LightGBM run on this dataset is fitted enough that adding one or two new matches to Cricsheet can flip the career top-10 (issue #111: AB de Villiers fell from #3 to #9 across a single retrain on a +2-match delta). Train/holdout reshuffles, the boosting trajectory diverges, and individual ball predictions can swing by **5+ percentage points** for the same input. K=100 members trained on the same fixed split with random states 42…141 average that variance away. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*.
+
 **Training details:**
-- Train/test split: **80/20 by match** (not by ball — splitting by ball would leak information since balls within the same match are correlated)
-- 2000 trees (with early stopping), learning rate 0.03, max depth 6, num_leaves 64
-- Light L2 regularization (reg_lambda=1.0, min_child_samples=100) — enough capacity to carve sharp endpoint splits in resolved chase states (heavier regularization was forcing a hard last-ball snap downstream and concentrating model error on one bowler per match)
+- Train/test split: **90/10 by match**, locked at `random_state=42` forever — every retrain validates on the same 119 matches so Brier/AUC numbers are directly comparable
+- 100 ensemble members, each: 2000 trees (with early stopping), learning rate 0.03, max depth 4, num_leaves 16
+- Heavy L2 regularization (reg_lambda=5.0, min_child_samples=500) — keeps individual trees smooth so member-to-member disagreement is genuine trajectory variance, not leaf noise
 - Venue names deduplicated (59 raw → 38 canonical) to reduce categorical overfitting
 - DLS-affected matches excluded from training (22 matches); their balls are still scored using the per-innings DLS allocation so revised chases aren't treated as full T20s
 - No post-hoc calibration needed — the LightGBM probabilities are well-calibrated (max calibration error ~5%)
+- `RETRAIN=1` env-var guardrail required to overwrite the committed pickle (prevents ad-hoc local pipeline runs from silently swapping in a noisier model)
 
 **Model performance:**
 
 | Metric | Value |
 |--------|-------|
-| Brier Score | 0.178 (lower is better, perfect = 0) |
-| AUC | 0.820 |
+| Brier Score | 0.191 (lower is better, perfect = 0) |
+| AUC | 0.780 |
+| K-member disagreement (std) | median 1.4pp · p95 3.2pp · max 9.8pp |
 
-**Feature importances** (what matters most for predicting the winner):
+**Feature importances** (mean across 100 ensemble members):
 
 ```
-venue                        ████████████████████████████████  (1006)
-batting_team_nrr             █████████████████████              (654)
-target                       █████████████████                  (523)
-season_numeric               ██████████                         (310)
-run_rate                     █████████                          (283)
-required_run_rate            █████████                          (272)
-wickets_in_hand              █████████                          (269)
-runs_scored                  ████████                           (228)
-runs_needed                  ███████                            (221)
-innings                      █████                              (152)
+venue                        ████████████████████████████████   (654)
+target                       █████████████                      (278)
+batting_team_nrr             █████████████                      (269)
+wickets_in_hand              ███████████                        (224)
+run_rate                     ███████████                        (224)
+runs_needed                  ██████████                         (203)
+required_run_rate            ██████████                         (202)
+innings                      █████████                          (187)
+runs_scored                  █████████                          (175)
+season_numeric               ██████                             (121)
+opponent_bowler_economy      █                                   (32)
 recent_wickets               █                                   (25)
-balls_remaining              █                                   (24)
-opponent_bowler_economy      █                                   (24)
-batting_team_chose_to_bat    ▏                                   (20)
-over                         ▏                                    (8)
+over                         █                                   (22)
+balls_remaining              ▏                                   (17)
+batting_team_chose_to_bat    ▏                                   (17)
 ```
 
-Venue dominates — ground conditions significantly affect win probability. Team-strength (batting_team_nrr) is the #2 signal, followed by chase-state features (required run rate, wickets, target). Season captures era effects.
+Venue dominates — ground conditions significantly affect win probability. Chase mechanics (target, wickets, run rate, required run rate) cluster together in the next tier. Team-strength (batting_team_nrr) is up there as well. Season captures era effects.
 
 ### Step 4: Computing TILT
 
@@ -178,28 +182,29 @@ Rankings use **Bayesian shrinkage** (empirical Bayes) to stabilize small-sample 
 
 ### Top Overall Players (ranked by TILT Floor — 90% CI lower bound)
 
+*As of 2026-05-07 (post K=100 ensemble).*
+
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |------|--------|------------|-----|------------|---------|
-| 1 | Sunil Narine | +6.03% | +6.22% | **high** | 195 |
-| 2 | Ayush Mhatre | +7.79% | +11.21% | low | 13 |
-| 3 | Jasprit Bumrah | +4.50% | +4.69% | **high** | 154 |
-| 4 | Lasith Malinga | +4.15% | +4.38% | **high** | 122 |
-| 5 | Rashid Khan | +4.21% | +4.40% | **high** | 146 |
-| 6 | Philip Salt | +4.83% | +5.61% | medium | 40 |
-| 7 | Morné Morkel | +3.98% | +4.37% | medium | 70 |
-| 8 | Ravichandran Ashwin | +2.85% | +2.95% | **high** | 217 |
-| 9 | Yuzvendra Chahal | +2.75% | +2.87% | **high** | 178 |
-| 10 | Jos Buttler | +3.36% | +3.55% | **high** | 129 |
+| 1 | Sunil Narine | +5.60% | +5.80% | **high** | 195 |
+| 2 | Jasprit Bumrah | +5.58% | +5.83% | **high** | 155 |
+| 3 | Lasith Malinga | +5.55% | +5.86% | **high** | 122 |
+| 4 | Yuzvendra Chahal | +3.70% | +3.87% | **high** | 179 |
+| 5 | Rashid Khan | +4.20% | +4.42% | **high** | 146 |
+| 6 | Doug Bollinger | +5.25% | +6.62% | low | 27 |
+| 7 | AB de Villiers | +3.89% | +4.07% | **high** | 168 |
+| 8 | Bhuvneshwar Kumar | +3.34% | +3.48% | **high** | 199 |
+| 9 | Morné Morkel | +3.88% | +4.31% | medium | 70 |
+| 10 | Vaibhav Suryavanshi | +7.46% | +10.30% | low | 17 |
 
 ### Notable Observations
 
-- **Sunil Narine** tops both the floor ranking and the raw career total TILT — the most consistent all-round impact player in IPL history
-- **Bumrah, Malinga, Rashid Khan** in the next tier — the death-overs / strike-bowler archetype dominates once the floor adjusts for confidence
-- **Mhatre at #2 with 13 matches** is what the floor sort produces when a young player posts an extreme raw number — the shrinkage pulls hard but the lower bound still clears most veterans
-- **Ashwin #8 across 217 matches** is the largest sample on the list, surfacing on certainty rather than per-match impact
-- The floor ranking naturally rewards consistency: Salt (#6) and Morkel (#7) have very high raw TILT but smaller samples widen their intervals
-- **Venue matters most**: The venue feature has the highest importance, confirming that ground conditions significantly affect match outcomes
-- **Era adjustment works**: Old-era players are not disproportionately penalized — the season_numeric feature captures evolving T20 scoring rates
+- **Sunil Narine** tops both the floor ranking and the raw career total TILT (+11.32 lifetime, ahead of Bumrah at +9.03) — the most consistent all-round impact player in IPL history
+- **Bumrah, Malinga, Rashid Khan, Chahal** in the next tier — the death-overs / strike-bowler archetype dominates once the floor adjusts for confidence
+- **AB de Villiers above Bhuvneshwar Kumar** (#7 vs #8) closes out a long-running rank inversion (issue #111) where ABD bounced between #3 and #9 across daily retrains. The K=100 ensemble averages out the trajectory variance that was driving the swap.
+- **Bollinger and Suryavanshi at #6 and #10** are the floor ranking behaving as designed under low-sample players posting extreme raw numbers — the shrinkage pulls them hard but the lower bound still clears most veterans
+- **Venue matters most**: the venue feature has the highest importance, confirming that ground conditions significantly affect match outcomes
+- **Era adjustment works**: old-era players are not disproportionately penalized — the season_numeric feature captures evolving T20 scoring rates
 
 ---
 
@@ -243,11 +248,11 @@ TheTilt/
 ```
 
 **Data flow:**
-1. Pipeline runs locally (~2.5 minutes), downloads from Cricsheet, processes everything
+1. Pipeline runs locally (~10 minutes for a full retrain — K=100 ensemble training is ~2 min of that; data download/parse/build/export accounts for the rest)
 2. Outputs static JSON to `public/data/`
 3. Website serves JSON directly — no computation at request time
 4. Deployed to Vercel (Python Flask for routing + static file serving)
-5. GitHub Actions refreshes data twice daily (02:00 / 14:00 UTC) reusing the committed model pickle; full retrains happen on March 1 or on-demand via `workflow_dispatch`
+5. GitHub Actions refreshes data twice daily (07:00 / 14:00 UTC) reusing the committed model pickle; full retrains happen on March 1 or on-demand via `workflow_dispatch`
 
 ---
 
@@ -286,6 +291,7 @@ TheTilt/
 - ~~Win prob chart flipped~~ → Consistent perspective from innings 1 batting team
 - ~~GOAT page innings bias~~ → **Innings-filtered views** on match batting/bowling tabs with explanatory note
 - ~~"Royal Challengers Bengaluru" split from "Royal Challengers Bangalore"~~ → Normalized to a single canonical name at parse time
+- ~~Career rankings flipping under retrain~~ → **K=100 LightGBM ensemble** averages trajectory variance across members, plus a `RETRAIN=1` env-var guardrail to prevent silent retrains (issue #111)
 
 ### Future Work
 
@@ -303,10 +309,12 @@ All ball-by-ball data from [Cricsheet](https://cricsheet.org) under their open d
 
 ## Running the Pipeline
 
-### Full pipeline (download + train + export):
+### Full pipeline (download + train K=100 ensemble + export):
 ```bash
-python pipeline/run_pipeline.py
+RETRAIN=1 python pipeline/run_pipeline.py
 ```
+
+The `RETRAIN=1` guardrail (issue #111) prevents ad-hoc local pipeline runs from silently overwriting the committed model pickle. The data-only refresh below doesn't retrain and doesn't need it.
 
 ### Data-only refresh (skip training, reuse committed pickle):
 ```bash

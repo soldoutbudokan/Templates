@@ -8,18 +8,18 @@
   "teams": [
     "Pune Warriors India"
   ],
-  "total_tilt_per_match": -0.08108,
+  "total_tilt_per_match": -0.06709,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03991,
+  "shrunk_total_tilt_per_match": -0.03489,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.12269,
-  "tilt_ci_upper": 0.04287,
-  "tilt_ci_lower_90": -0.10939,
-  "tilt_ci_upper_90": 0.02957,
+  "tilt_ci_lower": -0.09305,
+  "tilt_ci_upper": 0.02328,
+  "tilt_ci_lower_90": -0.0837,
+  "tilt_ci_upper_90": 0.01393,
   "confidence": "low",
-  "total_tilt": -0.16216,
+  "total_tilt": -0.13418,
   "total_matches": 2,
   "batting_balls": 22,
   "bowling_balls": 30,
@@ -27,8 +27,8 @@
     {
       "season": "2011",
       "team": "Pune Warriors India",
-      "batting_tilt_per_match": -0.08694,
-      "bowling_tilt_per_match": 0.00586,
+      "batting_tilt_per_match": -0.05482,
+      "bowling_tilt_per_match": -0.01227,
       "batting_matches": 2,
       "bowling_matches": 2,
       "batting_balls": 22,
@@ -45,13 +45,13 @@
           "bat_runs": 15,
           "bat_balls": 16,
           "bat_sr": 93.8,
-          "bat_tilt": -0.08125,
+          "bat_tilt": -0.07654,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 12,
           "bowl_econ": 6.0,
-          "bowl_tilt": 0.07864,
-          "total_tilt": -0.00261
+          "bowl_tilt": 0.06491,
+          "total_tilt": -0.01163
         },
         {
           "match_id": "501235",
@@ -64,13 +64,13 @@
           "bat_runs": 11,
           "bat_balls": 6,
           "bat_sr": 183.3,
-          "bat_tilt": -0.09263,
+          "bat_tilt": -0.0331,
           "bowl_wkts": 0,
           "bowl_balls": 18,
           "bowl_runs": 23,
           "bowl_econ": 7.67,
-          "bowl_tilt": -0.06692,
-          "total_tilt": -0.15955
+          "bowl_tilt": -0.08945,
+          "total_tilt": -0.12255
         }
       ],
       "batting_stats": {
@@ -98,65 +98,65 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": 0.00679,
+      "tilt": 0.0049,
       "balls": 5,
-      "avg_delta": 0.001359
+      "avg_delta": 0.000981
     },
     {
       "phase": "death",
-      "tilt": -0.18068,
+      "tilt": -0.11455,
       "balls": 17,
-      "avg_delta": -0.010038
+      "avg_delta": -0.006364
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.07864,
+      "tilt": 0.06491,
       "balls": 12,
-      "avg_delta": 0.006553
+      "avg_delta": 0.005409
     },
     {
       "phase": "middle",
-      "tilt": -0.06692,
+      "tilt": -0.08945,
       "balls": 18,
-      "avg_delta": -0.003718
+      "avg_delta": -0.004969
     }
   ],
   "best_matches": [
     {
-      "match_id": "501226",
-      "date": "2011-04-25",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.08125,
-      "runs": 15,
-      "balls": 16
-    },
-    {
       "match_id": "501235",
       "date": "2011-05-01",
       "vs": "Rajasthan Royals",
-      "tilt": -0.09263,
+      "tilt": -0.0331,
       "runs": 11,
       "balls": 6
+    },
+    {
+      "match_id": "501226",
+      "date": "2011-04-25",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.07654,
+      "runs": 15,
+      "balls": 16
     }
   ],
   "worst_matches": [
     {
-      "match_id": "501235",
-      "date": "2011-05-01",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.09263,
-      "runs": 11,
-      "balls": 6
-    },
-    {
       "match_id": "501226",
       "date": "2011-04-25",
       "vs": "Chennai Super Kings",
-      "tilt": -0.08125,
+      "tilt": -0.07654,
       "runs": 15,
       "balls": 16
+    },
+    {
+      "match_id": "501235",
+      "date": "2011-05-01",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.0331,
+      "runs": 11,
+      "balls": 6
     }
   ],
   "bowling_best_matches": [
@@ -164,7 +164,7 @@
       "match_id": "501226",
       "date": "2011-04-25",
       "vs": "Chennai Super Kings",
-      "tilt": 0.07864,
+      "tilt": 0.06491,
       "wickets": 0,
       "balls": 12
     },
@@ -172,7 +172,7 @@
       "match_id": "501235",
       "date": "2011-05-01",
       "vs": "Rajasthan Royals",
-      "tilt": -0.06692,
+      "tilt": -0.08945,
       "wickets": 0,
       "balls": 18
     }
@@ -182,7 +182,7 @@
       "match_id": "501235",
       "date": "2011-05-01",
       "vs": "Rajasthan Royals",
-      "tilt": -0.06692,
+      "tilt": -0.08945,
       "wickets": 0,
       "balls": 18
     },
@@ -190,7 +190,7 @@
       "match_id": "501226",
       "date": "2011-04-25",
       "vs": "Chennai Super Kings",
-      "tilt": 0.07864,
+      "tilt": 0.06491,
       "wickets": 0,
       "balls": 12
     }
@@ -199,37 +199,37 @@
     {
       "match": 1,
       "date": "2011-04-25",
-      "tilt": -0.00261,
-      "cumulative": -0.00261
+      "tilt": -0.01163,
+      "cumulative": -0.01163
     },
     {
       "match": 2,
       "date": "2011-05-01",
-      "tilt": -0.15955,
-      "cumulative": -0.16216
+      "tilt": -0.12255,
+      "cumulative": -0.13418
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.08125,
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.0331,
       "matches": 1
     },
     {
-      "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.09263,
+      "opponent": "Chennai Super Kings",
+      "tilt_per_match": -0.07654,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": 0.07864,
+      "tilt_per_match": 0.06491,
       "matches": 1
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.06692,
+      "tilt_per_match": -0.08945,
       "matches": 1
     }
   ],
@@ -255,7 +255,7 @@
     "best_figures": "0/12"
   },
   "match_tilt_distribution": [
-    -0.00261,
-    -0.15955
+    -0.01163,
+    -0.12255
   ]
 }

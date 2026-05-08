@@ -14,8 +14,9 @@ model:
   min_child_samples: 500
   num_leaves: 16
   reg_lambda: 5.0
-  test_size: 0.2
+  test_size: 0.1
   random_state: 42
+  ensemble_size: 100
   save_path: "models/win_prob_lgbm.pkl"
 
 export:

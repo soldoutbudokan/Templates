@@ -8,18 +8,18 @@
   "teams": [
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.02501,
+  "total_tilt_per_match": 0.00301,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.04502,
-  "shrunk_total_tilt_per_match": 0.00118,
+  "bowling_tilt_per_match": 0.02378,
+  "shrunk_total_tilt_per_match": -0.00945,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.0166,
-  "tilt_ci_lower": -0.11129,
-  "tilt_ci_upper": 0.11365,
-  "tilt_ci_lower_90": -0.09321,
-  "tilt_ci_upper_90": 0.09557,
+  "shrunk_bowling_tilt_per_match": 0.00608,
+  "tilt_ci_lower": -0.12695,
+  "tilt_ci_upper": 0.10804,
+  "tilt_ci_lower_90": -0.10806,
+  "tilt_ci_upper_90": 0.08916,
   "confidence": "low",
-  "total_tilt": 0.12504,
+  "total_tilt": 0.01507,
   "total_matches": 5,
   "batting_balls": 4,
   "bowling_balls": 90,
@@ -27,8 +27,8 @@
     {
       "season": "2021",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": -0.05004,
-      "bowling_tilt_per_match": 0.04502,
+      "batting_tilt_per_match": -0.05191,
+      "bowling_tilt_per_match": 0.02378,
       "batting_matches": 2,
       "bowling_matches": 5,
       "batting_balls": 4,
@@ -50,8 +50,8 @@
           "bowl_balls": 18,
           "bowl_runs": 30,
           "bowl_econ": 10.0,
-          "bowl_tilt": -0.07099,
-          "total_tilt": -0.07099
+          "bowl_tilt": -0.03553,
+          "total_tilt": -0.03553
         },
         {
           "match_id": "1254090",
@@ -64,13 +64,13 @@
           "bat_runs": 0,
           "bat_balls": 1,
           "bat_sr": 0.0,
-          "bat_tilt": -0.07489,
+          "bat_tilt": -0.05007,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 27,
           "bowl_econ": 6.75,
-          "bowl_tilt": 0.25035,
-          "total_tilt": 0.17546
+          "bowl_tilt": 0.20094,
+          "total_tilt": 0.15087
         },
         {
           "match_id": "1254095",
@@ -83,13 +83,13 @@
           "bat_runs": 2,
           "bat_balls": 3,
           "bat_sr": 66.7,
-          "bat_tilt": -0.02519,
+          "bat_tilt": -0.05374,
           "bowl_wkts": 1,
           "bowl_balls": 12,
           "bowl_runs": 29,
           "bowl_econ": 14.5,
-          "bowl_tilt": -0.19297,
-          "total_tilt": -0.21816
+          "bowl_tilt": -0.24716,
+          "total_tilt": -0.3009
         },
         {
           "match_id": "1254101",
@@ -107,8 +107,8 @@
           "bowl_balls": 18,
           "bowl_runs": 21,
           "bowl_econ": 7.0,
-          "bowl_tilt": 0.01533,
-          "total_tilt": 0.01533
+          "bowl_tilt": 0.03377,
+          "total_tilt": 0.03377
         },
         {
           "match_id": "1254115",
@@ -126,8 +126,8 @@
           "bowl_balls": 18,
           "bowl_runs": 29,
           "bowl_econ": 9.67,
-          "bowl_tilt": 0.2234,
-          "total_tilt": 0.2234
+          "bowl_tilt": 0.16687,
+          "total_tilt": 0.16687
         }
       ],
       "batting_stats": {
@@ -155,65 +155,65 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.10008,
+      "tilt": -0.10382,
       "balls": 4,
-      "avg_delta": -0.02502
+      "avg_delta": -0.025954
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.31611,
+      "tilt": -0.35179,
       "balls": 60,
-      "avg_delta": -0.00479
+      "avg_delta": -0.00533
     },
     {
       "phase": "middle",
-      "tilt": 0.13631,
+      "tilt": 0.14464,
       "balls": 12,
-      "avg_delta": 0.010485
+      "avg_delta": 0.011126
     },
     {
       "phase": "death",
-      "tilt": 0.40493,
+      "tilt": 0.32603,
       "balls": 18,
-      "avg_delta": 0.022496
+      "avg_delta": 0.018113
     }
   ],
   "best_matches": [
     {
-      "match_id": "1254095",
-      "date": "2021-10-06",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": -0.02519,
-      "runs": 2,
-      "balls": 3
-    },
-    {
       "match_id": "1254090",
       "date": "2021-10-03",
       "vs": "Punjab Kings",
-      "tilt": -0.07489,
+      "tilt": -0.05007,
       "runs": 0,
       "balls": 1
+    },
+    {
+      "match_id": "1254095",
+      "date": "2021-10-06",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.05374,
+      "runs": 2,
+      "balls": 3
     }
   ],
   "worst_matches": [
     {
-      "match_id": "1254090",
-      "date": "2021-10-03",
-      "vs": "Punjab Kings",
-      "tilt": -0.07489,
-      "runs": 0,
-      "balls": 1
-    },
-    {
       "match_id": "1254095",
       "date": "2021-10-06",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.02519,
+      "tilt": -0.05374,
       "runs": 2,
       "balls": 3
+    },
+    {
+      "match_id": "1254090",
+      "date": "2021-10-03",
+      "vs": "Punjab Kings",
+      "tilt": -0.05007,
+      "runs": 0,
+      "balls": 1
     }
   ],
   "bowling_best_matches": [
@@ -221,7 +221,7 @@
       "match_id": "1254090",
       "date": "2021-10-03",
       "vs": "Punjab Kings",
-      "tilt": 0.25035,
+      "tilt": 0.20094,
       "wickets": 1,
       "balls": 24
     },
@@ -229,7 +229,7 @@
       "match_id": "1254115",
       "date": "2021-10-11",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.2234,
+      "tilt": 0.16687,
       "wickets": 0,
       "balls": 18
     },
@@ -237,7 +237,7 @@
       "match_id": "1254101",
       "date": "2021-10-08",
       "vs": "Delhi Capitals",
-      "tilt": 0.01533,
+      "tilt": 0.03377,
       "wickets": 0,
       "balls": 18
     },
@@ -245,7 +245,7 @@
       "match_id": "1254103",
       "date": "2021-09-29",
       "vs": "Rajasthan Royals",
-      "tilt": -0.07099,
+      "tilt": -0.03553,
       "wickets": 1,
       "balls": 18
     },
@@ -253,7 +253,7 @@
       "match_id": "1254095",
       "date": "2021-10-06",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.19297,
+      "tilt": -0.24716,
       "wickets": 1,
       "balls": 12
     }
@@ -263,7 +263,7 @@
       "match_id": "1254095",
       "date": "2021-10-06",
       "vs": "Sunrisers Hyderabad",
-      "tilt": -0.19297,
+      "tilt": -0.24716,
       "wickets": 1,
       "balls": 12
     },
@@ -271,7 +271,7 @@
       "match_id": "1254103",
       "date": "2021-09-29",
       "vs": "Rajasthan Royals",
-      "tilt": -0.07099,
+      "tilt": -0.03553,
       "wickets": 1,
       "balls": 18
     },
@@ -279,7 +279,7 @@
       "match_id": "1254101",
       "date": "2021-10-08",
       "vs": "Delhi Capitals",
-      "tilt": 0.01533,
+      "tilt": 0.03377,
       "wickets": 0,
       "balls": 18
     },
@@ -287,7 +287,7 @@
       "match_id": "1254115",
       "date": "2021-10-11",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.2234,
+      "tilt": 0.16687,
       "wickets": 0,
       "balls": 18
     },
@@ -295,7 +295,7 @@
       "match_id": "1254090",
       "date": "2021-10-03",
       "vs": "Punjab Kings",
-      "tilt": 0.25035,
+      "tilt": 0.20094,
       "wickets": 1,
       "balls": 24
     }
@@ -304,70 +304,70 @@
     {
       "match": 1,
       "date": "2021-09-29",
-      "tilt": -0.07099,
-      "cumulative": -0.07099
+      "tilt": -0.03553,
+      "cumulative": -0.03553
     },
     {
       "match": 2,
       "date": "2021-10-03",
-      "tilt": 0.17546,
-      "cumulative": 0.10447
+      "tilt": 0.15086,
+      "cumulative": 0.11534
     },
     {
       "match": 3,
       "date": "2021-10-06",
-      "tilt": -0.21816,
-      "cumulative": -0.11369
+      "tilt": -0.30091,
+      "cumulative": -0.18557
     },
     {
       "match": 4,
       "date": "2021-10-08",
-      "tilt": 0.01533,
-      "cumulative": -0.09836
+      "tilt": 0.03377,
+      "cumulative": -0.1518
     },
     {
       "match": 5,
       "date": "2021-10-11",
-      "tilt": 0.2234,
-      "cumulative": 0.12504
+      "tilt": 0.16687,
+      "cumulative": 0.01507
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.02519,
+      "opponent": "Punjab Kings",
+      "tilt_per_match": -0.05007,
       "matches": 1
     },
     {
-      "opponent": "Punjab Kings",
-      "tilt_per_match": -0.07489,
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": -0.05374,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.25035,
+      "tilt_per_match": 0.20094,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.2234,
+      "tilt_per_match": 0.16687,
       "matches": 1
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.01533,
+      "tilt_per_match": 0.03377,
       "matches": 1
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.07099,
+      "tilt_per_match": -0.03553,
       "matches": 1
     },
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.19297,
+      "tilt_per_match": -0.24716,
       "matches": 1
     }
   ],
@@ -393,10 +393,10 @@
     "best_figures": "1/27"
   },
   "match_tilt_distribution": [
-    -0.07099,
-    0.17546,
-    -0.21816,
-    0.01533,
-    0.2234
+    -0.03553,
+    0.15086,
+    -0.30091,
+    0.03377,
+    0.16687
   ]
 }

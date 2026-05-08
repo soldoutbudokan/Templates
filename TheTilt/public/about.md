@@ -9,10 +9,10 @@ This page is the long-form methodology. The headline numbers and rankings live o
 | Coverage | Value |
 |:--|:--|
 | Seasons | IPL 2008 — 2026 |
-| Matches parsed | 1,200 |
-| Legal-ish deliveries scored | 286,500+ |
-| Players ranked (≥ 10 matches) | 455 |
-| Model | LightGBM gradient-boosted classifier |
+| Matches parsed | 1,209 |
+| Legal-ish deliveries scored | 288,670 |
+| Players ranked (≥ 10 matches) | 458 |
+| Model | K=100 LightGBM ensemble (gradient-boosted classifier) |
 | Default ranking | Bayesian-shrunk TILT, 90% CI lower bound |
 
 ---
@@ -155,24 +155,33 @@ LightGBM is a good fit here for several reasons: it handles mixed continuous/cat
 
 ### Training configuration
 
-These are the production hyperparameters from `config/pipeline_config.yaml`:
+These are the production hyperparameters from `config/pipeline_config.yaml` for each member of the ensemble:
 
 | Hyperparameter | Value | Rationale |
 |:--|:--|:--|
-| `n_estimators` | 2000 | Big upper bound; early stopping picks the actual count |
+| `max_depth` | 4 | Conservative depth — tight enough to avoid overfit endpoints, wide enough to learn chase mechanics |
+| `num_leaves` | 16 | Matches the depth cap |
+| `min_child_samples` | 500 | Heavy regularization on each member; the ensemble averages out the resulting under-confidence |
+| `reg_lambda` | 5.0 | L2 — keeps individual trees smooth so member-to-member disagreement is genuine trajectory variance, not leaf noise |
+| `n_estimators` | 2000 | Big upper bound; early stopping per member picks the actual count |
 | `learning_rate` | 0.03 | Low and steady |
-| `max_depth` | 6 | Enough depth for the model to carve sharp endpoint splits in tight finishes |
-| `num_leaves` | 64 | Matches the depth cap |
-| `min_child_samples` | 100 | Permits small endpoint leaves so wp can push toward 0/1 in resolved chase states |
-| `reg_lambda` | 1.0 | Light L2 — heavier shrinkage was suppressing endpoint confidence and forcing a hard last-ball snap downstream |
-| `test_size` | 0.2 | 80/20 split |
-| `random_state` | 42 | Reproducibility |
+| `test_size` | 0.1 | Fixed 90/10 holdout (locked seed=42 forever) — same 119 matches validate every retrain |
+| `ensemble_size` | 100 | K=100 members with seeds 42…141 (see *§ Ensemble*, below) |
+| `random_state` | 42 | Base seed; ensemble members use 42…42+K−1 |
 
 The model uses **monotone constraints** on three features whose direction is unambiguous from the batting team's point of view: `wickets_in_hand` is forced monotonically positive, `runs_needed` and `required_run_rate` are forced monotonically negative. This blocks pathological splits where, say, the model accidentally learns that needing more runs is *good* in some narrow regime.
 
+### Ensemble: K=100 members for retrain stability
+
+A single LightGBM run on this dataset is fitted enough that adding one or two new matches to Cricsheet can shift career rankings by **5+ positions** in the top 10 — the train/holdout split reshuffles, the boosting trajectory diverges, and the model's prediction on a fully-deterministic ball-0 feature vector swings by up to 4.85 percentage points. The career signal between #1 and #20 (~10 TILT units) is smaller than the noise floor of one retrain (max 5.5 TILT units, p95 1.34). That makes any retrain functionally equivalent to a random reshuffle of the middle of the leaderboard.
+
+The fix: train **K=100 LightGBM members** with random states 42, 43, …, 141 on the same fixed train/holdout split, and average their `predict_proba` outputs at inference. Each member has the same hyperparameters and sees the same data; only the LightGBM trajectory varies. Member-to-member disagreement on the holdout is real (median 1.4pp / p95 3.2pp / max 9.8pp std across the 100 members on the same ball), and that disagreement is exactly what the ensemble averages away. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*, which is the whole point.
+
+The model artifact (`models/win_prob_lgbm.pkl`) wraps the 100 members in an `EnsembleModel` class exposing the same `predict_proba` interface as a single classifier. Pickle size is ~33 MB (vs 0.4 MB for one member). The data-only refresh workflow loads the same pickle without retraining; full retrains run on March 1 each year and require explicitly setting `RETRAIN=1` in the environment to overwrite the committed pickle. The guardrail exists because two ad-hoc local pipeline runs once silently retrained the committed model and shipped a noisier version — that is the failure mode the K=100 ensemble plus the env-var lock are jointly designed to prevent. (See *Why we ensemble* in the [notes](notes.html?note=ensemble) for the full diagnostic.)
+
 ### Train/test split is by match, not by ball
 
-The single most important design decision in training is splitting by `match_id`, not by row. Balls within a match are extremely correlated (they share venue, teams, conditions, and the same outcome). A naive ball-level split would let the model memorise specific games and report inflated test-set numbers. The pipeline uses `GroupShuffleSplit` keyed on `match_id` to keep all balls from a match on the same side of the split.
+The single most important design decision in training is splitting by `match_id`, not by row. Balls within a match are extremely correlated (they share venue, teams, conditions, and the same outcome). A naive ball-level split would let the model memorise specific games and report inflated test-set numbers. The pipeline uses `GroupShuffleSplit` keyed on `match_id` to keep all balls from a match on the same side of the split. The split is computed once with `random_state=42`; every member of the ensemble trains on the same partition.
 
 ### DLS handling
 
@@ -186,16 +195,17 @@ Older iterations applied Platt scaling on top of the raw classifier. The committ
 
 ## 5. Validation
 
-The model is evaluated on the held-out 20% of matches (~235 games, ~57K balls).
+The model is evaluated on the held-out 10% of matches (**119 games, ~28.6K balls**) — the same 119 matches every retrain, locked by `random_state=42` so Brier/AUC numbers are directly comparable across pipeline runs.
 
 | Metric | Value | Notes |
 |:--|:--|:--|
-| **Brier score** | 0.178 | Mean squared error between predicted prob and outcome. 0 is perfect; 0.25 is "always predict 0.5". |
-| **Log loss** | 0.530 | Cross-entropy. Lower is better. |
-| **AUC** | 0.820 | Discrimination — given a ball with a winner-side and loser-side, the model orders them correctly 82% of the time. |
+| **Brier score** | 0.191 | Mean squared error between predicted prob and outcome. 0 is perfect; 0.25 is "always predict 0.5". |
+| **Log loss** | 0.560 | Cross-entropy. Lower is better. |
+| **AUC** | 0.780 | Discrimination — given a ball with a winner-side and loser-side, the model orders them correctly 78% of the time. |
 | **Calibration error (max)** | ~5% | Across 10 probability bins, the largest gap between predicted and observed win rate. |
+| **K-member disagreement (std)** | median 1.4pp · p95 3.2pp · max 9.8pp | How much the 100 ensemble members disagree on a typical holdout ball. The ensemble's predict_proba averages this away; individual members live in this distribution. |
 
-Brier under 0.20 is the implicit target for a usable WPA model — much above that and the per-ball deltas become too noisy to produce a meaningful aggregate. The current model clears it.
+Brier under 0.20 is the implicit target for a usable WPA model — much above that and the per-ball deltas become too noisy to produce a meaningful aggregate. The ensemble clears it.
 
 ### Calibration
 
@@ -222,33 +232,33 @@ If any of these flips after a retrain, the deploy doesn't ship.
 
 ## 6. Feature Importances
 
-Default LightGBM split-count importances on the production model:
+Mean LightGBM split-count importance across the 100 ensemble members:
 
 ```
-venue                        ████████████████████████████████  1006
-batting_team_nrr             █████████████████████              654
-target                       █████████████████                  523
-season_numeric               ██████████                         310
-run_rate                     █████████                          283
-required_run_rate            █████████                          272
-wickets_in_hand              █████████                          269
-runs_scored                  ████████                           228
-runs_needed                  ███████                            221
-innings                      █████                              152
+venue                        ████████████████████████████████   654
+target                       █████████████                      278
+batting_team_nrr             █████████████                      269
+wickets_in_hand              ███████████                        224
+run_rate                     ███████████                        224
+runs_needed                  ██████████                         203
+required_run_rate            ██████████                         202
+innings                      █████████                          187
+runs_scored                  █████████                          175
+season_numeric               ██████                             121
+opponent_bowler_economy      █                                   32
 recent_wickets               █                                   25
-balls_remaining              █                                   24
-opponent_bowler_economy      █                                   24
-batting_team_chose_to_bat    ▏                                   20
-over                         ▏                                    8
+over                         █                                   22
+balls_remaining              ▏                                   17
+batting_team_chose_to_bat    ▏                                   17
 ```
 
 A few things to read out of this:
 
 - **Venue dominates.** Conditions matter enormously in cricket and the 38-level categorical is doing a lot of work — pitch behaviour at Chepauk vs Chinnaswamy vs Wankhede is real and the model is capturing it.
-- **Team strength is #2.** `batting_team_nrr` lets the model down-weight the same scoreline differently for a top-of-table side vs a bottom side.
-- **Chase mechanics dominate the next tier.** `required_run_rate`, `wickets_in_hand`, `target`, `runs_needed` all sit close together — exactly what you'd expect from a model that spends half its life predicting innings-2 outcomes.
+- **Chase mechanics dominate the next tier.** `target`, `wickets_in_hand`, `runs_needed`, `required_run_rate`, and `run_rate` cluster tightly together — exactly what you'd expect from a model that spends half its life predicting innings-2 outcomes.
+- **Team strength is up there too.** `batting_team_nrr` lets the model down-weight the same scoreline differently for a top-of-table side vs a bottom side.
 - **`balls_remaining` looks tiny — it isn't.** Split count under-weights features that are highly correlated with others (here, `balls_remaining`, `over`, and the chase features all encode similar information). The model uses ball-position information; it just gets it from `over` and the chase-state features more often than from `balls_remaining` itself.
-- **Era effects exist but are modest.** `season_numeric` shows up at 54 — enough to keep modern hitters from being treated as identical to 2010 hitters, not so much that it dominates.
+- **Era effects exist but are modest.** `season_numeric` shows up at 121 — enough to keep modern hitters from being treated as identical to 2010 hitters, not so much that it dominates.
 
 ---
 
@@ -379,7 +389,7 @@ The full diagnostic, including per-phase breakdowns and the qq-plot above, is at
 
 ### The innings-boundary recalibration
 
-The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **7.5 pp** with a mean signed gap of **+5.2 pp** (the model is systematically more optimistic about the batting-first team at chase-start than at innings-1-end — direction depends on the trained model's tilt and is monitored on every retrain).
+The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **8.7 pp** with a mean signed gap of **+4.5 pp** (the model is systematically more optimistic about the batting-first team at chase-start than at innings-1-end — direction depends on the trained model's tilt and is monitored on every retrain).
 
 We close that gap with a two-step post-processing layer in `compute_tilt.apply_boundary_calibration`, applied only to the two boundary balls per match (~1.4% of all deliveries):
 
@@ -411,29 +421,28 @@ These are tractable upgrades that future iterations may chase.
 
 ## 11. Top Results (Sanity Check)
 
-Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-05-06.*
+Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-05-07 (post K=100 ensemble).*
 
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |:--|:--|:--|:--|:--|:--|
-| 1 | Sunil Narine | +6.03% | +6.22% | **high** | 195 |
-| 2 | Ayush Mhatre | +7.79% | +11.21% | low | 13 |
-| 3 | Jasprit Bumrah | +4.50% | +4.69% | **high** | 154 |
-| 4 | Lasith Malinga | +4.15% | +4.38% | **high** | 122 |
-| 5 | Rashid Khan | +4.21% | +4.40% | **high** | 146 |
-| 6 | Philip Salt | +4.83% | +5.61% | medium | 40 |
-| 7 | Morné Morkel | +3.98% | +4.37% | medium | 70 |
-| 8 | Ravichandran Ashwin | +2.85% | +2.95% | **high** | 217 |
-| 9 | Yuzvendra Chahal | +2.75% | +2.87% | **high** | 178 |
-| 10 | Jos Buttler | +3.36% | +3.55% | **high** | 129 |
+| 1 | Sunil Narine | +5.60% | +5.80% | **high** | 195 |
+| 2 | Jasprit Bumrah | +5.58% | +5.83% | **high** | 155 |
+| 3 | Lasith Malinga | +5.55% | +5.86% | **high** | 122 |
+| 4 | Yuzvendra Chahal | +3.70% | +3.87% | **high** | 179 |
+| 5 | Rashid Khan | +4.20% | +4.42% | **high** | 146 |
+| 6 | Doug Bollinger | +5.25% | +6.62% | low | 27 |
+| 7 | AB de Villiers | +3.89% | +4.07% | **high** | 168 |
+| 8 | Bhuvneshwar Kumar | +3.34% | +3.48% | **high** | 199 |
+| 9 | Morné Morkel | +3.88% | +4.31% | medium | 70 |
+| 10 | Vaibhav Suryavanshi | +7.46% | +10.30% | low | 17 |
 
 A few sanity reads on this list:
 
-- **Narine #1 across 195 matches** — the most consistent all-round impact in IPL history. Top of the floor ranking and top of raw career total TILT.
-- **Bumrah, Malinga, Rashid Khan in the next tier** — the death-overs / strike-bowler archetype dominates once you adjust for confidence. Spinners and fast bowlers both surface; the model isn't biased toward one type.
-- **Ashwin #8 across 217 matches** — the largest sample on the list, edges in on certainty rather than per-match impact.
-- **Salt at #6 with 40 matches** is the floor ranking working: his raw TILT is among the highest on the page, but the smaller sample widens his interval and he sits behind veterans with tighter intervals.
-- **Mhatre at #2 with only 13 matches** is what the floor sort produces when a young player posts an extreme raw number — the shrinkage pulls him hard, but his raw is high enough that even the lower bound clears most veterans.
-- **Old-era players are not punished.** Malinga's 2008–2019 career still floors at +4.15%; the `season_numeric` feature neutralises era effects.
+- **Narine #1 across 195 matches** — the most consistent all-round impact in IPL history. Top of the floor ranking and top of raw career total TILT (+11.32 lifetime, ahead of Bumrah at +9.03).
+- **Bumrah, Malinga, Rashid Khan, Chahal** — the death-overs / strike-bowler archetype dominates once you adjust for confidence. Spinners and fast bowlers both surface; the model isn't biased toward one type.
+- **AB de Villiers #7 with 168 matches** ranks above Bhuvneshwar Kumar #8 with 199 matches — closing out a long-running rank inversion (issue #111) where ABD had been bouncing between #3 and #9 in the top 10 across daily retrains. The K=100 ensemble averages away the trajectory variance that was driving the swap.
+- **Bollinger and Suryavanshi at #6 and #10** are the floor ranking behaving as designed under low-sample players posting extreme raw numbers — the shrinkage pulls them hard, but the lower bound still clears most veterans. The `low` confidence label flags them.
+- **Old-era players are not punished.** Malinga's 2008–2019 career still floors at +5.55%; the `season_numeric` feature neutralises era effects.
 
 ---
 
@@ -453,9 +462,9 @@ Everything that produces the live numbers is in the [project repo](https://githu
 | Hyperparameters | `config/pipeline_config.yaml` |
 | Trained model artifact | `models/win_prob_lgbm.pkl` (committed) |
 
-Run `python pipeline/run_pipeline.py` from the repo root and you get the same numbers shown on this site, modulo whatever has been added to Cricsheet since the last refresh. The pipeline is deterministic given a fixed seed (`random_state=42`).
+Run `RETRAIN=1 python pipeline/run_pipeline.py` from the repo root and you get the same numbers shown on this site, modulo whatever has been added to Cricsheet since the last refresh. The pipeline is deterministic given a fixed seed (`random_state=42` for the holdout split; ensemble members use 42…141). The `RETRAIN=1` env var is required to overwrite the committed pickle — a guardrail (issue #111) that prevents ad-hoc local pipeline runs from silently swapping in a noisier model. The data-only refresh (which never retrains) doesn't need it.
 
-A GitHub Actions workflow refreshes the data twice daily (02:00 and 14:00 UTC) without retraining; full retrains run on March 1 each year and on demand.
+A GitHub Actions workflow refreshes the data twice daily (07:00 and 14:00 UTC) without retraining; full retrains run on March 1 each year and on demand via `workflow_dispatch`.
 
 ---
 

@@ -8,18 +8,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": -0.02036,
+  "total_tilt_per_match": -0.06593,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02207,
+  "shrunk_total_tilt_per_match": -0.03848,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.07058,
-  "tilt_ci_upper": 0.02644,
-  "tilt_ci_lower_90": -0.06278,
-  "tilt_ci_upper_90": 0.01865,
+  "tilt_ci_lower": -0.07814,
+  "tilt_ci_upper": 0.00117,
+  "tilt_ci_lower_90": -0.07177,
+  "tilt_ci_upper_90": -0.0052,
   "confidence": "low",
-  "total_tilt": -0.06107,
+  "total_tilt": -0.1978,
   "total_matches": 3,
   "batting_balls": 11,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2008",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": -0.03054,
+      "batting_tilt_per_match": -0.0989,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 2,
       "bowling_matches": 0,
@@ -45,13 +45,13 @@
           "bat_runs": 7,
           "bat_balls": 9,
           "bat_sr": 77.8,
-          "bat_tilt": -0.09785,
+          "bat_tilt": -0.09613,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.09785
+          "total_tilt": -0.09613
         },
         {
           "match_id": "336035",
@@ -64,13 +64,13 @@
           "bat_runs": 1,
           "bat_balls": 1,
           "bat_sr": 100.0,
-          "bat_tilt": 0.03678,
+          "bat_tilt": -0.10168,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.03678
+          "total_tilt": -0.10168
         }
       ],
       "batting_stats": {
@@ -131,28 +131,20 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.04746,
+      "tilt": -0.05449,
       "balls": 4,
-      "avg_delta": -0.011866
+      "avg_delta": -0.013623
     },
     {
       "phase": "death",
-      "tilt": -0.01361,
+      "tilt": -0.14331,
       "balls": 7,
-      "avg_delta": -0.001944
+      "avg_delta": -0.020473
     }
   ],
   "bowling_phases": [],
   "best_matches": [
     {
-      "match_id": "336035",
-      "date": "2008-05-25",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.03678,
-      "runs": 1,
-      "balls": 1
-    },
-    {
       "match_id": "392204",
       "date": "2009-05-01",
       "vs": "Royal Challengers Bangalore",
@@ -164,17 +156,33 @@
       "match_id": "335995",
       "date": "2008-04-27",
       "vs": "Delhi Capitals",
-      "tilt": -0.09785,
+      "tilt": -0.09613,
       "runs": 7,
       "balls": 9
+    },
+    {
+      "match_id": "336035",
+      "date": "2008-05-25",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.10168,
+      "runs": 1,
+      "balls": 1
     }
   ],
   "worst_matches": [
     {
+      "match_id": "336035",
+      "date": "2008-05-25",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.10168,
+      "runs": 1,
+      "balls": 1
+    },
+    {
       "match_id": "335995",
       "date": "2008-04-27",
       "vs": "Delhi Capitals",
-      "tilt": -0.09785,
+      "tilt": -0.09613,
       "runs": 7,
       "balls": 9
     },
@@ -184,14 +192,6 @@
       "vs": "Royal Challengers Bangalore",
       "tilt": 0.0,
       "runs": 0,
-      "balls": 1
-    },
-    {
-      "match_id": "336035",
-      "date": "2008-05-25",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.03678,
-      "runs": 1,
       "balls": 1
     }
   ],
@@ -201,28 +201,23 @@
     {
       "match": 1,
       "date": "2008-04-27",
-      "tilt": -0.09785,
-      "cumulative": -0.09785
+      "tilt": -0.09613,
+      "cumulative": -0.09613
     },
     {
       "match": 2,
       "date": "2008-05-25",
-      "tilt": 0.03678,
-      "cumulative": -0.06107
+      "tilt": -0.10168,
+      "cumulative": -0.1978
     },
     {
       "match": 3,
       "date": "2009-05-01",
       "tilt": 0.0,
-      "cumulative": -0.06107
+      "cumulative": -0.1978
     }
   ],
   "team_matchups": [
-    {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.03678,
-      "matches": 1
-    },
     {
       "opponent": "Royal Challengers Bangalore",
       "tilt_per_match": 0.0,
@@ -230,7 +225,12 @@
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.09785,
+      "tilt_per_match": -0.09613,
+      "matches": 1
+    },
+    {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": -0.10168,
       "matches": 1
     }
   ],
@@ -249,8 +249,8 @@
   },
   "bowling_stats": null,
   "match_tilt_distribution": [
-    -0.09785,
-    0.03678,
+    -0.09613,
+    -0.10168,
     0.0
   ]
 }

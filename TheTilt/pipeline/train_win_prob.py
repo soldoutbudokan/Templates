@@ -1,4 +1,5 @@
 # %% Imports
+import os
 import pickle
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -11,6 +12,54 @@ import yaml
 from sklearn.calibration import calibration_curve
 from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
 from sklearn.model_selection import GroupShuffleSplit
+
+
+# %% Ensemble wrapper (issue #111)
+class EnsembleModel:
+    """Average predict_proba across K identically-configured LGBM members.
+
+    Members differ only in `random_state` (42, 43, ..., 42+K-1) and are all
+    trained on the same fixed 10% holdout split (also seed=42). Differences
+    between members are pure gradient-boosting trajectory variance —
+    averaging cancels it. See issue #111: a single retrain on a +2-match
+    delta moved AB de Villiers from rank #3 to rank #9 because the random
+    train/holdout reshuffle produced a substantively different model.
+
+    Exposes the same `predict_proba` / `feature_importances_` interface as
+    a single LGBMClassifier, so all callers (compute_tilt, sanity_check)
+    work unchanged.
+    """
+
+    def __init__(
+        self,
+        models: List[lgb.LGBMClassifier],
+        features: List[str],
+        categorical_features: List[str],
+    ) -> None:
+        self.models = list(models)
+        self.features = list(features)
+        self.categorical_features = list(categorical_features)
+
+    def __len__(self) -> int:
+        return len(self.models)
+
+    def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
+        if not self.models:
+            raise RuntimeError("EnsembleModel has no members")
+        acc = np.zeros((len(X), 2), dtype=np.float64)
+        for m in self.models:
+            acc += m.predict_proba(X)
+        return acc / len(self.models)
+
+    def predict_proba_per_member(self, X: pd.DataFrame) -> np.ndarray:
+        """Stack of per-member predictions, shape (K, n, 2). Diagnostic only."""
+        return np.stack([m.predict_proba(X) for m in self.models])
+
+    @property
+    def feature_importances_(self) -> np.ndarray:
+        return np.mean(
+            np.stack([m.feature_importances_ for m in self.models]), axis=0
+        )
 
 
 # %% Configuration
@@ -45,6 +94,7 @@ class WinProbModelConfig:
     reg_lambda: float = 0.0
     test_size: float = 0.2
     random_state: int = 42
+    ensemble_size: int = 1
 
 
 def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
@@ -67,17 +117,14 @@ def split_by_match(
     return df.iloc[train_idx], df.iloc[test_idx]
 
 
-# %% Train model
-def train_win_prob_model(
-    df: pd.DataFrame,
+# %% Fit a single ensemble member
+def _fit_member(
+    train_df: pd.DataFrame,
+    test_df: pd.DataFrame,
     config: WinProbModelConfig,
-) -> Tuple[lgb.LGBMClassifier, pd.DataFrame, pd.DataFrame]:
-    """Train LightGBM win probability model."""
-    train_df, test_df = split_by_match(df, config)
-
-    print(f"Training set: {len(train_df):,} balls from {train_df['match_id'].nunique()} matches")
-    print(f"Test set: {len(test_df):,} balls from {test_df['match_id'].nunique()} matches")
-
+    seed: int,
+) -> lgb.LGBMClassifier:
+    """Train one LGBMClassifier on a fixed split with the given seed."""
     X_train = train_df[config.features].copy()
     y_train = train_df[config.target]
     X_test = test_df[config.features].copy()
@@ -100,36 +147,67 @@ def train_win_prob_model(
         min_child_samples=config.min_child_samples,
         num_leaves=config.num_leaves,
         reg_lambda=config.reg_lambda,
-        random_state=config.random_state,
+        random_state=seed,
         objective="binary",
         metric="binary_logloss",
         monotone_constraints=monotone_constraints,
         verbose=-1,
     )
 
-    # Ensure categorical columns have correct dtype
     for col in config.categorical_features:
         if col in X_train.columns:
             X_train[col] = X_train[col].astype("category")
             X_test[col] = X_test[col].astype("category")
 
-    print("Training LightGBM model...")
     model.fit(
         X_train, y_train,
         eval_set=[(X_test, y_test)],
         categorical_feature=config.categorical_features,
         callbacks=[
-            lgb.log_evaluation(100),
-            lgb.early_stopping(stopping_rounds=50),
+            lgb.early_stopping(stopping_rounds=50, verbose=False),
         ],
     )
 
-    return model, train_df, test_df
+    return model
+
+
+# %% Train K-model ensemble (single-member behavior recovered when K=1)
+def train_ensemble(
+    df: pd.DataFrame,
+    config: WinProbModelConfig,
+) -> Tuple[EnsembleModel, pd.DataFrame, pd.DataFrame]:
+    """Train a K-member ensemble on a fixed holdout split."""
+    train_df, test_df = split_by_match(df, config)
+
+    print(
+        f"Training set: {len(train_df):,} balls from {train_df['match_id'].nunique()} matches"
+    )
+    print(
+        f"Holdout set:  {len(test_df):,} balls from {test_df['match_id'].nunique()} matches "
+        f"(seed={config.random_state}, test_size={config.test_size})"
+    )
+
+    K = max(1, int(config.ensemble_size))
+    print(f"\nTraining K={K}-model ensemble (seeds {config.random_state}..{config.random_state + K - 1})")
+
+    members: List[lgb.LGBMClassifier] = []
+    for i, seed in enumerate(range(config.random_state, config.random_state + K)):
+        print(f"  [{i + 1:3d}/{K}] random_state={seed} ...", end=" ", flush=True)
+        m = _fit_member(train_df, test_df, config, seed)
+        members.append(m)
+        best_iter = getattr(m, "best_iteration_", None)
+        if best_iter is not None:
+            print(f"best_iter={best_iter}")
+        else:
+            print("done")
+
+    ensemble = EnsembleModel(members, config.features, config.categorical_features)
+    return ensemble, train_df, test_df
 
 
 # %% Evaluate model
 def evaluate_model(
-    model: lgb.LGBMClassifier,
+    model: EnsembleModel,
     test_df: pd.DataFrame,
     config: WinProbModelConfig,
 ) -> Dict[str, float]:
@@ -161,24 +239,34 @@ def evaluate_model(
         bar = "#" * int(true * 40)
         print(f"    {pred:.2f} → {true:.2f}  {bar}")
 
-    # Feature importances (not available on CalibratedClassifierCV)
-    base_model = getattr(model, "estimator", model)
-    if hasattr(base_model, "feature_importances_"):
+    if hasattr(model, "feature_importances_"):
         importances = pd.Series(
-            base_model.feature_importances_,
+            model.feature_importances_,
             index=config.features,
         ).sort_values(ascending=False)
 
-        print("\n  Feature Importances:")
+        print("\n  Feature Importances (mean across ensemble members):")
         for feat, imp in importances.items():
             bar = "#" * int(imp / importances.max() * 30)
-            print(f"    {feat:25s} {imp:6.0f}  {bar}")
+            print(f"    {feat:25s} {imp:7.1f}  {bar}")
+
+    # K-model disagreement diagnostic (issue #111)
+    if isinstance(model, EnsembleModel) and len(model) > 1:
+        per_member = model.predict_proba_per_member(X_test)[:, :, 1]
+        std_per_ball = per_member.std(axis=0)
+        median_pp = float(np.median(std_per_ball)) * 100
+        p95_pp = float(np.percentile(std_per_ball, 95)) * 100
+        max_pp = float(std_per_ball.max()) * 100
+        print(
+            f"\n  K-model disagreement on holdout (std across {len(model)} members): "
+            f"median={median_pp:.2f}pp, p95={p95_pp:.2f}pp, max={max_pp:.2f}pp"
+        )
 
     return metrics
 
 
 # %% Sanity checks
-def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
+def sanity_check(model: EnsembleModel, config: WinProbModelConfig) -> None:
     """Run sanity checks on the model with known scenarios."""
     print("\n--- Sanity Checks ---")
 
@@ -235,7 +323,6 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
 
     for scenario in scenarios:
         X = pd.DataFrame([scenario["features"]])[config.features]
-        # Ensure venue is categorical for LightGBM
         for col in config.categorical_features:
             if col in X.columns:
                 X[col] = X[col].astype("category")
@@ -245,7 +332,7 @@ def sanity_check(model: lgb.LGBMClassifier, config: WinProbModelConfig) -> None:
 
 
 # %% Save model
-def save_model(model: lgb.LGBMClassifier, path: Optional[str] = None) -> Path:
+def save_model(model: EnsembleModel, path: Optional[str] = None) -> Path:
     config = load_config()
     path = Path(path or config["model"]["save_path"])
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -253,14 +340,30 @@ def save_model(model: lgb.LGBMClassifier, path: Optional[str] = None) -> Path:
     with open(path, "wb") as f:
         pickle.dump(model, f)
 
-    print(f"\nModel saved to {path}")
+    size_mb = path.stat().st_size / (1024 * 1024)
+    print(f"\nModel saved to {path}  ({size_mb:.1f} MB)")
     return path
 
 
 # %% Main
-def train_and_evaluate(featured_balls_path: Optional[str] = None) -> lgb.LGBMClassifier:
-    """Full training pipeline: load data, train, evaluate, save."""
+def train_and_evaluate(featured_balls_path: Optional[str] = None) -> EnsembleModel:
+    """Full training pipeline: load data, train K members, evaluate, save."""
     config_dict = load_config()
+    save_path = config_dict["model"]["save_path"]
+
+    # Guardrail: refuse to overwrite an existing pickle unless RETRAIN=1 is set.
+    # Two interactive runs of pipeline/run_pipeline.py silently retrained the
+    # model in May 2026, swapping a stable pickle for a noisier one — that's
+    # how Bhuvneshwar Kumar ended up above ABD in the career top 10. The cron
+    # data-refresh workflow uses refresh_tilt_data_only(), which doesn't call
+    # this function, so it's unaffected. The retrain-tilt-model workflow sets
+    # RETRAIN=1 explicitly. (Issue #111.)
+    if not os.environ.get("RETRAIN") and Path(save_path).exists():
+        raise RuntimeError(
+            f"Refusing to overwrite existing pickle at {save_path}. "
+            f"Set RETRAIN=1 to confirm. See issue #111 for context."
+        )
+
     model_config = WinProbModelConfig(
         n_estimators=config_dict["model"]["n_estimators"],
         learning_rate=config_dict["model"]["learning_rate"],
@@ -270,6 +373,7 @@ def train_and_evaluate(featured_balls_path: Optional[str] = None) -> lgb.LGBMCla
         reg_lambda=config_dict["model"].get("reg_lambda", 0.0),
         test_size=config_dict["model"]["test_size"],
         random_state=config_dict["model"]["random_state"],
+        ensemble_size=int(config_dict["model"].get("ensemble_size", 1)),
     )
 
     processed_dir = Path(config_dict["data"]["processed_dir"])
@@ -287,15 +391,13 @@ def train_and_evaluate(featured_balls_path: Optional[str] = None) -> lgb.LGBMCla
             df = df[~df["match_id"].isin(dls_matches)]
             print(f"  Excluded {n_dls} DLS-affected matches ({len(df):,} balls remaining)")
 
-    model, train_df, test_df = train_win_prob_model(df, model_config)
+    ensemble, _, test_df = train_ensemble(df, model_config)
 
-    # Evaluate model (with strong regularization, raw model is well-calibrated
-    # without Platt scaling, which amplifies mid-range deltas and increases volatility)
-    metrics = evaluate_model(model, test_df, model_config)
-    sanity_check(model, model_config)
-    save_model(model)
+    evaluate_model(ensemble, test_df, model_config)
+    sanity_check(ensemble, model_config)
+    save_model(ensemble)
 
-    return model
+    return ensemble
 
 
 # %% Script entry

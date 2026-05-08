@@ -20,6 +20,13 @@
     // here, create public/notes/<id>.md, then add a row in dependencies.md.
     const BLOG_NOTES = [
         {
+            id: 'ensemble',
+            title: 'Why We Ensemble',
+            summary: 'A single LightGBM retrain on a +2-match dataset shifted ABD\'s ball-0 prediction by 4.85pp on a fully-deterministic feature vector and pushed his career rank from #3 to #9. The career signal between #1 and #20 (~10 TILT units) is smaller than the noise floor of one retrain (max 5.5, p95 1.34) — about 14× louder than seven days of daily refreshes. Fix: K=100 ensemble averaged at inference, fixed 10% holdout locked at seed=42, plus a RETRAIN=1 env-var guardrail to block silent retrains.',
+            tags: ['methodology', 'model'],
+            date: '2026-05-07',
+        },
+        {
             id: 'last-ball-snap',
             title: 'Snapping the Final Ball — and Why We Reverted It',
             summary: 'The match-terminal snap looked like a clean fix to wp_after maxing out below 1.0 on chase-winning balls, but it concentrated the entire model-vs-truth gap onto a single bowler per match — Trent Boult\'s 3/26 in a DLS-shortened 2018 chase ballooned to a +0.97 single-game tilt, of which +0.89 was pure snap windfall. The fix: tune the underlying model to push wp toward 0/1 naturally at the boundary, and feed it the correct ball allocation for DLS-revised innings.',

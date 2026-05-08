@@ -30,6 +30,11 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run full pipeline (with model training)
+        env:
+          # Required by train_and_evaluate's overwrite guardrail (issue #111).
+          # Ad-hoc local runs of run_pipeline.py refuse to retrain unless the
+          # operator opts in; this workflow opts in by design.
+          RETRAIN: "1"
         run: python pipeline/run_pipeline.py
 
       - name: Check for changes
