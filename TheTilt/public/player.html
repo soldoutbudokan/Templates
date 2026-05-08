@@ -338,21 +338,37 @@ async function loadPlayer() {
         // Y-axis intentionally hidden: viewers read shape and sign, not exact %.
         // Hover for date/opponent/TILT, click to open the match.
         if (ribbonMatches.length > 3) {
-            // Linear time-scale x-axis (in ms since epoch): off-seasons show as
-            // dead air, year labels are spaced by real calendar time so dense
-            // and sparse seasons don't squeeze labels together.
-            const ribbonData = ribbonMatches.map(m => ({
-                x: new Date((m.date || '1970-01-01') + 'T00:00:00Z').getTime(),
-                y: +(((m.total_tilt) || 0) * 100).toFixed(2),
-            }));
+            // Categorical x-axis: one slot per match → uniform bar widths
+            // regardless of dense/sparse season mix. Year labels are placed at
+            // first-match-of-year indices, then thinned by a greedy collision
+            // filter so adjacent labels can't squeeze together.
+            const ribbonData = ribbonMatches.map(m =>
+                +(((m.total_tilt) || 0) * 100).toFixed(2));
             const greenStrong = cssVar('--accent-green');
             const redStrong = cssVar('--accent-red');
             const colors = ribbonMatches.map(m =>
                 ((m.total_tilt || 0) >= 0 ? greenStrong : redStrong) + 'cc');
 
+            const yearChangeIndices = [];
+            let lastYear = '';
+            ribbonMatches.forEach((m, i) => {
+                const y = (m.date || '').slice(0, 4);
+                if (y && y !== lastYear) yearChangeIndices.push(i);
+                if (y) lastYear = y;
+            });
+            const minGap = Math.max(5, Math.ceil(ribbonMatches.length / 18));
+            const showAt = new Set();
+            let lastShown = -Infinity;
+            yearChangeIndices.forEach(i => {
+                if (i - lastShown >= minGap) { showAt.add(i); lastShown = i; }
+            });
+            const labels = ribbonMatches.map((m, i) =>
+                showAt.has(i) ? `'${(m.date || '').slice(2, 4)}` : '');
+
             new Chart(document.getElementById('ribbonChart'), {
                 type: 'bar',
                 data: {
+                    labels,
                     datasets: [{
                         data: ribbonData,
                         backgroundColor: colors,
@@ -365,7 +381,6 @@ async function loadPlayer() {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    parsing: false,
                     onClick: (_evt, items) => {
                         if (!items || items.length === 0) return;
                         const m = ribbonMatches[items[0].index];
@@ -383,7 +398,7 @@ async function loadPlayer() {
                                     return `${m.date} vs ${m.opponent || '?'}`;
                                 },
                                 label: (item) => {
-                                    const v = item.raw.y;
+                                    const v = item.parsed.y;
                                     const sign = v >= 0 ? '+' : '';
                                     return `TILT ${sign}${v.toFixed(2)}%`;
                                 }
@@ -392,24 +407,12 @@ async function loadPlayer() {
                     },
                     scales: {
                         x: {
-                            type: 'linear',
-                            // Force ticks on calendar-year boundaries so 2017→2018
-                            // is always 1 year of canvas regardless of match density.
-                            afterBuildTicks: (axis) => {
-                                const minY = new Date(axis.min).getUTCFullYear();
-                                const maxY = new Date(axis.max).getUTCFullYear();
-                                const ticks = [];
-                                for (let y = minY; y <= maxY; y++) {
-                                    ticks.push({ value: Date.UTC(y, 0, 1) });
-                                }
-                                axis.ticks = ticks;
-                            },
+                            type: 'category',
                             ticks: {
                                 color: cssVar('--text-muted'),
                                 font: { size: 10 },
                                 maxRotation: 0,
                                 autoSkip: false,
-                                callback: (val) => new Date(val).getUTCFullYear(),
                             },
                             grid: { display: false }
                         },
