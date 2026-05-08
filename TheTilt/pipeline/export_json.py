@@ -612,12 +612,26 @@ def export_player_details(
                 })
 
         # Best/worst match performances (batting)
+        if player_id:
+            bat_with_dismissal = bat_df.assign(
+                _self_dismissed=bat_df["player_dismissed_id"].eq(player_id)
+            )
+        else:
+            bat_with_dismissal = bat_df.assign(
+                _self_dismissed=bat_df["player_dismissed"].eq(player_name)
+            )
         match_perf = (
-            bat_df.groupby(["match_id", "date", "bowling_team"])
-            .agg(tilt=("delta_wp", "sum"), balls=("legal_bat", "sum"), runs=("runs_batter", "sum"))
+            bat_with_dismissal.groupby(["match_id", "date", "bowling_team"])
+            .agg(
+                tilt=("delta_wp", "sum"),
+                balls=("legal_bat", "sum"),
+                runs=("runs_batter", "sum"),
+                dismissed=("_self_dismissed", "any"),
+            )
             .reset_index()
             .sort_values("tilt", ascending=False)
         )
+        match_perf["not_out"] = ~match_perf["dismissed"]
         best_matches = match_perf.head(5).to_dict("records")
         worst_matches = match_perf.tail(5).sort_values("tilt").to_dict("records")
 
@@ -738,6 +752,7 @@ def export_player_details(
                     "tilt": round(r["tilt"], 5),
                     "runs": int(r["runs"]),
                     "balls": int(r["balls"]),
+                    "not_out": bool(r["not_out"]),
                 }
                 for r in best_matches
             ],
@@ -749,6 +764,7 @@ def export_player_details(
                     "tilt": round(r["tilt"], 5),
                     "runs": int(r["runs"]),
                     "balls": int(r["balls"]),
+                    "not_out": bool(r["not_out"]),
                 }
                 for r in worst_matches
             ],

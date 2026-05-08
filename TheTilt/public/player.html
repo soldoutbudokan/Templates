@@ -262,7 +262,7 @@ async function loadPlayer() {
                 const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
                 html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
                     <td><a href="${matchLink}" class="match-link">${m.date}</a></td><td>${m.vs}</td>
-                    <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
+                    <td>${formatTilt(m.tilt)}</td><td>${m.runs}${m.not_out ? '*' : ''}</td><td>${m.balls}</td>
                 </tr>`;
             }
             html += '</table></div></div>';
@@ -275,7 +275,7 @@ async function loadPlayer() {
                 const matchLink = m.match_id ? `match.html?id=${m.match_id}` : '#';
                 html += `<tr onclick="window.location='${matchLink}'" style="cursor:pointer">
                     <td><a href="${matchLink}" class="match-link">${m.date}</a></td><td>${m.vs}</td>
-                    <td>${formatTilt(m.tilt)}</td><td>${m.runs}</td><td>${m.balls}</td>
+                    <td>${formatTilt(m.tilt)}</td><td>${m.runs}${m.not_out ? '*' : ''}</td><td>${m.balls}</td>
                 </tr>`;
             }
             html += '</table></div></div>';

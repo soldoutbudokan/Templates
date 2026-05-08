@@ -121,7 +121,7 @@ function render() {
                     </a>
                 </td>
                 <td>${formatTilt(r.tilt)}</td>
-                <td class="hide-mobile">${r.runs}</td>
+                <td class="hide-mobile">${r.runs}${r.not_out ? '*' : ''}</td>
                 <td class="hide-mobile">${r.balls}</td>
                 <td class="hide-mobile"><a href="match.html?id=${r.match_id}" class="match-link">${r.season}</a></td>
             </tr>`;
@@ -249,7 +249,7 @@ function render() {
                         <span class="player-team">${teamLink(r.team, r.season, teamIndex, { cls: 'team-link-subtle' })}</span>
                     </a>
                 </td>
-                <td>${r.runs}</td>
+                <td>${r.runs}${r.not_out ? '*' : ''}</td>
                 <td class="hide-mobile">${r.balls}</td>
                 <td class="hide-mobile">${formatTilt(r.tilt)}</td>
                 <td class="hide-mobile"><a href="match.html?id=${r.match_id}" class="match-link">${r.season}</a></td>
