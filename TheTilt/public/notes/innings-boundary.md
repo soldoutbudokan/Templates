@@ -245,3 +245,57 @@ Under Steps 1+2 only, the inn2 first-ball delta is whatever the calibrated wp_be
 Median per-match cliff at the seam is unchanged (still 0.0pp by construction, since Step 2 still snaps both endpoints to the per-match midpoint). The visible "ball-2 jump" that Step 3 was originally introduced to smooth (issue #71) returns, but at smaller magnitude than the issue body claimed — closer to the model's true uncertainty about the new chase state. The chart smoothness/ranking-faithfulness trade-off was re-evaluated and ranking faithfulness wins.
 
 Issue #110's deeper chained-endpoints fix (V5/V6 in `notebooks/boundary_cliff_prototype.py`) was tested against this revised baseline and found to amplify spinner credit too aggressively — the residual it closes is large (~5.5pp inn2 mean abs per match) but the fix produces top-10 swings of 5–30 ranks for tracked players and surfaces medium/low-confidence short-career bowlers in the top-10 floor. Both V5 and V6 stay deferred. See [issue #110](https://github.com/soldoutbudokan/Templates/issues/110) for the comparison.
+
+---
+
+## Update: `recent_wickets` rolling-window fix (issue #110)
+
+The V5/V6 spinner-amplification result didn't add up at first. Both variants close a 5.5pp telescoping residual, but the over-boundary "feature reshuffle" mechanism the issue body cites should only account for ~20% of that — the rest accumulates *within* an over, where the bowler doesn't change.
+
+A field-by-field diff of `compute_state_after(ball k)` against `featured_balls[ball k+1]` for every within-over consecutive pair (242,222 of them) found the bug. Two features drift, but only one matters:
+
+| Feature | % of pairs differ | Mean abs diff |
+|:--|:--:|:--:|
+| `recent_wickets` | **3.59%** (8,690 pairs) | 0.036 |
+| `opponent_bowler_economy` | 0.02% (49 pairs) | 0.0002 |
+| All others | 0.00% | 0 |
+
+`recent_wickets` is defined in `build_features.py` as a rolling 18-ball window of wickets, shifted by one (so it represents wickets in the *previous* 18 balls, not including the current one). `compute_state_after` updates it as `row["recent_wickets"] + (1 if is_wicket else 0)` — adding the new wicket but never subtracting one that's rolling out of the back of the window. After a wicket, the next 18 after-states recorded that wicket twice (once correctly via the increment, once as a phantom carry-forward). The 3.59% hit rate is exactly the rate at which a wicket is rolling out of an 18-ball window between consecutive balls.
+
+The fix in `compute_ball_deltas` is a one-shot lookup: for each ball k that has a same-innings successor (k+1), use `featured_balls[k+1]["recent_wickets"]` directly as the after-state value. For the last ball of an innings, fall back to the additive logic. Costs nothing; doesn't require retraining; closes the bug exactly.
+
+### What this fixed
+
+Telescoping residual under V0 (Steps 1+2 only):
+
+| Statistic (per match, pp) | Before fix | After fix | Δ |
+|:--|:--:|:--:|:--:|
+| inn1 mean abs | 3.5334 | 0.6418 | **−82%** |
+| inn1 p95 | 8.7698 | 2.6636 | −70% |
+| inn2 mean abs | 5.4810 | 0.6936 | **−87%** |
+| inn2 p95 | 14.1711 | 2.3768 | −83% |
+
+The residual that's left (~0.7pp) is the genuine over-boundary signal — bowler change at the over, end change, batter strike-flip — that the model legitimately encodes. Whether to also chain through that remaining gap is the original #110 methodology question, but the magnitude is now small enough (10× smaller than before) that V5/V6 amplification of bowler credit drops correspondingly. A future revisit of the chaining decision sees a much cleaner picture.
+
+### What this changed in the rankings
+
+The bug had been systematically over-crediting bowlers — every wicket they took inflated the model's perceived bowling pressure on the next 18 balls' after-states, which the model translated into "chasing team is in worse shape than they actually are," which the model translated into "bowler did even more damage." The fix redistributes that phantom credit back to the chasing batters.
+
+Top 10 by career total TILT, before vs after the fix:
+
+| Player | Before | After | Δ |
+|:--|:--:|:--:|:--:|
+| SP Narine | 11.27 | **9.89** | −1.38 |
+| JJ Bumrah | 8.85 | 7.93 | −0.92 |
+| AB de Villiers | 6.71 | **7.73** | **+1.02** |
+| YS Chahal | 6.94 | 5.80 | −1.13 |
+| DA Warner | 4.42 | **5.71** | **+1.30** |
+| SL Malinga | 6.52 | 5.66 | −0.86 |
+| Rashid Khan | 6.45 | 5.53 | −0.92 |
+| JC Buttler | 4.24 | 4.77 | +0.53 |
+| KL Rahul | 3.66 | 4.72 | +1.06 |
+| MS Dhoni | 3.32 | 4.67 | +1.35 |
+
+Top bowlers all decline 0.9–1.4 TILT (the phantom credit removed). Top batters gain 0.5–1.4 TILT (wp restored). The rank inversion from issue #111 — ABD vs Bhuvneshwar Kumar — settles even more decisively now: ABD #3 by total / #4 by floor, B Kumar #11 by total and out of the top 10 floor.
+
+The fix is reversible (revert the lookup in `compute_ball_deltas`) but the diff is large enough that it shouldn't be reverted casually — the previous numbers had a real bug, and reverting would re-introduce it.

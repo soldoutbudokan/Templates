@@ -9,18 +9,18 @@
     "Deccan Chargers",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.02545,
-  "batting_tilt_per_match": -0.02545,
+  "total_tilt_per_match": -0.02285,
+  "batting_tilt_per_match": -0.02285,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02424,
-  "shrunk_batting_tilt_per_match": -0.02216,
+  "shrunk_total_tilt_per_match": -0.02297,
+  "shrunk_batting_tilt_per_match": -0.0194,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.05932,
-  "tilt_ci_upper": 0.01084,
-  "tilt_ci_lower_90": -0.05368,
-  "tilt_ci_upper_90": 0.0052,
+  "tilt_ci_lower": -0.05905,
+  "tilt_ci_upper": 0.01311,
+  "tilt_ci_lower_90": -0.05325,
+  "tilt_ci_upper_90": 0.00731,
   "confidence": "low",
-  "total_tilt": -0.20362,
+  "total_tilt": -0.18281,
   "total_matches": 8,
   "batting_balls": 113,
   "bowling_balls": 0,
@@ -70,7 +70,7 @@
     {
       "season": "2013",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": -0.02881,
+      "batting_tilt_per_match": -0.02584,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 7,
       "bowling_matches": 0,
@@ -107,13 +107,13 @@
           "bat_runs": 37,
           "bat_balls": 37,
           "bat_sr": 100.0,
-          "bat_tilt": -0.02913,
+          "bat_tilt": -0.0207,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.02913
+          "total_tilt": -0.0207
         },
         {
           "match_id": "598021",
@@ -164,13 +164,13 @@
           "bat_runs": 55,
           "bat_balls": 46,
           "bat_sr": 119.6,
-          "bat_tilt": 0.04639,
+          "bat_tilt": 0.05852,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.04639
+          "total_tilt": 0.05852
         },
         {
           "match_id": "598069",
@@ -202,13 +202,13 @@
           "bat_runs": 14,
           "bat_balls": 11,
           "bat_sr": 127.3,
-          "bat_tilt": -0.04212,
+          "bat_tilt": -0.04187,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.04212
+          "total_tilt": -0.04187
         }
       ],
       "batting_stats": {
@@ -227,25 +227,33 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.00836,
+      "tilt": 0.01738,
       "balls": 21,
-      "avg_delta": 0.00038
+      "avg_delta": 0.00079
     },
     {
       "phase": "middle",
-      "tilt": -0.17387,
+      "tilt": -0.16233,
       "balls": 62,
-      "avg_delta": -0.00276
+      "avg_delta": -0.002577
     },
     {
       "phase": "death",
-      "tilt": -0.03811,
+      "tilt": -0.03786,
       "balls": 30,
-      "avg_delta": -0.001229
+      "avg_delta": -0.001221
     }
   ],
   "bowling_phases": [],
   "best_matches": [
+    {
+      "match_id": "598065",
+      "date": "2013-05-17",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.05852,
+      "runs": 55,
+      "balls": 46
+    },
     {
       "match_id": "598069",
       "date": "2013-05-19",
@@ -253,14 +261,6 @@
       "tilt": 0.04942,
       "runs": 5,
       "balls": 2
-    },
-    {
-      "match_id": "598065",
-      "date": "2013-05-17",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.04639,
-      "runs": 55,
-      "balls": 46
     },
     {
       "match_id": "598048",
@@ -282,7 +282,7 @@
       "match_id": "598018",
       "date": "2013-04-17",
       "vs": "Pune Warriors India",
-      "tilt": -0.02913,
+      "tilt": -0.0207,
       "runs": 37,
       "balls": 37
     }
@@ -308,7 +308,7 @@
       "match_id": "598071",
       "date": "2013-05-22",
       "vs": "Rajasthan Royals",
-      "tilt": -0.04212,
+      "tilt": -0.04187,
       "runs": 14,
       "balls": 11
     },
@@ -316,7 +316,7 @@
       "match_id": "598018",
       "date": "2013-04-17",
       "vs": "Pune Warriors India",
-      "tilt": -0.02913,
+      "tilt": -0.0207,
       "runs": 37,
       "balls": 37
     },
@@ -347,38 +347,38 @@
     {
       "match": 3,
       "date": "2013-04-17",
-      "tilt": -0.02913,
-      "cumulative": -0.03109
+      "tilt": -0.0207,
+      "cumulative": -0.02265
     },
     {
       "match": 4,
       "date": "2013-04-19",
       "tilt": -0.14393,
-      "cumulative": -0.17502
+      "cumulative": -0.16658
     },
     {
       "match": 5,
       "date": "2013-05-11",
       "tilt": -0.0823,
-      "cumulative": -0.25731
+      "cumulative": -0.24887
     },
     {
       "match": 6,
       "date": "2013-05-17",
-      "tilt": 0.04639,
-      "cumulative": -0.21092
+      "tilt": 0.05852,
+      "cumulative": -0.19036
     },
     {
       "match": 7,
       "date": "2013-05-19",
       "tilt": 0.04942,
-      "cumulative": -0.1615
+      "cumulative": -0.14094
     },
     {
       "match": 8,
       "date": "2013-05-22",
-      "tilt": -0.04212,
-      "cumulative": -0.20362
+      "tilt": -0.04187,
+      "cumulative": -0.18281
     }
   ],
   "team_matchups": [
@@ -389,7 +389,7 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.00214,
+      "tilt_per_match": 0.00832,
       "matches": 2
     },
     {
@@ -399,7 +399,7 @@
     },
     {
       "opponent": "Pune Warriors India",
-      "tilt_per_match": -0.01554,
+      "tilt_per_match": -0.01132,
       "matches": 2
     },
     {
@@ -425,11 +425,11 @@
   "match_tilt_distribution": [
     -0.00195,
     0.0,
-    -0.02913,
+    -0.0207,
     -0.14393,
     -0.0823,
-    0.04639,
+    0.05852,
     0.04942,
-    -0.04212
+    -0.04187
   ]
 }

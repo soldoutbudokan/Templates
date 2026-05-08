@@ -182,28 +182,28 @@ Rankings use **Bayesian shrinkage** (empirical Bayes) to stabilize small-sample 
 
 ### Top Overall Players (ranked by TILT Floor — 90% CI lower bound)
 
-*As of 2026-05-08 (post K=100 ensemble, post Step-3 removal).*
+*As of 2026-05-08 (post K=100 ensemble, post Step-3 removal, post `recent_wickets` rolling-window fix).*
 
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |------|--------|------------|-----|------------|---------|
-| 1 | Sunil Narine | +5.57% | +5.78% | **high** | 195 |
-| 2 | Jasprit Bumrah | +5.46% | +5.71% | **high** | 155 |
-| 3 | Lasith Malinga | +5.04% | +5.34% | **high** | 122 |
-| 4 | Yuzvendra Chahal | +3.70% | +3.88% | **high** | 179 |
-| 5 | Rashid Khan | +4.19% | +4.42% | **high** | 146 |
-| 6 | AB de Villiers | +3.81% | +4.00% | **high** | 168 |
-| 7 | Morné Morkel | +3.73% | +4.17% | medium | 70 |
-| 8 | Nicholas Pooran | +3.81% | +4.13% | medium | 95 |
-| 9 | Phil Salt | +4.61% | +5.49% | medium | 40 |
-| 10 | Doug Bollinger | +4.70% | +6.03% | low | 27 |
+| 1 | Sunil Narine | +4.88% | +5.07% | **high** | 195 |
+| 2 | Jasprit Bumrah | +4.88% | +5.12% | **high** | 155 |
+| 3 | Lasith Malinga | +4.35% | +4.64% | **high** | 122 |
+| 4 | AB de Villiers | +4.39% | +4.60% | **high** | 168 |
+| 5 | Yuzvendra Chahal | +3.08% | +3.24% | **high** | 179 |
+| 6 | Nicholas Pooran | +4.15% | +4.50% | medium | 95 |
+| 7 | Rashid Khan | +3.57% | +3.79% | **high** | 146 |
+| 8 | Jos Buttler | +3.46% | +3.70% | **high** | 129 |
+| 9 | Phil Salt | +4.58% | +5.48% | medium | 40 |
+| 10 | KL Rahul | +3.08% | +3.28% | **high** | 144 |
 
 ### Notable Observations
 
-- **Sunil Narine** tops both the floor ranking and the raw career total TILT (+11.27 lifetime, ahead of Bumrah at +8.85) — the most consistent all-round impact player in IPL history
-- **Bumrah, Malinga, Rashid Khan, Chahal** in the next tier — the death-overs / strike-bowler archetype dominates once the floor adjusts for confidence
-- **AB de Villiers #6** is now firmly above the powerplay-bowler tier in the floor sort, closing out the rank inversion from issue #111. The K=100 ensemble averages out trajectory variance that previously bounced him between #3 and #9 across retrains.
-- **Bowlers' floors tightened by ~0.5pp** after the May 2026 Step-3 removal in `apply_boundary_calibration`. Step 3's linear-decay damping had been over-crediting early-chase bowlers; B Kumar in particular dropped out of the top 10 floor.
-- **Pooran, Salt, Morkel, Bollinger at the back of the top 10** are the floor ranking behaving as designed under medium- and low-sample players posting extreme raw numbers — shrinkage pulls them hard but the lower bound still clears most veterans
+- **Sunil Narine** tops both the floor ranking and the raw career total TILT (+9.89 lifetime, ahead of Bumrah at +7.93) — the most consistent all-round impact player in IPL history
+- **AB de Villiers #4 floor / #3 by total** rises after the May 2026 `recent_wickets` rolling-window fix to `compute_state_after`. The previous logic over-counted recent wickets in the post-ball state, inflating bowling credit and depressing batting wp; the fix redistributed ~1 TILT back to top batters.
+- **Buttler #8, Rahul #10** enter the floor top 10 alongside ABD — top batters reclaim space the wicket-window inflation had been giving to bowlers.
+- **Bumrah, Malinga, Rashid Khan, Chahal** still anchor the bowler tier — now without inflated wicket-window credit. Floors are 0.5–1.0pp lower than the pre-fix table.
+- **Pooran, Salt at the medium-confidence ranks** are the floor ranking behaving as designed under medium-sample players posting extreme raw numbers — shrinkage pulls them hard but the lower bound still clears most veterans
 - **Venue matters most**: the venue feature has the highest importance, confirming that ground conditions significantly affect match outcomes
 - **Era adjustment works**: old-era players are not disproportionately penalized — the season_numeric feature captures evolving T20 scoring rates
 

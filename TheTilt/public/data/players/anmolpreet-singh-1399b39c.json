@@ -9,18 +9,18 @@
     "Mumbai Indians",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.04319,
-  "batting_tilt_per_match": -0.04319,
+  "total_tilt_per_match": -0.04279,
+  "batting_tilt_per_match": -0.04279,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03559,
-  "shrunk_batting_tilt_per_match": -0.03292,
+  "shrunk_total_tilt_per_match": -0.03558,
+  "shrunk_batting_tilt_per_match": -0.03135,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.06921,
-  "tilt_ci_upper": -0.00198,
-  "tilt_ci_lower_90": -0.06381,
-  "tilt_ci_upper_90": -0.00738,
+  "tilt_ci_lower": -0.06856,
+  "tilt_ci_upper": -0.00259,
+  "tilt_ci_lower_90": -0.06326,
+  "tilt_ci_upper_90": -0.00789,
   "confidence": "low",
-  "total_tilt": -0.38874,
+  "total_tilt": -0.38512,
   "total_matches": 9,
   "batting_balls": 115,
   "bowling_balls": 0,
@@ -131,7 +131,7 @@
     {
       "season": "2023",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.00733,
+      "batting_tilt_per_match": 0.00824,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 4,
       "bowling_matches": 0,
@@ -149,13 +149,13 @@
           "bat_runs": 31,
           "bat_balls": 26,
           "bat_sr": 119.2,
-          "bat_tilt": -0.05139,
+          "bat_tilt": -0.04125,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.05139
+          "total_tilt": -0.04125
         },
         {
           "match_id": "1359526",
@@ -187,13 +187,13 @@
           "bat_runs": 36,
           "bat_balls": 27,
           "bat_sr": 133.3,
-          "bat_tilt": 0.04058,
+          "bat_tilt": 0.03406,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.04058
+          "total_tilt": 0.03406
         },
         {
           "match_id": "1359536",
@@ -292,9 +292,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.2109,
+      "tilt": -0.20728,
       "balls": 91,
-      "avg_delta": -0.002268
+      "avg_delta": -0.002229
     },
     {
       "phase": "middle",
@@ -317,9 +317,17 @@
       "match_id": "1359532",
       "date": "2023-05-13",
       "vs": "Lucknow Super Giants",
-      "tilt": 0.04058,
+      "tilt": 0.03406,
       "runs": 36,
       "balls": 27
+    },
+    {
+      "match_id": "1359484",
+      "date": "2023-04-07",
+      "vs": "Lucknow Super Giants",
+      "tilt": -0.04125,
+      "runs": 31,
+      "balls": 26
     },
     {
       "match_id": "1359536",
@@ -328,14 +336,6 @@
       "tilt": -0.04465,
       "runs": 5,
       "balls": 4
-    },
-    {
-      "match_id": "1359484",
-      "date": "2023-04-07",
-      "vs": "Lucknow Super Giants",
-      "tilt": -0.05139,
-      "runs": 31,
-      "balls": 26
     },
     {
       "match_id": "1426288",
@@ -412,44 +412,44 @@
     {
       "match": 4,
       "date": "2023-04-07",
-      "tilt": -0.05139,
-      "cumulative": -0.30947
+      "tilt": -0.04125,
+      "cumulative": -0.29933
     },
     {
       "match": 5,
       "date": "2023-05-07",
       "tilt": 0.08479,
-      "cumulative": -0.22468
+      "cumulative": -0.21454
     },
     {
       "match": 6,
       "date": "2023-05-13",
-      "tilt": 0.04058,
-      "cumulative": -0.1841
+      "tilt": 0.03406,
+      "cumulative": -0.18048
     },
     {
       "match": 7,
       "date": "2023-05-15",
       "tilt": -0.04465,
-      "cumulative": -0.22876
+      "cumulative": -0.22513
     },
     {
       "match": 8,
       "date": "2024-04-28",
       "tilt": -0.10225,
-      "cumulative": -0.331
+      "cumulative": -0.32738
     },
     {
       "match": 9,
       "date": "2024-05-02",
       "tilt": -0.05774,
-      "cumulative": -0.38874
+      "cumulative": -0.38512
     }
   ],
   "team_matchups": [
     {
       "opponent": "Lucknow Super Giants",
-      "tilt_per_match": -0.00541,
+      "tilt_per_match": -0.0036,
       "matches": 2
     },
     {
@@ -491,9 +491,9 @@
     -0.06925,
     -0.10567,
     -0.08316,
-    -0.05139,
+    -0.04125,
     0.08479,
-    0.04058,
+    0.03406,
     -0.04465,
     -0.10225,
     -0.05774

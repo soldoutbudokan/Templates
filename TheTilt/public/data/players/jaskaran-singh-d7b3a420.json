@@ -8,18 +8,18 @@
   "teams": [
     "Deccan Chargers"
   ],
-  "total_tilt_per_match": 0.00532,
+  "total_tilt_per_match": -0.00146,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.01301,
-  "shrunk_total_tilt_per_match": -0.00644,
+  "bowling_tilt_per_match": 0.00624,
+  "shrunk_total_tilt_per_match": -0.01072,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.00208,
-  "tilt_ci_lower": -0.06549,
-  "tilt_ci_upper": 0.0526,
-  "tilt_ci_lower_90": -0.056,
-  "tilt_ci_upper_90": 0.04311,
+  "shrunk_bowling_tilt_per_match": -0.00329,
+  "tilt_ci_lower": -0.06547,
+  "tilt_ci_upper": 0.04402,
+  "tilt_ci_lower_90": -0.05667,
+  "tilt_ci_upper_90": 0.03522,
   "confidence": "low",
-  "total_tilt": 0.03721,
+  "total_tilt": -0.01019,
   "total_matches": 7,
   "batting_balls": 11,
   "bowling_balls": 102,
@@ -68,7 +68,7 @@
       "season": "2010",
       "team": "Deccan Chargers",
       "batting_tilt_per_match": -0.01346,
-      "bowling_tilt_per_match": 0.03039,
+      "bowling_tilt_per_match": 0.02249,
       "batting_matches": 4,
       "bowling_matches": 6,
       "batting_balls": 11,
@@ -90,8 +90,8 @@
           "bowl_balls": 24,
           "bowl_runs": 36,
           "bowl_econ": 9.0,
-          "bowl_tilt": 0.15324,
-          "total_tilt": 0.15696
+          "bowl_tilt": 0.11796,
+          "total_tilt": 0.12168
         },
         {
           "match_id": "419110",
@@ -109,8 +109,8 @@
           "bowl_balls": 6,
           "bowl_runs": 16,
           "bowl_econ": 16.0,
-          "bowl_tilt": -0.01241,
-          "total_tilt": -0.01241
+          "bowl_tilt": -0.02476,
+          "total_tilt": -0.02476
         },
         {
           "match_id": "419117",
@@ -128,8 +128,8 @@
           "bowl_balls": 6,
           "bowl_runs": 12,
           "bowl_econ": 12.0,
-          "bowl_tilt": -0.00521,
-          "total_tilt": 0.0474
+          "bowl_tilt": -0.00464,
+          "total_tilt": 0.04797
         },
         {
           "match_id": "419130",
@@ -147,8 +147,8 @@
           "bowl_balls": 18,
           "bowl_runs": 30,
           "bowl_econ": 10.0,
-          "bowl_tilt": -0.0094,
-          "total_tilt": -0.11878
+          "bowl_tilt": -0.00974,
+          "total_tilt": -0.11912
         },
         {
           "match_id": "419135",
@@ -228,21 +228,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.24004,
+      "tilt": 0.20476,
       "balls": 42,
-      "avg_delta": 0.005218
+      "avg_delta": 0.004451
     },
     {
       "phase": "middle",
-      "tilt": -0.09287,
+      "tilt": -0.10555,
       "balls": 30,
-      "avg_delta": -0.002902
+      "avg_delta": -0.003299
     },
     {
       "phase": "death",
-      "tilt": -0.05613,
+      "tilt": -0.05556,
       "balls": 30,
-      "avg_delta": -0.001701
+      "avg_delta": -0.001684
     }
   ],
   "best_matches": [
@@ -318,7 +318,7 @@
       "match_id": "419106",
       "date": "2010-03-12",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.15324,
+      "tilt": 0.11796,
       "wickets": 1,
       "balls": 24
     },
@@ -334,7 +334,7 @@
       "match_id": "419117",
       "date": "2010-03-19",
       "vs": "Punjab Kings",
-      "tilt": -0.00521,
+      "tilt": -0.00464,
       "wickets": 1,
       "balls": 6
     },
@@ -342,7 +342,7 @@
       "match_id": "419130",
       "date": "2010-03-28",
       "vs": "Mumbai Indians",
-      "tilt": -0.0094,
+      "tilt": -0.00974,
       "wickets": 2,
       "balls": 18
     },
@@ -350,7 +350,7 @@
       "match_id": "419110",
       "date": "2010-03-14",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01241,
+      "tilt": -0.02476,
       "wickets": 0,
       "balls": 6
     }
@@ -376,7 +376,7 @@
       "match_id": "419110",
       "date": "2010-03-14",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01241,
+      "tilt": -0.02476,
       "wickets": 0,
       "balls": 6
     },
@@ -384,7 +384,7 @@
       "match_id": "419130",
       "date": "2010-03-28",
       "vs": "Mumbai Indians",
-      "tilt": -0.0094,
+      "tilt": -0.00974,
       "wickets": 2,
       "balls": 18
     },
@@ -392,7 +392,7 @@
       "match_id": "419117",
       "date": "2010-03-19",
       "vs": "Punjab Kings",
-      "tilt": -0.00521,
+      "tilt": -0.00464,
       "wickets": 1,
       "balls": 6
     }
@@ -407,38 +407,38 @@
     {
       "match": 2,
       "date": "2010-03-12",
-      "tilt": 0.15696,
-      "cumulative": 0.06568
+      "tilt": 0.12168,
+      "cumulative": 0.0304
     },
     {
       "match": 3,
       "date": "2010-03-14",
-      "tilt": -0.01241,
-      "cumulative": 0.05327
+      "tilt": -0.02476,
+      "cumulative": 0.00564
     },
     {
       "match": 4,
       "date": "2010-03-19",
-      "tilt": 0.0474,
-      "cumulative": 0.10066
+      "tilt": 0.04797,
+      "cumulative": 0.05361
     },
     {
       "match": 5,
       "date": "2010-03-28",
-      "tilt": -0.11878,
-      "cumulative": -0.01812
+      "tilt": -0.11912,
+      "cumulative": -0.06551
     },
     {
       "match": 6,
       "date": "2010-04-01",
       "tilt": 0.11556,
-      "cumulative": 0.09744
+      "cumulative": 0.05005
     },
     {
       "match": 7,
       "date": "2010-04-03",
       "tilt": -0.06024,
-      "cumulative": 0.03721
+      "cumulative": -0.01019
     }
   ],
   "team_matchups": [
@@ -461,22 +461,22 @@
   "bowling_team_matchups": [
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.1344,
+      "tilt_per_match": 0.11676,
       "matches": 2
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.00521,
+      "tilt_per_match": -0.00464,
       "matches": 1
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.01241,
+      "tilt_per_match": -0.02476,
       "matches": 1
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.03442,
+      "tilt_per_match": -0.0346,
       "matches": 2
     },
     {
@@ -508,10 +508,10 @@
   },
   "match_tilt_distribution": [
     -0.09128,
-    0.15696,
-    -0.01241,
-    0.0474,
-    -0.11878,
+    0.12168,
+    -0.02476,
+    0.04797,
+    -0.11912,
     0.11556,
     -0.06024
   ]

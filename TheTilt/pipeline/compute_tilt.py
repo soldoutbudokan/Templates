@@ -101,6 +101,19 @@ def compute_ball_deltas(
     # Restore categorical dtypes for after states
     if "venue" in X_after.columns:
         X_after["venue"] = X_after["venue"].astype("category")
+
+    # Fix `recent_wickets` rolling-window drift (issue #110): build_features
+    # computes recent_wickets as wickets in the previous 18 balls, shifted by
+    # one. compute_state_after's additive update (+1 if wicket) misses the
+    # subtractive term — a wicket from 18 balls ago that's rolling out of
+    # the window. The correct after-state value for ball k is featured_balls
+    # row k+1's recent_wickets (when it exists in the same innings). For the
+    # last ball of an innings, we keep compute_state_after's additive value.
+    sorter = df.sort_values(["match_id", "innings", "ball_number"])
+    next_recent = sorter.groupby(["match_id", "innings"])["recent_wickets"].shift(-1)
+    valid = next_recent.dropna()
+    X_after.loc[valid.index, "recent_wickets"] = valid.values
+
     wp_after = model.predict_proba(X_after)[:, 1]
 
     # Delta (from batting team's perspective)

@@ -8,18 +8,18 @@
   "teams": [
     "Mumbai Indians"
   ],
-  "total_tilt_per_match": -0.00697,
+  "total_tilt_per_match": -0.00503,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.01479,
+  "shrunk_total_tilt_per_match": -0.01429,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.14907,
-  "tilt_ci_upper": 0.11948,
-  "tilt_ci_lower_90": -0.12749,
-  "tilt_ci_upper_90": 0.0979,
+  "tilt_ci_lower": -0.14676,
+  "tilt_ci_upper": 0.11819,
+  "tilt_ci_lower_90": -0.12547,
+  "tilt_ci_upper_90": 0.0969,
   "confidence": "low",
-  "total_tilt": -0.03485,
+  "total_tilt": -0.02514,
   "total_matches": 5,
   "batting_balls": 30,
   "bowling_balls": 48,
@@ -27,7 +27,7 @@
     {
       "season": "2012",
       "team": "Mumbai Indians",
-      "batting_tilt_per_match": -0.01157,
+      "batting_tilt_per_match": -0.00963,
       "bowling_tilt_per_match": 0.00575,
       "batting_matches": 5,
       "bowling_matches": 4,
@@ -83,13 +83,13 @@
           "bat_runs": 1,
           "bat_balls": 5,
           "bat_sr": 20.0,
-          "bat_tilt": -0.13922,
+          "bat_tilt": -0.12041,
           "bowl_wkts": 0,
           "bowl_balls": 6,
           "bowl_runs": 8,
           "bowl_econ": 8.0,
           "bowl_tilt": -0.02017,
-          "total_tilt": -0.15939
+          "total_tilt": -0.14058
         },
         {
           "match_id": "548351",
@@ -102,13 +102,13 @@
           "bat_runs": 13,
           "bat_balls": 14,
           "bat_sr": 92.9,
-          "bat_tilt": -0.07284,
+          "bat_tilt": -0.08193,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.07284
+          "total_tilt": -0.08193
         },
         {
           "match_id": "548355",
@@ -155,15 +155,15 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.07284,
+      "tilt": -0.08193,
       "balls": 14,
-      "avg_delta": -0.005203
+      "avg_delta": -0.005852
     },
     {
       "phase": "death",
-      "tilt": 0.01496,
+      "tilt": 0.03377,
       "balls": 16,
-      "avg_delta": 0.000831
+      "avg_delta": 0.001876
     }
   ],
   "bowling_phases": [
@@ -207,7 +207,7 @@
       "match_id": "548351",
       "date": "2012-05-03",
       "vs": "Pune Warriors India",
-      "tilt": -0.07284,
+      "tilt": -0.08193,
       "runs": 13,
       "balls": 14
     },
@@ -223,7 +223,7 @@
       "match_id": "548346",
       "date": "2012-04-29",
       "vs": "Deccan Chargers",
-      "tilt": -0.13922,
+      "tilt": -0.12041,
       "runs": 1,
       "balls": 5
     }
@@ -233,7 +233,7 @@
       "match_id": "548346",
       "date": "2012-04-29",
       "vs": "Deccan Chargers",
-      "tilt": -0.13922,
+      "tilt": -0.12041,
       "runs": 1,
       "balls": 5
     },
@@ -249,7 +249,7 @@
       "match_id": "548351",
       "date": "2012-05-03",
       "vs": "Pune Warriors India",
-      "tilt": -0.07284,
+      "tilt": -0.08193,
       "runs": 13,
       "balls": 14
     },
@@ -354,20 +354,20 @@
     {
       "match": 3,
       "date": "2012-04-29",
-      "tilt": -0.15939,
-      "cumulative": 0.1923
+      "tilt": -0.14058,
+      "cumulative": 0.21111
     },
     {
       "match": 4,
       "date": "2012-05-03",
-      "tilt": -0.07284,
-      "cumulative": 0.11947
+      "tilt": -0.08193,
+      "cumulative": 0.12918
     },
     {
       "match": 5,
       "date": "2012-05-06",
       "tilt": -0.15432,
-      "cumulative": -0.03485
+      "cumulative": -0.02514
     }
   ],
   "team_matchups": [
@@ -383,7 +383,7 @@
     },
     {
       "opponent": "Pune Warriors India",
-      "tilt_per_match": -0.07284,
+      "tilt_per_match": -0.08193,
       "matches": 1
     },
     {
@@ -393,7 +393,7 @@
     },
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.13922,
+      "tilt_per_match": -0.12041,
       "matches": 1
     }
   ],
@@ -443,8 +443,8 @@
   "match_tilt_distribution": [
     0.36925,
     -0.01756,
-    -0.15939,
-    -0.07284,
+    -0.14058,
+    -0.08193,
     -0.15432
   ]
 }

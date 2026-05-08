@@ -8,18 +8,18 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": 0.08412,
-  "batting_tilt_per_match": 0.08412,
+  "total_tilt_per_match": 0.08707,
+  "batting_tilt_per_match": 0.08707,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.05382,
-  "shrunk_batting_tilt_per_match": 0.05138,
+  "shrunk_total_tilt_per_match": 0.05547,
+  "shrunk_batting_tilt_per_match": 0.05371,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.00475,
-  "tilt_ci_upper": 0.11238,
-  "tilt_ci_lower_90": 0.00467,
-  "tilt_ci_upper_90": 0.10297,
+  "tilt_ci_lower": -0.00401,
+  "tilt_ci_upper": 0.11496,
+  "tilt_ci_lower_90": 0.00555,
+  "tilt_ci_upper_90": 0.1054,
   "confidence": "low",
-  "total_tilt": 1.09351,
+  "total_tilt": 1.13187,
   "total_matches": 13,
   "batting_balls": 240,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2025",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": 0.10219,
+      "batting_tilt_per_match": 0.1012,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 7,
       "bowling_matches": 0,
@@ -140,13 +140,13 @@
           "bat_runs": 43,
           "bat_balls": 20,
           "bat_sr": 215.0,
-          "bat_tilt": 0.13479,
+          "bat_tilt": 0.12782,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.13479
+          "total_tilt": 0.12782
         },
         {
           "match_id": "1473504",
@@ -183,7 +183,7 @@
     {
       "season": "2026",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": 0.06302,
+      "batting_tilt_per_match": 0.07058,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 6,
       "bowling_matches": 0,
@@ -220,13 +220,13 @@
           "bat_runs": 73,
           "bat_balls": 43,
           "bat_sr": 169.8,
-          "bat_tilt": 0.16978,
+          "bat_tilt": 0.19253,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.16978
+          "total_tilt": 0.19253
         },
         {
           "match_id": "1527684",
@@ -258,13 +258,13 @@
           "bat_runs": 59,
           "bat_balls": 36,
           "bat_sr": 163.9,
-          "bat_tilt": 0.12439,
+          "bat_tilt": 0.12706,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.12439
+          "total_tilt": 0.12706
         },
         {
           "match_id": "1529265",
@@ -277,13 +277,13 @@
           "bat_runs": 38,
           "bat_balls": 17,
           "bat_sr": 223.5,
-          "bat_tilt": 0.14643,
+          "bat_tilt": 0.16632,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.14643
+          "total_tilt": 0.16632
         },
         {
           "match_id": "1529270",
@@ -321,15 +321,15 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.82292,
+      "tilt": 0.85861,
       "balls": 145,
-      "avg_delta": 0.005379
+      "avg_delta": 0.005612
     },
     {
       "phase": "middle",
-      "tilt": 0.2824,
+      "tilt": 0.28507,
       "balls": 85,
-      "avg_delta": 0.003246
+      "avg_delta": 0.003277
     },
     {
       "phase": "death",
@@ -352,9 +352,17 @@
       "match_id": "1527680",
       "date": "2026-04-03",
       "vs": "Punjab Kings",
-      "tilt": 0.16978,
+      "tilt": 0.19253,
       "runs": 73,
       "balls": 43
+    },
+    {
+      "match_id": "1529265",
+      "date": "2026-04-14",
+      "vs": "Kolkata Knight Riders",
+      "tilt": 0.16632,
+      "runs": 38,
+      "balls": 17
     },
     {
       "match_id": "1473504",
@@ -365,18 +373,10 @@
       "balls": 17
     },
     {
-      "match_id": "1529265",
-      "date": "2026-04-14",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.14643,
-      "runs": 38,
-      "balls": 17
-    },
-    {
       "match_id": "1473500",
       "date": "2025-05-20",
       "vs": "Rajasthan Royals",
-      "tilt": 0.13479,
+      "tilt": 0.12782,
       "runs": 43,
       "balls": 20
     }
@@ -459,50 +459,50 @@
     {
       "match": 6,
       "date": "2025-05-20",
-      "tilt": 0.13479,
-      "cumulative": 0.56084
+      "tilt": 0.12782,
+      "cumulative": 0.55387
     },
     {
       "match": 7,
       "date": "2025-05-25",
       "tilt": 0.15452,
-      "cumulative": 0.71536
+      "cumulative": 0.7084
     },
     {
       "match": 8,
       "date": "2026-03-30",
       "tilt": -0.03168,
-      "cumulative": 0.68369
+      "cumulative": 0.67672
     },
     {
       "match": 9,
       "date": "2026-04-03",
-      "tilt": 0.16978,
-      "cumulative": 0.85346
+      "tilt": 0.19253,
+      "cumulative": 0.86925
     },
     {
       "match": 10,
       "date": "2026-04-05",
       "tilt": -0.05802,
-      "cumulative": 0.79545
+      "cumulative": 0.81124
     },
     {
       "match": 11,
       "date": "2026-04-11",
-      "tilt": 0.12439,
-      "cumulative": 0.91984
+      "tilt": 0.12706,
+      "cumulative": 0.9383
     },
     {
       "match": 12,
       "date": "2026-04-14",
-      "tilt": 0.14643,
-      "cumulative": 1.06626
+      "tilt": 0.16632,
+      "cumulative": 1.10462
     },
     {
       "match": 13,
       "date": "2026-04-18",
       "tilt": 0.02725,
-      "cumulative": 1.09351
+      "cumulative": 1.13187
     }
   ],
   "team_matchups": [
@@ -518,7 +518,7 @@
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.12439,
+      "tilt_per_match": 0.12706,
       "matches": 1
     },
     {
@@ -528,7 +528,7 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.05664,
+      "tilt_per_match": 0.06802,
       "matches": 2
     },
     {
@@ -538,12 +538,12 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.05156,
+      "tilt_per_match": 0.04807,
       "matches": 2
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.03564,
+      "tilt_per_match": 0.04559,
       "matches": 2
     }
   ],
@@ -567,13 +567,13 @@
     -0.05649,
     0.38771,
     -0.07515,
-    0.13479,
+    0.12782,
     0.15452,
     -0.03168,
-    0.16978,
+    0.19253,
     -0.05802,
-    0.12439,
-    0.14643,
+    0.12706,
+    0.16632,
     0.02725
   ]
 }

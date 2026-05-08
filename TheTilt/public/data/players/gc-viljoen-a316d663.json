@@ -8,18 +8,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": -0.00683,
+  "total_tilt_per_match": -0.01187,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.01693,
-  "shrunk_total_tilt_per_match": -0.01402,
+  "bowling_tilt_per_match": 0.01189,
+  "shrunk_total_tilt_per_match": -0.01712,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.00318,
-  "tilt_ci_lower": -0.06391,
-  "tilt_ci_upper": 0.03587,
-  "tilt_ci_lower_90": -0.05589,
-  "tilt_ci_upper_90": 0.02785,
+  "shrunk_bowling_tilt_per_match": -0.00117,
+  "tilt_ci_lower": -0.06368,
+  "tilt_ci_upper": 0.02944,
+  "tilt_ci_lower_90": -0.0562,
+  "tilt_ci_upper_90": 0.02196,
   "confidence": "low",
-  "total_tilt": -0.041,
+  "total_tilt": -0.07125,
   "total_matches": 6,
   "batting_balls": 7,
   "bowling_balls": 138,
@@ -28,7 +28,7 @@
       "season": "2019",
       "team": "Punjab Kings",
       "batting_tilt_per_match": -0.04753,
-      "bowling_tilt_per_match": 0.01693,
+      "bowling_tilt_per_match": 0.01189,
       "batting_matches": 3,
       "bowling_matches": 6,
       "batting_balls": 7,
@@ -88,8 +88,8 @@
           "bowl_balls": 18,
           "bowl_runs": 26,
           "bowl_econ": 8.67,
-          "bowl_tilt": -0.02963,
-          "total_tilt": -0.06471
+          "bowl_tilt": -0.03302,
+          "total_tilt": -0.0681
         },
         {
           "match_id": "1178399",
@@ -107,8 +107,8 @@
           "bowl_balls": 24,
           "bowl_runs": 34,
           "bowl_econ": 8.5,
-          "bowl_tilt": 0.11071,
-          "total_tilt": 0.11071
+          "bowl_tilt": 0.09291,
+          "total_tilt": 0.09291
         },
         {
           "match_id": "1178412",
@@ -126,8 +126,8 @@
           "bowl_balls": 24,
           "bowl_runs": 39,
           "bowl_econ": 9.75,
-          "bowl_tilt": 0.04649,
-          "total_tilt": 0.04729
+          "bowl_tilt": 0.03744,
+          "total_tilt": 0.03824
         },
         {
           "match_id": "1178417",
@@ -188,15 +188,15 @@
     },
     {
       "phase": "middle",
-      "tilt": 0.19765,
+      "tilt": 0.17646,
       "balls": 60,
-      "avg_delta": 0.003088
+      "avg_delta": 0.002757
     },
     {
       "phase": "death",
-      "tilt": -0.09379,
+      "tilt": -0.10284,
       "balls": 42,
-      "avg_delta": -0.002084
+      "avg_delta": -0.002285
     }
   ],
   "best_matches": [
@@ -256,16 +256,8 @@
       "match_id": "1178399",
       "date": "2019-04-10",
       "vs": "Mumbai Indians",
-      "tilt": 0.11071,
+      "tilt": 0.09291,
       "wickets": 0,
-      "balls": 24
-    },
-    {
-      "match_id": "1178412",
-      "date": "2019-04-20",
-      "vs": "Delhi Capitals",
-      "tilt": 0.04649,
-      "wickets": 3,
       "balls": 24
     },
     {
@@ -274,6 +266,14 @@
       "vs": "Kolkata Knight Riders",
       "tilt": 0.04072,
       "wickets": 1,
+      "balls": 24
+    },
+    {
+      "match_id": "1178412",
+      "date": "2019-04-20",
+      "vs": "Delhi Capitals",
+      "tilt": 0.03744,
+      "wickets": 3,
       "balls": 24
     },
     {
@@ -288,7 +288,7 @@
       "match_id": "1175368",
       "date": "2019-04-01",
       "vs": "Delhi Capitals",
-      "tilt": -0.02963,
+      "tilt": -0.03302,
       "wickets": 1,
       "balls": 18
     }
@@ -306,7 +306,7 @@
       "match_id": "1175368",
       "date": "2019-04-01",
       "vs": "Delhi Capitals",
-      "tilt": -0.02963,
+      "tilt": -0.03302,
       "wickets": 1,
       "balls": 18
     },
@@ -319,19 +319,19 @@
       "balls": 24
     },
     {
+      "match_id": "1178412",
+      "date": "2019-04-20",
+      "vs": "Delhi Capitals",
+      "tilt": 0.03744,
+      "wickets": 3,
+      "balls": 24
+    },
+    {
       "match_id": "1175361",
       "date": "2019-03-27",
       "vs": "Kolkata Knight Riders",
       "tilt": 0.04072,
       "wickets": 1,
-      "balls": 24
-    },
-    {
-      "match_id": "1178412",
-      "date": "2019-04-20",
-      "vs": "Delhi Capitals",
-      "tilt": 0.04649,
-      "wickets": 3,
       "balls": 24
     }
   ],
@@ -351,26 +351,26 @@
     {
       "match": 3,
       "date": "2019-04-01",
-      "tilt": -0.0647,
-      "cumulative": -0.09142
+      "tilt": -0.06809,
+      "cumulative": -0.09481
     },
     {
       "match": 4,
       "date": "2019-04-10",
-      "tilt": 0.11071,
-      "cumulative": 0.01929
+      "tilt": 0.09291,
+      "cumulative": -0.0019
     },
     {
       "match": 5,
       "date": "2019-04-20",
-      "tilt": 0.0473,
-      "cumulative": 0.06658
+      "tilt": 0.03824,
+      "cumulative": 0.03634
     },
     {
       "match": 6,
       "date": "2019-04-24",
       "tilt": -0.10759,
-      "cumulative": -0.041
+      "cumulative": -0.07125
     }
   ],
   "team_matchups": [
@@ -393,12 +393,12 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.02164,
+      "tilt_per_match": 0.01273,
       "matches": 2
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.00843,
+      "tilt_per_match": 0.00221,
       "matches": 2
     },
     {
@@ -431,9 +431,9 @@
   "match_tilt_distribution": [
     0.04072,
     -0.06744,
-    -0.0647,
-    0.11071,
-    0.0473,
+    -0.06809,
+    0.09291,
+    0.03824,
     -0.10759
   ]
 }
