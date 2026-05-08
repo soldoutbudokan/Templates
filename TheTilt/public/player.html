@@ -203,7 +203,7 @@ async function loadPlayer() {
                                             <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
                                             <td>${m.opponent}</td>
                                             <td><span class="${resultCls}">${won}</span> <span class="match-scores">${m.team_score || ''} v ${m.opponent_score || ''}</span></td>
-                                            <td>${m.bat_runs != null ? m.bat_runs : '-'}</td>
+                                            <td>${m.bat_runs != null ? m.bat_runs + (m.bat_not_out ? '*' : '') : '-'}</td>
                                             <td>${m.bat_balls != null ? m.bat_balls : '-'}</td>
                                             <td class="hide-mobile">${m.bat_sr != null ? m.bat_sr : '-'}</td>
                                             <td>${m.bowl_wkts != null ? m.bowl_wkts : '-'}</td>
@@ -603,7 +603,7 @@ async function renderPlayerSeason(p, season, slug) {
                                 <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
                                 <td>${teamLink(m.opponent, season, teamIndex)}</td>
                                 <td class="hide-mobile">${m.team_score || '—'} vs ${m.opponent_score || '—'}</td>
-                                <td>${m.bat_runs != null ? m.bat_runs : '—'}</td>
+                                <td>${m.bat_runs != null ? m.bat_runs + (m.bat_not_out ? '*' : '') : '—'}</td>
                                 <td class="hide-mobile">${m.bat_balls != null ? m.bat_balls : '—'}</td>
                                 <td class="hide-mobile">${m.bat_sr != null ? m.bat_sr.toFixed(1) : '—'}</td>
                                 <td>${m.bowl_wkts != null ? m.bowl_wkts : '—'}</td>

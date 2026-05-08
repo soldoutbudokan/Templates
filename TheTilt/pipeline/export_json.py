@@ -530,6 +530,13 @@ def export_player_details(
                 bat_balls_val = int(bat_m["legal_bat"].sum()) if len(bat_m) > 0 else None
                 bat_sr_val = round(bat_runs_val / max(bat_balls_val, 1) * 100, 1) if bat_runs_val is not None else None
                 bat_tilt_val = round(float(bat_m["delta_wp"].sum()), 5) if len(bat_m) > 0 else None
+                if len(bat_m) > 0:
+                    if player_id:
+                        bat_not_out_val = not bool(bat_m["player_dismissed_id"].eq(player_id).any())
+                    else:
+                        bat_not_out_val = not bool(bat_m["player_dismissed"].eq(player_name).any())
+                else:
+                    bat_not_out_val = None
 
                 # Bowling stats for this match
                 bowl_m = bowl_season_df[bowl_season_df["match_id"] == mid] if mid in bowl_match_ids else pd.DataFrame()
@@ -553,6 +560,7 @@ def export_player_details(
                     "bat_balls": bat_balls_val,
                     "bat_sr": bat_sr_val,
                     "bat_tilt": bat_tilt_val,
+                    "bat_not_out": bat_not_out_val,
                     "bowl_wkts": bowl_wkts_val,
                     "bowl_balls": bowl_balls_val,
                     "bowl_runs": bowl_runs_val,

@@ -105,7 +105,7 @@ function renderAwardDetail(matches, season, teamIndex) {
         const result = m.winner
             ? (m.winner === m.opponent ? 'L' : 'W')
             : '—';
-        const bat = (m.bat_runs != null) ? `${m.bat_runs}(${m.bat_balls})` : '—';
+        const bat = (m.bat_runs != null) ? `${m.bat_runs}${m.bat_not_out ? '*' : ''}(${m.bat_balls})` : '—';
         const bowl = (m.bowl_wkts != null) ? `${m.bowl_wkts}/${m.bowl_runs} (${(m.bowl_balls / 6).toFixed(0)}ov)` : '—';
         return `<tr>
             <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
