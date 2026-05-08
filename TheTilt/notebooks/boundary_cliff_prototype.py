@@ -333,6 +333,31 @@ def apply_v5_chained_all_balls(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def apply_v6_chained_over_boundaries(df: pd.DataFrame) -> pd.DataFrame:
+    """Issue #110 alternative: chain only at over boundaries.
+
+    Within an over the same bowler bowls, so wp_before(k+1) and wp_after(k)
+    use nearly-identical feature snapshots and the model's predictions are
+    close by construction. The visible feature-reshuffle artifact lives at
+    the over-to-over transition, where the bowler features change.
+
+    V6 = V0 (Steps 1-2) + chain wp_before(k) := wp_after(k-1) only when k
+    is the first legal ball of overs 2+ within an innings (detected via a
+    change in the `over` column). Within-over balls are left alone, which
+    avoids compounding chained corrections inside an over the way V5 does.
+    """
+    df = apply_v0_current(df)
+    sorter = df.sort_values(["match_id", "innings", "ball_number"])
+    grp = sorter.groupby(["match_id", "innings"])
+    prev_over = grp["over"].shift(1)
+    prev_after = grp["wp_after"].shift(1)
+    boundary = (sorter["over"] != prev_over) & prev_over.notna()
+    chained = prev_after[boundary]
+    df.loc[chained.index, "wp_before"] = chained.values
+    df["delta_wp"] = df["wp_after"] - df["wp_before"]
+    return df
+
+
 # %% Diagnostic: per-innings telescoping residual
 def telescoping_diagnostic(df: pd.DataFrame) -> dict:
     """Per-match: |Σ(deltas) − (wp_after_last − wp_before_first)| in pp.
@@ -464,6 +489,7 @@ def main():
         "V3 — 2-ball midpoint extension": apply_v3_two_ball_midpoint,
         "V4 — score-prior blend over first over": apply_v4_score_prior,
         "V5 — chained endpoints (all balls, #110)": apply_v5_chained_all_balls,
+        "V6 — chained endpoints (over boundaries only, #110)": apply_v6_chained_over_boundaries,
     }
 
     diagnostics = {}
