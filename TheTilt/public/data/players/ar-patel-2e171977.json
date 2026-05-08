@@ -9,18 +9,18 @@
     "Delhi Capitals",
     "Punjab Kings"
   ],
-  "total_tilt_per_match": 0.01258,
+  "total_tilt_per_match": 0.01167,
   "batting_tilt_per_match": -0.01144,
-  "bowling_tilt_per_match": 0.02146,
-  "shrunk_total_tilt_per_match": 0.0116,
-  "shrunk_batting_tilt_per_match": -0.01169,
-  "shrunk_bowling_tilt_per_match": 0.02049,
-  "tilt_ci_lower": -0.00953,
-  "tilt_ci_upper": 0.03273,
-  "tilt_ci_lower_90": -0.00613,
-  "tilt_ci_upper_90": 0.02933,
+  "bowling_tilt_per_match": 0.02054,
+  "shrunk_total_tilt_per_match": 0.01067,
+  "shrunk_batting_tilt_per_match": -0.01166,
+  "shrunk_bowling_tilt_per_match": 0.01953,
+  "tilt_ci_lower": -0.01068,
+  "tilt_ci_upper": 0.03202,
+  "tilt_ci_lower_90": -0.00725,
+  "tilt_ci_upper_90": 0.02859,
   "confidence": "high",
-  "total_tilt": 2.1509,
+  "total_tilt": 1.99524,
   "total_matches": 171,
   "batting_balls": 1460,
   "bowling_balls": 3495,
@@ -1278,7 +1278,7 @@
       "season": "2018",
       "team": "Punjab Kings",
       "batting_tilt_per_match": -0.05029,
-      "bowling_tilt_per_match": 0.00886,
+      "bowling_tilt_per_match": 0.01142,
       "batting_matches": 8,
       "bowling_matches": 8,
       "batting_balls": 69,
@@ -1319,8 +1319,8 @@
           "bowl_balls": 24,
           "bowl_runs": 26,
           "bowl_econ": 6.5,
-          "bowl_tilt": 0.03813,
-          "total_tilt": -0.03758
+          "bowl_tilt": 0.05861,
+          "total_tilt": -0.0171
         },
         {
           "match_id": "1136594",
@@ -2355,7 +2355,7 @@
     {
       "season": "2022",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": 0.04587,
+      "batting_tilt_per_match": 0.04588,
       "bowling_tilt_per_match": 0.02138,
       "batting_matches": 10,
       "bowling_matches": 13,
@@ -2449,13 +2449,13 @@
           "bat_runs": 10,
           "bat_balls": 7,
           "bat_sr": 142.9,
-          "bat_tilt": 0.01138,
+          "bat_tilt": 0.01142,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 29,
           "bowl_econ": 7.25,
           "bowl_tilt": -0.00409,
-          "total_tilt": 0.00729
+          "total_tilt": 0.00733
         },
         {
           "match_id": "1304078",
@@ -3231,7 +3231,7 @@
       "season": "2025",
       "team": "Delhi Capitals",
       "batting_tilt_per_match": 0.00768,
-      "bowling_tilt_per_match": -0.03031,
+      "bowling_tilt_per_match": -0.04632,
       "batting_matches": 10,
       "bowling_matches": 11,
       "batting_balls": 160,
@@ -3405,8 +3405,8 @@
           "bowl_balls": 24,
           "bowl_runs": 19,
           "bowl_econ": 4.75,
-          "bowl_tilt": 0.17351,
-          "total_tilt": 0.1223
+          "bowl_tilt": 0.18262,
+          "total_tilt": 0.13141
         },
         {
           "match_id": "1473485",
@@ -3443,8 +3443,8 @@
           "bowl_balls": 18,
           "bowl_runs": 35,
           "bowl_econ": 11.67,
-          "bowl_tilt": -0.17319,
-          "total_tilt": -0.10577
+          "bowl_tilt": -0.35849,
+          "total_tilt": -0.29107
         }
       ],
       "batting_stats": {
@@ -3706,7 +3706,7 @@
     },
     {
       "phase": "death",
-      "tilt": 0.85718,
+      "tilt": 0.85722,
       "balls": 633,
       "avg_delta": 0.001287
     }
@@ -3714,9 +3714,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.1267,
+      "tilt": -0.029,
       "balls": 660,
-      "avg_delta": 0.00019
+      "avg_delta": -4.3e-05
     },
     {
       "phase": "middle",
@@ -3867,6 +3867,14 @@
       "balls": 24
     },
     {
+      "match_id": "1473498",
+      "date": "2025-05-18",
+      "vs": "Gujarat Titans",
+      "tilt": -0.35849,
+      "wickets": 0,
+      "balls": 18
+    },
+    {
       "match_id": "829725",
       "date": "2015-04-15",
       "vs": "Delhi Capitals",
@@ -3888,14 +3896,6 @@
       "vs": "Royal Challengers Bangalore",
       "tilt": -0.21248,
       "wickets": 1,
-      "balls": 24
-    },
-    {
-      "match_id": "733973",
-      "date": "2014-05-03",
-      "vs": "Mumbai Indians",
-      "tilt": -0.18561,
-      "wickets": 0,
       "balls": 24
     }
   ],
@@ -4263,668 +4263,668 @@
     {
       "match": 61,
       "date": "2018-04-13",
-      "tilt": -0.03758,
-      "cumulative": 0.07926
+      "tilt": -0.0171,
+      "cumulative": 0.09974
     },
     {
       "match": 62,
       "date": "2018-05-04",
       "tilt": -0.01958,
-      "cumulative": 0.05968
+      "cumulative": 0.08016
     },
     {
       "match": 63,
       "date": "2018-05-06",
       "tilt": 0.0816,
-      "cumulative": 0.14128
+      "cumulative": 0.16175
     },
     {
       "match": 64,
       "date": "2018-05-08",
       "tilt": -0.05999,
-      "cumulative": 0.08129
+      "cumulative": 0.10177
     },
     {
       "match": 65,
       "date": "2018-05-12",
       "tilt": -0.12176,
-      "cumulative": -0.04047
+      "cumulative": -0.01999
     },
     {
       "match": 66,
       "date": "2018-05-14",
       "tilt": -0.07717,
-      "cumulative": -0.11764
+      "cumulative": -0.09717
     },
     {
       "match": 67,
       "date": "2018-05-16",
       "tilt": -0.01819,
-      "cumulative": -0.13583
+      "cumulative": -0.11535
     },
     {
       "match": 68,
       "date": "2018-05-20",
       "tilt": -0.07032,
-      "cumulative": -0.20614
+      "cumulative": -0.18567
     },
     {
       "match": 69,
       "date": "2019-03-24",
       "tilt": -0.12604,
-      "cumulative": -0.33218
+      "cumulative": -0.31171
     },
     {
       "match": 70,
       "date": "2019-03-26",
       "tilt": 0.10578,
-      "cumulative": -0.2264
+      "cumulative": -0.20593
     },
     {
       "match": 71,
       "date": "2019-04-04",
       "tilt": 0.10624,
-      "cumulative": -0.12016
+      "cumulative": -0.09969
     },
     {
       "match": 72,
       "date": "2019-04-07",
       "tilt": 0.30706,
-      "cumulative": 0.1869
+      "cumulative": 0.20737
     },
     {
       "match": 73,
       "date": "2019-04-12",
       "tilt": -0.00914,
-      "cumulative": 0.17776
+      "cumulative": 0.19824
     },
     {
       "match": 74,
       "date": "2019-04-14",
       "tilt": -0.05441,
-      "cumulative": 0.12336
+      "cumulative": 0.14383
     },
     {
       "match": 75,
       "date": "2019-04-18",
       "tilt": 0.12355,
-      "cumulative": 0.24691
+      "cumulative": 0.26738
     },
     {
       "match": 76,
       "date": "2019-04-20",
       "tilt": -0.01686,
-      "cumulative": 0.23005
+      "cumulative": 0.25053
     },
     {
       "match": 77,
       "date": "2019-04-22",
       "tilt": -0.12297,
-      "cumulative": 0.10709
+      "cumulative": 0.12756
     },
     {
       "match": 78,
       "date": "2019-04-28",
       "tilt": 0.18986,
-      "cumulative": 0.29694
+      "cumulative": 0.31742
     },
     {
       "match": 79,
       "date": "2019-05-01",
       "tilt": -0.1238,
-      "cumulative": 0.17315
+      "cumulative": 0.19362
     },
     {
       "match": 80,
       "date": "2019-05-04",
       "tilt": 0.06308,
-      "cumulative": 0.23623
+      "cumulative": 0.2567
     },
     {
       "match": 81,
       "date": "2019-05-08",
       "tilt": -0.25117,
-      "cumulative": -0.01495
+      "cumulative": 0.00553
     },
     {
       "match": 82,
       "date": "2019-05-10",
       "tilt": -0.11007,
-      "cumulative": -0.12502
+      "cumulative": -0.10454
     },
     {
       "match": 83,
       "date": "2020-09-20",
       "tilt": 0.12386,
-      "cumulative": -0.00116
+      "cumulative": 0.01931
     },
     {
       "match": 84,
       "date": "2020-09-25",
       "tilt": 0.17245,
-      "cumulative": 0.17128
+      "cumulative": 0.19176
     },
     {
       "match": 85,
       "date": "2020-09-29",
       "tilt": -0.03585,
-      "cumulative": 0.13543
+      "cumulative": 0.15591
     },
     {
       "match": 86,
       "date": "2020-10-05",
       "tilt": 0.09367,
-      "cumulative": 0.2291
+      "cumulative": 0.24958
     },
     {
       "match": 87,
       "date": "2020-10-09",
       "tilt": 0.06466,
-      "cumulative": 0.29376
+      "cumulative": 0.31423
     },
     {
       "match": 88,
       "date": "2020-10-11",
       "tilt": -0.04922,
-      "cumulative": 0.24454
+      "cumulative": 0.26501
     },
     {
       "match": 89,
       "date": "2020-10-14",
       "tilt": 0.06714,
-      "cumulative": 0.31168
+      "cumulative": 0.33215
     },
     {
       "match": 90,
       "date": "2020-10-17",
       "tilt": 0.48704,
-      "cumulative": 0.79872
+      "cumulative": 0.8192
     },
     {
       "match": 91,
       "date": "2020-10-20",
       "tilt": 0.12912,
-      "cumulative": 0.92784
+      "cumulative": 0.94832
     },
     {
       "match": 92,
       "date": "2020-10-24",
       "tilt": -0.00437,
-      "cumulative": 0.92348
+      "cumulative": 0.94395
     },
     {
       "match": 93,
       "date": "2020-10-27",
       "tilt": -0.01644,
-      "cumulative": 0.90704
+      "cumulative": 0.92751
     },
     {
       "match": 94,
       "date": "2020-11-02",
       "tilt": -0.03252,
-      "cumulative": 0.87452
+      "cumulative": 0.89499
     },
     {
       "match": 95,
       "date": "2020-11-05",
       "tilt": -0.05565,
-      "cumulative": 0.81887
+      "cumulative": 0.83934
     },
     {
       "match": 96,
       "date": "2020-11-08",
       "tilt": 0.09897,
-      "cumulative": 0.91784
+      "cumulative": 0.93831
     },
     {
       "match": 97,
       "date": "2020-11-10",
       "tilt": 0.11159,
-      "cumulative": 1.02943
+      "cumulative": 1.0499
     },
     {
       "match": 98,
       "date": "2021-04-25",
       "tilt": 0.13563,
-      "cumulative": 1.16506
+      "cumulative": 1.18554
     },
     {
       "match": 99,
       "date": "2021-04-27",
       "tilt": 0.01851,
-      "cumulative": 1.18357
+      "cumulative": 1.20404
     },
     {
       "match": 100,
       "date": "2021-04-29",
       "tilt": 0.02948,
-      "cumulative": 1.21305
+      "cumulative": 1.23353
     },
     {
       "match": 101,
       "date": "2021-05-02",
       "tilt": 0.16259,
-      "cumulative": 1.37565
+      "cumulative": 1.39612
     },
     {
       "match": 102,
       "date": "2021-09-22",
       "tilt": 0.06862,
-      "cumulative": 1.44427
+      "cumulative": 1.46474
     },
     {
       "match": 103,
       "date": "2021-09-25",
       "tilt": 0.06846,
-      "cumulative": 1.51273
+      "cumulative": 1.53321
     },
     {
       "match": 104,
       "date": "2021-09-28",
       "tilt": -0.08302,
-      "cumulative": 1.42971
+      "cumulative": 1.45019
     },
     {
       "match": 105,
       "date": "2021-10-02",
       "tilt": 0.02318,
-      "cumulative": 1.45289
+      "cumulative": 1.47336
     },
     {
       "match": 106,
       "date": "2021-10-04",
       "tilt": -0.15121,
-      "cumulative": 1.30168
+      "cumulative": 1.32216
     },
     {
       "match": 107,
       "date": "2021-10-08",
       "tilt": -0.07473,
-      "cumulative": 1.22695
+      "cumulative": 1.24742
     },
     {
       "match": 108,
       "date": "2021-10-10",
       "tilt": -0.1061,
-      "cumulative": 1.12084
+      "cumulative": 1.14132
     },
     {
       "match": 109,
       "date": "2021-10-13",
       "tilt": -0.02419,
-      "cumulative": 1.09666
+      "cumulative": 1.11713
     },
     {
       "match": 110,
       "date": "2022-03-27",
       "tilt": 0.14,
-      "cumulative": 1.23666
+      "cumulative": 1.25713
     },
     {
       "match": 111,
       "date": "2022-04-02",
       "tilt": -0.16415,
-      "cumulative": 1.07251
+      "cumulative": 1.09298
     },
     {
       "match": 112,
       "date": "2022-04-07",
       "tilt": 0.01716,
-      "cumulative": 1.08967
+      "cumulative": 1.11015
     },
     {
       "match": 113,
       "date": "2022-04-10",
       "tilt": 0.00259,
-      "cumulative": 1.09226
+      "cumulative": 1.11274
     },
     {
       "match": 114,
       "date": "2022-04-16",
-      "tilt": 0.00729,
-      "cumulative": 1.09955
+      "tilt": 0.00734,
+      "cumulative": 1.12007
     },
     {
       "match": 115,
       "date": "2022-04-20",
       "tilt": 0.18405,
-      "cumulative": 1.2836
+      "cumulative": 1.30412
     },
     {
       "match": 116,
       "date": "2022-04-22",
       "tilt": -0.12709,
-      "cumulative": 1.15651
+      "cumulative": 1.17703
     },
     {
       "match": 117,
       "date": "2022-04-28",
       "tilt": 0.20735,
-      "cumulative": 1.36386
+      "cumulative": 1.38438
     },
     {
       "match": 118,
       "date": "2022-05-01",
       "tilt": 0.26086,
-      "cumulative": 1.62472
+      "cumulative": 1.64524
     },
     {
       "match": 119,
       "date": "2022-05-08",
       "tilt": -0.0416,
-      "cumulative": 1.58312
+      "cumulative": 1.60364
     },
     {
       "match": 120,
       "date": "2022-05-11",
       "tilt": -0.07614,
-      "cumulative": 1.50698
+      "cumulative": 1.5275
     },
     {
       "match": 121,
       "date": "2022-05-16",
       "tilt": 0.26114,
-      "cumulative": 1.76812
+      "cumulative": 1.78865
     },
     {
       "match": 122,
       "date": "2022-05-21",
       "tilt": 0.06525,
-      "cumulative": 1.83338
+      "cumulative": 1.8539
     },
     {
       "match": 123,
       "date": "2023-04-01",
       "tilt": -0.01077,
-      "cumulative": 1.82261
+      "cumulative": 1.84313
     },
     {
       "match": 124,
       "date": "2023-04-04",
       "tilt": 0.06018,
-      "cumulative": 1.88279
+      "cumulative": 1.90331
     },
     {
       "match": 125,
       "date": "2023-04-08",
       "tilt": -0.00016,
-      "cumulative": 1.88263
+      "cumulative": 1.90315
     },
     {
       "match": 126,
       "date": "2023-04-11",
       "tilt": 0.22189,
-      "cumulative": 2.10452
+      "cumulative": 2.12504
     },
     {
       "match": 127,
       "date": "2023-04-15",
       "tilt": -0.02912,
-      "cumulative": 2.07539
+      "cumulative": 2.09592
     },
     {
       "match": 128,
       "date": "2023-04-20",
       "tilt": 0.38833,
-      "cumulative": 2.46373
+      "cumulative": 2.48425
     },
     {
       "match": 129,
       "date": "2023-04-24",
       "tilt": 0.17356,
-      "cumulative": 2.63728
+      "cumulative": 2.6578
     },
     {
       "match": 130,
       "date": "2023-04-29",
       "tilt": 0.17083,
-      "cumulative": 2.80811
+      "cumulative": 2.82863
     },
     {
       "match": 131,
       "date": "2023-05-02",
       "tilt": -0.00103,
-      "cumulative": 2.80708
+      "cumulative": 2.8276
     },
     {
       "match": 132,
       "date": "2023-05-06",
       "tilt": 0.07988,
-      "cumulative": 2.88696
+      "cumulative": 2.90748
     },
     {
       "match": 133,
       "date": "2023-05-10",
       "tilt": 0.062,
-      "cumulative": 2.94896
+      "cumulative": 2.96948
     },
     {
       "match": 134,
       "date": "2023-05-13",
       "tilt": -0.08695,
-      "cumulative": 2.86201
+      "cumulative": 2.88253
     },
     {
       "match": 135,
       "date": "2023-05-17",
       "tilt": 0.00329,
-      "cumulative": 2.8653
+      "cumulative": 2.88582
     },
     {
       "match": 136,
       "date": "2023-05-20",
       "tilt": -0.06517,
-      "cumulative": 2.80014
+      "cumulative": 2.82066
     },
     {
       "match": 137,
       "date": "2024-03-23",
       "tilt": 0.04924,
-      "cumulative": 2.84937
+      "cumulative": 2.86989
     },
     {
       "match": 138,
       "date": "2024-03-28",
       "tilt": 0.10177,
-      "cumulative": 2.95114
+      "cumulative": 2.97166
     },
     {
       "match": 139,
       "date": "2024-03-31",
       "tilt": 0.1069,
-      "cumulative": 3.05804
+      "cumulative": 3.07856
     },
     {
       "match": 140,
       "date": "2024-04-03",
       "tilt": -0.0254,
-      "cumulative": 3.03265
+      "cumulative": 3.05317
     },
     {
       "match": 141,
       "date": "2024-04-07",
       "tilt": -0.13044,
-      "cumulative": 2.90221
+      "cumulative": 2.92273
     },
     {
       "match": 142,
       "date": "2024-04-12",
       "tilt": 0.0236,
-      "cumulative": 2.92581
+      "cumulative": 2.94633
     },
     {
       "match": 143,
       "date": "2024-04-17",
       "tilt": 0.01329,
-      "cumulative": 2.93911
+      "cumulative": 2.95963
     },
     {
       "match": 144,
       "date": "2024-04-20",
       "tilt": -0.03052,
-      "cumulative": 2.90859
+      "cumulative": 2.92911
     },
     {
       "match": 145,
       "date": "2024-04-24",
       "tilt": 0.17429,
-      "cumulative": 3.08288
+      "cumulative": 3.1034
     },
     {
       "match": 146,
       "date": "2024-04-27",
       "tilt": -0.04763,
-      "cumulative": 3.03525
+      "cumulative": 3.05577
     },
     {
       "match": 147,
       "date": "2024-04-29",
       "tilt": -0.1394,
-      "cumulative": 2.89585
+      "cumulative": 2.91637
     },
     {
       "match": 148,
       "date": "2024-05-07",
       "tilt": 0.05543,
-      "cumulative": 2.95128
+      "cumulative": 2.9718
     },
     {
       "match": 149,
       "date": "2024-05-12",
       "tilt": -0.02679,
-      "cumulative": 2.92449
+      "cumulative": 2.94502
     },
     {
       "match": 150,
       "date": "2024-05-14",
       "tilt": -0.09434,
-      "cumulative": 2.83016
+      "cumulative": 2.85068
     },
     {
       "match": 151,
       "date": "2025-03-24",
       "tilt": 0.04779,
-      "cumulative": 2.87795
+      "cumulative": 2.89847
     },
     {
       "match": 152,
       "date": "2025-03-30",
       "tilt": -0.14923,
-      "cumulative": 2.72872
+      "cumulative": 2.74924
     },
     {
       "match": 153,
       "date": "2025-04-05",
       "tilt": 0.059,
-      "cumulative": 2.78772
+      "cumulative": 2.80824
     },
     {
       "match": 154,
       "date": "2025-04-10",
       "tilt": -0.36479,
-      "cumulative": 2.42293
+      "cumulative": 2.44345
     },
     {
       "match": 155,
       "date": "2025-04-13",
       "tilt": -0.1268,
-      "cumulative": 2.29613
+      "cumulative": 2.31665
     },
     {
       "match": 156,
       "date": "2025-04-16",
       "tilt": 0.11298,
-      "cumulative": 2.40911
+      "cumulative": 2.42963
     },
     {
       "match": 157,
       "date": "2025-04-19",
       "tilt": -0.14247,
-      "cumulative": 2.26665
+      "cumulative": 2.28717
     },
     {
       "match": 158,
       "date": "2025-04-22",
       "tilt": 0.04273,
-      "cumulative": 2.30937
+      "cumulative": 2.32989
     },
     {
       "match": 159,
       "date": "2025-04-27",
-      "tilt": 0.1223,
-      "cumulative": 2.43167
+      "tilt": 0.13142,
+      "cumulative": 2.46131
     },
     {
       "match": 160,
       "date": "2025-04-29",
       "tilt": 0.24767,
-      "cumulative": 2.67934
+      "cumulative": 2.70898
     },
     {
       "match": 161,
       "date": "2025-05-18",
-      "tilt": -0.10577,
-      "cumulative": 2.57357
+      "tilt": -0.29107,
+      "cumulative": 2.41791
     },
     {
       "match": 162,
       "date": "2026-04-01",
       "tilt": -0.16284,
-      "cumulative": 2.41074
+      "cumulative": 2.25507
     },
     {
       "match": 163,
       "date": "2026-04-04",
       "tilt": 0.04956,
-      "cumulative": 2.4603
+      "cumulative": 2.30464
     },
     {
       "match": 164,
       "date": "2026-04-08",
       "tilt": -0.1649,
-      "cumulative": 2.29539
+      "cumulative": 2.13973
     },
     {
       "match": 165,
       "date": "2026-04-11",
       "tilt": -0.15034,
-      "cumulative": 2.14505
+      "cumulative": 1.98939
     },
     {
       "match": 166,
       "date": "2026-04-18",
       "tilt": -0.03258,
-      "cumulative": 2.11247
+      "cumulative": 1.9568
     },
     {
       "match": 167,
       "date": "2026-04-21",
       "tilt": -0.05124,
-      "cumulative": 2.06122
+      "cumulative": 1.90556
     },
     {
       "match": 168,
       "date": "2026-04-25",
       "tilt": 0.10322,
-      "cumulative": 2.16444
+      "cumulative": 2.00878
     },
     {
       "match": 169,
       "date": "2026-04-27",
       "tilt": -0.03407,
-      "cumulative": 2.13038
+      "cumulative": 1.97471
     },
     {
       "match": 170,
       "date": "2026-05-01",
       "tilt": -0.07214,
-      "cumulative": 2.05823
+      "cumulative": 1.90257
     },
     {
       "match": 171,
       "date": "2026-05-05",
       "tilt": 0.09267,
-      "cumulative": 2.1509
+      "cumulative": 1.99524
     }
   ],
   "team_matchups": [
@@ -4970,7 +4970,7 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.02109,
+      "tilt_per_match": -0.02108,
       "matches": 18
     },
     {
@@ -5002,7 +5002,7 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.03269,
+      "tilt_per_match": 0.03397,
       "matches": 23
     },
     {
@@ -5042,7 +5042,7 @@
     },
     {
       "opponent": "Gujarat Titans",
-      "tilt_per_match": -0.03244,
+      "tilt_per_match": -0.05891,
       "matches": 7
     },
     {
@@ -5133,7 +5133,7 @@
     0.16316,
     -0.03184,
     -0.0084,
-    -0.03758,
+    -0.0171,
     -0.01958,
     0.0816,
     -0.05999,
@@ -5186,7 +5186,7 @@
     -0.16415,
     0.01716,
     0.00259,
-    0.00729,
+    0.00734,
     0.18405,
     -0.12709,
     0.20735,
@@ -5231,9 +5231,9 @@
     0.11298,
     -0.14247,
     0.04273,
-    0.1223,
+    0.13142,
     0.24767,
-    -0.10577,
+    -0.29107,
     -0.16284,
     0.04956,
     -0.1649,

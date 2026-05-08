@@ -8,18 +8,18 @@
   "teams": [
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.01853,
+  "total_tilt_per_match": -0.01723,
   "batting_tilt_per_match": -0.02439,
-  "bowling_tilt_per_match": 0.00489,
-  "shrunk_total_tilt_per_match": -0.01896,
-  "shrunk_batting_tilt_per_match": -0.02357,
-  "shrunk_bowling_tilt_per_match": 0.00285,
-  "tilt_ci_lower": -0.05419,
-  "tilt_ci_upper": 0.01628,
-  "tilt_ci_lower_90": -0.04853,
-  "tilt_ci_upper_90": 0.01061,
+  "bowling_tilt_per_match": 0.00695,
+  "shrunk_total_tilt_per_match": -0.01789,
+  "shrunk_batting_tilt_per_match": -0.02342,
+  "shrunk_bowling_tilt_per_match": 0.0044,
+  "tilt_ci_lower": -0.05258,
+  "tilt_ci_upper": 0.01679,
+  "tilt_ci_lower_90": -0.04701,
+  "tilt_ci_upper_90": 0.01122,
   "confidence": "medium",
-  "total_tilt": -0.64859,
+  "total_tilt": -0.60319,
   "total_matches": 35,
   "batting_balls": 498,
   "bowling_balls": 277,
@@ -588,7 +588,7 @@
       "season": "2026",
       "team": "Sunrisers Hyderabad",
       "batting_tilt_per_match": -0.00157,
-      "bowling_tilt_per_match": 0.02031,
+      "bowling_tilt_per_match": 0.02485,
       "batting_matches": 9,
       "bowling_matches": 10,
       "batting_balls": 133,
@@ -610,8 +610,8 @@
           "bowl_balls": 12,
           "bowl_runs": 21,
           "bowl_econ": 10.5,
-          "bowl_tilt": -0.09807,
-          "total_tilt": -0.16825
+          "bowl_tilt": -0.05267,
+          "total_tilt": -0.12285
         },
         {
           "match_id": "1527679",
@@ -830,9 +830,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.11618,
+      "tilt": 0.16157,
       "balls": 66,
-      "avg_delta": 0.00166
+      "avg_delta": 0.002308
     },
     {
       "phase": "middle",
@@ -991,14 +991,6 @@
       "balls": 18
     },
     {
-      "match_id": "1527674",
-      "date": "2026-03-28",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.09807,
-      "wickets": 0,
-      "balls": 12
-    },
-    {
       "match_id": "1359543",
       "date": "2023-05-21",
       "vs": "Mumbai Indians",
@@ -1013,6 +1005,14 @@
       "tilt": -0.08086,
       "wickets": 0,
       "balls": 6
+    },
+    {
+      "match_id": "1529274",
+      "date": "2026-04-21",
+      "vs": "Delhi Capitals",
+      "tilt": -0.0615,
+      "wickets": 0,
+      "balls": 24
     }
   ],
   "career_trend": [
@@ -1169,62 +1169,62 @@
     {
       "match": 26,
       "date": "2026-03-28",
-      "tilt": -0.16825,
-      "cumulative": -1.00585
+      "tilt": -0.12285,
+      "cumulative": -0.96046
     },
     {
       "match": 27,
       "date": "2026-04-02",
       "tilt": 0.13765,
-      "cumulative": -0.8682
+      "cumulative": -0.8228
     },
     {
       "match": 28,
       "date": "2026-04-05",
       "tilt": 0.00753,
-      "cumulative": -0.86067
+      "cumulative": -0.81527
     },
     {
       "match": 29,
       "date": "2026-04-11",
       "tilt": -0.01785,
-      "cumulative": -0.87853
+      "cumulative": -0.83313
     },
     {
       "match": 30,
       "date": "2026-04-13",
       "tilt": 0.10813,
-      "cumulative": -0.77039
+      "cumulative": -0.725
     },
     {
       "match": 31,
       "date": "2026-04-18",
       "tilt": 0.35813,
-      "cumulative": -0.41227
+      "cumulative": -0.36687
     },
     {
       "match": 32,
       "date": "2026-04-21",
       "tilt": -0.0615,
-      "cumulative": -0.47377
+      "cumulative": -0.42837
     },
     {
       "match": 33,
       "date": "2026-04-25",
       "tilt": 0.02648,
-      "cumulative": -0.44728
+      "cumulative": -0.40189
     },
     {
       "match": 34,
       "date": "2026-04-29",
       "tilt": -0.2554,
-      "cumulative": -0.70268
+      "cumulative": -0.65728
     },
     {
       "match": 35,
       "date": "2026-05-06",
       "tilt": 0.05409,
-      "cumulative": -0.64859
+      "cumulative": -0.60319
     }
   ],
   "team_matchups": [
@@ -1287,7 +1287,7 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.01842,
+      "tilt_per_match": 0.03355,
       "matches": 3
     },
     {
@@ -1363,7 +1363,7 @@
     0.09126,
     0.14965,
     -9e-05,
-    -0.16825,
+    -0.12285,
     0.13765,
     0.00753,
     -0.01785,

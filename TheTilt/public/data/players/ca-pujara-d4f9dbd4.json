@@ -10,18 +10,18 @@
     "Punjab Kings",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.06044,
-  "batting_tilt_per_match": -0.06044,
+  "total_tilt_per_match": -0.04804,
+  "batting_tilt_per_match": -0.04804,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.05333,
-  "shrunk_batting_tilt_per_match": -0.05158,
+  "shrunk_total_tilt_per_match": -0.04315,
+  "shrunk_batting_tilt_per_match": -0.04145,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.07633,
-  "tilt_ci_upper": -0.03033,
-  "tilt_ci_lower_90": -0.07263,
-  "tilt_ci_upper_90": -0.03403,
+  "tilt_ci_lower": -0.07118,
+  "tilt_ci_upper": -0.01512,
+  "tilt_ci_lower_90": -0.06668,
+  "tilt_ci_upper_90": -0.01963,
   "confidence": "low",
-  "total_tilt": -1.32959,
+  "total_tilt": -1.05685,
   "total_matches": 22,
   "batting_balls": 391,
   "bowling_balls": 0,
@@ -246,7 +246,7 @@
     {
       "season": "2012",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": -0.0869,
+      "batting_tilt_per_match": -0.08447,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 3,
       "bowling_matches": 0,
@@ -283,13 +283,13 @@
           "bat_runs": 6,
           "bat_balls": 9,
           "bat_sr": 66.7,
-          "bat_tilt": -0.12838,
+          "bat_tilt": -0.12108,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.12838
+          "total_tilt": -0.12108
         },
         {
           "match_id": "548318",
@@ -425,7 +425,7 @@
     {
       "season": "2014",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": -0.07034,
+      "batting_tilt_per_match": -0.0261,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 6,
       "bowling_matches": 0,
@@ -443,13 +443,13 @@
           "bat_runs": 13,
           "bat_balls": 10,
           "bat_sr": 130.0,
-          "bat_tilt": -0.0044,
+          "bat_tilt": 0.14298,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.0044
+          "total_tilt": 0.14298
         },
         {
           "match_id": "729291",
@@ -462,13 +462,13 @@
           "bat_runs": 40,
           "bat_balls": 38,
           "bat_sr": 105.3,
-          "bat_tilt": -0.12651,
+          "bat_tilt": 0.02034,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.12651
+          "total_tilt": 0.02034
         },
         {
           "match_id": "729295",
@@ -519,13 +519,13 @@
           "bat_runs": 10,
           "bat_balls": 18,
           "bat_sr": 55.6,
-          "bat_tilt": -0.09107,
+          "bat_tilt": -0.11986,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.09107
+          "total_tilt": -0.11986
         },
         {
           "match_id": "733973",
@@ -563,9 +563,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.82997,
+      "tilt": -0.55723,
       "balls": 229,
-      "avg_delta": -0.003517
+      "avg_delta": -0.002361
     },
     {
       "phase": "middle",
@@ -583,11 +583,27 @@
   "bowling_phases": [],
   "best_matches": [
     {
+      "match_id": "729283",
+      "date": "2014-04-18",
+      "vs": "Chennai Super Kings",
+      "tilt": 0.14298,
+      "runs": 13,
+      "balls": 10
+    },
+    {
       "match_id": "419158",
       "date": "2010-04-17",
       "vs": "Rajasthan Royals",
       "tilt": 0.12607,
       "runs": 45,
+      "balls": 38
+    },
+    {
+      "match_id": "729291",
+      "date": "2014-04-20",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.02034,
+      "runs": 40,
       "balls": 38
     },
     {
@@ -605,22 +621,6 @@
       "tilt": -0.00275,
       "runs": 5,
       "balls": 15
-    },
-    {
-      "match_id": "729283",
-      "date": "2014-04-18",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.0044,
-      "runs": 13,
-      "balls": 10
-    },
-    {
-      "match_id": "419135",
-      "date": "2010-04-01",
-      "vs": "Deccan Chargers",
-      "tilt": -0.02067,
-      "runs": 17,
-      "balls": 13
     }
   ],
   "worst_matches": [
@@ -633,28 +633,28 @@
       "balls": 17
     },
     {
-      "match_id": "548315",
-      "date": "2012-04-10",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.12838,
-      "runs": 6,
-      "balls": 9
-    },
-    {
-      "match_id": "729291",
-      "date": "2014-04-20",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.12651,
-      "runs": 40,
-      "balls": 38
-    },
-    {
       "match_id": "501227",
       "date": "2011-04-26",
       "vs": "Delhi Capitals",
       "tilt": -0.1253,
       "runs": 7,
       "balls": 12
+    },
+    {
+      "match_id": "548315",
+      "date": "2012-04-10",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.12108,
+      "runs": 6,
+      "balls": 9
+    },
+    {
+      "match_id": "729313",
+      "date": "2014-04-28",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": -0.11986,
+      "runs": 10,
+      "balls": 18
     },
     {
       "match_id": "419118",
@@ -731,90 +731,90 @@
     {
       "match": 11,
       "date": "2012-04-10",
-      "tilt": -0.12838,
-      "cumulative": -0.47877
+      "tilt": -0.12108,
+      "cumulative": -0.47147
     },
     {
       "match": 12,
       "date": "2012-04-12",
       "tilt": -0.04347,
-      "cumulative": -0.52224
+      "cumulative": -0.51494
     },
     {
       "match": 13,
       "date": "2013-05-06",
       "tilt": -0.08575,
-      "cumulative": -0.60798
+      "cumulative": -0.60069
     },
     {
       "match": 14,
       "date": "2013-05-10",
       "tilt": -0.14472,
-      "cumulative": -0.7527
+      "cumulative": -0.7454
     },
     {
       "match": 15,
       "date": "2013-05-12",
       "tilt": -0.06879,
-      "cumulative": -0.82149
+      "cumulative": -0.8142
     },
     {
       "match": 16,
       "date": "2013-05-14",
       "tilt": -0.08604,
-      "cumulative": -0.90753
+      "cumulative": -0.90023
     },
     {
       "match": 17,
       "date": "2014-04-18",
-      "tilt": -0.0044,
-      "cumulative": -0.91192
+      "tilt": 0.14298,
+      "cumulative": -0.75725
     },
     {
       "match": 18,
       "date": "2014-04-20",
-      "tilt": -0.12651,
-      "cumulative": -1.03844
+      "tilt": 0.02034,
+      "cumulative": -0.73691
     },
     {
       "match": 19,
       "date": "2014-04-22",
       "tilt": -0.08664,
-      "cumulative": -1.12507
+      "cumulative": -0.82355
     },
     {
       "match": 20,
       "date": "2014-04-26",
       "tilt": -0.0225,
-      "cumulative": -1.14757
+      "cumulative": -0.84605
     },
     {
       "match": 21,
       "date": "2014-04-28",
-      "tilt": -0.09107,
-      "cumulative": -1.23865
+      "tilt": -0.11986,
+      "cumulative": -0.96591
     },
     {
       "match": 22,
       "date": "2014-05-03",
       "tilt": -0.09094,
-      "cumulative": -1.32959
+      "cumulative": -1.05685
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.02486,
-      "matches": 3
-    },
-    {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.03192,
+      "tilt_per_match": 0.0172,
       "matches": 3
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.03383,
+      "tilt_per_match": 0.01512,
+      "matches": 3
+    },
+    {
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.03445,
       "matches": 3
     },
     {
@@ -824,7 +824,7 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.07322,
+      "tilt_per_match": -0.07079,
       "matches": 3
     },
     {
@@ -873,17 +873,17 @@
     -0.0479,
     -0.1253,
     -0.08887,
-    -0.12838,
+    -0.12108,
     -0.04347,
     -0.08575,
     -0.14472,
     -0.06879,
     -0.08604,
-    -0.0044,
-    -0.12651,
+    0.14298,
+    0.02034,
     -0.08664,
     -0.0225,
-    -0.09107,
+    -0.11986,
     -0.09094
   ]
 }

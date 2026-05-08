@@ -130,7 +130,10 @@ def apply_boundary_calibration(deltas_df: pd.DataFrame) -> pd.DataFrame:
          itself across the innings break.
 
     Underlying LightGBM is unchanged. Affects 2 of ~150 balls per match (~1.4%
-    of total). Recomputes `delta_wp` for those rows.
+    of total). Recomputes `delta_wp` for those rows. The previous Step 3
+    (linear-decay blend over inn2 first 6 balls, issue #71) was removed —
+    it damped raw deltas for the first-over bowler in inn2 in a way that
+    distorted bowling rankings.
     """
     print("\nApplying boundary calibration (issue #62)...")
     df = deltas_df.copy()
@@ -202,58 +205,6 @@ def apply_boundary_calibration(deltas_df: pd.DataFrame) -> pd.DataFrame:
     )
     print(f"  Post-fix: median |cliff|={pd.Series(post_cliff).abs().median()*100:.2f}pp, "
           f"mean signed={pd.Series(post_cliff).mean()*100:+.2f}pp")
-
-    # Step 3: linear-decay blend of the calibration's "pull" toward the
-    # midpoint across balls 1..6 of inn2 (issue #71). Step 2 nailed inn2.first
-    # to the midpoint, but the raw model output for "after 1 ball of chase"
-    # was unchanged — the chart cliff between inn1.last and inn2.ball1 was
-    # gone but a fresh discontinuity opened up between inn2.ball1 and
-    # inn2.ball2 because ball 2 inherits the model's natural chase-start
-    # pessimism. We damp that pessimism over the first over by blending
-    # wp_before and wp_after toward the calibrated midpoint with weight
-    # alpha = (6 - ball_in_inn2) / 5: ball 1 = 1.0 (fully bridged, matches
-    # the existing calibration), ball 6 = 0.0 (raw model). Delta_wp for
-    # the touched rows is recomputed; ball 1's delta_wp ends at exactly 0
-    # by construction, balls 2..5 carry a damped fraction of their raw
-    # delta, and ball 6+ is unmodified.
-    inn2_first6 = (
-        df[df["innings"] == 2]
-        .sort_values(["match_id", "ball_number"])
-        .groupby("match_id").head(6)
-        .copy()
-    )
-    inn2_first6["ball_in_inn2"] = inn2_first6.groupby("match_id").cumcount() + 1
-    inn2_first6["alpha"] = (6 - inn2_first6["ball_in_inn2"]) / 5.0
-
-    midpoint_chase_lookup = pd.Series(
-        1.0 - midpoint_bf,
-        index=df.loc[inn2_first_idx, "match_id"].values,
-    )
-    inn2_first6["midpoint_chase"] = inn2_first6["match_id"].map(midpoint_chase_lookup)
-
-    blended_before = (
-        (1 - inn2_first6["alpha"]) * inn2_first6["wp_before"]
-        + inn2_first6["alpha"] * inn2_first6["midpoint_chase"]
-    )
-    blended_after = (
-        (1 - inn2_first6["alpha"]) * inn2_first6["wp_after"]
-        + inn2_first6["alpha"] * inn2_first6["midpoint_chase"]
-    )
-    df.loc[inn2_first6.index, "wp_before"] = blended_before.values
-    df.loc[inn2_first6.index, "wp_after"] = blended_after.values
-    df.loc[inn2_first6.index, "delta_wp"] = (
-        df.loc[inn2_first6.index, "wp_after"] - df.loc[inn2_first6.index, "wp_before"]
-    )
-
-    early_chase_abs = (
-        df.loc[inn2_first6.index].groupby(
-            inn2_first6["ball_in_inn2"].values
-        )["delta_wp"].apply(lambda s: s.abs().mean())
-    )
-    print(
-        "  Early-chase blend |delta_wp|: "
-        + ", ".join(f"ball{int(k)}={v*100:.2f}pp" for k, v in early_chase_abs.items())
-    )
 
     return df
 

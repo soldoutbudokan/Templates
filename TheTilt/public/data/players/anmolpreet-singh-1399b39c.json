@@ -9,18 +9,18 @@
     "Mumbai Indians",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.04857,
-  "batting_tilt_per_match": -0.04857,
+  "total_tilt_per_match": -0.04319,
+  "batting_tilt_per_match": -0.04319,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03909,
-  "shrunk_batting_tilt_per_match": -0.03673,
+  "shrunk_total_tilt_per_match": -0.03559,
+  "shrunk_batting_tilt_per_match": -0.03292,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.06713,
-  "tilt_ci_upper": -0.01104,
-  "tilt_ci_lower_90": -0.06263,
-  "tilt_ci_upper_90": -0.01555,
+  "tilt_ci_lower": -0.06921,
+  "tilt_ci_upper": -0.00198,
+  "tilt_ci_lower_90": -0.06381,
+  "tilt_ci_upper_90": -0.00738,
   "confidence": "low",
-  "total_tilt": -0.43712,
+  "total_tilt": -0.38874,
   "total_matches": 9,
   "batting_balls": 115,
   "bowling_balls": 0,
@@ -131,7 +131,7 @@
     {
       "season": "2023",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": -0.00476,
+      "batting_tilt_per_match": 0.00733,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 4,
       "bowling_matches": 0,
@@ -168,13 +168,13 @@
           "bat_runs": 33,
           "bat_balls": 25,
           "bat_sr": 132.0,
-          "bat_tilt": 0.03558,
+          "bat_tilt": 0.08479,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.03558
+          "total_tilt": 0.08479
         },
         {
           "match_id": "1359532",
@@ -206,13 +206,13 @@
           "bat_runs": 5,
           "bat_balls": 4,
           "bat_sr": 125.0,
-          "bat_tilt": -0.04382,
+          "bat_tilt": -0.04465,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.04382
+          "total_tilt": -0.04465
         }
       ],
       "batting_stats": {
@@ -292,9 +292,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.25929,
+      "tilt": -0.2109,
       "balls": 91,
-      "avg_delta": -0.002788
+      "avg_delta": -0.002268
     },
     {
       "phase": "middle",
@@ -306,6 +306,14 @@
   "bowling_phases": [],
   "best_matches": [
     {
+      "match_id": "1359526",
+      "date": "2023-05-07",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.08479,
+      "runs": 33,
+      "balls": 25
+    },
+    {
       "match_id": "1359532",
       "date": "2023-05-13",
       "vs": "Lucknow Super Giants",
@@ -314,18 +322,10 @@
       "balls": 27
     },
     {
-      "match_id": "1359526",
-      "date": "2023-05-07",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.03558,
-      "runs": 33,
-      "balls": 25
-    },
-    {
       "match_id": "1359536",
       "date": "2023-05-15",
       "vs": "Gujarat Titans",
-      "tilt": -0.04382,
+      "tilt": -0.04465,
       "runs": 5,
       "balls": 4
     },
@@ -418,32 +418,32 @@
     {
       "match": 5,
       "date": "2023-05-07",
-      "tilt": 0.03558,
-      "cumulative": -0.27389
+      "tilt": 0.08479,
+      "cumulative": -0.22468
     },
     {
       "match": 6,
       "date": "2023-05-13",
       "tilt": 0.04058,
-      "cumulative": -0.23331
+      "cumulative": -0.1841
     },
     {
       "match": 7,
       "date": "2023-05-15",
-      "tilt": -0.04382,
-      "cumulative": -0.27714
+      "tilt": -0.04465,
+      "cumulative": -0.22876
     },
     {
       "match": 8,
       "date": "2024-04-28",
       "tilt": -0.10225,
-      "cumulative": -0.37938
+      "cumulative": -0.331
     },
     {
       "match": 9,
       "date": "2024-05-02",
       "tilt": -0.05774,
-      "cumulative": -0.43712
+      "cumulative": -0.38874
     }
   ],
   "team_matchups": [
@@ -454,12 +454,12 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.03511,
+      "tilt_per_match": -0.0187,
       "matches": 3
     },
     {
       "opponent": "Gujarat Titans",
-      "tilt_per_match": -0.04382,
+      "tilt_per_match": -0.04465,
       "matches": 1
     },
     {
@@ -492,9 +492,9 @@
     -0.10567,
     -0.08316,
     -0.05139,
-    0.03558,
+    0.08479,
     0.04058,
-    -0.04382,
+    -0.04465,
     -0.10225,
     -0.05774
   ]

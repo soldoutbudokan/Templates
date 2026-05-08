@@ -8,18 +8,18 @@
   "teams": [
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.01758,
+  "total_tilt_per_match": -0.01578,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.01583,
-  "shrunk_total_tilt_per_match": -0.01977,
+  "bowling_tilt_per_match": -0.01404,
+  "shrunk_total_tilt_per_match": -0.01913,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01298,
-  "tilt_ci_lower": -0.09539,
-  "tilt_ci_upper": 0.05586,
-  "tilt_ci_lower_90": -0.08324,
-  "tilt_ci_upper_90": 0.04371,
+  "shrunk_bowling_tilt_per_match": -0.01282,
+  "tilt_ci_lower": -0.09311,
+  "tilt_ci_upper": 0.05485,
+  "tilt_ci_lower_90": -0.08122,
+  "tilt_ci_upper_90": 0.04296,
   "confidence": "low",
-  "total_tilt": -0.0879,
+  "total_tilt": -0.07892,
   "total_matches": 5,
   "batting_balls": 20,
   "bowling_balls": 101,
@@ -28,7 +28,7 @@
       "season": "2017",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": -0.00292,
-      "bowling_tilt_per_match": -0.01583,
+      "bowling_tilt_per_match": -0.01404,
       "batting_matches": 3,
       "bowling_matches": 5,
       "batting_balls": 20,
@@ -88,8 +88,8 @@
           "bowl_balls": 24,
           "bowl_runs": 32,
           "bowl_econ": 8.0,
-          "bowl_tilt": -0.08252,
-          "total_tilt": -0.08252
+          "bowl_tilt": -0.01521,
+          "total_tilt": -0.01521
         },
         {
           "match_id": "1082633",
@@ -126,8 +126,8 @@
           "bowl_balls": 17,
           "bowl_runs": 19,
           "bowl_econ": 6.71,
-          "bowl_tilt": -0.01184,
-          "total_tilt": -0.01184
+          "bowl_tilt": -0.07017,
+          "total_tilt": -0.07017
         }
       ],
       "batting_stats": {
@@ -163,9 +163,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.04323,
+      "tilt": 0.0522,
       "balls": 36,
-      "avg_delta": 0.001168
+      "avg_delta": 0.001411
     },
     {
       "phase": "middle",
@@ -250,20 +250,20 @@
       "balls": 12
     },
     {
-      "match_id": "1082636",
-      "date": "2017-05-07",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.01184,
-      "wickets": 1,
-      "balls": 17
-    },
-    {
       "match_id": "1082628",
       "date": "2017-05-01",
       "vs": "Mumbai Indians",
-      "tilt": -0.08252,
+      "tilt": -0.01521,
       "wickets": 1,
       "balls": 24
+    },
+    {
+      "match_id": "1082636",
+      "date": "2017-05-07",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.07017,
+      "wickets": 1,
+      "balls": 17
     },
     {
       "match_id": "1082591",
@@ -284,20 +284,20 @@
       "balls": 24
     },
     {
-      "match_id": "1082628",
-      "date": "2017-05-01",
-      "vs": "Mumbai Indians",
-      "tilt": -0.08252,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "1082636",
       "date": "2017-05-07",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.01184,
+      "tilt": -0.07017,
       "wickets": 1,
       "balls": 17
+    },
+    {
+      "match_id": "1082628",
+      "date": "2017-05-01",
+      "vs": "Mumbai Indians",
+      "tilt": -0.01521,
+      "wickets": 1,
+      "balls": 24
     },
     {
       "match_id": "1082621",
@@ -332,20 +332,20 @@
     {
       "match": 3,
       "date": "2017-05-01",
-      "tilt": -0.08252,
-      "cumulative": -0.22341
+      "tilt": -0.01521,
+      "cumulative": -0.15611
     },
     {
       "match": 4,
       "date": "2017-05-05",
       "tilt": 0.14735,
-      "cumulative": -0.07606
+      "cumulative": -0.00875
     },
     {
       "match": 5,
       "date": "2017-05-07",
-      "tilt": -0.01184,
-      "cumulative": -0.0879
+      "tilt": -0.07017,
+      "cumulative": -0.07892
     }
   ],
   "team_matchups": [
@@ -377,13 +377,13 @@
       "matches": 1
     },
     {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.01184,
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.01521,
       "matches": 1
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.08252,
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": -0.07017,
       "matches": 1
     },
     {
@@ -416,8 +416,8 @@
   "match_tilt_distribution": [
     -0.17631,
     0.03541,
-    -0.08252,
+    -0.01521,
     0.14735,
-    -0.01184
+    -0.07017
   ]
 }

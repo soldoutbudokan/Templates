@@ -10,18 +10,18 @@
     "Mumbai Indians",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.08655,
+  "total_tilt_per_match": -0.09253,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.06476,
-  "shrunk_total_tilt_per_match": -0.06506,
+  "bowling_tilt_per_match": -0.07075,
+  "shrunk_total_tilt_per_match": -0.06862,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.04569,
-  "tilt_ci_lower": -0.12074,
-  "tilt_ci_upper": -0.00939,
-  "tilt_ci_lower_90": -0.11179,
-  "tilt_ci_upper_90": -0.01834,
+  "shrunk_bowling_tilt_per_match": -0.0497,
+  "tilt_ci_lower": -0.12191,
+  "tilt_ci_upper": -0.01532,
+  "tilt_ci_lower_90": -0.11335,
+  "tilt_ci_upper_90": -0.02389,
   "confidence": "low",
-  "total_tilt": -0.86548,
+  "total_tilt": -0.92534,
   "total_matches": 10,
   "batting_balls": 29,
   "bowling_balls": 207,
@@ -30,7 +30,7 @@
       "season": "2016",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.0061,
+      "bowling_tilt_per_match": -0.05376,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -52,8 +52,8 @@
           "bowl_balls": 24,
           "bowl_runs": 44,
           "bowl_econ": 11.0,
-          "bowl_tilt": 0.0061,
-          "total_tilt": 0.0061
+          "bowl_tilt": -0.05376,
+          "total_tilt": -0.05376
         }
       ],
       "bowling_stats": {
@@ -340,9 +340,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.35709,
+      "tilt": -0.41696,
       "balls": 96,
-      "avg_delta": -0.003536
+      "avg_delta": -0.004128
     },
     {
       "phase": "middle",
@@ -467,20 +467,20 @@
       "balls": 24
     },
     {
-      "match_id": "980907",
-      "date": "2016-04-12",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.0061,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "1304047",
       "date": "2022-03-26",
       "vs": "Kolkata Knight Riders",
       "tilt": -0.01753,
       "wickets": 0,
       "balls": 15
+    },
+    {
+      "match_id": "980907",
+      "date": "2016-04-12",
+      "vs": "Sunrisers Hyderabad",
+      "tilt": -0.05376,
+      "wickets": 1,
+      "balls": 24
     }
   ],
   "bowling_worst_matches": [
@@ -529,62 +529,62 @@
     {
       "match": 1,
       "date": "2016-04-12",
-      "tilt": 0.0061,
-      "cumulative": 0.0061
+      "tilt": -0.05376,
+      "cumulative": -0.05376
     },
     {
       "match": 2,
       "date": "2017-04-16",
       "tilt": 0.03148,
-      "cumulative": 0.03758
+      "cumulative": -0.02228
     },
     {
       "match": 3,
       "date": "2017-04-18",
       "tilt": -0.12607,
-      "cumulative": -0.08848
+      "cumulative": -0.14835
     },
     {
       "match": 4,
       "date": "2017-04-29",
       "tilt": 0.02602,
-      "cumulative": -0.06247
+      "cumulative": -0.12233
     },
     {
       "match": 5,
       "date": "2017-05-01",
       "tilt": -0.28903,
-      "cumulative": -0.3515
+      "cumulative": -0.41136
     },
     {
       "match": 6,
       "date": "2021-04-17",
       "tilt": -0.24084,
-      "cumulative": -0.59234
+      "cumulative": -0.65221
     },
     {
       "match": 7,
       "date": "2021-09-19",
       "tilt": -0.05039,
-      "cumulative": -0.64273
+      "cumulative": -0.7026
     },
     {
       "match": 8,
       "date": "2021-09-23",
       "tilt": -0.12105,
-      "cumulative": -0.76378
+      "cumulative": -0.82365
     },
     {
       "match": 9,
       "date": "2021-09-26",
       "tilt": -0.08416,
-      "cumulative": -0.84794
+      "cumulative": -0.90781
     },
     {
       "match": 10,
       "date": "2022-03-26",
       "tilt": -0.01753,
-      "cumulative": -0.86548
+      "cumulative": -0.92534
     }
   ],
   "team_matchups": [
@@ -636,14 +636,14 @@
       "matches": 1
     },
     {
-      "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": -0.11737,
-      "matches": 2
-    },
-    {
       "opponent": "Gujarat Lions",
       "tilt_per_match": -0.12607,
       "matches": 1
+    },
+    {
+      "opponent": "Sunrisers Hyderabad",
+      "tilt_per_match": -0.1473,
+      "matches": 2
     },
     {
       "opponent": "Mumbai Indians",
@@ -673,7 +673,7 @@
     "best_figures": "3/32"
   },
   "match_tilt_distribution": [
-    0.0061,
+    -0.05376,
     0.03148,
     -0.12607,
     0.02602,

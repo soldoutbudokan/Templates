@@ -8,18 +8,18 @@
   "teams": [
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.01092,
+  "total_tilt_per_match": 0.0032,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.01066,
-  "shrunk_total_tilt_per_match": -0.01437,
+  "bowling_tilt_per_match": 0.00347,
+  "shrunk_total_tilt_per_match": -0.00497,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01055,
-  "tilt_ci_lower": -0.05385,
-  "tilt_ci_upper": 0.02512,
-  "tilt_ci_lower_90": -0.04751,
-  "tilt_ci_upper_90": 0.01878,
+  "shrunk_bowling_tilt_per_match": -0.00162,
+  "tilt_ci_lower": -0.05577,
+  "tilt_ci_upper": 0.04582,
+  "tilt_ci_lower_90": -0.0476,
+  "tilt_ci_upper_90": 0.03765,
   "confidence": "low",
-  "total_tilt": -0.12017,
+  "total_tilt": 0.03517,
   "total_matches": 11,
   "batting_balls": 9,
   "bowling_balls": 192,
@@ -106,7 +106,7 @@
       "season": "2026",
       "team": "Sunrisers Hyderabad",
       "batting_tilt_per_match": -0.00074,
-      "bowling_tilt_per_match": -0.01238,
+      "bowling_tilt_per_match": 0.00704,
       "batting_matches": 4,
       "bowling_matches": 8,
       "batting_balls": 9,
@@ -166,8 +166,8 @@
           "bowl_balls": 24,
           "bowl_runs": 19,
           "bowl_econ": 4.75,
-          "bowl_tilt": 0.11038,
-          "total_tilt": 0.05309
+          "bowl_tilt": 0.26845,
+          "total_tilt": 0.21116
         },
         {
           "match_id": "1527690",
@@ -185,8 +185,8 @@
           "bowl_balls": 24,
           "bowl_runs": 38,
           "bowl_econ": 9.5,
-          "bowl_tilt": -0.27434,
-          "total_tilt": -0.13345
+          "bowl_tilt": -0.27706,
+          "total_tilt": -0.13617
         },
         {
           "match_id": "1529264",
@@ -298,9 +298,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.25593,
+      "tilt": -0.10059,
       "balls": 54,
-      "avg_delta": -0.00457
+      "avg_delta": -0.001796
     },
     {
       "phase": "middle",
@@ -385,20 +385,20 @@
   ],
   "bowling_best_matches": [
     {
+      "match_id": "1527683",
+      "date": "2026-04-05",
+      "vs": "Lucknow Super Giants",
+      "tilt": 0.26845,
+      "wickets": 2,
+      "balls": 24
+    },
+    {
       "match_id": "1527679",
       "date": "2026-04-02",
       "vs": "Kolkata Knight Riders",
       "tilt": 0.1251,
       "wickets": 1,
       "balls": 12
-    },
-    {
-      "match_id": "1527683",
-      "date": "2026-04-05",
-      "vs": "Lucknow Super Giants",
-      "tilt": 0.11038,
-      "wickets": 2,
-      "balls": 24
     },
     {
       "match_id": "1473503",
@@ -430,7 +430,7 @@
       "match_id": "1527690",
       "date": "2026-04-11",
       "vs": "Punjab Kings",
-      "tilt": -0.27434,
+      "tilt": -0.27706,
       "wickets": 1,
       "balls": 24
     },
@@ -501,38 +501,38 @@
     {
       "match": 6,
       "date": "2026-04-05",
-      "tilt": 0.0531,
-      "cumulative": 0.01449
+      "tilt": 0.21116,
+      "cumulative": 0.17255
     },
     {
       "match": 7,
       "date": "2026-04-11",
-      "tilt": -0.13344,
-      "cumulative": -0.11895
+      "tilt": -0.13617,
+      "cumulative": 0.03639
     },
     {
       "match": 8,
       "date": "2026-04-13",
       "tilt": -0.00254,
-      "cumulative": -0.12149
+      "cumulative": 0.03385
     },
     {
       "match": 9,
       "date": "2026-04-21",
       "tilt": 0.01832,
-      "cumulative": -0.10317
+      "cumulative": 0.05217
     },
     {
       "match": 10,
       "date": "2026-04-29",
       "tilt": 0.00271,
-      "cumulative": -0.10046
+      "cumulative": 0.05488
     },
     {
       "match": 11,
       "date": "2026-05-06",
       "tilt": -0.01971,
-      "cumulative": -0.12017
+      "cumulative": 0.03517
     }
   ],
   "team_matchups": [
@@ -559,6 +559,11 @@
   ],
   "bowling_team_matchups": [
     {
+      "opponent": "Lucknow Super Giants",
+      "tilt_per_match": 0.09536,
+      "matches": 2
+    },
+    {
       "opponent": "Kolkata Knight Riders",
       "tilt_per_match": 0.07254,
       "matches": 2
@@ -567,11 +572,6 @@
       "opponent": "Delhi Capitals",
       "tilt_per_match": 0.01832,
       "matches": 1
-    },
-    {
-      "opponent": "Lucknow Super Giants",
-      "tilt_per_match": 0.01632,
-      "matches": 2
     },
     {
       "opponent": "Mumbai Indians",
@@ -590,7 +590,7 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.14702,
+      "tilt_per_match": -0.14839,
       "matches": 2
     }
   ],
@@ -621,8 +621,8 @@
     0.01998,
     -0.14551,
     0.1251,
-    0.0531,
-    -0.13344,
+    0.21116,
+    -0.13617,
     -0.00254,
     0.01832,
     0.00271,

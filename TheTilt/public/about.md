@@ -395,9 +395,8 @@ We close that gap with a two-step post-processing layer in `compute_tilt.apply_b
 
 1. **Per-side isotonic calibration**. Two `IsotonicRegression`s mapping raw model output → empirical BF-win rate, fit on every non-DLS match. Applied to inn1's last `wp_after` and inn2's first `wp_before` (BF POV) independently. Kills the systematic bias.
 2. **Per-match BF-POV midpoint bridge**. After step 1, the two endpoints are snapped to their average per match. Forces the model to agree with itself across the boundary by construction.
-3. **Exponential decay across the inn2 powerplay**. Steps 1 and 2 close the visible cliff but leave the model's "after one ball of chase" prediction a few percentage points off the calibrated midpoint, producing a fresh discontinuity at ball 2. We blend `wp_after(k)` toward the calibrated midpoint with weight `α_k = exp(−(k−1)/7)` for the first 36 inn2 balls — full bridge at ball 1, fading to ~0.7% at the end of over 6. Endpoints are *chained* (`wp_after(k) := wp_before(k+1)` by construction), so adjacent-ball telescoping holds within the blend region.
 
-Median per-match cliff after the fix: **0.0 pp**. The match-page chart line is now naturally continuous — the dashed marker at the innings break is purely a visual cue. The full diagnostic is at: [Fixing the Innings-Boundary Jump](notes.html?note=innings-boundary).
+A previous "Step 3" applied a linear-decay damping across the first six balls of the inn2 powerplay (issue #71). It was removed in May 2026 because it systematically suppressed the powerplay-bowler's raw deltas in a way that distorted bowling rankings — the bowler-credit lost from `wp_before/wp_after` being dragged toward the calibrated midpoint outweighed the visual benefit of a perfectly-smooth chart. Median per-match cliff at the inn1↔inn2 seam stays **0.0 pp** under Steps 1+2 alone. The full diagnostic is at: [Fixing the Innings-Boundary Jump](notes.html?note=innings-boundary).
 
 ### What the model can't see
 
@@ -421,28 +420,29 @@ These are tractable upgrades that future iterations may chase.
 
 ## 11. Top Results (Sanity Check)
 
-Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-05-07 (post K=100 ensemble).*
+Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-05-08 (post K=100 ensemble, post Step-3 removal).*
 
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |:--|:--|:--|:--|:--|:--|
-| 1 | Sunil Narine | +5.60% | +5.80% | **high** | 195 |
-| 2 | Jasprit Bumrah | +5.58% | +5.83% | **high** | 155 |
-| 3 | Lasith Malinga | +5.55% | +5.86% | **high** | 122 |
-| 4 | Yuzvendra Chahal | +3.70% | +3.87% | **high** | 179 |
-| 5 | Rashid Khan | +4.20% | +4.42% | **high** | 146 |
-| 6 | Doug Bollinger | +5.25% | +6.62% | low | 27 |
-| 7 | AB de Villiers | +3.89% | +4.07% | **high** | 168 |
-| 8 | Bhuvneshwar Kumar | +3.34% | +3.48% | **high** | 199 |
-| 9 | Morné Morkel | +3.88% | +4.31% | medium | 70 |
-| 10 | Vaibhav Suryavanshi | +7.46% | +10.30% | low | 17 |
+| 1 | Sunil Narine | +5.57% | +5.78% | **high** | 195 |
+| 2 | Jasprit Bumrah | +5.46% | +5.71% | **high** | 155 |
+| 3 | Lasith Malinga | +5.04% | +5.34% | **high** | 122 |
+| 4 | Yuzvendra Chahal | +3.70% | +3.88% | **high** | 179 |
+| 5 | Rashid Khan | +4.19% | +4.42% | **high** | 146 |
+| 6 | AB de Villiers | +3.81% | +4.00% | **high** | 168 |
+| 7 | Morné Morkel | +3.73% | +4.17% | medium | 70 |
+| 8 | Nicholas Pooran | +3.81% | +4.13% | medium | 95 |
+| 9 | Phil Salt | +4.61% | +5.49% | medium | 40 |
+| 10 | Doug Bollinger | +4.70% | +6.03% | low | 27 |
 
 A few sanity reads on this list:
 
-- **Narine #1 across 195 matches** — the most consistent all-round impact in IPL history. Top of the floor ranking and top of raw career total TILT (+11.32 lifetime, ahead of Bumrah at +9.03).
+- **Narine #1 across 195 matches** — the most consistent all-round impact in IPL history. Top of the floor ranking and top of raw career total TILT (+11.27 lifetime, ahead of Bumrah at +8.85).
 - **Bumrah, Malinga, Rashid Khan, Chahal** — the death-overs / strike-bowler archetype dominates once you adjust for confidence. Spinners and fast bowlers both surface; the model isn't biased toward one type.
-- **AB de Villiers #7 with 168 matches** ranks above Bhuvneshwar Kumar #8 with 199 matches — closing out a long-running rank inversion (issue #111) where ABD had been bouncing between #3 and #9 in the top 10 across daily retrains. The K=100 ensemble averages away the trajectory variance that was driving the swap.
-- **Bollinger and Suryavanshi at #6 and #10** are the floor ranking behaving as designed under low-sample players posting extreme raw numbers — the shrinkage pulls them hard, but the lower bound still clears most veterans. The `low` confidence label flags them.
-- **Old-era players are not punished.** Malinga's 2008–2019 career still floors at +5.55%; the `season_numeric` feature neutralises era effects.
+- **AB de Villiers #6 with 168 matches** is now firmly above the powerplay-bowler tier in the floor sort, closing out the rank inversion from issue #111. The K=100 ensemble averages away the trajectory variance that was previously bouncing him between #3 and #9 across retrains.
+- **Bowlers' floor numbers tightened by ~0.5pp** after the May 2026 removal of the linear-decay Step 3 (see [innings boundary](notes.html?note=innings-boundary#update-step-3-removed-issue-110-follow-up)). Step 3 had been over-crediting early-chase bowlers; B Kumar in particular dropped out of the top 10 floor.
+- **Pooran, Salt, Morkel, Bollinger at the back of the top 10** are the floor ranking behaving as designed under medium- and low-sample players posting extreme raw numbers — shrinkage pulls them hard, but the lower bound still clears most veterans. The confidence labels flag the small-N caveats.
+- **Old-era players are not punished.** Malinga's 2008–2019 career still floors at +5.04%; the `season_numeric` feature neutralises era effects.
 
 ---
 

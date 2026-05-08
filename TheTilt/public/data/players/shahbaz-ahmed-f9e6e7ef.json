@@ -10,21 +10,21 @@
     "Royal Challengers Bangalore",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.03892,
+  "total_tilt_per_match": -0.03597,
   "batting_tilt_per_match": -0.02623,
-  "bowling_tilt_per_match": -0.02345,
-  "shrunk_total_tilt_per_match": -0.03749,
-  "shrunk_batting_tilt_per_match": -0.02549,
-  "shrunk_bowling_tilt_per_match": -0.02226,
-  "tilt_ci_lower": -0.07211,
-  "tilt_ci_upper": -0.00286,
-  "tilt_ci_lower_90": -0.06655,
-  "tilt_ci_upper_90": -0.00843,
+  "bowling_tilt_per_match": -0.02032,
+  "shrunk_total_tilt_per_match": -0.0348,
+  "shrunk_batting_tilt_per_match": -0.02539,
+  "shrunk_bowling_tilt_per_match": -0.01954,
+  "tilt_ci_lower": -0.06912,
+  "tilt_ci_upper": -0.00047,
+  "tilt_ci_lower_90": -0.06361,
+  "tilt_ci_upper_90": -0.00599,
   "confidence": "medium",
-  "total_tilt": -2.10162,
-  "total_matches": 54,
+  "total_tilt": -1.97819,
+  "total_matches": 55,
   "batting_balls": 464,
-  "bowling_balls": 594,
+  "bowling_balls": 612,
   "seasons": [
     {
       "season": "2020",
@@ -284,7 +284,7 @@
       "season": "2022",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": 0.01458,
-      "bowling_tilt_per_match": -0.01818,
+      "bowling_tilt_per_match": -0.01738,
       "batting_matches": 11,
       "bowling_matches": 14,
       "batting_balls": 181,
@@ -496,8 +496,8 @@
           "bowl_balls": 18,
           "bowl_runs": 27,
           "bowl_econ": 9.0,
-          "bowl_tilt": -0.06658,
-          "total_tilt": -0.10697
+          "bowl_tilt": -0.05541,
+          "total_tilt": -0.0958
         },
         {
           "match_id": "1304100",
@@ -1229,11 +1229,11 @@
       "season": "2026",
       "team": "Lucknow Super Giants",
       "batting_tilt_per_match": -0.01566,
-      "bowling_tilt_per_match": -0.12095,
+      "bowling_tilt_per_match": -0.00434,
       "batting_matches": 1,
-      "bowling_matches": 1,
+      "bowling_matches": 2,
       "batting_balls": 16,
-      "bowling_balls": 6,
+      "bowling_balls": 24,
       "matches": [
         {
           "match_id": "1527678",
@@ -1253,6 +1253,25 @@
           "bowl_econ": 16.0,
           "bowl_tilt": -0.12095,
           "total_tilt": -0.13661
+        },
+        {
+          "match_id": "1529293",
+          "date": "2026-05-07",
+          "opponent": "Royal Challengers Bangalore",
+          "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow",
+          "team_score": "209/3",
+          "opponent_score": "203/6",
+          "winner": "Lucknow Super Giants",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bowl_wkts": 2,
+          "bowl_balls": 18,
+          "bowl_runs": 33,
+          "bowl_econ": 11.0,
+          "bowl_tilt": 0.11226,
+          "total_tilt": 0.11226
         }
       ],
       "batting_stats": {
@@ -1267,13 +1286,13 @@
         "hundreds": 0
       },
       "bowling_stats": {
-        "wickets": 0,
-        "innings": 1,
-        "balls": 6,
-        "runs_conceded": 16,
-        "avg": 16.0,
-        "economy": 16.0,
-        "best_figures": "0/16"
+        "wickets": 2,
+        "innings": 2,
+        "balls": 24,
+        "runs_conceded": 49,
+        "avg": 24.5,
+        "economy": 12.25,
+        "best_figures": "2/33"
       }
     }
   ],
@@ -1300,21 +1319,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.06416,
+      "tilt": -0.05299,
       "balls": 150,
-      "avg_delta": -0.000419
+      "avg_delta": -0.000346
     },
     {
       "phase": "middle",
-      "tilt": -0.83679,
-      "balls": 405,
-      "avg_delta": -0.002012
+      "tilt": -0.71668,
+      "balls": 417,
+      "avg_delta": -0.001671
     },
     {
       "phase": "death",
-      "tilt": -0.17772,
-      "balls": 39,
-      "avg_delta": -0.004231
+      "tilt": -0.18556,
+      "balls": 45,
+      "avg_delta": -0.003711
     }
   ],
   "best_matches": [
@@ -1427,20 +1446,20 @@
       "balls": 24
     },
     {
+      "match_id": "1529293",
+      "date": "2026-05-07",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": 0.11226,
+      "wickets": 2,
+      "balls": 18
+    },
+    {
       "match_id": "1304077",
       "date": "2022-04-19",
       "vs": "Lucknow Super Giants",
       "tilt": 0.08921,
       "wickets": 0,
       "balls": 24
-    },
-    {
-      "match_id": "1304049",
-      "date": "2022-03-27",
-      "vs": "Punjab Kings",
-      "tilt": 0.08741,
-      "wickets": 0,
-      "balls": 6
     }
   ],
   "bowling_worst_matches": [
@@ -1609,206 +1628,212 @@
     {
       "match": 21,
       "date": "2022-05-04",
-      "tilt": -0.10698,
-      "cumulative": 0.06306
+      "tilt": -0.0958,
+      "cumulative": 0.07423
     },
     {
       "match": 22,
       "date": "2022-05-08",
       "tilt": 0.00193,
-      "cumulative": 0.06499
+      "cumulative": 0.07616
     },
     {
       "match": 23,
       "date": "2022-05-13",
       "tilt": -0.09039,
-      "cumulative": -0.0254
+      "cumulative": -0.01423
     },
     {
       "match": 24,
       "date": "2022-05-19",
       "tilt": 0.02863,
-      "cumulative": 0.00323
+      "cumulative": 0.0144
     },
     {
       "match": 25,
       "date": "2022-05-25",
       "tilt": 0.00369,
-      "cumulative": 0.00692
+      "cumulative": 0.01809
     },
     {
       "match": 26,
       "date": "2022-05-27",
       "tilt": -0.00143,
-      "cumulative": 0.00549
+      "cumulative": 0.01666
     },
     {
       "match": 27,
       "date": "2023-04-06",
       "tilt": -0.0132,
-      "cumulative": -0.00771
+      "cumulative": 0.00346
     },
     {
       "match": 28,
       "date": "2023-04-10",
       "tilt": -0.09748,
-      "cumulative": -0.10519
+      "cumulative": -0.09402
     },
     {
       "match": 29,
       "date": "2023-04-15",
       "tilt": -0.10597,
-      "cumulative": -0.21116
+      "cumulative": -0.19999
     },
     {
       "match": 30,
       "date": "2023-04-17",
       "tilt": -0.14775,
-      "cumulative": -0.35891
+      "cumulative": -0.34773
     },
     {
       "match": 31,
       "date": "2023-04-20",
       "tilt": 0.00633,
-      "cumulative": -0.35258
+      "cumulative": -0.34141
     },
     {
       "match": 32,
       "date": "2023-04-23",
       "tilt": -0.09594,
-      "cumulative": -0.44852
+      "cumulative": -0.43735
     },
     {
       "match": 33,
       "date": "2023-04-26",
       "tilt": -0.26157,
-      "cumulative": -0.71009
+      "cumulative": -0.69892
     },
     {
       "match": 34,
       "date": "2023-05-18",
       "tilt": -0.16246,
-      "cumulative": -0.87254
+      "cumulative": -0.86137
     },
     {
       "match": 35,
       "date": "2024-03-23",
       "tilt": -0.07878,
-      "cumulative": -0.95132
+      "cumulative": -0.94015
     },
     {
       "match": 36,
       "date": "2024-03-27",
       "tilt": 0.02231,
-      "cumulative": -0.92901
+      "cumulative": -0.91784
     },
     {
       "match": 37,
       "date": "2024-03-31",
       "tilt": -0.04447,
-      "cumulative": -0.97349
+      "cumulative": -0.96232
     },
     {
       "match": 38,
       "date": "2024-04-05",
       "tilt": 0.00517,
-      "cumulative": -0.96832
+      "cumulative": -0.95714
     },
     {
       "match": 39,
       "date": "2024-04-09",
       "tilt": -0.02869,
-      "cumulative": -0.997
+      "cumulative": -0.98583
     },
     {
       "match": 40,
       "date": "2024-04-15",
       "tilt": -0.05993,
-      "cumulative": -1.05693
+      "cumulative": -1.04576
     },
     {
       "match": 41,
       "date": "2024-04-20",
       "tilt": 0.04465,
-      "cumulative": -1.01228
+      "cumulative": -1.00111
     },
     {
       "match": 42,
       "date": "2024-04-25",
       "tilt": 0.05866,
-      "cumulative": -0.95362
+      "cumulative": -0.94245
     },
     {
       "match": 43,
       "date": "2024-04-28",
       "tilt": -0.04869,
-      "cumulative": -1.00231
+      "cumulative": -0.99114
     },
     {
       "match": 44,
       "date": "2024-05-02",
       "tilt": -0.04929,
-      "cumulative": -1.05161
+      "cumulative": -1.04044
     },
     {
       "match": 45,
       "date": "2024-05-06",
       "tilt": -0.13404,
-      "cumulative": -1.18565
+      "cumulative": -1.17447
     },
     {
       "match": 46,
       "date": "2024-05-08",
       "tilt": 0.01677,
-      "cumulative": -1.16888
+      "cumulative": -1.15771
     },
     {
       "match": 47,
       "date": "2024-05-19",
       "tilt": -0.11774,
-      "cumulative": -1.28662
+      "cumulative": -1.27545
     },
     {
       "match": 48,
       "date": "2024-05-21",
       "tilt": -0.08967,
-      "cumulative": -1.37629
+      "cumulative": -1.36512
     },
     {
       "match": 49,
       "date": "2024-05-24",
       "tilt": 0.21941,
-      "cumulative": -1.15688
+      "cumulative": -1.14571
     },
     {
       "match": 50,
       "date": "2024-05-26",
       "tilt": -0.0867,
-      "cumulative": -1.24358
+      "cumulative": -1.23241
     },
     {
       "match": 51,
       "date": "2025-03-24",
       "tilt": -0.55399,
-      "cumulative": -1.79757
+      "cumulative": -1.7864
     },
     {
       "match": 52,
       "date": "2025-05-22",
       "tilt": 0.00134,
-      "cumulative": -1.79623
+      "cumulative": -1.78506
     },
     {
       "match": 53,
       "date": "2025-05-27",
       "tilt": -0.16878,
-      "cumulative": -1.96501
+      "cumulative": -1.95384
     },
     {
       "match": 54,
       "date": "2026-04-01",
       "tilt": -0.13661,
-      "cumulative": -2.10162
+      "cumulative": -2.09045
+    },
+    {
+      "match": 55,
+      "date": "2026-05-07",
+      "tilt": 0.11226,
+      "cumulative": -1.97819
     }
   ],
   "team_matchups": [
@@ -1885,6 +1910,11 @@
       "matches": 4
     },
     {
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": -0.00766,
+      "matches": 4
+    },
+    {
       "opponent": "Punjab Kings",
       "tilt_per_match": -0.01425,
       "matches": 6
@@ -1895,13 +1925,8 @@
       "matches": 4
     },
     {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.04763,
-      "matches": 3
-    },
-    {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.04856,
+      "tilt_per_match": -0.04577,
       "matches": 4
     },
     {
@@ -1928,12 +1953,12 @@
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 22,
-    "innings": 46,
-    "balls": 594,
-    "runs_conceded": 969,
-    "avg": 44.05,
-    "economy": 9.79,
+    "wickets": 24,
+    "innings": 47,
+    "balls": 612,
+    "runs_conceded": 1002,
+    "avg": 41.75,
+    "economy": 9.82,
     "best_figures": "3/7"
   },
   "match_tilt_distribution": [
@@ -1957,7 +1982,7 @@
     -0.0248,
     -0.36634,
     0.05414,
-    -0.10698,
+    -0.0958,
     0.00193,
     -0.09039,
     0.02863,
@@ -1990,6 +2015,7 @@
     -0.55399,
     0.00134,
     -0.16878,
-    -0.13661
+    -0.13661,
+    0.11226
   ]
 }

@@ -214,3 +214,34 @@ The fix shipped in [issue #111](https://github.com/soldoutbudokan/Templates/issu
 The boundary calibration itself (steps 1, 2, 3 above) is unchanged. Median per-match cliff is still mathematically zero. The residual numbers in the *PP-decay* update section (0.086 → 0.038 abs mean per match, telescoping in the blend region exact by construction) hold under K=100 too — those numbers are fundamentally about the calibration logic, not the model behind it.
 
 See [Why we ensemble](notes.html?note=ensemble) for the full diagnostic of the retrain-variance issue and the K=100 fix.
+
+---
+
+## Update: Step 3 removed (issue #110 follow-up)
+
+The K=100 ensemble made a clean A/B of the deeper chained-endpoints fix (issue #110) possible for the first time. Running V0 (calibration without Step 3) against the live production (calibration with the linear-decay Step 3) revealed that **Step 3 was distorting the bowling table more than the chart smoothness it bought was worth.**
+
+What Step 3 did: blend `wp_before` and `wp_after` toward the calibrated midpoint over the first 6 balls of inn2 with `α = (6−ball)/5`. Ball 1 was forced to delta=0; balls 2–5 carried (1−α) of their raw delta; ball 6+ was raw. The intent was visual continuity; the side effect was suppressing the powerplay-bowler's deltas in inn2 by an amount that mattered for career ranking.
+
+Concrete impact (Step 3 vs no-Step 3, top 10 by career total tilt):
+
+| Player | with Step 3 (live) | without Step 3 |
+|:--|:--:|:--:|
+| SP Narine | 11.32 | 11.27 |
+| JJ Bumrah | 9.03 | 8.85 |
+| SL Malinga | **7.15** | 6.52 |
+| B Kumar | **6.93** | 5.50 |
+| YS Chahal | 6.93 | 6.94 |
+| AB de Villiers | 6.84 | 6.71 |
+| Rashid Khan | 6.45 | 6.45 |
+| R Ashwin | **5.73** | 5.16 |
+| Harbhajan Singh | **5.33** | 4.69 |
+| N Pooran | 3.92 | (out of top 10; 3.93) |
+
+The bolded rows are the bowlers Step 3 was over-crediting most. B Kumar in particular: ~1.4 TILT of his 6.93 was the linear-decay blend handing back early-chase credit that the per-match midpoint snap was zeroing out. The justification at the time of issue #71 was that the per-match midpoint (Step 2) was *over*-zeroing the inn2 first-ball raw delta — but that diagnosis underestimated how much of B Kumar's apparent tilt came from the model's chase-pessimism on his openers' first balls (a model-output artifact, not real bowling skill).
+
+Under Steps 1+2 only, the inn2 first-ball delta is whatever the calibrated wp_before → raw model wp_after produces, with no further damping. Bowlers no longer collect a damping-rebate; the first-over chart line is faithful to the model.
+
+Median per-match cliff at the seam is unchanged (still 0.0pp by construction, since Step 2 still snaps both endpoints to the per-match midpoint). The visible "ball-2 jump" that Step 3 was originally introduced to smooth (issue #71) returns, but at smaller magnitude than the issue body claimed — closer to the model's true uncertainty about the new chase state. The chart smoothness/ranking-faithfulness trade-off was re-evaluated and ranking faithfulness wins.
+
+Issue #110's deeper chained-endpoints fix (V5/V6 in `notebooks/boundary_cliff_prototype.py`) was tested against this revised baseline and found to amplify spinner credit too aggressively — the residual it closes is large (~5.5pp inn2 mean abs per match) but the fix produces top-10 swings of 5–30 ranks for tracked players and surfaces medium/low-confidence short-career bowlers in the top-10 floor. Both V5 and V6 stay deferred. See [issue #110](https://github.com/soldoutbudokan/Templates/issues/110) for the comparison.

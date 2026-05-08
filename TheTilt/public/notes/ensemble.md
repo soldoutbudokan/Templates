@@ -146,6 +146,8 @@ The original triggering symptom — Bhuvneshwar Kumar above AB de Villiers in th
 
 ABD now ranks above Kumar on the floor view (the leaderboard's default sort), and the gap on raw career total is also right-sized. The fix reaches this without any post-hoc rescaling, manual reshuffle, or threshold-based filtering. Ranks that move under the ensemble are moving because the average of 100 trajectories disagrees with the one we happened to draw.
 
+*A subsequent change in the same investigation (May 2026) removed the linear-decay Step 3 from `apply_boundary_calibration` because it was systematically over-crediting early-chase bowlers. After that change, ABD sits at #4 by total / #6 by floor, and B Kumar is outside the top 10 floor. The story above is unchanged — the K=100 ensemble is what stabilized the rankings — but the live numbers shifted again. See [innings boundary § Step 3 removed](notes.html?note=innings-boundary#update-step-3-removed-issue-110-follow-up).*
+
 More importantly: **the rankings will now hold across retrains.** A K=20 spot-check confirmed the top-10 floor is byte-identical to K=100 within the noise floor of normal data drift. Adding a match next week won't reshuffle the top of the leaderboard.
 
 ---
@@ -154,7 +156,7 @@ More importantly: **the rankings will now hold across retrains.** A K=20 spot-ch
 
 A few open items that K=100 doesn't address:
 
-- **Telescoping residual at over boundaries** ([issue #110](https://github.com/soldoutbudokan/Templates/issues/110)). The 0.038pp residual from over-boundary feature reshuffling is real and structural, but with retrain variance under control it's now A/B-testable for the first time. Whether to ship the deeper `wp_before(k) := wp_after(k−1)` fix is a separate decision.
+- **Telescoping residual at over boundaries** ([issue #110](https://github.com/soldoutbudokan/Templates/issues/110)). With retrain variance now controlled, the chained-endpoints A/B was finally clean. Two variants tested in `notebooks/boundary_cliff_prototype.py`: V5 (chain across all balls) and V6 (chain only at over boundaries). Both close the per-match telescoping residual (~5.5pp inn2 mean abs under the production Steps 1+2 calibration) but reshuffle the top-10 by 5–30 ranks for tracked players and surface medium/low-confidence short-career bowlers in the top-10 floor. Both stay deferred. Separate fallout from the same investigation: production's previous Step 3 (linear-decay damping over inn2 first six balls) was found to over-credit early-chase bowlers, and was removed — see [Innings boundary](notes.html?note=innings-boundary).
 - **DLS handling beyond training-time exclusion.** 22 DLS-affected matches are filtered from training; their balls still flow through compute_tilt with the standard model, contributing to player TILTs from out-of-distribution states. Excluding them from ranking aggregation is a separate decision worth making.
 - **Out-of-distribution feature combinations**, including the example in the diagnostic above (a 2022 RCB venue at a season the model has limited support for). Ensembling reduces the variance of the prediction on those points but doesn't fix the underlying coverage gap. More years of data fix it eventually; nothing in the model class fixes it now.
 

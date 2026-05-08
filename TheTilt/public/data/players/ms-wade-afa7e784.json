@@ -9,18 +9,18 @@
     "Delhi Capitals",
     "Gujarat Titans"
   ],
-  "total_tilt_per_match": -0.04901,
-  "batting_tilt_per_match": -0.04901,
+  "total_tilt_per_match": -0.04698,
+  "batting_tilt_per_match": -0.04698,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.04151,
-  "shrunk_batting_tilt_per_match": -0.03953,
+  "shrunk_total_tilt_per_match": -0.03997,
+  "shrunk_batting_tilt_per_match": -0.03764,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.07685,
-  "tilt_ci_upper": -0.00618,
-  "tilt_ci_lower_90": -0.07117,
-  "tilt_ci_upper_90": -0.01186,
+  "tilt_ci_lower": -0.0749,
+  "tilt_ci_upper": -0.00505,
+  "tilt_ci_lower_90": -0.06929,
+  "tilt_ci_upper_90": -0.01066,
   "confidence": "low",
-  "total_tilt": -0.63715,
+  "total_tilt": -0.61073,
   "total_matches": 13,
   "batting_balls": 157,
   "bowling_balls": 0,
@@ -89,7 +89,7 @@
     {
       "season": "2022",
       "team": "Gujarat Titans",
-      "batting_tilt_per_match": -0.02885,
+      "batting_tilt_per_match": -0.02621,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 10,
       "bowling_matches": 0,
@@ -145,13 +145,13 @@
           "bat_runs": 6,
           "bat_balls": 7,
           "bat_sr": 85.7,
-          "bat_tilt": -0.13423,
+          "bat_tilt": -0.1171,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.13423
+          "total_tilt": -0.1171
         },
         {
           "match_id": "1304067",
@@ -259,13 +259,13 @@
           "bat_runs": 35,
           "bat_balls": 30,
           "bat_sr": 116.7,
-          "bat_tilt": 0.04181,
+          "bat_tilt": 0.0511,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.04181
+          "total_tilt": 0.0511
         },
         {
           "match_id": "1312200",
@@ -345,9 +345,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.03286,
+      "tilt": 0.05927,
       "balls": 91,
-      "avg_delta": 0.000342
+      "avg_delta": 0.000617
     },
     {
       "phase": "middle",
@@ -367,20 +367,20 @@
       "balls": 6
     },
     {
+      "match_id": "1312197",
+      "date": "2022-05-24",
+      "vs": "Rajasthan Royals",
+      "tilt": 0.0511,
+      "runs": 35,
+      "balls": 30
+    },
+    {
       "match_id": "1304067",
       "date": "2022-04-11",
       "vs": "Sunrisers Hyderabad",
       "tilt": 0.04182,
       "runs": 19,
       "balls": 19
-    },
-    {
-      "match_id": "1312197",
-      "date": "2022-05-24",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.04181,
-      "runs": 35,
-      "balls": 30
     },
     {
       "match_id": "1304108",
@@ -420,7 +420,7 @@
       "match_id": "1304062",
       "date": "2022-04-08",
       "vs": "Punjab Kings",
-      "tilt": -0.13423,
+      "tilt": -0.1171,
       "runs": 6,
       "balls": 7
     },
@@ -471,56 +471,56 @@
     {
       "match": 5,
       "date": "2022-04-08",
-      "tilt": -0.13423,
-      "cumulative": -0.47906
+      "tilt": -0.1171,
+      "cumulative": -0.46193
     },
     {
       "match": 6,
       "date": "2022-04-11",
       "tilt": 0.04182,
-      "cumulative": -0.43724
+      "cumulative": -0.42011
     },
     {
       "match": 7,
       "date": "2022-04-14",
       "tilt": 0.07554,
-      "cumulative": -0.36171
+      "cumulative": -0.34458
     },
     {
       "match": 8,
       "date": "2022-05-10",
       "tilt": -0.04143,
-      "cumulative": -0.40314
+      "cumulative": -0.38601
     },
     {
       "match": 9,
       "date": "2022-05-15",
       "tilt": 0.00832,
-      "cumulative": -0.39482
+      "cumulative": -0.37769
     },
     {
       "match": 10,
       "date": "2022-05-19",
       "tilt": -0.09038,
-      "cumulative": -0.4852
+      "cumulative": -0.46807
     },
     {
       "match": 11,
       "date": "2022-05-24",
-      "tilt": 0.04181,
-      "cumulative": -0.44339
+      "tilt": 0.0511,
+      "cumulative": -0.41697
     },
     {
       "match": 12,
       "date": "2022-05-29",
       "tilt": -0.04156,
-      "cumulative": -0.48496
+      "cumulative": -0.45854
     },
     {
       "match": 13,
       "date": "2024-04-10",
       "tilt": -0.1522,
-      "cumulative": -0.63715
+      "cumulative": -0.61073
     }
   ],
   "team_matchups": [
@@ -536,7 +536,7 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.0191,
+      "tilt_per_match": -0.01678,
       "matches": 4
     },
     {
@@ -556,7 +556,7 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.13423,
+      "tilt_per_match": -0.1171,
       "matches": 1
     },
     {
@@ -584,13 +584,13 @@
     -0.0319,
     -0.08414,
     -0.0642,
-    -0.13423,
+    -0.1171,
     0.04182,
     0.07554,
     -0.04143,
     0.00832,
     -0.09038,
-    0.04181,
+    0.0511,
     -0.04156,
     -0.1522
   ]
