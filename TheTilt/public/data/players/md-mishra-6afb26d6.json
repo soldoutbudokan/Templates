@@ -9,18 +9,18 @@
     "Deccan Chargers",
     "Pune Warriors India"
   ],
-  "total_tilt_per_match": 0.00358,
-  "batting_tilt_per_match": 0.00358,
+  "total_tilt_per_match": 0.0031,
+  "batting_tilt_per_match": 0.0031,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.0027,
-  "shrunk_batting_tilt_per_match": -0.00146,
+  "shrunk_total_tilt_per_match": -0.00311,
+  "shrunk_batting_tilt_per_match": -0.0016,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.08493,
-  "tilt_ci_upper": 0.07952,
-  "tilt_ci_lower_90": -0.07171,
-  "tilt_ci_upper_90": 0.06631,
+  "tilt_ci_lower": -0.08521,
+  "tilt_ci_upper": 0.07898,
+  "tilt_ci_lower_90": -0.07202,
+  "tilt_ci_upper_90": 0.06579,
   "confidence": "low",
-  "total_tilt": 0.06082,
+  "total_tilt": 0.05272,
   "total_matches": 17,
   "batting_balls": 208,
   "bowling_balls": 0,
@@ -394,7 +394,7 @@
     {
       "season": "2012",
       "team": "Pune Warriors India",
-      "batting_tilt_per_match": 0.07994,
+      "batting_tilt_per_match": 0.07184,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 1,
       "bowling_matches": 0,
@@ -412,14 +412,14 @@
           "bat_runs": 4,
           "bat_balls": 4,
           "bat_sr": 100.0,
-          "bat_tilt": 0.07994,
+          "bat_tilt": 0.07184,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.07994
+          "total_tilt": 0.07184
         }
       ],
       "batting_stats": {
@@ -438,9 +438,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.35341,
+      "tilt": -0.36151,
       "balls": 124,
-      "avg_delta": -0.002761
+      "avg_delta": -0.002824
     },
     {
       "phase": "middle",
@@ -476,15 +476,6 @@
       "not_out": false
     },
     {
-      "match_id": "548362",
-      "date": "2012-05-11",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": 0.07994,
-      "runs": 4,
-      "balls": 4,
-      "not_out": false
-    },
-    {
       "match_id": "419151",
       "date": "2010-04-12",
       "vs": "Royal Challengers Bangalore",
@@ -492,6 +483,15 @@
       "runs": 41,
       "balls": 30,
       "not_out": true
+    },
+    {
+      "match_id": "548362",
+      "date": "2012-05-11",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": 0.07184,
+      "runs": 4,
+      "balls": 4,
+      "not_out": false
     },
     {
       "match_id": "419130",
@@ -652,8 +652,8 @@
     {
       "match": 17,
       "date": "2012-05-11",
-      "tilt": 0.07994,
-      "cumulative": 0.06082
+      "tilt": 0.07184,
+      "cumulative": 0.05272
     }
   ],
   "team_matchups": [
@@ -669,7 +669,7 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.0114,
+      "tilt_per_match": -0.01343,
       "matches": 4
     },
     {
@@ -724,6 +724,6 @@
     -0.04152,
     -0.09855,
     -0.14467,
-    0.07994
+    0.07184
   ]
 }

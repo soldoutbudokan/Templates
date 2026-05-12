@@ -8,30 +8,30 @@
   "teams": [
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.04458,
-  "batting_tilt_per_match": 0.04458,
+  "total_tilt_per_match": 0.03056,
+  "batting_tilt_per_match": 0.03056,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.01783,
-  "shrunk_batting_tilt_per_match": 0.0183,
+  "shrunk_total_tilt_per_match": 0.01074,
+  "shrunk_batting_tilt_per_match": 0.01232,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.06063,
-  "tilt_ci_upper": 0.09629,
-  "tilt_ci_lower_90": -0.04802,
-  "tilt_ci_upper_90": 0.08368,
+  "tilt_ci_lower": -0.0631,
+  "tilt_ci_upper": 0.08457,
+  "tilt_ci_lower_90": -0.05123,
+  "tilt_ci_upper_90": 0.0727,
   "confidence": "low",
-  "total_tilt": 0.35667,
-  "total_matches": 8,
-  "batting_balls": 59,
+  "total_tilt": 0.27501,
+  "total_matches": 9,
+  "batting_balls": 72,
   "bowling_balls": 0,
   "seasons": [
     {
       "season": "2026",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.04458,
+      "batting_tilt_per_match": 0.03056,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 8,
+      "batting_matches": 9,
       "bowling_matches": 0,
-      "batting_balls": 59,
+      "batting_balls": 72,
       "bowling_balls": 0,
       "matches": [
         {
@@ -105,14 +105,14 @@
           "bat_runs": 24,
           "bat_balls": 13,
           "bat_sr": 184.6,
-          "bat_tilt": 0.07944,
+          "bat_tilt": 0.0772,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.07944
+          "total_tilt": 0.0772
         },
         {
           "match_id": "1529270",
@@ -193,14 +193,34 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.07485
+        },
+        {
+          "match_id": "1529299",
+          "date": "2026-05-12",
+          "opponent": "Gujarat Titans",
+          "venue": "Narendra Modi Stadium, Ahmedabad",
+          "team_score": "86/10",
+          "opponent_score": "168/5",
+          "winner": "Gujarat Titans",
+          "bat_runs": 16,
+          "bat_balls": 13,
+          "bat_sr": 123.1,
+          "bat_tilt": -0.07941,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": -0.07941
         }
       ],
       "batting_stats": {
-        "runs": 95,
-        "innings": 8,
-        "balls": 59,
-        "avg": 19.0,
-        "sr": 161.02,
+        "runs": 111,
+        "innings": 9,
+        "balls": 72,
+        "avg": 18.5,
+        "sr": 154.17,
         "hs": 30,
         "not_outs": 3,
         "fifties": 0,
@@ -210,16 +230,22 @@
   ],
   "batting_phases": [
     {
+      "phase": "powerplay",
+      "tilt": 0.0152,
+      "balls": 1,
+      "avg_delta": 0.015199
+    },
+    {
       "phase": "middle",
-      "tilt": -0.05464,
-      "balls": 16,
-      "avg_delta": -0.003415
+      "tilt": -0.14925,
+      "balls": 28,
+      "avg_delta": -0.00533
     },
     {
       "phase": "death",
-      "tilt": 0.41131,
+      "tilt": 0.40907,
       "balls": 43,
-      "avg_delta": 0.00914
+      "avg_delta": 0.00909
     }
   ],
   "bowling_phases": [],
@@ -246,7 +272,7 @@
       "match_id": "1529264",
       "date": "2026-04-13",
       "vs": "Rajasthan Royals",
-      "tilt": 0.07944,
+      "tilt": 0.0772,
       "runs": 24,
       "balls": 13,
       "not_out": true
@@ -271,6 +297,15 @@
     }
   ],
   "worst_matches": [
+    {
+      "match_id": "1529299",
+      "date": "2026-05-12",
+      "vs": "Gujarat Titans",
+      "tilt": -0.07941,
+      "runs": 16,
+      "balls": 13,
+      "not_out": false
+    },
     {
       "match_id": "1529288",
       "date": "2026-05-03",
@@ -306,15 +341,6 @@
       "runs": 9,
       "balls": 6,
       "not_out": false
-    },
-    {
-      "match_id": "1527690",
-      "date": "2026-04-11",
-      "vs": "Punjab Kings",
-      "tilt": -0.02462,
-      "runs": 9,
-      "balls": 8,
-      "not_out": false
     }
   ],
   "bowling_best_matches": [],
@@ -341,38 +367,44 @@
     {
       "match": 4,
       "date": "2026-04-13",
-      "tilt": 0.07944,
-      "cumulative": -0.03041
+      "tilt": 0.0772,
+      "cumulative": -0.03265
     },
     {
       "match": 5,
       "date": "2026-04-18",
       "tilt": -0.05783,
-      "cumulative": -0.08825
+      "cumulative": -0.09049
     },
     {
       "match": 6,
       "date": "2026-04-25",
       "tilt": 0.32929,
-      "cumulative": 0.24104
+      "cumulative": 0.2388
     },
     {
       "match": 7,
       "date": "2026-04-29",
       "tilt": 0.19047,
-      "cumulative": 0.43152
+      "cumulative": 0.42927
     },
     {
       "match": 8,
       "date": "2026-05-03",
       "tilt": -0.07485,
-      "cumulative": 0.35667
+      "cumulative": 0.35443
+    },
+    {
+      "match": 9,
+      "date": "2026-05-12",
+      "tilt": -0.07941,
+      "cumulative": 0.27501
     }
   ],
   "team_matchups": [
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.20436,
+      "tilt_per_match": 0.20324,
       "matches": 2
     },
     {
@@ -399,17 +431,22 @@
       "opponent": "Kolkata Knight Riders",
       "tilt_per_match": -0.06013,
       "matches": 2
+    },
+    {
+      "opponent": "Gujarat Titans",
+      "tilt_per_match": -0.07941,
+      "matches": 1
     }
   ],
   "bowling_team_matchups": [],
   "batting_stats": {
-    "runs": 95,
-    "innings": 8,
-    "balls": 59,
-    "avg": 19.0,
-    "sr": 161.02,
+    "runs": 111,
+    "innings": 9,
+    "balls": 72,
+    "avg": 18.5,
+    "sr": 154.17,
     "hs": 30,
-    "dismissals": 5,
+    "dismissals": 6,
     "not_outs": 3,
     "fifties": 0,
     "hundreds": 0
@@ -419,10 +456,11 @@
     -0.03981,
     -0.04542,
     -0.02462,
-    0.07944,
+    0.0772,
     -0.05783,
     0.32929,
     0.19047,
-    -0.07485
+    -0.07485,
+    -0.07941
   ]
 }

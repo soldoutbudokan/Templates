@@ -8,20 +8,20 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": 0.02596,
-  "batting_tilt_per_match": 0.02596,
+  "total_tilt_per_match": 0.06545,
+  "batting_tilt_per_match": 0.06545,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.00311,
-  "shrunk_batting_tilt_per_match": 0.00496,
+  "shrunk_total_tilt_per_match": 0.02744,
+  "shrunk_batting_tilt_per_match": 0.02825,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.06007,
-  "tilt_ci_upper": 0.06628,
-  "tilt_ci_lower_90": -0.04992,
-  "tilt_ci_upper_90": 0.05613,
+  "tilt_ci_lower": -0.053,
+  "tilt_ci_upper": 0.10787,
+  "tilt_ci_lower_90": -0.04007,
+  "tilt_ci_upper_90": 0.09495,
   "confidence": "low",
-  "total_tilt": 0.15579,
-  "total_matches": 6,
-  "batting_balls": 56,
+  "total_tilt": 0.45815,
+  "total_matches": 7,
+  "batting_balls": 79,
   "bowling_balls": 0,
   "seasons": [
     {
@@ -110,11 +110,11 @@
     {
       "season": "2026",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": 0.06021,
+      "batting_tilt_per_match": 0.12075,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 3,
+      "batting_matches": 4,
       "bowling_matches": 0,
-      "batting_balls": 24,
+      "batting_balls": 47,
       "bowling_balls": 0,
       "matches": [
         {
@@ -176,17 +176,37 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": 0.0202
+        },
+        {
+          "match_id": "1529296",
+          "date": "2026-05-10",
+          "opponent": "Lucknow Super Giants",
+          "venue": "MA Chidambaram Stadium, Chepauk",
+          "team_score": "208/5",
+          "opponent_score": "203/8",
+          "winner": "Chennai Super Kings",
+          "bat_runs": 65,
+          "bat_balls": 23,
+          "bat_sr": 282.6,
+          "bat_tilt": 0.30236,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.30236
         }
       ],
       "batting_stats": {
-        "runs": 45,
-        "innings": 3,
-        "balls": 24,
-        "avg": 15.0,
-        "sr": 187.5,
-        "hs": 24,
+        "runs": 110,
+        "innings": 4,
+        "balls": 47,
+        "avg": 27.5,
+        "sr": 234.04,
+        "hs": 65,
         "not_outs": 0,
-        "fifties": 0,
+        "fifties": 1,
         "hundreds": 0
       }
     }
@@ -194,19 +214,28 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.20399,
-      "balls": 44,
-      "avg_delta": 0.004435
+      "tilt": 0.45176,
+      "balls": 53,
+      "avg_delta": 0.008067
     },
     {
       "phase": "middle",
-      "tilt": -0.0482,
-      "balls": 12,
-      "avg_delta": -0.004017
+      "tilt": 0.00639,
+      "balls": 26,
+      "avg_delta": 0.000246
     }
   ],
   "bowling_phases": [],
   "best_matches": [
+    {
+      "match_id": "1529296",
+      "date": "2026-05-10",
+      "vs": "Lucknow Super Giants",
+      "tilt": 0.30236,
+      "runs": 65,
+      "balls": 23,
+      "not_out": false
+    },
     {
       "match_id": "1529287",
       "date": "2026-05-02",
@@ -241,15 +270,6 @@
       "tilt": -0.02296,
       "runs": 37,
       "balls": 19,
-      "not_out": false
-    },
-    {
-      "match_id": "1529280",
-      "date": "2026-04-26",
-      "vs": "Gujarat Titans",
-      "tilt": -0.0323,
-      "runs": 4,
-      "balls": 3,
       "not_out": false
     }
   ],
@@ -338,9 +358,20 @@
       "date": "2026-05-05",
       "tilt": 0.0202,
       "cumulative": 0.15579
+    },
+    {
+      "match": 7,
+      "date": "2026-05-10",
+      "tilt": 0.30236,
+      "cumulative": 0.45815
     }
   ],
   "team_matchups": [
+    {
+      "opponent": "Lucknow Super Giants",
+      "tilt_per_match": 0.30236,
+      "matches": 1
+    },
     {
       "opponent": "Mumbai Indians",
       "tilt_per_match": 0.19274,
@@ -369,15 +400,15 @@
   ],
   "bowling_team_matchups": [],
   "batting_stats": {
-    "runs": 113,
-    "innings": 6,
-    "balls": 56,
-    "avg": 18.83,
-    "sr": 201.79,
-    "hs": 37,
-    "dismissals": 6,
+    "runs": 178,
+    "innings": 7,
+    "balls": 79,
+    "avg": 25.43,
+    "sr": 225.32,
+    "hs": 65,
+    "dismissals": 7,
     "not_outs": 0,
-    "fifties": 0,
+    "fifties": 1,
     "hundreds": 0
   },
   "bowling_stats": null,
@@ -387,6 +418,7 @@
     -0.02296,
     -0.0323,
     0.19274,
-    0.0202
+    0.0202,
+    0.30236
   ]
 }

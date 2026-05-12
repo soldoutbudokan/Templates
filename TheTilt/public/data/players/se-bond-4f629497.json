@@ -8,18 +8,18 @@
   "teams": [
     "Kolkata Knight Riders"
   ],
-  "total_tilt_per_match": 0.00439,
+  "total_tilt_per_match": 0.00583,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.00452,
-  "shrunk_total_tilt_per_match": -0.00649,
+  "bowling_tilt_per_match": 0.00595,
+  "shrunk_total_tilt_per_match": -0.00569,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.0036,
-  "tilt_ci_lower": -0.04377,
-  "tilt_ci_upper": 0.0308,
-  "tilt_ci_lower_90": -0.03778,
-  "tilt_ci_upper_90": 0.02481,
+  "shrunk_bowling_tilt_per_match": -0.00216,
+  "tilt_ci_lower": -0.04175,
+  "tilt_ci_upper": 0.03037,
+  "tilt_ci_lower_90": -0.03595,
+  "tilt_ci_upper_90": 0.02457,
   "confidence": "low",
-  "total_tilt": 0.03515,
+  "total_tilt": 0.04662,
   "total_matches": 8,
   "batting_balls": 2,
   "bowling_balls": 186,
@@ -28,7 +28,7 @@
       "season": "2010",
       "team": "Kolkata Knight Riders",
       "batting_tilt_per_match": -0.001,
-      "bowling_tilt_per_match": 0.00452,
+      "bowling_tilt_per_match": 0.00595,
       "batting_matches": 1,
       "bowling_matches": 8,
       "batting_balls": 2,
@@ -91,8 +91,8 @@
           "bowl_balls": 18,
           "bowl_runs": 31,
           "bowl_econ": 10.33,
-          "bowl_tilt": -0.09501,
-          "total_tilt": -0.09501
+          "bowl_tilt": -0.09092,
+          "total_tilt": -0.09092
         },
         {
           "match_id": "419127",
@@ -111,8 +111,8 @@
           "bowl_balls": 24,
           "bowl_runs": 24,
           "bowl_econ": 6.0,
-          "bowl_tilt": 0.09093,
-          "total_tilt": 0.09093
+          "bowl_tilt": 0.09074,
+          "total_tilt": 0.09074
         },
         {
           "match_id": "419135",
@@ -151,8 +151,8 @@
           "bowl_balls": 24,
           "bowl_runs": 33,
           "bowl_econ": 8.25,
-          "bowl_tilt": -0.08301,
-          "total_tilt": -0.08301
+          "bowl_tilt": -0.07543,
+          "total_tilt": -0.07543
         },
         {
           "match_id": "419158",
@@ -228,9 +228,9 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.05658,
+      "tilt": 0.06805,
       "balls": 90,
-      "avg_delta": 0.000615
+      "avg_delta": 0.00074
     },
     {
       "phase": "middle",
@@ -272,7 +272,7 @@
       "match_id": "419127",
       "date": "2010-03-27",
       "vs": "Punjab Kings",
-      "tilt": 0.09093,
+      "tilt": 0.09074,
       "wickets": 2,
       "balls": 24
     },
@@ -314,7 +314,7 @@
       "match_id": "419122",
       "date": "2010-03-22",
       "vs": "Mumbai Indians",
-      "tilt": -0.09501,
+      "tilt": -0.09092,
       "wickets": 0,
       "balls": 18
     },
@@ -322,7 +322,7 @@
       "match_id": "419139",
       "date": "2010-04-04",
       "vs": "Punjab Kings",
-      "tilt": -0.08301,
+      "tilt": -0.07543,
       "wickets": 1,
       "balls": 24
     },
@@ -367,38 +367,38 @@
     {
       "match": 3,
       "date": "2010-03-22",
-      "tilt": -0.09501,
-      "cumulative": -0.11742
+      "tilt": -0.09092,
+      "cumulative": -0.11334
     },
     {
       "match": 4,
       "date": "2010-03-27",
-      "tilt": 0.09093,
-      "cumulative": -0.02648
+      "tilt": 0.09074,
+      "cumulative": -0.0226
     },
     {
       "match": 5,
       "date": "2010-04-01",
       "tilt": 0.07815,
-      "cumulative": 0.05166
+      "cumulative": 0.05555
     },
     {
       "match": 6,
       "date": "2010-04-04",
-      "tilt": -0.08301,
-      "cumulative": -0.03134
+      "tilt": -0.07543,
+      "cumulative": -0.01988
     },
     {
       "match": 7,
       "date": "2010-04-17",
       "tilt": 0.02705,
-      "cumulative": -0.00429
+      "cumulative": 0.00718
     },
     {
       "match": 8,
       "date": "2010-04-19",
       "tilt": 0.03944,
-      "cumulative": 0.03515
+      "cumulative": 0.04662
     }
   ],
   "team_matchups": [
@@ -421,12 +421,12 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.00396,
+      "tilt_per_match": 0.00766,
       "matches": 2
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.02778,
+      "tilt_per_match": -0.02574,
       "matches": 2
     },
     {
@@ -459,10 +459,10 @@
   "match_tilt_distribution": [
     -0.03156,
     0.00914,
-    -0.09501,
-    0.09093,
+    -0.09092,
+    0.09074,
     0.07815,
-    -0.08301,
+    -0.07543,
     0.02705,
     0.03944
   ]

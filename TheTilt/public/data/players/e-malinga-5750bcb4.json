@@ -8,21 +8,21 @@
   "teams": [
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.02953,
+  "total_tilt_per_match": 0.02155,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.02818,
-  "shrunk_total_tilt_per_match": 0.01715,
+  "bowling_tilt_per_match": 0.02045,
+  "shrunk_total_tilt_per_match": 0.01143,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.01752,
-  "tilt_ci_lower": -0.04259,
-  "tilt_ci_upper": 0.07688,
-  "tilt_ci_lower_90": -0.03299,
-  "tilt_ci_upper_90": 0.06728,
+  "shrunk_bowling_tilt_per_match": 0.01294,
+  "tilt_ci_lower": -0.04687,
+  "tilt_ci_upper": 0.06974,
+  "tilt_ci_lower_90": -0.0375,
+  "tilt_ci_upper_90": 0.06037,
   "confidence": "low",
-  "total_tilt": 0.50199,
-  "total_matches": 17,
-  "batting_balls": 6,
-  "bowling_balls": 366,
+  "total_tilt": 0.38785,
+  "total_matches": 18,
+  "batting_balls": 9,
+  "bowling_balls": 390,
   "seasons": [
     {
       "season": "2025",
@@ -131,8 +131,8 @@
           "bowl_balls": 24,
           "bowl_runs": 41,
           "bowl_econ": 10.25,
-          "bowl_tilt": 0.00912,
-          "total_tilt": 0.00912
+          "bowl_tilt": 0.00915,
+          "total_tilt": 0.00915
         },
         {
           "match_id": "1473505",
@@ -168,12 +168,12 @@
     {
       "season": "2026",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.02296,
-      "bowling_tilt_per_match": 0.04949,
-      "batting_matches": 1,
-      "bowling_matches": 11,
-      "batting_balls": 6,
-      "bowling_balls": 230,
+      "batting_tilt_per_match": 0.0099,
+      "bowling_tilt_per_match": 0.03612,
+      "batting_matches": 2,
+      "bowling_matches": 12,
+      "batting_balls": 9,
+      "bowling_balls": 254,
       "matches": [
         {
           "match_id": "1527674",
@@ -394,31 +394,57 @@
           "bowl_econ": 9.0,
           "bowl_tilt": 0.0069,
           "total_tilt": 0.0069
+        },
+        {
+          "match_id": "1529299",
+          "date": "2026-05-12",
+          "opponent": "Gujarat Titans",
+          "venue": "Narendra Modi Stadium, Ahmedabad",
+          "team_score": "86/10",
+          "opponent_score": "168/5",
+          "winner": "Gujarat Titans",
+          "bat_runs": 0,
+          "bat_balls": 3,
+          "bat_sr": 0.0,
+          "bat_tilt": -0.00317,
+          "bat_not_out": true,
+          "bowl_wkts": 0,
+          "bowl_balls": 24,
+          "bowl_runs": 46,
+          "bowl_econ": 11.5,
+          "bowl_tilt": -0.11101,
+          "total_tilt": -0.11418
         }
       ],
       "batting_stats": {
         "runs": 2,
-        "innings": 1,
-        "balls": 6,
+        "innings": 2,
+        "balls": 9,
         "avg": 2.0,
-        "sr": 33.33,
+        "sr": 22.22,
         "hs": 2,
-        "not_outs": 1,
+        "not_outs": 2,
         "fifties": 0,
         "hundreds": 0
       },
       "bowling_stats": {
         "wickets": 17,
-        "innings": 11,
-        "balls": 230,
-        "runs_conceded": 365,
-        "avg": 21.47,
-        "economy": 9.52,
+        "innings": 12,
+        "balls": 254,
+        "runs_conceded": 411,
+        "avg": 24.18,
+        "economy": 9.71,
         "best_figures": "4/32"
       }
     }
   ],
   "batting_phases": [
+    {
+      "phase": "middle",
+      "tilt": -0.00317,
+      "balls": 3,
+      "avg_delta": -0.001056
+    },
     {
       "phase": "death",
       "tilt": 0.02296,
@@ -429,21 +455,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.08767,
+      "tilt": -0.0877,
       "balls": 108,
       "avg_delta": -0.000756
     },
     {
       "phase": "middle",
-      "tilt": 0.41235,
-      "balls": 144,
-      "avg_delta": 0.002626
+      "tilt": 0.39092,
+      "balls": 156,
+      "avg_delta": 0.002313
     },
     {
       "phase": "death",
-      "tilt": 0.15435,
-      "balls": 114,
-      "avg_delta": 0.001276
+      "tilt": 0.06483,
+      "balls": 126,
+      "avg_delta": 0.000484
     }
   ],
   "best_matches": [
@@ -455,9 +481,27 @@
       "runs": 2,
       "balls": 6,
       "not_out": true
+    },
+    {
+      "match_id": "1529299",
+      "date": "2026-05-12",
+      "vs": "Gujarat Titans",
+      "tilt": -0.00317,
+      "runs": 0,
+      "balls": 3,
+      "not_out": true
     }
   ],
   "worst_matches": [
+    {
+      "match_id": "1529299",
+      "date": "2026-05-12",
+      "vs": "Gujarat Titans",
+      "tilt": -0.00317,
+      "runs": 0,
+      "balls": 3,
+      "not_out": true
+    },
     {
       "match_id": "1529288",
       "date": "2026-05-03",
@@ -512,6 +556,14 @@
   ],
   "bowling_worst_matches": [
     {
+      "match_id": "1529299",
+      "date": "2026-05-12",
+      "vs": "Gujarat Titans",
+      "tilt": -0.11101,
+      "wickets": 0,
+      "balls": 24
+    },
+    {
       "match_id": "1527674",
       "date": "2026-03-28",
       "vs": "Royal Challengers Bangalore",
@@ -541,14 +593,6 @@
       "vs": "Mumbai Indians",
       "tilt": -0.05986,
       "wickets": 2,
-      "balls": 24
-    },
-    {
-      "match_id": "1527683",
-      "date": "2026-04-05",
-      "vs": "Lucknow Super Giants",
-      "tilt": -0.05291,
-      "wickets": 1,
       "balls": 24
     }
   ],
@@ -580,86 +624,97 @@
     {
       "match": 5,
       "date": "2025-05-23",
-      "tilt": 0.00912,
-      "cumulative": -0.07477
+      "tilt": 0.00915,
+      "cumulative": -0.07475
     },
     {
       "match": 6,
       "date": "2025-05-25",
       "tilt": 0.00942,
-      "cumulative": -0.06535
+      "cumulative": -0.06533
     },
     {
       "match": 7,
       "date": "2026-03-28",
       "tilt": -0.10346,
-      "cumulative": -0.16882
+      "cumulative": -0.16879
     },
     {
       "match": 8,
       "date": "2026-04-02",
       "tilt": 0.325,
-      "cumulative": 0.15619
+      "cumulative": 0.15621
     },
     {
       "match": 9,
       "date": "2026-04-05",
       "tilt": -0.05291,
-      "cumulative": 0.10328
+      "cumulative": 0.1033
     },
     {
       "match": 10,
       "date": "2026-04-11",
       "tilt": -0.0851,
-      "cumulative": 0.01818
+      "cumulative": 0.01821
     },
     {
       "match": 11,
       "date": "2026-04-13",
       "tilt": 0.00457,
-      "cumulative": 0.02275
+      "cumulative": 0.02277
     },
     {
       "match": 12,
       "date": "2026-04-18",
       "tilt": 0.44401,
-      "cumulative": 0.46675
+      "cumulative": 0.46678
     },
     {
       "match": 13,
       "date": "2026-04-21",
       "tilt": 0.10427,
-      "cumulative": 0.57102
+      "cumulative": 0.57105
     },
     {
       "match": 14,
       "date": "2026-04-25",
       "tilt": 0.00186,
-      "cumulative": 0.57288
+      "cumulative": 0.57291
     },
     {
       "match": 15,
       "date": "2026-04-29",
       "tilt": -0.00865,
-      "cumulative": 0.56423
+      "cumulative": 0.56425
     },
     {
       "match": 16,
       "date": "2026-05-03",
       "tilt": -0.06913,
-      "cumulative": 0.49509
+      "cumulative": 0.49512
     },
     {
       "match": 17,
       "date": "2026-05-06",
       "tilt": 0.0069,
-      "cumulative": 0.50199
+      "cumulative": 0.50202
+    },
+    {
+      "match": 18,
+      "date": "2026-05-12",
+      "tilt": -0.11417,
+      "cumulative": 0.38785
     }
   ],
   "team_matchups": [
     {
       "opponent": "Kolkata Knight Riders",
       "tilt_per_match": 0.02296,
+      "matches": 1
+    },
+    {
+      "opponent": "Gujarat Titans",
+      "tilt_per_match": -0.00317,
       "matches": 1
     }
   ],
@@ -701,29 +756,34 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.04717,
+      "tilt_per_match": -0.04716,
       "matches": 2
+    },
+    {
+      "opponent": "Gujarat Titans",
+      "tilt_per_match": -0.11101,
+      "matches": 1
     }
   ],
   "batting_stats": {
     "runs": 2,
-    "innings": 1,
-    "balls": 6,
+    "innings": 2,
+    "balls": 9,
     "avg": 2.0,
-    "sr": 33.33,
+    "sr": 22.22,
     "hs": 2,
     "dismissals": 0,
-    "not_outs": 1,
+    "not_outs": 2,
     "fifties": 0,
     "hundreds": 0
   },
   "bowling_stats": {
     "wickets": 30,
-    "innings": 17,
-    "balls": 366,
-    "runs_conceded": 580,
-    "avg": 19.33,
-    "economy": 9.51,
+    "innings": 18,
+    "balls": 390,
+    "runs_conceded": 626,
+    "avg": 20.87,
+    "economy": 9.63,
     "best_figures": "4/32"
   },
   "match_tilt_distribution": [
@@ -731,7 +791,7 @@
     -0.05986,
     -0.03944,
     0.02163,
-    0.00912,
+    0.00915,
     0.00942,
     -0.10346,
     0.325,
@@ -743,6 +803,7 @@
     0.00186,
     -0.00865,
     -0.06913,
-    0.0069
+    0.0069,
+    -0.11417
   ]
 }

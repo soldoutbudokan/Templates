@@ -8,21 +8,21 @@
   "teams": [
     "Delhi Capitals"
   ],
-  "total_tilt_per_match": -0.03694,
+  "total_tilt_per_match": -0.01471,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02536,
+  "shrunk_total_tilt_per_match": -0.02089,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.02536,
-  "tilt_ci_upper": -0.02536,
-  "tilt_ci_lower_90": -0.02536,
-  "tilt_ci_upper_90": -0.02536,
+  "tilt_ci_lower": -0.04376,
+  "tilt_ci_upper": 0.00199,
+  "tilt_ci_lower_90": -0.04009,
+  "tilt_ci_upper_90": -0.00168,
   "confidence": "low",
-  "total_tilt": -0.03694,
-  "total_matches": 1,
-  "batting_balls": 4,
-  "bowling_balls": 0,
+  "total_tilt": -0.02942,
+  "total_matches": 2,
+  "batting_balls": 12,
+  "bowling_balls": 24,
   "seasons": [
     {
       "season": "2025",
@@ -66,6 +66,58 @@
         "fifties": 0,
         "hundreds": 0
       }
+    },
+    {
+      "season": "2026",
+      "team": "Delhi Capitals",
+      "batting_tilt_per_match": 0.00869,
+      "bowling_tilt_per_match": -0.00118,
+      "batting_matches": 1,
+      "bowling_matches": 1,
+      "batting_balls": 8,
+      "bowling_balls": 24,
+      "matches": [
+        {
+          "match_id": "1529298",
+          "date": "2026-05-11",
+          "opponent": "Punjab Kings",
+          "venue": "Himachal Pradesh Cricket Association Stadium",
+          "team_score": "216/7",
+          "opponent_score": "210/5",
+          "winner": "Delhi Capitals",
+          "bat_runs": 18,
+          "bat_balls": 8,
+          "bat_sr": 225.0,
+          "bat_tilt": 0.00869,
+          "bat_not_out": true,
+          "bowl_wkts": 2,
+          "bowl_balls": 24,
+          "bowl_runs": 44,
+          "bowl_econ": 11.0,
+          "bowl_tilt": -0.00118,
+          "total_tilt": 0.00751
+        }
+      ],
+      "batting_stats": {
+        "runs": 18,
+        "innings": 1,
+        "balls": 8,
+        "avg": 18.0,
+        "sr": 225.0,
+        "hs": 18,
+        "not_outs": 1,
+        "fifties": 0,
+        "hundreds": 0
+      },
+      "bowling_stats": {
+        "wickets": 2,
+        "innings": 1,
+        "balls": 24,
+        "runs_conceded": 44,
+        "avg": 22.0,
+        "economy": 11.0,
+        "best_figures": "2/44"
+      }
     }
   ],
   "batting_phases": [
@@ -77,13 +129,35 @@
     },
     {
       "phase": "death",
-      "tilt": -0.0232,
-      "balls": 2,
-      "avg_delta": -0.011599
+      "tilt": -0.01451,
+      "balls": 10,
+      "avg_delta": -0.001451
     }
   ],
-  "bowling_phases": [],
+  "bowling_phases": [
+    {
+      "phase": "middle",
+      "tilt": 0.04312,
+      "balls": 18,
+      "avg_delta": 0.002269
+    },
+    {
+      "phase": "death",
+      "tilt": -0.04429,
+      "balls": 6,
+      "avg_delta": -0.006328
+    }
+  ],
   "best_matches": [
+    {
+      "match_id": "1529298",
+      "date": "2026-05-11",
+      "vs": "Punjab Kings",
+      "tilt": 0.00869,
+      "runs": 18,
+      "balls": 8,
+      "not_out": true
+    },
     {
       "match_id": "1473501",
       "date": "2025-05-21",
@@ -103,40 +177,93 @@
       "runs": 3,
       "balls": 4,
       "not_out": false
+    },
+    {
+      "match_id": "1529298",
+      "date": "2026-05-11",
+      "vs": "Punjab Kings",
+      "tilt": 0.00869,
+      "runs": 18,
+      "balls": 8,
+      "not_out": true
     }
   ],
-  "bowling_best_matches": [],
-  "bowling_worst_matches": [],
+  "bowling_best_matches": [
+    {
+      "match_id": "1529298",
+      "date": "2026-05-11",
+      "vs": "Punjab Kings",
+      "tilt": -0.00118,
+      "wickets": 2,
+      "balls": 24
+    }
+  ],
+  "bowling_worst_matches": [
+    {
+      "match_id": "1529298",
+      "date": "2026-05-11",
+      "vs": "Punjab Kings",
+      "tilt": -0.00118,
+      "wickets": 2,
+      "balls": 24
+    }
+  ],
   "career_trend": [
     {
       "match": 1,
       "date": "2025-05-21",
       "tilt": -0.03694,
       "cumulative": -0.03694
+    },
+    {
+      "match": 2,
+      "date": "2026-05-11",
+      "tilt": 0.00752,
+      "cumulative": -0.02942
     }
   ],
   "team_matchups": [
+    {
+      "opponent": "Punjab Kings",
+      "tilt_per_match": 0.00869,
+      "matches": 1
+    },
     {
       "opponent": "Mumbai Indians",
       "tilt_per_match": -0.03694,
       "matches": 1
     }
   ],
-  "bowling_team_matchups": [],
+  "bowling_team_matchups": [
+    {
+      "opponent": "Punjab Kings",
+      "tilt_per_match": -0.00118,
+      "matches": 1
+    }
+  ],
   "batting_stats": {
-    "runs": 3,
-    "innings": 1,
-    "balls": 4,
-    "avg": 3.0,
-    "sr": 75.0,
-    "hs": 3,
+    "runs": 21,
+    "innings": 2,
+    "balls": 12,
+    "avg": 21.0,
+    "sr": 175.0,
+    "hs": 18,
     "dismissals": 1,
-    "not_outs": 0,
+    "not_outs": 1,
     "fifties": 0,
     "hundreds": 0
   },
-  "bowling_stats": null,
+  "bowling_stats": {
+    "wickets": 2,
+    "innings": 1,
+    "balls": 24,
+    "runs_conceded": 44,
+    "avg": 22.0,
+    "economy": 11.0,
+    "best_figures": "2/44"
+  },
   "match_tilt_distribution": [
-    -0.03694
+    -0.03694,
+    0.00752
   ]
 }

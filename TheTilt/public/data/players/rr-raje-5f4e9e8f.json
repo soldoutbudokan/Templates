@@ -8,18 +8,18 @@
   "teams": [
     "Mumbai Indians"
   ],
-  "total_tilt_per_match": -0.00715,
+  "total_tilt_per_match": -0.00695,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": -0.00036,
-  "shrunk_total_tilt_per_match": -0.01264,
+  "shrunk_total_tilt_per_match": -0.01256,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.0057,
-  "tilt_ci_lower": -0.07098,
-  "tilt_ci_upper": 0.0457,
-  "tilt_ci_lower_90": -0.0616,
-  "tilt_ci_upper_90": 0.03632,
+  "shrunk_bowling_tilt_per_match": -0.00536,
+  "tilt_ci_lower": -0.0709,
+  "tilt_ci_upper": 0.04579,
+  "tilt_ci_lower_90": -0.06153,
+  "tilt_ci_upper_90": 0.03641,
   "confidence": "low",
-  "total_tilt": -0.0715,
+  "total_tilt": -0.06951,
   "total_matches": 10,
   "batting_balls": 18,
   "bowling_balls": 139,
@@ -27,7 +27,7 @@
     {
       "season": "2008",
       "team": "Mumbai Indians",
-      "batting_tilt_per_match": -0.00243,
+      "batting_tilt_per_match": -0.00176,
       "bowling_tilt_per_match": 0.05332,
       "batting_matches": 3,
       "bowling_matches": 6,
@@ -45,14 +45,14 @@
           "bat_runs": 6,
           "bat_balls": 5,
           "bat_sr": 120.0,
-          "bat_tilt": -0.002,
+          "bat_tilt": -0.0,
           "bat_not_out": true,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 13,
           "bowl_econ": 6.5,
           "bowl_tilt": 0.05682,
-          "total_tilt": 0.05482
+          "total_tilt": 0.05682
         },
         {
           "match_id": "336008",
@@ -292,9 +292,9 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.06793,
+      "tilt": -0.06594,
       "balls": 18,
-      "avg_delta": -0.003774
+      "avg_delta": -0.003663
     }
   ],
   "bowling_phases": [
@@ -328,21 +328,21 @@
       "not_out": true
     },
     {
+      "match_id": "336004",
+      "date": "2008-05-04",
+      "vs": "Delhi Capitals",
+      "tilt": -0.0,
+      "runs": 6,
+      "balls": 5,
+      "not_out": true
+    },
+    {
       "match_id": "392212",
       "date": "2009-05-06",
       "vs": "Deccan Chargers",
       "tilt": -0.00097,
       "runs": 11,
       "balls": 7,
-      "not_out": true
-    },
-    {
-      "match_id": "336004",
-      "date": "2008-05-04",
-      "vs": "Delhi Capitals",
-      "tilt": -0.002,
-      "runs": 6,
-      "balls": 5,
       "not_out": true
     },
     {
@@ -384,21 +384,21 @@
       "not_out": true
     },
     {
-      "match_id": "336004",
-      "date": "2008-05-04",
-      "vs": "Delhi Capitals",
-      "tilt": -0.002,
-      "runs": 6,
-      "balls": 5,
-      "not_out": true
-    },
-    {
       "match_id": "392212",
       "date": "2009-05-06",
       "vs": "Deccan Chargers",
       "tilt": -0.00097,
       "runs": 11,
       "balls": 7,
+      "not_out": true
+    },
+    {
+      "match_id": "336004",
+      "date": "2008-05-04",
+      "vs": "Delhi Capitals",
+      "tilt": -0.0,
+      "runs": 6,
+      "balls": 5,
       "not_out": true
     },
     {
@@ -499,62 +499,62 @@
     {
       "match": 1,
       "date": "2008-05-04",
-      "tilt": 0.05482,
-      "cumulative": 0.05482
+      "tilt": 0.05681,
+      "cumulative": 0.05681
     },
     {
       "match": 2,
       "date": "2008-05-07",
       "tilt": 0.13617,
-      "cumulative": 0.19099
+      "cumulative": 0.19299
     },
     {
       "match": 3,
       "date": "2008-05-14",
       "tilt": -0.11564,
-      "cumulative": 0.07535
+      "cumulative": 0.07735
     },
     {
       "match": 4,
       "date": "2008-05-16",
       "tilt": 0.11738,
-      "cumulative": 0.19273
+      "cumulative": 0.19472
     },
     {
       "match": 5,
       "date": "2008-05-18",
       "tilt": 0.01228,
-      "cumulative": 0.20501
+      "cumulative": 0.207
     },
     {
       "match": 6,
       "date": "2008-05-26",
       "tilt": 0.10764,
-      "cumulative": 0.31265
+      "cumulative": 0.31464
     },
     {
       "match": 7,
       "date": "2009-04-18",
       "tilt": -0.14275,
-      "cumulative": 0.1699
+      "cumulative": 0.17189
     },
     {
       "match": 8,
       "date": "2009-05-06",
       "tilt": 0.00115,
-      "cumulative": 0.17105
+      "cumulative": 0.17304
     },
     {
       "match": 9,
       "date": "2009-05-08",
       "tilt": -0.19763,
-      "cumulative": -0.02658
+      "cumulative": -0.02459
     },
     {
       "match": 10,
       "date": "2009-05-12",
       "tilt": -0.04492,
-      "cumulative": -0.0715
+      "cumulative": -0.06951
     }
   ],
   "team_matchups": [
@@ -570,7 +570,7 @@
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.03084,
+      "tilt_per_match": -0.02984,
       "matches": 2
     }
   ],
@@ -628,7 +628,7 @@
     "best_figures": "2/19"
   },
   "match_tilt_distribution": [
-    0.05482,
+    0.05681,
     0.13617,
     -0.11564,
     0.11738,

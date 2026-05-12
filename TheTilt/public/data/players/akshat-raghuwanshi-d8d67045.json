@@ -8,30 +8,30 @@
   "teams": [
     "Lucknow Super Giants"
   ],
-  "total_tilt_per_match": -0.03515,
+  "total_tilt_per_match": -0.09476,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02508,
+  "shrunk_total_tilt_per_match": -0.04297,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.02508,
-  "tilt_ci_upper": -0.02508,
-  "tilt_ci_lower_90": -0.02508,
-  "tilt_ci_upper_90": -0.02508,
+  "tilt_ci_lower": -0.10432,
+  "tilt_ci_upper": 0.01839,
+  "tilt_ci_lower_90": -0.09446,
+  "tilt_ci_upper_90": 0.00853,
   "confidence": "low",
-  "total_tilt": -0.03515,
-  "total_matches": 1,
-  "batting_balls": 7,
+  "total_tilt": -0.18951,
+  "total_matches": 2,
+  "batting_balls": 25,
   "bowling_balls": 0,
   "seasons": [
     {
       "season": "2026",
       "team": "Lucknow Super Giants",
-      "batting_tilt_per_match": -0.03515,
+      "batting_tilt_per_match": -0.09476,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 1,
+      "batting_matches": 2,
       "bowling_matches": 0,
-      "batting_balls": 7,
+      "batting_balls": 25,
       "bowling_balls": 0,
       "matches": [
         {
@@ -53,15 +53,35 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.03515
+        },
+        {
+          "match_id": "1529296",
+          "date": "2026-05-10",
+          "opponent": "Chennai Super Kings",
+          "venue": "MA Chidambaram Stadium, Chepauk",
+          "team_score": "203/8",
+          "opponent_score": "208/5",
+          "winner": "Chennai Super Kings",
+          "bat_runs": 18,
+          "bat_balls": 18,
+          "bat_sr": 100.0,
+          "bat_tilt": -0.15436,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": -0.15436
         }
       ],
       "batting_stats": {
-        "runs": 11,
-        "innings": 1,
-        "balls": 7,
-        "avg": 11.0,
-        "sr": 157.14,
-        "hs": 11,
+        "runs": 29,
+        "innings": 2,
+        "balls": 25,
+        "avg": 14.5,
+        "sr": 116.0,
+        "hs": 18,
         "not_outs": 0,
         "fifties": 0,
         "hundreds": 0
@@ -71,9 +91,9 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.03515,
-      "balls": 7,
-      "avg_delta": -0.005022
+      "tilt": -0.18951,
+      "balls": 25,
+      "avg_delta": -0.007019
     }
   ],
   "bowling_phases": [],
@@ -86,9 +106,27 @@
       "runs": 11,
       "balls": 7,
       "not_out": false
+    },
+    {
+      "match_id": "1529296",
+      "date": "2026-05-10",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.15436,
+      "runs": 18,
+      "balls": 18,
+      "not_out": false
     }
   ],
   "worst_matches": [
+    {
+      "match_id": "1529296",
+      "date": "2026-05-10",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.15436,
+      "runs": 18,
+      "balls": 18,
+      "not_out": false
+    },
     {
       "match_id": "1529290",
       "date": "2026-05-04",
@@ -107,6 +145,12 @@
       "date": "2026-05-04",
       "tilt": -0.03515,
       "cumulative": -0.03515
+    },
+    {
+      "match": 2,
+      "date": "2026-05-10",
+      "tilt": -0.15436,
+      "cumulative": -0.18951
     }
   ],
   "team_matchups": [
@@ -114,23 +158,29 @@
       "opponent": "Mumbai Indians",
       "tilt_per_match": -0.03515,
       "matches": 1
+    },
+    {
+      "opponent": "Chennai Super Kings",
+      "tilt_per_match": -0.15436,
+      "matches": 1
     }
   ],
   "bowling_team_matchups": [],
   "batting_stats": {
-    "runs": 11,
-    "innings": 1,
-    "balls": 7,
-    "avg": 11.0,
-    "sr": 157.14,
-    "hs": 11,
-    "dismissals": 1,
+    "runs": 29,
+    "innings": 2,
+    "balls": 25,
+    "avg": 14.5,
+    "sr": 116.0,
+    "hs": 18,
+    "dismissals": 2,
     "not_outs": 0,
     "fifties": 0,
     "hundreds": 0
   },
   "bowling_stats": null,
   "match_tilt_distribution": [
-    -0.03515
+    -0.03515,
+    -0.15436
   ]
 }

@@ -9,18 +9,18 @@
     "Mumbai Indians",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.05923,
-  "batting_tilt_per_match": -0.05923,
+  "total_tilt_per_match": -0.05951,
+  "batting_tilt_per_match": -0.05951,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.04685,
-  "shrunk_batting_tilt_per_match": -0.04214,
+  "shrunk_total_tilt_per_match": -0.04702,
+  "shrunk_batting_tilt_per_match": -0.04268,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.09213,
-  "tilt_ci_upper": -0.00157,
-  "tilt_ci_lower_90": -0.08485,
-  "tilt_ci_upper_90": -0.00885,
+  "tilt_ci_lower": -0.09218,
+  "tilt_ci_upper": -0.00186,
+  "tilt_ci_lower_90": -0.08492,
+  "tilt_ci_upper_90": -0.00912,
   "confidence": "low",
-  "total_tilt": -0.59233,
+  "total_tilt": -0.59508,
   "total_matches": 10,
   "batting_balls": 178,
   "bowling_balls": 0,
@@ -28,7 +28,7 @@
     {
       "season": "2008",
       "team": "Mumbai Indians",
-      "batting_tilt_per_match": -0.06255,
+      "batting_tilt_per_match": -0.06324,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 4,
       "bowling_matches": 0,
@@ -86,14 +86,14 @@
           "bat_runs": 5,
           "bat_balls": 5,
           "bat_sr": 100.0,
-          "bat_tilt": 0.02906,
+          "bat_tilt": 0.02925,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.02906
+          "total_tilt": 0.02925
         },
         {
           "match_id": "336036",
@@ -106,14 +106,14 @@
           "bat_runs": 24,
           "bat_balls": 8,
           "bat_sr": 300.0,
-          "bat_tilt": -0.00534,
+          "bat_tilt": -0.00828,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.00534
+          "total_tilt": -0.00828
         }
       ],
       "batting_stats": {
@@ -310,9 +310,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.02372,
+      "tilt": 0.02097,
       "balls": 13,
-      "avg_delta": 0.001825
+      "avg_delta": 0.001613
     }
   ],
   "bowling_phases": [],
@@ -330,7 +330,7 @@
       "match_id": "336024",
       "date": "2008-05-18",
       "vs": "Deccan Chargers",
-      "tilt": 0.02906,
+      "tilt": 0.02925,
       "runs": 5,
       "balls": 5,
       "not_out": true
@@ -339,7 +339,7 @@
       "match_id": "336036",
       "date": "2008-05-26",
       "vs": "Rajasthan Royals",
-      "tilt": -0.00534,
+      "tilt": -0.00828,
       "runs": 24,
       "balls": 8,
       "not_out": true
@@ -428,50 +428,50 @@
     {
       "match": 3,
       "date": "2008-05-18",
-      "tilt": 0.02906,
-      "cumulative": -0.24487
+      "tilt": 0.02925,
+      "cumulative": -0.24468
     },
     {
       "match": 4,
       "date": "2008-05-26",
-      "tilt": -0.00534,
-      "cumulative": -0.25021
+      "tilt": -0.00828,
+      "cumulative": -0.25296
     },
     {
       "match": 5,
       "date": "2009-05-14",
       "tilt": -0.09955,
-      "cumulative": -0.34977
+      "cumulative": -0.35251
     },
     {
       "match": 6,
       "date": "2014-04-24",
       "tilt": 0.09331,
-      "cumulative": -0.25646
+      "cumulative": -0.2592
     },
     {
       "match": 7,
       "date": "2014-04-26",
       "tilt": -0.06719,
-      "cumulative": -0.32365
+      "cumulative": -0.32639
     },
     {
       "match": 8,
       "date": "2014-04-28",
       "tilt": -0.20974,
-      "cumulative": -0.53339
+      "cumulative": -0.53613
     },
     {
       "match": 9,
       "date": "2014-05-22",
       "tilt": -0.01615,
-      "cumulative": -0.54954
+      "cumulative": -0.55229
     },
     {
       "match": 10,
       "date": "2014-05-24",
       "tilt": -0.04279,
-      "cumulative": -0.59233
+      "cumulative": -0.59508
     }
   ],
   "team_matchups": [
@@ -482,7 +482,7 @@
     },
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": 0.02906,
+      "tilt_per_match": 0.02925,
       "matches": 1
     },
     {
@@ -492,7 +492,7 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.0729,
+      "tilt_per_match": -0.07363,
       "matches": 4
     },
     {
@@ -523,8 +523,8 @@
   "match_tilt_distribution": [
     -0.15443,
     -0.11951,
-    0.02906,
-    -0.00534,
+    0.02925,
+    -0.00828,
     -0.09955,
     0.09331,
     -0.06719,

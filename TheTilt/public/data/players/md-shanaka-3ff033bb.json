@@ -4,24 +4,25 @@
   "player_id": "3ff033bb",
   "slug": "md-shanaka-3ff033bb",
   "country": "LK",
-  "team": "Gujarat Titans",
+  "team": "Rajasthan Royals",
   "teams": [
-    "Gujarat Titans"
+    "Gujarat Titans",
+    "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.02549,
+  "total_tilt_per_match": -0.01594,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.024,
+  "shrunk_total_tilt_per_match": -0.02008,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.05806,
-  "tilt_ci_upper": 0.01005,
-  "tilt_ci_lower_90": -0.05258,
-  "tilt_ci_upper_90": 0.00458,
+  "tilt_ci_lower": -0.04905,
+  "tilt_ci_upper": 0.00888,
+  "tilt_ci_lower_90": -0.04439,
+  "tilt_ci_upper_90": 0.00423,
   "confidence": "low",
-  "total_tilt": -0.07648,
-  "total_matches": 3,
-  "batting_balls": 26,
+  "total_tilt": -0.06377,
+  "total_matches": 4,
+  "batting_balls": 37,
   "bowling_balls": 0,
   "seasons": [
     {
@@ -106,6 +107,49 @@
         "fifties": 0,
         "hundreds": 0
       }
+    },
+    {
+      "season": "2026",
+      "team": "Rajasthan Royals",
+      "batting_tilt_per_match": 0.01271,
+      "bowling_tilt_per_match": 0.0,
+      "batting_matches": 1,
+      "bowling_matches": 0,
+      "batting_balls": 11,
+      "bowling_balls": 0,
+      "matches": [
+        {
+          "match_id": "1529295",
+          "date": "2026-05-09",
+          "opponent": "Gujarat Titans",
+          "venue": "Sawai Mansingh Stadium",
+          "team_score": "152/10",
+          "opponent_score": "229/4",
+          "winner": "Gujarat Titans",
+          "bat_runs": 16,
+          "bat_balls": 11,
+          "bat_sr": 145.5,
+          "bat_tilt": 0.01271,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.01271
+        }
+      ],
+      "batting_stats": {
+        "runs": 16,
+        "innings": 1,
+        "balls": 11,
+        "avg": 16.0,
+        "sr": 145.45,
+        "hs": 16,
+        "not_outs": 0,
+        "fifties": 0,
+        "hundreds": 0
+      }
     }
   ],
   "batting_phases": [
@@ -117,15 +161,15 @@
     },
     {
       "phase": "middle",
-      "tilt": -0.04771,
-      "balls": 16,
-      "avg_delta": -0.002982
+      "tilt": -0.04247,
+      "balls": 21,
+      "avg_delta": -0.002022
     },
     {
       "phase": "death",
-      "tilt": -0.05065,
-      "balls": 9,
-      "avg_delta": -0.005628
+      "tilt": -0.04318,
+      "balls": 15,
+      "avg_delta": -0.002699
     }
   ],
   "bowling_phases": [],
@@ -137,6 +181,15 @@
       "tilt": 0.01328,
       "runs": 17,
       "balls": 16,
+      "not_out": false
+    },
+    {
+      "match_id": "1529295",
+      "date": "2026-05-09",
+      "vs": "Gujarat Titans",
+      "tilt": 0.01271,
+      "runs": 16,
+      "balls": 11,
       "not_out": false
     },
     {
@@ -178,6 +231,15 @@
       "not_out": true
     },
     {
+      "match_id": "1529295",
+      "date": "2026-05-09",
+      "vs": "Gujarat Titans",
+      "tilt": 0.01271,
+      "runs": 16,
+      "balls": 11,
+      "not_out": false
+    },
+    {
       "match_id": "1370350",
       "date": "2023-05-23",
       "vs": "Chennai Super Kings",
@@ -207,12 +269,23 @@
       "date": "2023-05-23",
       "tilt": 0.01328,
       "cumulative": -0.07648
+    },
+    {
+      "match": 4,
+      "date": "2026-05-09",
+      "tilt": 0.01271,
+      "cumulative": -0.06377
     }
   ],
   "team_matchups": [
     {
       "opponent": "Chennai Super Kings",
       "tilt_per_match": 0.01328,
+      "matches": 1
+    },
+    {
+      "opponent": "Gujarat Titans",
+      "tilt_per_match": 0.01271,
       "matches": 1
     },
     {
@@ -228,13 +301,13 @@
   ],
   "bowling_team_matchups": [],
   "batting_stats": {
-    "runs": 26,
-    "innings": 3,
-    "balls": 26,
-    "avg": 13.0,
-    "sr": 100.0,
+    "runs": 42,
+    "innings": 4,
+    "balls": 37,
+    "avg": 14.0,
+    "sr": 113.51,
     "hs": 17,
-    "dismissals": 2,
+    "dismissals": 3,
     "not_outs": 1,
     "fifties": 0,
     "hundreds": 0
@@ -243,6 +316,7 @@
   "match_tilt_distribution": [
     -0.00806,
     -0.08169,
-    0.01328
+    0.01328,
+    0.01271
   ]
 }

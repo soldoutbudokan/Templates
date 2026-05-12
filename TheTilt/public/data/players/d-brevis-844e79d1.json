@@ -9,20 +9,20 @@
     "Chennai Super Kings",
     "Mumbai Indians"
   ],
-  "total_tilt_per_match": 0.01277,
-  "batting_tilt_per_match": 0.01315,
+  "total_tilt_per_match": 0.00879,
+  "batting_tilt_per_match": 0.00915,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.00533,
-  "shrunk_batting_tilt_per_match": 0.00639,
+  "shrunk_total_tilt_per_match": 0.00238,
+  "shrunk_batting_tilt_per_match": 0.00379,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.05056,
-  "tilt_ci_upper": 0.06122,
-  "tilt_ci_lower_90": -0.04158,
-  "tilt_ci_upper_90": 0.05224,
+  "tilt_ci_lower": -0.05131,
+  "tilt_ci_upper": 0.05608,
+  "tilt_ci_lower_90": -0.04268,
+  "tilt_ci_upper_90": 0.04745,
   "confidence": "low",
-  "total_tilt": 0.25536,
-  "total_matches": 20,
-  "batting_balls": 350,
+  "total_tilt": 0.1846,
+  "total_matches": 21,
+  "batting_balls": 362,
   "bowling_balls": 3,
   "seasons": [
     {
@@ -283,7 +283,7 @@
     {
       "season": "2025",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": 0.08935,
+      "batting_tilt_per_match": 0.08865,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 6,
       "bowling_matches": 0,
@@ -401,14 +401,14 @@
           "bat_runs": 57,
           "bat_balls": 23,
           "bat_sr": 247.8,
-          "bat_tilt": 0.20435,
+          "bat_tilt": 0.20019,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.20435
+          "total_tilt": 0.20019
         }
       ],
       "batting_stats": {
@@ -426,11 +426,11 @@
     {
       "season": "2026",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": -0.08971,
+      "batting_tilt_per_match": -0.08508,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 4,
+      "batting_matches": 5,
       "bowling_matches": 0,
-      "batting_balls": 53,
+      "batting_balls": 65,
       "bowling_balls": 0,
       "matches": [
         {
@@ -444,14 +444,14 @@
           "bat_runs": 41,
           "bat_balls": 29,
           "bat_sr": 141.4,
-          "bat_tilt": -0.05879,
+          "bat_tilt": -0.05882,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.05879
+          "total_tilt": -0.05882
         },
         {
           "match_id": "1529270",
@@ -512,14 +512,34 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.11213
+        },
+        {
+          "match_id": "1529296",
+          "date": "2026-05-10",
+          "opponent": "Lucknow Super Giants",
+          "venue": "MA Chidambaram Stadium, Chepauk",
+          "team_score": "208/5",
+          "opponent_score": "203/8",
+          "winner": "Chennai Super Kings",
+          "bat_runs": 10,
+          "bat_balls": 12,
+          "bat_sr": 83.3,
+          "bat_tilt": -0.06656,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": -0.06656
         }
       ],
       "batting_stats": {
-        "runs": 64,
-        "innings": 4,
-        "balls": 53,
-        "avg": 16.0,
-        "sr": 120.75,
+        "runs": 74,
+        "innings": 5,
+        "balls": 65,
+        "avg": 14.8,
+        "sr": 113.85,
         "hs": 41,
         "not_outs": 0,
         "fifties": 0,
@@ -536,15 +556,15 @@
     },
     {
       "phase": "middle",
-      "tilt": 0.36975,
-      "balls": 248,
-      "avg_delta": 0.001444
+      "tilt": 0.35427,
+      "balls": 256,
+      "avg_delta": 0.001337
     },
     {
       "phase": "death",
-      "tilt": 0.06658,
-      "balls": 28,
-      "avg_delta": 0.002219
+      "tilt": 0.01129,
+      "balls": 32,
+      "avg_delta": 0.000332
     }
   ],
   "bowling_phases": [
@@ -578,7 +598,7 @@
       "match_id": "1473504",
       "date": "2025-05-25",
       "vs": "Gujarat Titans",
-      "tilt": 0.20435,
+      "tilt": 0.20019,
       "runs": 57,
       "balls": 23,
       "not_out": false
@@ -763,32 +783,38 @@
     {
       "match": 16,
       "date": "2025-05-25",
-      "tilt": 0.20435,
-      "cumulative": 0.61419
+      "tilt": 0.20019,
+      "cumulative": 0.61002
     },
     {
       "match": 17,
       "date": "2026-04-14",
-      "tilt": -0.05879,
-      "cumulative": 0.5554
+      "tilt": -0.05882,
+      "cumulative": 0.5512
     },
     {
       "match": 18,
       "date": "2026-04-18",
       "tilt": -0.19761,
-      "cumulative": 0.35779
+      "cumulative": 0.35359
     },
     {
       "match": 19,
       "date": "2026-04-23",
       "tilt": 0.00969,
-      "cumulative": 0.36749
+      "cumulative": 0.36328
     },
     {
       "match": 20,
       "date": "2026-04-26",
       "tilt": -0.11213,
-      "cumulative": 0.25536
+      "cumulative": 0.25116
+    },
+    {
+      "match": 21,
+      "date": "2026-05-10",
+      "tilt": -0.06656,
+      "cumulative": 0.1846
     }
   ],
   "team_matchups": [
@@ -804,12 +830,12 @@
     },
     {
       "opponent": "Gujarat Titans",
-      "tilt_per_match": 0.03487,
+      "tilt_per_match": 0.03348,
       "matches": 3
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.02444,
+      "tilt_per_match": 0.02442,
       "matches": 3
     },
     {
@@ -824,8 +850,8 @@
     },
     {
       "opponent": "Lucknow Super Giants",
-      "tilt_per_match": -0.01168,
-      "matches": 3
+      "tilt_per_match": -0.0254,
+      "matches": 4
     },
     {
       "opponent": "Sunrisers Hyderabad",
@@ -851,13 +877,13 @@
     }
   ],
   "batting_stats": {
-    "runs": 519,
-    "innings": 20,
-    "balls": 350,
-    "avg": 25.95,
-    "sr": 148.29,
+    "runs": 529,
+    "innings": 21,
+    "balls": 362,
+    "avg": 25.19,
+    "sr": 146.13,
     "hs": 57,
-    "dismissals": 20,
+    "dismissals": 21,
     "not_outs": 0,
     "fifties": 2,
     "hundreds": 0
@@ -887,10 +913,11 @@
     -0.04942,
     0.19982,
     0.06893,
-    0.20435,
-    -0.05879,
+    0.20019,
+    -0.05882,
     -0.19761,
     0.00969,
-    -0.11213
+    -0.11213,
+    -0.06656
   ]
 }

@@ -8,30 +8,30 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": -0.06834,
+  "total_tilt_per_match": -0.07666,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03963,
+  "shrunk_total_tilt_per_match": -0.04634,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.06671,
-  "tilt_ci_upper": -0.01255,
-  "tilt_ci_lower_90": -0.06236,
-  "tilt_ci_upper_90": -0.01691,
+  "tilt_ci_lower": -0.06978,
+  "tilt_ci_upper": -0.0229,
+  "tilt_ci_lower_90": -0.06601,
+  "tilt_ci_upper_90": -0.02666,
   "confidence": "low",
-  "total_tilt": -0.20501,
-  "total_matches": 3,
-  "batting_balls": 36,
+  "total_tilt": -0.30662,
+  "total_matches": 4,
+  "batting_balls": 48,
   "bowling_balls": 12,
   "seasons": [
     {
       "season": "2026",
       "team": "Chennai Super Kings",
-      "batting_tilt_per_match": -0.05096,
+      "batting_tilt_per_match": -0.06784,
       "bowling_tilt_per_match": -0.1031,
-      "batting_matches": 2,
+      "batting_matches": 3,
       "bowling_matches": 1,
-      "batting_balls": 36,
+      "batting_balls": 48,
       "bowling_balls": 12,
       "matches": [
         {
@@ -93,16 +93,36 @@
           "bowl_econ": 12.5,
           "bowl_tilt": -0.1031,
           "total_tilt": -0.1031
+        },
+        {
+          "match_id": "1529296",
+          "date": "2026-05-10",
+          "opponent": "Lucknow Super Giants",
+          "venue": "MA Chidambaram Stadium, Chepauk",
+          "team_score": "208/5",
+          "opponent_score": "203/8",
+          "winner": "Chennai Super Kings",
+          "bat_runs": 17,
+          "bat_balls": 12,
+          "bat_sr": 141.7,
+          "bat_tilt": -0.10161,
+          "bat_not_out": true,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": -0.10161
         }
       ],
       "batting_stats": {
-        "runs": 49,
-        "innings": 2,
-        "balls": 36,
-        "avg": 49.0,
-        "sr": 136.11,
+        "runs": 66,
+        "innings": 3,
+        "balls": 48,
+        "avg": 66.0,
+        "sr": 137.5,
         "hs": 43,
-        "not_outs": 1,
+        "not_outs": 2,
         "fifties": 0,
         "hundreds": 0
       },
@@ -126,9 +146,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.06674,
-      "balls": 8,
-      "avg_delta": -0.008343
+      "tilt": -0.16835,
+      "balls": 20,
+      "avg_delta": -0.008017
     }
   ],
   "bowling_phases": [
@@ -163,9 +183,27 @@
       "runs": 43,
       "balls": 29,
       "not_out": false
+    },
+    {
+      "match_id": "1529296",
+      "date": "2026-05-10",
+      "vs": "Lucknow Super Giants",
+      "tilt": -0.10161,
+      "runs": 17,
+      "balls": 12,
+      "not_out": true
     }
   ],
   "worst_matches": [
+    {
+      "match_id": "1529296",
+      "date": "2026-05-10",
+      "vs": "Lucknow Super Giants",
+      "tilt": -0.10161,
+      "runs": 17,
+      "balls": 12,
+      "not_out": true
+    },
     {
       "match_id": "1527684",
       "date": "2026-04-05",
@@ -223,6 +261,12 @@
       "date": "2026-05-02",
       "tilt": -0.1031,
       "cumulative": -0.20501
+    },
+    {
+      "match": 4,
+      "date": "2026-05-10",
+      "tilt": -0.10161,
+      "cumulative": -0.30662
     }
   ],
   "team_matchups": [
@@ -235,6 +279,11 @@
       "opponent": "Royal Challengers Bangalore",
       "tilt_per_match": -0.07671,
       "matches": 1
+    },
+    {
+      "opponent": "Lucknow Super Giants",
+      "tilt_per_match": -0.10161,
+      "matches": 1
     }
   ],
   "bowling_team_matchups": [
@@ -245,14 +294,14 @@
     }
   ],
   "batting_stats": {
-    "runs": 49,
-    "innings": 2,
-    "balls": 36,
-    "avg": 49.0,
-    "sr": 136.11,
+    "runs": 66,
+    "innings": 3,
+    "balls": 48,
+    "avg": 66.0,
+    "sr": 137.5,
     "hs": 43,
     "dismissals": 1,
-    "not_outs": 1,
+    "not_outs": 2,
     "fifties": 0,
     "hundreds": 0
   },
@@ -268,6 +317,7 @@
   "match_tilt_distribution": [
     -0.0252,
     -0.07671,
-    -0.1031
+    -0.1031,
+    -0.10161
   ]
 }
