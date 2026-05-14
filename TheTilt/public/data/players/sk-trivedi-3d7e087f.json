@@ -8,18 +8,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": 0.00499,
-  "batting_tilt_per_match": -0.02448,
+  "total_tilt_per_match": 0.00495,
+  "batting_tilt_per_match": -0.02471,
   "bowling_tilt_per_match": 0.00963,
-  "shrunk_total_tilt_per_match": 0.00317,
-  "shrunk_batting_tilt_per_match": -0.02377,
-  "shrunk_bowling_tilt_per_match": 0.00814,
-  "tilt_ci_lower": -0.02095,
-  "tilt_ci_upper": 0.02728,
-  "tilt_ci_lower_90": -0.01707,
-  "tilt_ci_upper_90": 0.02341,
+  "shrunk_total_tilt_per_match": 0.00326,
+  "shrunk_batting_tilt_per_match": -0.02398,
+  "shrunk_bowling_tilt_per_match": 0.00825,
+  "tilt_ci_lower": -0.02093,
+  "tilt_ci_upper": 0.02745,
+  "tilt_ci_lower_90": -0.01704,
+  "tilt_ci_upper_90": 0.02356,
   "confidence": "medium",
-  "total_tilt": 0.37949,
+  "total_tilt": 0.37635,
   "total_matches": 76,
   "batting_balls": 59,
   "bowling_balls": 1506,
@@ -27,7 +27,7 @@
     {
       "season": "2008",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.04918,
+      "batting_tilt_per_match": -0.04984,
       "bowling_tilt_per_match": 0.00345,
       "batting_matches": 3,
       "bowling_matches": 15,
@@ -305,14 +305,14 @@
           "bat_runs": 1,
           "bat_balls": 2,
           "bat_sr": 50.0,
-          "bat_tilt": 0.00216,
+          "bat_tilt": 0.00017,
           "bat_not_out": true,
           "bowl_wkts": 1,
           "bowl_balls": 18,
           "bowl_runs": 22,
           "bowl_econ": 7.33,
           "bowl_tilt": 0.00868,
-          "total_tilt": 0.01084
+          "total_tilt": 0.00885
         },
         {
           "match_id": "336040",
@@ -531,7 +531,7 @@
     {
       "season": "2010",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.00181,
+      "batting_tilt_per_match": -0.0021,
       "bowling_tilt_per_match": -0.00069,
       "batting_matches": 4,
       "bowling_matches": 10,
@@ -669,14 +669,14 @@
           "bat_runs": 9,
           "bat_balls": 6,
           "bat_sr": 150.0,
-          "bat_tilt": 0.06063,
+          "bat_tilt": 0.05948,
           "bat_not_out": false,
           "bowl_wkts": 4,
           "bowl_balls": 17,
           "bowl_runs": 16,
           "bowl_econ": 5.65,
           "bowl_tilt": -0.02803,
-          "total_tilt": 0.0326
+          "total_tilt": 0.03145
         },
         {
           "match_id": "419143",
@@ -1746,9 +1746,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.34273,
+      "tilt": -0.34588,
       "balls": 58,
-      "avg_delta": -0.005712
+      "avg_delta": -0.005765
     }
   ],
   "bowling_phases": [
@@ -1776,7 +1776,7 @@
       "match_id": "419141",
       "date": "2010-04-05",
       "vs": "Deccan Chargers",
-      "tilt": 0.06063,
+      "tilt": 0.05948,
       "runs": 9,
       "balls": 6,
       "not_out": false
@@ -1800,15 +1800,6 @@
       "not_out": true
     },
     {
-      "match_id": "336038",
-      "date": "2008-05-30",
-      "vs": "Delhi Capitals",
-      "tilt": 0.00216,
-      "runs": 1,
-      "balls": 2,
-      "not_out": true
-    },
-    {
       "match_id": "392230",
       "date": "2009-05-17",
       "vs": "Delhi Capitals",
@@ -1816,6 +1807,15 @@
       "runs": 6,
       "balls": 10,
       "not_out": true
+    },
+    {
+      "match_id": "392202",
+      "date": "2009-04-30",
+      "vs": "Chennai Super Kings",
+      "tilt": 0.00032,
+      "runs": 2,
+      "balls": 3,
+      "not_out": false
     }
   ],
   "worst_matches": [
@@ -2031,386 +2031,386 @@
     {
       "match": 14,
       "date": "2008-05-30",
-      "tilt": 0.01084,
-      "cumulative": -0.04117
+      "tilt": 0.00885,
+      "cumulative": -0.04316
     },
     {
       "match": 15,
       "date": "2008-06-01",
       "tilt": -0.05468,
-      "cumulative": -0.09585
+      "cumulative": -0.09785
     },
     {
       "match": 16,
       "date": "2009-04-30",
       "tilt": -0.07087,
-      "cumulative": -0.16672
+      "cumulative": -0.16872
     },
     {
       "match": 17,
       "date": "2009-05-02",
       "tilt": 0.07309,
-      "cumulative": -0.09363
+      "cumulative": -0.09562
     },
     {
       "match": 18,
       "date": "2009-05-05",
       "tilt": 0.03139,
-      "cumulative": -0.06224
+      "cumulative": -0.06423
     },
     {
       "match": 19,
       "date": "2009-05-09",
       "tilt": -0.07691,
-      "cumulative": -0.13916
+      "cumulative": -0.14115
     },
     {
       "match": 20,
       "date": "2009-05-11",
       "tilt": -0.05956,
-      "cumulative": -0.19871
+      "cumulative": -0.20071
     },
     {
       "match": 21,
       "date": "2009-05-14",
       "tilt": 0.07904,
-      "cumulative": -0.11967
+      "cumulative": -0.12166
     },
     {
       "match": 22,
       "date": "2009-05-17",
       "tilt": -0.07231,
-      "cumulative": -0.19198
+      "cumulative": -0.19397
     },
     {
       "match": 23,
       "date": "2010-03-18",
       "tilt": -0.07036,
-      "cumulative": -0.26234
+      "cumulative": -0.26433
     },
     {
       "match": 24,
       "date": "2010-03-20",
       "tilt": 0.05379,
-      "cumulative": -0.20855
+      "cumulative": -0.21054
     },
     {
       "match": 25,
       "date": "2010-03-24",
       "tilt": 0.06145,
-      "cumulative": -0.1471
+      "cumulative": -0.14909
     },
     {
       "match": 26,
       "date": "2010-03-26",
       "tilt": -0.16855,
-      "cumulative": -0.31565
+      "cumulative": -0.31765
     },
     {
       "match": 27,
       "date": "2010-03-28",
       "tilt": 0.06215,
-      "cumulative": -0.2535
+      "cumulative": -0.25549
     },
     {
       "match": 28,
       "date": "2010-03-31",
       "tilt": -0.10263,
-      "cumulative": -0.35613
+      "cumulative": -0.35812
     },
     {
       "match": 29,
       "date": "2010-04-05",
-      "tilt": 0.03261,
-      "cumulative": -0.32352
+      "tilt": 0.03145,
+      "cumulative": -0.32667
     },
     {
       "match": 30,
       "date": "2010-04-07",
       "tilt": 0.06857,
-      "cumulative": -0.25495
+      "cumulative": -0.2581
     },
     {
       "match": 31,
       "date": "2010-04-11",
       "tilt": 0.03072,
-      "cumulative": -0.22423
+      "cumulative": -0.22737
     },
     {
       "match": 32,
       "date": "2010-04-14",
       "tilt": 0.02526,
-      "cumulative": -0.19897
+      "cumulative": -0.20212
     },
     {
       "match": 33,
       "date": "2010-04-17",
       "tilt": -0.00718,
-      "cumulative": -0.20616
+      "cumulative": -0.2093
     },
     {
       "match": 34,
       "date": "2011-04-09",
       "tilt": 0.19241,
-      "cumulative": -0.01375
+      "cumulative": -0.01689
     },
     {
       "match": 35,
       "date": "2011-04-12",
       "tilt": -0.02469,
-      "cumulative": -0.03844
+      "cumulative": -0.04158
     },
     {
       "match": 36,
       "date": "2011-04-15",
       "tilt": -0.02819,
-      "cumulative": -0.06663
+      "cumulative": -0.06977
     },
     {
       "match": 37,
       "date": "2011-04-17",
       "tilt": -0.05375,
-      "cumulative": -0.12038
+      "cumulative": -0.12352
     },
     {
       "match": 38,
       "date": "2011-04-21",
       "tilt": -0.24286,
-      "cumulative": -0.36323
+      "cumulative": -0.36638
     },
     {
       "match": 39,
       "date": "2011-04-24",
       "tilt": 0.15057,
-      "cumulative": -0.21266
+      "cumulative": -0.21581
     },
     {
       "match": 40,
       "date": "2011-04-29",
       "tilt": -0.01082,
-      "cumulative": -0.22348
+      "cumulative": -0.22663
     },
     {
       "match": 41,
       "date": "2011-05-01",
       "tilt": 0.21548,
-      "cumulative": -0.00801
+      "cumulative": -0.01115
     },
     {
       "match": 42,
       "date": "2011-05-04",
       "tilt": -0.14471,
-      "cumulative": -0.15272
+      "cumulative": -0.15586
     },
     {
       "match": 43,
       "date": "2011-05-09",
       "tilt": -0.13177,
-      "cumulative": -0.28449
+      "cumulative": -0.28763
     },
     {
       "match": 44,
       "date": "2011-05-11",
       "tilt": -0.03437,
-      "cumulative": -0.31886
+      "cumulative": -0.322
     },
     {
       "match": 45,
       "date": "2011-05-20",
       "tilt": -0.01857,
-      "cumulative": -0.33743
+      "cumulative": -0.34057
     },
     {
       "match": 46,
       "date": "2012-04-06",
       "tilt": -0.06695,
-      "cumulative": -0.40438
+      "cumulative": -0.40752
     },
     {
       "match": 47,
       "date": "2012-04-08",
       "tilt": 0.09589,
-      "cumulative": -0.30849
+      "cumulative": -0.31163
     },
     {
       "match": 48,
       "date": "2012-04-11",
       "tilt": -0.00805,
-      "cumulative": -0.31654
+      "cumulative": -0.31968
     },
     {
       "match": 49,
       "date": "2012-04-13",
       "tilt": -0.00909,
-      "cumulative": -0.32562
+      "cumulative": -0.32877
     },
     {
       "match": 50,
       "date": "2012-04-15",
       "tilt": 0.24272,
-      "cumulative": -0.0829
+      "cumulative": -0.08604
     },
     {
       "match": 51,
       "date": "2012-04-17",
       "tilt": 0.06478,
-      "cumulative": -0.01812
+      "cumulative": -0.02126
     },
     {
       "match": 52,
       "date": "2012-04-21",
       "tilt": -0.13304,
-      "cumulative": -0.15115
+      "cumulative": -0.1543
     },
     {
       "match": 53,
       "date": "2012-04-23",
       "tilt": -0.16516,
-      "cumulative": -0.31631
+      "cumulative": -0.31945
     },
     {
       "match": 54,
       "date": "2012-05-05",
       "tilt": 0.08754,
-      "cumulative": -0.22877
+      "cumulative": -0.23191
     },
     {
       "match": 55,
       "date": "2012-05-08",
       "tilt": 0.03987,
-      "cumulative": -0.1889
+      "cumulative": -0.19204
     },
     {
       "match": 56,
       "date": "2012-05-10",
       "tilt": 0.21705,
-      "cumulative": 0.02815
+      "cumulative": 0.025
     },
     {
       "match": 57,
       "date": "2012-05-13",
       "tilt": -0.03897,
-      "cumulative": -0.01082
+      "cumulative": -0.01396
     },
     {
       "match": 58,
       "date": "2012-05-18",
       "tilt": 0.16644,
-      "cumulative": 0.15562
+      "cumulative": 0.15248
     },
     {
       "match": 59,
       "date": "2012-05-20",
       "tilt": -0.08155,
-      "cumulative": 0.07408
+      "cumulative": 0.07093
     },
     {
       "match": 60,
       "date": "2013-04-06",
       "tilt": -0.1923,
-      "cumulative": -0.11823
+      "cumulative": -0.12137
     },
     {
       "match": 61,
       "date": "2013-04-08",
       "tilt": 0.40764,
-      "cumulative": 0.28941
+      "cumulative": 0.28627
     },
     {
       "match": 62,
       "date": "2013-04-11",
       "tilt": -0.04094,
-      "cumulative": 0.24847
+      "cumulative": 0.24533
     },
     {
       "match": 63,
       "date": "2013-04-14",
       "tilt": 0.11187,
-      "cumulative": 0.36034
+      "cumulative": 0.3572
     },
     {
       "match": 64,
       "date": "2013-04-17",
       "tilt": 0.0925,
-      "cumulative": 0.45284
+      "cumulative": 0.4497
     },
     {
       "match": 65,
       "date": "2013-04-20",
       "tilt": -0.18288,
-      "cumulative": 0.26996
+      "cumulative": 0.26682
     },
     {
       "match": 66,
       "date": "2013-04-22",
       "tilt": -0.10609,
-      "cumulative": 0.16387
+      "cumulative": 0.16073
     },
     {
       "match": 67,
       "date": "2013-04-27",
       "tilt": -0.01835,
-      "cumulative": 0.14551
+      "cumulative": 0.14237
     },
     {
       "match": 68,
       "date": "2013-04-29",
       "tilt": 0.01764,
-      "cumulative": 0.16316
+      "cumulative": 0.16001
     },
     {
       "match": 69,
       "date": "2013-05-03",
       "tilt": -0.01308,
-      "cumulative": 0.15008
+      "cumulative": 0.14694
     },
     {
       "match": 70,
       "date": "2013-05-05",
       "tilt": 0.05878,
-      "cumulative": 0.20886
+      "cumulative": 0.20571
     },
     {
       "match": 71,
       "date": "2013-05-07",
       "tilt": 0.03712,
-      "cumulative": 0.24597
+      "cumulative": 0.24283
     },
     {
       "match": 72,
       "date": "2013-05-09",
       "tilt": -0.00737,
-      "cumulative": 0.2386
+      "cumulative": 0.23546
     },
     {
       "match": 73,
       "date": "2013-05-12",
       "tilt": -0.0316,
-      "cumulative": 0.20701
+      "cumulative": 0.20386
     },
     {
       "match": 74,
       "date": "2013-05-17",
       "tilt": 0.07362,
-      "cumulative": 0.28063
+      "cumulative": 0.27749
     },
     {
       "match": 75,
       "date": "2013-05-22",
       "tilt": 0.02797,
-      "cumulative": 0.3086
+      "cumulative": 0.30545
     },
     {
       "match": 76,
       "date": "2013-05-24",
       "tilt": 0.0709,
-      "cumulative": 0.37949
+      "cumulative": 0.37635
     }
   ],
   "team_matchups": [
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": 0.02777,
+      "tilt_per_match": 0.02719,
       "matches": 2
     },
     {
@@ -2425,7 +2425,7 @@
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.00027,
+      "tilt_per_match": -0.00077,
       "matches": 4
     },
     {
@@ -2531,7 +2531,7 @@
     -0.00674,
     0.04034,
     -0.03302,
-    0.01084,
+    0.00885,
     -0.05468,
     -0.07087,
     0.07309,
@@ -2546,7 +2546,7 @@
     -0.16855,
     0.06215,
     -0.10263,
-    0.03261,
+    0.03145,
     0.06857,
     0.03072,
     0.02526,
