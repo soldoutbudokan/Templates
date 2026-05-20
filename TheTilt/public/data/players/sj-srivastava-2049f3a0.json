@@ -8,18 +8,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": 0.00591,
+  "total_tilt_per_match": 0.00561,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": 0.00279,
-  "shrunk_total_tilt_per_match": -0.00163,
+  "shrunk_total_tilt_per_match": -0.00239,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.00172,
-  "tilt_ci_lower": -0.06802,
-  "tilt_ci_upper": 0.06476,
-  "tilt_ci_lower_90": -0.05735,
-  "tilt_ci_upper_90": 0.05409,
+  "shrunk_bowling_tilt_per_match": -0.0025,
+  "tilt_ci_lower": -0.06769,
+  "tilt_ci_upper": 0.06292,
+  "tilt_ci_lower_90": -0.05719,
+  "tilt_ci_upper_90": 0.05242,
   "confidence": "low",
-  "total_tilt": 0.0828,
+  "total_tilt": 0.07848,
   "total_matches": 14,
   "batting_balls": 5,
   "bowling_balls": 282,
@@ -219,7 +219,7 @@
     {
       "season": "2011",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": 0.02313,
+      "batting_tilt_per_match": 0.02096,
       "bowling_tilt_per_match": 0.02849,
       "batting_matches": 2,
       "bowling_matches": 6,
@@ -277,14 +277,14 @@
           "bat_runs": 3,
           "bat_balls": 2,
           "bat_sr": 150.0,
-          "bat_tilt": 0.04593,
+          "bat_tilt": 0.04161,
           "bat_not_out": true,
           "bowl_wkts": 1,
           "bowl_balls": 12,
           "bowl_runs": 17,
           "bowl_econ": 8.5,
           "bowl_tilt": 0.07623,
-          "total_tilt": 0.12216
+          "total_tilt": 0.11784
         },
         {
           "match_id": "501254",
@@ -372,9 +372,9 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": 0.04368,
+      "tilt": 0.03936,
       "balls": 5,
-      "avg_delta": 0.008737
+      "avg_delta": 0.007872
     }
   ],
   "bowling_phases": [
@@ -402,7 +402,7 @@
       "match_id": "501251",
       "date": "2011-05-10",
       "vs": "Mumbai Indians",
-      "tilt": 0.04593,
+      "tilt": 0.04161,
       "runs": 3,
       "balls": 2,
       "not_out": true
@@ -467,7 +467,7 @@
       "match_id": "501251",
       "date": "2011-05-10",
       "vs": "Mumbai Indians",
-      "tilt": 0.04593,
+      "tilt": 0.04161,
       "runs": 3,
       "balls": 2,
       "not_out": true
@@ -621,32 +621,32 @@
     {
       "match": 11,
       "date": "2011-05-10",
-      "tilt": 0.12216,
-      "cumulative": 0.00092
+      "tilt": 0.11784,
+      "cumulative": -0.00341
     },
     {
       "match": 12,
       "date": "2011-05-13",
       "tilt": -0.04331,
-      "cumulative": -0.04239
+      "cumulative": -0.04672
     },
     {
       "match": 13,
       "date": "2011-05-15",
       "tilt": 0.11099,
-      "cumulative": 0.06859
+      "cumulative": 0.06427
     },
     {
       "match": 14,
       "date": "2011-05-17",
       "tilt": 0.01421,
-      "cumulative": 0.0828
+      "cumulative": 0.07848
     }
   ],
   "team_matchups": [
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.02301,
+      "tilt_per_match": 0.02084,
       "matches": 2
     },
     {
@@ -739,7 +739,7 @@
     -0.07018,
     -0.13276,
     0.1459,
-    0.12216,
+    0.11784,
     -0.04331,
     0.11099,
     0.01421

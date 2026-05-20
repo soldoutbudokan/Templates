@@ -1,6 +1,6 @@
 {
   "player": "A Flintoff",
-  "full_name": "Andrew Flintoff",
+  "full_name": "A Flintoff",
   "player_id": "ddc0828d",
   "slug": "a-flintoff-ddc0828d",
   "country": "EN",
@@ -8,18 +8,18 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": 0.02207,
+  "total_tilt_per_match": 0.02593,
   "batting_tilt_per_match": -0.00646,
-  "bowling_tilt_per_match": 0.02854,
-  "shrunk_total_tilt_per_match": -0.00609,
-  "shrunk_batting_tilt_per_match": -0.01208,
-  "shrunk_bowling_tilt_per_match": 0.00212,
-  "tilt_ci_lower": -0.1585,
-  "tilt_ci_upper": 0.14632,
-  "tilt_ci_lower_90": -0.13401,
-  "tilt_ci_upper_90": 0.12183,
+  "bowling_tilt_per_match": 0.03239,
+  "shrunk_total_tilt_per_match": -0.00563,
+  "shrunk_batting_tilt_per_match": -0.01212,
+  "shrunk_bowling_tilt_per_match": 0.00108,
+  "tilt_ci_lower": -0.15208,
+  "tilt_ci_upper": 0.14082,
+  "tilt_ci_lower_90": -0.12855,
+  "tilt_ci_upper_90": 0.11728,
   "confidence": "low",
-  "total_tilt": 0.06622,
+  "total_tilt": 0.07778,
   "total_matches": 3,
   "batting_balls": 53,
   "bowling_balls": 66,
@@ -28,7 +28,7 @@
       "season": "2009",
       "team": "Chennai Super Kings",
       "batting_tilt_per_match": -0.00646,
-      "bowling_tilt_per_match": 0.02854,
+      "bowling_tilt_per_match": 0.03239,
       "batting_matches": 3,
       "bowling_matches": 3,
       "batting_balls": 53,
@@ -51,8 +51,8 @@
           "bowl_balls": 24,
           "bowl_runs": 45,
           "bowl_econ": 11.25,
-          "bowl_tilt": -0.07346,
-          "total_tilt": -0.02132
+          "bowl_tilt": -0.0619,
+          "total_tilt": -0.00976
         },
         {
           "match_id": "392185",
@@ -152,9 +152,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.10968,
+      "tilt": -0.09813,
       "balls": 24,
-      "avg_delta": -0.00457
+      "avg_delta": -0.004089
     }
   ],
   "best_matches": [
@@ -225,37 +225,37 @@
       "balls": 18
     },
     {
+      "match_id": "392181",
+      "date": "2009-04-18",
+      "vs": "Mumbai Indians",
+      "tilt": -0.0619,
+      "wickets": 1,
+      "balls": 24
+    },
+    {
       "match_id": "392189",
       "date": "2009-04-23",
       "vs": "Delhi Capitals",
       "tilt": -0.06281,
       "wickets": 0,
-      "balls": 24
-    },
-    {
-      "match_id": "392181",
-      "date": "2009-04-18",
-      "vs": "Mumbai Indians",
-      "tilt": -0.07346,
-      "wickets": 1,
       "balls": 24
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "392181",
-      "date": "2009-04-18",
-      "vs": "Mumbai Indians",
-      "tilt": -0.07346,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "392189",
       "date": "2009-04-23",
       "vs": "Delhi Capitals",
       "tilt": -0.06281,
       "wickets": 0,
+      "balls": 24
+    },
+    {
+      "match_id": "392181",
+      "date": "2009-04-18",
+      "vs": "Mumbai Indians",
+      "tilt": -0.0619,
+      "wickets": 1,
       "balls": 24
     },
     {
@@ -271,20 +271,20 @@
     {
       "match": 1,
       "date": "2009-04-18",
-      "tilt": -0.02132,
-      "cumulative": -0.02132
+      "tilt": -0.00976,
+      "cumulative": -0.00976
     },
     {
       "match": 2,
       "date": "2009-04-20",
       "tilt": 0.25672,
-      "cumulative": 0.2354
+      "cumulative": 0.24696
     },
     {
       "match": 3,
       "date": "2009-04-23",
       "tilt": -0.16918,
-      "cumulative": 0.06622
+      "cumulative": 0.07778
     }
   ],
   "team_matchups": [
@@ -311,13 +311,13 @@
       "matches": 1
     },
     {
-      "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.06281,
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.0619,
       "matches": 1
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.07346,
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": -0.06281,
       "matches": 1
     }
   ],
@@ -343,7 +343,7 @@
     "best_figures": "1/45"
   },
   "match_tilt_distribution": [
-    -0.02132,
+    -0.00976,
     0.25672,
     -0.16918
   ]

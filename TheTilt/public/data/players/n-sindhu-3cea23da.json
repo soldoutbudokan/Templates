@@ -8,30 +8,30 @@
   "teams": [
     "Gujarat Titans"
   ],
-  "total_tilt_per_match": 0.04724,
+  "total_tilt_per_match": -0.05714,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.0028,
+  "shrunk_total_tilt_per_match": -0.03568,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.08129,
-  "tilt_ci_upper": 0.07569,
-  "tilt_ci_lower_90": -0.06867,
-  "tilt_ci_upper_90": 0.06308,
+  "tilt_ci_lower": -0.1685,
+  "tilt_ci_upper": 0.09714,
+  "tilt_ci_lower_90": -0.14716,
+  "tilt_ci_upper_90": 0.07579,
   "confidence": "low",
-  "total_tilt": 0.09448,
-  "total_matches": 2,
-  "batting_balls": 25,
+  "total_tilt": -0.17142,
+  "total_matches": 3,
+  "batting_balls": 29,
   "bowling_balls": 0,
   "seasons": [
     {
       "season": "2026",
       "team": "Gujarat Titans",
-      "batting_tilt_per_match": 0.04724,
+      "batting_tilt_per_match": -0.05714,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 2,
+      "batting_matches": 3,
       "bowling_matches": 0,
-      "batting_balls": 25,
+      "batting_balls": 29,
       "bowling_balls": 0,
       "matches": [
         {
@@ -73,14 +73,34 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.02623
+        },
+        {
+          "match_id": "1529303",
+          "date": "2026-05-16",
+          "opponent": "Kolkata Knight Riders",
+          "venue": "Eden Gardens",
+          "team_score": "218/4",
+          "opponent_score": "247/2",
+          "winner": "Kolkata Knight Riders",
+          "bat_runs": 1,
+          "bat_balls": 4,
+          "bat_sr": 25.0,
+          "bat_tilt": -0.2659,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": -0.2659
         }
       ],
       "batting_stats": {
-        "runs": 37,
-        "innings": 2,
-        "balls": 25,
-        "avg": 18.5,
-        "sr": 148.0,
+        "runs": 38,
+        "innings": 3,
+        "balls": 29,
+        "avg": 12.67,
+        "sr": 131.03,
         "hs": 22,
         "not_outs": 0,
         "fifties": 0,
@@ -91,9 +111,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.02494,
-      "balls": 5,
-      "avg_delta": 0.004988
+      "tilt": -0.24096,
+      "balls": 9,
+      "avg_delta": -0.024096
     },
     {
       "phase": "middle",
@@ -121,9 +141,27 @@
       "runs": 22,
       "balls": 14,
       "not_out": false
+    },
+    {
+      "match_id": "1529303",
+      "date": "2026-05-16",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.2659,
+      "runs": 1,
+      "balls": 4,
+      "not_out": false
     }
   ],
   "worst_matches": [
+    {
+      "match_id": "1529303",
+      "date": "2026-05-16",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.2659,
+      "runs": 1,
+      "balls": 4,
+      "not_out": false
+    },
     {
       "match_id": "1529299",
       "date": "2026-05-12",
@@ -157,6 +195,12 @@
       "date": "2026-05-12",
       "tilt": -0.02623,
       "cumulative": 0.09448
+    },
+    {
+      "match": 3,
+      "date": "2026-05-16",
+      "tilt": -0.2659,
+      "cumulative": -0.17142
     }
   ],
   "team_matchups": [
@@ -169,17 +213,22 @@
       "opponent": "Sunrisers Hyderabad",
       "tilt_per_match": -0.02623,
       "matches": 1
+    },
+    {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": -0.2659,
+      "matches": 1
     }
   ],
   "bowling_team_matchups": [],
   "batting_stats": {
-    "runs": 37,
-    "innings": 2,
-    "balls": 25,
-    "avg": 18.5,
-    "sr": 148.0,
+    "runs": 38,
+    "innings": 3,
+    "balls": 29,
+    "avg": 12.67,
+    "sr": 131.03,
     "hs": 22,
-    "dismissals": 2,
+    "dismissals": 3,
     "not_outs": 0,
     "fifties": 0,
     "hundreds": 0
@@ -187,6 +236,7 @@
   "bowling_stats": null,
   "match_tilt_distribution": [
     0.12071,
-    -0.02623
+    -0.02623,
+    -0.2659
   ]
 }

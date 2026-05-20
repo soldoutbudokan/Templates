@@ -9,18 +9,18 @@
     "Kochi Tuskers Kerala",
     "Pune Warriors India"
   ],
-  "total_tilt_per_match": 0.0049,
-  "batting_tilt_per_match": -0.01648,
+  "total_tilt_per_match": 0.00501,
+  "batting_tilt_per_match": -0.01632,
   "bowling_tilt_per_match": 0.02356,
-  "shrunk_total_tilt_per_match": -0.0028,
-  "shrunk_batting_tilt_per_match": -0.01596,
-  "shrunk_bowling_tilt_per_match": 0.01373,
-  "tilt_ci_lower": -0.05198,
-  "tilt_ci_upper": 0.04639,
-  "tilt_ci_lower_90": -0.04408,
-  "tilt_ci_upper_90": 0.03849,
+  "shrunk_total_tilt_per_match": -0.00324,
+  "shrunk_batting_tilt_per_match": -0.01585,
+  "shrunk_bowling_tilt_per_match": 0.01179,
+  "tilt_ci_lower": -0.05165,
+  "tilt_ci_upper": 0.04516,
+  "tilt_ci_lower_90": -0.04387,
+  "tilt_ci_upper_90": 0.03738,
   "confidence": "low",
-  "total_tilt": 0.06373,
+  "total_tilt": 0.06518,
   "total_matches": 13,
   "batting_balls": 51,
   "bowling_balls": 96,
@@ -28,7 +28,7 @@
     {
       "season": "2011",
       "team": "Kochi Tuskers Kerala",
-      "batting_tilt_per_match": -0.03272,
+      "batting_tilt_per_match": -0.03254,
       "bowling_tilt_per_match": 0.01414,
       "batting_matches": 8,
       "bowling_matches": 8,
@@ -126,14 +126,14 @@
           "bat_runs": 10,
           "bat_balls": 10,
           "bat_sr": 100.0,
-          "bat_tilt": -0.03579,
+          "bat_tilt": -0.03434,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.03579
+          "total_tilt": -0.03434
         },
         {
           "match_id": "501225",
@@ -365,9 +365,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.07951,
+      "tilt": -0.07806,
       "balls": 44,
-      "avg_delta": -0.001767
+      "avg_delta": -0.001735
     }
   ],
   "bowling_phases": [
@@ -422,13 +422,13 @@
       "not_out": false
     },
     {
-      "match_id": "501225",
-      "date": "2011-04-24",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.03479,
-      "runs": 0,
-      "balls": 1,
-      "not_out": false
+      "match_id": "501219",
+      "date": "2011-04-20",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.03434,
+      "runs": 10,
+      "balls": 10,
+      "not_out": true
     }
   ],
   "worst_matches": [
@@ -451,15 +451,6 @@
       "not_out": false
     },
     {
-      "match_id": "501219",
-      "date": "2011-04-20",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.03579,
-      "runs": 10,
-      "balls": 10,
-      "not_out": true
-    },
-    {
       "match_id": "501229",
       "date": "2011-04-27",
       "vs": "Deccan Chargers",
@@ -476,6 +467,15 @@
       "runs": 0,
       "balls": 1,
       "not_out": false
+    },
+    {
+      "match_id": "501219",
+      "date": "2011-04-20",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.03434,
+      "runs": 10,
+      "balls": 10,
+      "not_out": true
     }
   ],
   "bowling_best_matches": [
@@ -590,56 +590,56 @@
     {
       "match": 5,
       "date": "2011-04-20",
-      "tilt": -0.03579,
-      "cumulative": -0.18675
+      "tilt": -0.03434,
+      "cumulative": -0.1853
     },
     {
       "match": 6,
       "date": "2011-04-24",
       "tilt": -0.0463,
-      "cumulative": -0.23306
+      "cumulative": -0.23161
     },
     {
       "match": 7,
       "date": "2011-04-27",
       "tilt": -0.03537,
-      "cumulative": -0.26843
+      "cumulative": -0.26698
     },
     {
       "match": 8,
       "date": "2011-05-02",
       "tilt": -0.06205,
-      "cumulative": -0.33048
+      "cumulative": -0.32903
     },
     {
       "match": 9,
       "date": "2011-05-05",
       "tilt": 0.29336,
-      "cumulative": -0.03711
+      "cumulative": -0.03567
     },
     {
       "match": 10,
       "date": "2011-05-08",
       "tilt": -0.05822,
-      "cumulative": -0.09534
+      "cumulative": -0.09389
     },
     {
       "match": 11,
       "date": "2011-05-13",
       "tilt": -0.0533,
-      "cumulative": -0.14863
+      "cumulative": -0.14718
     },
     {
       "match": 12,
       "date": "2013-05-15",
       "tilt": 0.0989,
-      "cumulative": -0.04973
+      "cumulative": -0.04829
     },
     {
       "match": 13,
       "date": "2013-05-19",
       "tilt": 0.11346,
-      "cumulative": 0.06373
+      "cumulative": 0.06518
     }
   ],
   "team_matchups": [
@@ -655,7 +655,7 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.01789,
+      "tilt_per_match": -0.01717,
       "matches": 2
     },
     {
@@ -747,7 +747,7 @@
     -0.06754,
     -0.00325,
     -0.00098,
-    -0.03579,
+    -0.03434,
     -0.0463,
     -0.03537,
     -0.06205,

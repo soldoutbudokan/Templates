@@ -9,18 +9,18 @@
     "Royal Challengers Bangalore",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.02215,
-  "batting_tilt_per_match": 0.01401,
-  "bowling_tilt_per_match": -0.0404,
-  "shrunk_total_tilt_per_match": -0.02247,
-  "shrunk_batting_tilt_per_match": 0.00777,
-  "shrunk_bowling_tilt_per_match": -0.03663,
-  "tilt_ci_lower": -0.09264,
-  "tilt_ci_upper": 0.0477,
-  "tilt_ci_lower_90": -0.08136,
-  "tilt_ci_upper_90": 0.03642,
+  "total_tilt_per_match": -0.02219,
+  "batting_tilt_per_match": 0.01398,
+  "bowling_tilt_per_match": -0.04041,
+  "shrunk_total_tilt_per_match": -0.02245,
+  "shrunk_batting_tilt_per_match": 0.00766,
+  "shrunk_bowling_tilt_per_match": -0.03551,
+  "tilt_ci_lower": -0.0919,
+  "tilt_ci_upper": 0.047,
+  "tilt_ci_lower_90": -0.08074,
+  "tilt_ci_upper_90": 0.03584,
   "confidence": "low",
-  "total_tilt": -0.4874,
+  "total_tilt": -0.48824,
   "total_matches": 22,
   "batting_balls": 241,
   "bowling_balls": 236,
@@ -29,7 +29,7 @@
       "season": "2013",
       "team": "Sunrisers Hyderabad",
       "batting_tilt_per_match": 0.03748,
-      "bowling_tilt_per_match": -0.01898,
+      "bowling_tilt_per_match": -0.01899,
       "batting_matches": 9,
       "bowling_matches": 9,
       "batting_balls": 132,
@@ -52,8 +52,8 @@
           "bowl_balls": 18,
           "bowl_runs": 31,
           "bowl_econ": 10.33,
-          "bowl_tilt": -0.26043,
-          "total_tilt": -0.15911
+          "bowl_tilt": -0.25695,
+          "total_tilt": -0.15563
         },
         {
           "match_id": "598032",
@@ -132,8 +132,8 @@
           "bowl_balls": 12,
           "bowl_runs": 33,
           "bowl_econ": 16.5,
-          "bowl_tilt": -0.17249,
-          "total_tilt": -0.19061
+          "bowl_tilt": -0.17606,
+          "total_tilt": -0.19418
         },
         {
           "match_id": "598056",
@@ -260,7 +260,7 @@
     {
       "season": "2014",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.01605,
+      "batting_tilt_per_match": 0.01596,
       "bowling_tilt_per_match": -0.0673,
       "batting_matches": 9,
       "bowling_matches": 8,
@@ -338,14 +338,14 @@
           "bat_runs": 23,
           "bat_balls": 15,
           "bat_sr": 153.3,
-          "bat_tilt": -0.01085,
+          "bat_tilt": -0.01161,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.01085
+          "total_tilt": -0.01161
         },
         {
           "match_id": "729317",
@@ -577,17 +577,17 @@
     },
     {
       "phase": "death",
-      "tilt": 0.35185,
+      "tilt": 0.3511,
       "balls": 96,
-      "avg_delta": 0.003484
+      "avg_delta": 0.003476
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.22713,
+      "tilt": -0.22365,
       "balls": 24,
-      "avg_delta": -0.009085
+      "avg_delta": -0.008946
     },
     {
       "phase": "middle",
@@ -597,9 +597,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.64922,
+      "tilt": -0.65279,
       "balls": 50,
-      "avg_delta": -0.012023
+      "avg_delta": -0.012089
     }
   ],
   "best_matches": [
@@ -751,23 +751,23 @@
       "match_id": "598030",
       "date": "2013-04-25",
       "vs": "Chennai Super Kings",
-      "tilt": -0.26043,
+      "tilt": -0.25695,
       "wickets": 0,
       "balls": 18
+    },
+    {
+      "match_id": "598051",
+      "date": "2013-05-08",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.17606,
+      "wickets": 0,
+      "balls": 12
     },
     {
       "match_id": "733977",
       "date": "2014-05-04",
       "vs": "Royal Challengers Bangalore",
       "tilt": -0.17489,
-      "wickets": 0,
-      "balls": 12
-    },
-    {
-      "match_id": "598051",
-      "date": "2013-05-08",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.17249,
       "wickets": 0,
       "balls": 12
     },
@@ -784,134 +784,134 @@
     {
       "match": 1,
       "date": "2013-04-25",
-      "tilt": -0.15911,
-      "cumulative": -0.15911
+      "tilt": -0.15563,
+      "cumulative": -0.15563
     },
     {
       "match": 2,
       "date": "2013-04-27",
       "tilt": 0.02469,
-      "cumulative": -0.13442
+      "cumulative": -0.13094
     },
     {
       "match": 3,
       "date": "2013-05-01",
       "tilt": 3e-05,
-      "cumulative": -0.1344
+      "cumulative": -0.13092
     },
     {
       "match": 4,
       "date": "2013-05-04",
       "tilt": 0.09985,
-      "cumulative": -0.03454
+      "cumulative": -0.03106
     },
     {
       "match": 5,
       "date": "2013-05-08",
-      "tilt": -0.19061,
-      "cumulative": -0.22515
+      "tilt": -0.19418,
+      "cumulative": -0.22524
     },
     {
       "match": 6,
       "date": "2013-05-11",
       "tilt": 0.50389,
-      "cumulative": 0.27874
+      "cumulative": 0.27865
     },
     {
       "match": 7,
       "date": "2013-05-13",
       "tilt": -0.04256,
-      "cumulative": 0.23618
+      "cumulative": 0.23609
     },
     {
       "match": 8,
       "date": "2013-05-17",
       "tilt": 0.0511,
-      "cumulative": 0.28728
+      "cumulative": 0.28719
     },
     {
       "match": 9,
       "date": "2013-05-19",
       "tilt": 0.13445,
-      "cumulative": 0.42173
+      "cumulative": 0.42164
     },
     {
       "match": 10,
       "date": "2013-05-22",
       "tilt": -0.25523,
-      "cumulative": 0.1665
+      "cumulative": 0.16641
     },
     {
       "match": 11,
       "date": "2014-04-18",
       "tilt": -0.1325,
-      "cumulative": 0.034
+      "cumulative": 0.03391
     },
     {
       "match": 12,
       "date": "2014-04-22",
       "tilt": -0.02441,
-      "cumulative": 0.00959
+      "cumulative": 0.0095
     },
     {
       "match": 13,
       "date": "2014-04-25",
       "tilt": -0.10524,
-      "cumulative": -0.09564
+      "cumulative": -0.09573
     },
     {
       "match": 14,
       "date": "2014-04-27",
-      "tilt": -0.01085,
-      "cumulative": -0.1065
+      "tilt": -0.01161,
+      "cumulative": -0.10734
     },
     {
       "match": 15,
       "date": "2014-04-30",
       "tilt": -0.06136,
-      "cumulative": -0.16786
+      "cumulative": -0.1687
     },
     {
       "match": 16,
       "date": "2014-05-04",
       "tilt": -0.20538,
-      "cumulative": -0.37324
+      "cumulative": -0.37408
     },
     {
       "match": 17,
       "date": "2014-05-18",
       "tilt": -0.08155,
-      "cumulative": -0.45479
+      "cumulative": -0.45563
     },
     {
       "match": 18,
       "date": "2014-05-20",
       "tilt": 0.39354,
-      "cumulative": -0.06125
+      "cumulative": -0.06209
     },
     {
       "match": 19,
       "date": "2014-05-22",
       "tilt": -0.20608,
-      "cumulative": -0.26733
+      "cumulative": -0.26817
     },
     {
       "match": 20,
       "date": "2014-05-24",
       "tilt": 0.03983,
-      "cumulative": -0.2275
+      "cumulative": -0.22834
     },
     {
       "match": 21,
       "date": "2015-04-11",
       "tilt": -0.16029,
-      "cumulative": -0.38778
+      "cumulative": -0.38862
     },
     {
       "match": 22,
       "date": "2015-04-13",
       "tilt": -0.09961,
-      "cumulative": -0.4874
+      "cumulative": -0.48824
     }
   ],
   "team_matchups": [
@@ -947,7 +947,7 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.02824,
+      "tilt_per_match": -0.02842,
       "matches": 4
     },
     {
@@ -994,7 +994,7 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.15124,
+      "tilt_per_match": -0.15127,
       "matches": 3
     }
   ],
@@ -1020,11 +1020,11 @@
     "best_figures": "6/23"
   },
   "match_tilt_distribution": [
-    -0.15911,
+    -0.15563,
     0.02469,
     3e-05,
     0.09985,
-    -0.19061,
+    -0.19418,
     0.50389,
     -0.04256,
     0.0511,
@@ -1033,7 +1033,7 @@
     -0.1325,
     -0.02441,
     -0.10524,
-    -0.01085,
+    -0.01161,
     -0.06136,
     -0.20538,
     -0.08155,
