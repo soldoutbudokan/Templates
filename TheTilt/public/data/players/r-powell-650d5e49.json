@@ -10,20 +10,20 @@
     "Kolkata Knight Riders",
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": 0.00101,
-  "batting_tilt_per_match": 0.00282,
+  "total_tilt_per_match": 0.00398,
+  "batting_tilt_per_match": 0.00573,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.00289,
-  "shrunk_batting_tilt_per_match": -0.00037,
+  "shrunk_total_tilt_per_match": -0.00027,
+  "shrunk_batting_tilt_per_match": 0.00209,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.03631,
-  "tilt_ci_upper": 0.03052,
-  "tilt_ci_lower_90": -0.03094,
-  "tilt_ci_upper_90": 0.02515,
+  "tilt_ci_lower": -0.03303,
+  "tilt_ci_upper": 0.03248,
+  "tilt_ci_lower_90": -0.02777,
+  "tilt_ci_upper_90": 0.02722,
   "confidence": "low",
-  "total_tilt": 0.02819,
-  "total_matches": 28,
-  "batting_balls": 339,
+  "total_tilt": 0.11552,
+  "total_matches": 29,
+  "batting_balls": 369,
   "bowling_balls": 18,
   "seasons": [
     {
@@ -599,11 +599,11 @@
     {
       "season": "2026",
       "team": "Kolkata Knight Riders",
-      "batting_tilt_per_match": -0.04594,
+      "batting_tilt_per_match": -0.02373,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 5,
+      "batting_matches": 6,
       "bowling_matches": 0,
-      "batting_balls": 90,
+      "batting_balls": 120,
       "bowling_balls": 0,
       "matches": [
         {
@@ -705,15 +705,35 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.1567
+        },
+        {
+          "match_id": "1529308",
+          "date": "2026-05-20",
+          "opponent": "Mumbai Indians",
+          "venue": "Eden Gardens",
+          "team_score": "148/6",
+          "opponent_score": "147/8",
+          "winner": "Kolkata Knight Riders",
+          "bat_runs": 40,
+          "bat_balls": 30,
+          "bat_sr": 133.3,
+          "bat_tilt": 0.08733,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.08733
         }
       ],
       "batting_stats": {
-        "runs": 121,
-        "innings": 5,
-        "balls": 90,
-        "avg": 40.33,
-        "sr": 134.44,
-        "hs": 39,
+        "runs": 161,
+        "innings": 6,
+        "balls": 120,
+        "avg": 40.25,
+        "sr": 134.17,
+        "hs": 40,
         "not_outs": 2,
         "fifties": 0,
         "hundreds": 0
@@ -729,15 +749,15 @@
     },
     {
       "phase": "middle",
-      "tilt": -0.71371,
-      "balls": 174,
-      "avg_delta": -0.003965
+      "tilt": -0.63417,
+      "balls": 202,
+      "avg_delta": -0.003034
     },
     {
       "phase": "death",
-      "tilt": 0.74579,
-      "balls": 152,
-      "avg_delta": 0.004548
+      "tilt": 0.75358,
+      "balls": 154,
+      "avg_delta": 0.00454
     }
   ],
   "bowling_phases": [
@@ -792,12 +812,12 @@
       "not_out": true
     },
     {
-      "match_id": "1304080",
-      "date": "2022-04-22",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.06383,
-      "runs": 36,
-      "balls": 15,
+      "match_id": "1529308",
+      "date": "2026-05-20",
+      "vs": "Mumbai Indians",
+      "tilt": 0.08733,
+      "runs": 40,
+      "balls": 30,
       "not_out": false
     }
   ],
@@ -1052,6 +1072,12 @@
       "date": "2026-04-26",
       "tilt": -0.1567,
       "cumulative": 0.02819
+    },
+    {
+      "match": 29,
+      "date": "2026-05-20",
+      "tilt": 0.08733,
+      "cumulative": 0.11552
     }
   ],
   "team_matchups": [
@@ -1071,6 +1097,11 @@
       "matches": 3
     },
     {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": 0.0076,
+      "matches": 4
+    },
+    {
       "opponent": "Chennai Super Kings",
       "tilt_per_match": -0.00442,
       "matches": 2
@@ -1078,11 +1109,6 @@
     {
       "opponent": "Rajasthan Royals",
       "tilt_per_match": -0.0097,
-      "matches": 3
-    },
-    {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.01898,
       "matches": 3
     },
     {
@@ -1119,13 +1145,13 @@
     }
   ],
   "batting_stats": {
-    "runs": 486,
-    "innings": 28,
-    "balls": 339,
-    "avg": 21.13,
-    "sr": 143.36,
+    "runs": 526,
+    "innings": 29,
+    "balls": 369,
+    "avg": 21.92,
+    "sr": 142.55,
     "hs": 67,
-    "dismissals": 23,
+    "dismissals": 24,
     "not_outs": 5,
     "fifties": 1,
     "hundreds": 0
@@ -1167,6 +1193,7 @@
     0.04193,
     -0.05443,
     -0.0819,
-    -0.1567
+    -0.1567,
+    0.08733
   ]
 }
