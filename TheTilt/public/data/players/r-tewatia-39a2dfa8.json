@@ -11,20 +11,20 @@
     "Punjab Kings",
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": 0.00354,
-  "batting_tilt_per_match": 0.00332,
+  "total_tilt_per_match": 0.00342,
+  "batting_tilt_per_match": 0.00318,
   "bowling_tilt_per_match": 0.00132,
-  "shrunk_total_tilt_per_match": 0.00219,
-  "shrunk_batting_tilt_per_match": 0.00227,
-  "shrunk_bowling_tilt_per_match": 0.00043,
-  "tilt_ci_lower": -0.02106,
-  "tilt_ci_upper": 0.02544,
-  "tilt_ci_lower_90": -0.01732,
-  "tilt_ci_upper_90": 0.0217,
+  "shrunk_total_tilt_per_match": 0.00208,
+  "shrunk_batting_tilt_per_match": 0.00214,
+  "shrunk_bowling_tilt_per_match": 0.00044,
+  "tilt_ci_lower": -0.02094,
+  "tilt_ci_upper": 0.0251,
+  "tilt_ci_lower_90": -0.01724,
+  "tilt_ci_upper_90": 0.0214,
   "confidence": "high",
-  "total_tilt": 0.35769,
-  "total_matches": 101,
-  "batting_balls": 885,
+  "total_tilt": 0.34843,
+  "total_matches": 102,
+  "batting_balls": 886,
   "bowling_balls": 843,
   "seasons": [
     {
@@ -2153,11 +2153,11 @@
     {
       "season": "2026",
       "team": "Gujarat Titans",
-      "batting_tilt_per_match": -0.0125,
+      "batting_tilt_per_match": -0.01223,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 11,
+      "batting_matches": 12,
       "bowling_matches": 0,
-      "batting_balls": 74,
+      "batting_balls": 75,
       "bowling_balls": 0,
       "matches": [
         {
@@ -2379,14 +2379,34 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.13092
+        },
+        {
+          "match_id": "1529309",
+          "date": "2026-05-21",
+          "opponent": "Chennai Super Kings",
+          "venue": "Narendra Modi Stadium, Ahmedabad",
+          "team_score": "229/4",
+          "opponent_score": "140/10",
+          "winner": "Gujarat Titans",
+          "bat_runs": 0,
+          "bat_balls": 1,
+          "bat_sr": 0.0,
+          "bat_tilt": -0.00927,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": -0.00927
         }
       ],
       "batting_stats": {
         "runs": 98,
-        "innings": 11,
-        "balls": 74,
-        "avg": 24.5,
-        "sr": 132.43,
+        "innings": 12,
+        "balls": 75,
+        "avg": 19.6,
+        "sr": 130.67,
         "hs": 27,
         "not_outs": 7,
         "fifties": 0,
@@ -2409,9 +2429,9 @@
     },
     {
       "phase": "death",
-      "tilt": 1.68393,
-      "balls": 516,
-      "avg_delta": 0.003045
+      "tilt": 1.67466,
+      "balls": 517,
+      "avg_delta": 0.003023
     }
   ],
   "bowling_phases": [
@@ -3218,6 +3238,12 @@
       "date": "2026-05-16",
       "tilt": -0.13092,
       "cumulative": 0.35769
+    },
+    {
+      "match": 102,
+      "date": "2026-05-21",
+      "tilt": -0.00927,
+      "cumulative": 0.34843
     }
   ],
   "team_matchups": [
@@ -3253,8 +3279,8 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.01621,
-      "matches": 9
+      "tilt_per_match": -0.01552,
+      "matches": 10
     },
     {
       "opponent": "Mumbai Indians",
@@ -3326,12 +3352,12 @@
   ],
   "batting_stats": {
     "runs": 1210,
-    "innings": 87,
-    "balls": 885,
-    "avg": 24.2,
-    "sr": 136.72,
+    "innings": 88,
+    "balls": 886,
+    "avg": 23.73,
+    "sr": 136.57,
     "hs": 53,
-    "dismissals": 50,
+    "dismissals": 51,
     "not_outs": 37,
     "fifties": 1,
     "hundreds": 0
@@ -3446,6 +3472,7 @@
     -0.08118,
     -0.00153,
     0.0074,
-    -0.13092
+    -0.13092,
+    -0.00927
   ]
 }
