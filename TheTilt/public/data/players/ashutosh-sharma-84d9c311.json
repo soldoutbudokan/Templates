@@ -9,20 +9,20 @@
     "Delhi Capitals",
     "Punjab Kings"
   ],
-  "total_tilt_per_match": 0.04295,
-  "batting_tilt_per_match": 0.04295,
+  "total_tilt_per_match": 0.04759,
+  "batting_tilt_per_match": 0.04759,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.03088,
-  "shrunk_batting_tilt_per_match": 0.03105,
+  "shrunk_total_tilt_per_match": 0.03506,
+  "shrunk_batting_tilt_per_match": 0.03513,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.03952,
-  "tilt_ci_upper": 0.10128,
-  "tilt_ci_lower_90": -0.0282,
-  "tilt_ci_upper_90": 0.08997,
+  "tilt_ci_lower": -0.03318,
+  "tilt_ci_upper": 0.1033,
+  "tilt_ci_lower_90": -0.02221,
+  "tilt_ci_upper_90": 0.09233,
   "confidence": "low",
-  "total_tilt": 1.0309,
-  "total_matches": 24,
-  "batting_balls": 297,
+  "total_tilt": 1.18986,
+  "total_matches": 25,
+  "batting_balls": 308,
   "bowling_balls": 0,
   "seasons": [
     {
@@ -414,11 +414,11 @@
     {
       "season": "2026",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": 0.11995,
+      "batting_tilt_per_match": 0.12482,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 7,
+      "batting_matches": 8,
       "bowling_matches": 0,
-      "batting_balls": 83,
+      "batting_balls": 94,
       "bowling_balls": 0,
       "matches": [
         {
@@ -472,14 +472,14 @@
           "bat_runs": 25,
           "bat_balls": 15,
           "bat_sr": 166.7,
-          "bat_tilt": 0.24636,
+          "bat_tilt": 0.2454,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.24636
+          "total_tilt": 0.2454
         },
         {
           "match_id": "1529291",
@@ -552,24 +552,44 @@
           "bat_runs": 18,
           "bat_balls": 5,
           "bat_sr": 360.0,
-          "bat_tilt": 0.61427,
+          "bat_tilt": 0.61373,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.61427
+          "total_tilt": 0.61373
+        },
+        {
+          "match_id": "1529313",
+          "date": "2026-05-24",
+          "opponent": "Kolkata Knight Riders",
+          "venue": "Eden Gardens",
+          "team_score": "203/5",
+          "opponent_score": "163/10",
+          "winner": "Delhi Capitals",
+          "bat_runs": 18,
+          "bat_balls": 11,
+          "bat_sr": 163.6,
+          "bat_tilt": 0.16047,
+          "bat_not_out": true,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.16047
         }
       ],
       "batting_stats": {
-        "runs": 153,
-        "innings": 7,
-        "balls": 83,
-        "avg": 30.6,
-        "sr": 184.34,
+        "runs": 171,
+        "innings": 8,
+        "balls": 94,
+        "avg": 34.2,
+        "sr": 181.91,
         "hs": 39,
-        "not_outs": 2,
+        "not_outs": 3,
         "fifties": 0,
         "hundreds": 0
       }
@@ -584,9 +604,9 @@
     },
     {
       "phase": "death",
-      "tilt": 1.24071,
-      "balls": 189,
-      "avg_delta": 0.005936
+      "tilt": 1.39967,
+      "balls": 200,
+      "avg_delta": 0.006362
     }
   ],
   "bowling_phases": [],
@@ -595,7 +615,7 @@
       "match_id": "1529305",
       "date": "2026-05-17",
       "vs": "Rajasthan Royals",
-      "tilt": 0.61427,
+      "tilt": 0.61373,
       "runs": 18,
       "balls": 5,
       "not_out": true
@@ -613,7 +633,7 @@
       "match_id": "1529286",
       "date": "2026-05-01",
       "vs": "Rajasthan Royals",
-      "tilt": 0.24636,
+      "tilt": 0.2454,
       "runs": 25,
       "balls": 15,
       "not_out": true
@@ -628,13 +648,13 @@
       "not_out": true
     },
     {
-      "match_id": "1426271",
-      "date": "2024-04-18",
-      "vs": "Mumbai Indians",
-      "tilt": 0.12498,
-      "runs": 61,
-      "balls": 28,
-      "not_out": false
+      "match_id": "1529313",
+      "date": "2026-05-24",
+      "vs": "Kolkata Knight Riders",
+      "tilt": 0.16047,
+      "runs": 18,
+      "balls": 11,
+      "not_out": true
     }
   ],
   "worst_matches": [
@@ -804,32 +824,38 @@
     {
       "match": 20,
       "date": "2026-05-01",
-      "tilt": 0.24636,
-      "cumulative": 0.38996
+      "tilt": 0.2454,
+      "cumulative": 0.38899
     },
     {
       "match": 21,
       "date": "2026-05-05",
       "tilt": -0.00443,
-      "cumulative": 0.38553
+      "cumulative": 0.38456
     },
     {
       "match": 22,
       "date": "2026-05-08",
       "tilt": -0.0438,
-      "cumulative": 0.34172
+      "cumulative": 0.34076
     },
     {
       "match": 23,
       "date": "2026-05-11",
       "tilt": 0.0749,
-      "cumulative": 0.41662
+      "cumulative": 0.41565
     },
     {
       "match": 24,
       "date": "2026-05-17",
-      "tilt": 0.61427,
-      "cumulative": 1.0309
+      "tilt": 0.61373,
+      "cumulative": 1.02938
+    },
+    {
+      "match": 25,
+      "date": "2026-05-24",
+      "tilt": 0.16047,
+      "cumulative": 1.18986
     }
   ],
   "team_matchups": [
@@ -840,7 +866,7 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.14829,
+      "tilt_per_match": 0.14798,
       "matches": 5
     },
     {
@@ -855,8 +881,8 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.0307,
-      "matches": 2
+      "tilt_per_match": 0.03303,
+      "matches": 3
     },
     {
       "opponent": "Gujarat Titans",
@@ -881,14 +907,14 @@
   ],
   "bowling_team_matchups": [],
   "batting_stats": {
-    "runs": 505,
-    "innings": 24,
-    "balls": 297,
-    "avg": 28.06,
-    "sr": 170.03,
+    "runs": 523,
+    "innings": 25,
+    "balls": 308,
+    "avg": 29.06,
+    "sr": 169.81,
     "hs": 66,
     "dismissals": 18,
-    "not_outs": 6,
+    "not_outs": 7,
     "fifties": 2,
     "hundreds": 0
   },
@@ -913,10 +939,11 @@
     0.00157,
     -0.02967,
     -0.01801,
-    0.24636,
+    0.2454,
     -0.00443,
     -0.0438,
     0.0749,
-    0.61427
+    0.61373,
+    0.16047
   ]
 }

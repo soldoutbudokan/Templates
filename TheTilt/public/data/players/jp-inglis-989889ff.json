@@ -9,20 +9,20 @@
     "Lucknow Super Giants",
     "Punjab Kings"
   ],
-  "total_tilt_per_match": 0.06326,
-  "batting_tilt_per_match": 0.06326,
+  "total_tilt_per_match": 0.06433,
+  "batting_tilt_per_match": 0.06433,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": 0.03934,
-  "shrunk_batting_tilt_per_match": 0.03922,
+  "shrunk_total_tilt_per_match": 0.04124,
+  "shrunk_batting_tilt_per_match": 0.04109,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.02509,
-  "tilt_ci_upper": 0.10377,
-  "tilt_ci_lower_90": -0.01473,
-  "tilt_ci_upper_90": 0.09341,
+  "tilt_ci_lower": -0.01931,
+  "tilt_ci_upper": 0.10179,
+  "tilt_ci_lower_90": -0.00958,
+  "tilt_ci_upper_90": 0.09206,
   "confidence": "low",
-  "total_tilt": 0.88557,
-  "total_matches": 14,
-  "batting_balls": 264,
+  "total_tilt": 0.96492,
+  "total_matches": 15,
+  "batting_balls": 308,
   "bowling_balls": 0,
   "seasons": [
     {
@@ -251,11 +251,11 @@
     {
       "season": "2026",
       "team": "Lucknow Super Giants",
-      "batting_tilt_per_match": 0.1282,
+      "batting_tilt_per_match": 0.11843,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 4,
+      "batting_matches": 5,
       "bowling_matches": 0,
-      "batting_balls": 99,
+      "batting_balls": 143,
       "bowling_balls": 0,
       "matches": [
         {
@@ -337,17 +337,37 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": -0.009
+        },
+        {
+          "match_id": "1529311",
+          "date": "2026-05-23",
+          "opponent": "Punjab Kings",
+          "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow",
+          "team_score": "196/6",
+          "opponent_score": "200/3",
+          "winner": "Punjab Kings",
+          "bat_runs": 72,
+          "bat_balls": 44,
+          "bat_sr": 163.6,
+          "bat_tilt": 0.07935,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": 0.07935
         }
       ],
       "batting_stats": {
-        "runs": 194,
-        "innings": 4,
-        "balls": 99,
-        "avg": 48.5,
-        "sr": 195.96,
+        "runs": 266,
+        "innings": 5,
+        "balls": 143,
+        "avg": 53.2,
+        "sr": 186.01,
         "hs": 85,
         "not_outs": 0,
-        "fifties": 2,
+        "fifties": 3,
         "hundreds": 0
       }
     }
@@ -355,21 +375,21 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.75829,
-      "balls": 143,
-      "avg_delta": 0.005089
+      "tilt": 0.84209,
+      "balls": 155,
+      "avg_delta": 0.005198
     },
     {
       "phase": "middle",
-      "tilt": 0.06888,
-      "balls": 109,
-      "avg_delta": 0.000615
+      "tilt": 0.08247,
+      "balls": 137,
+      "avg_delta": 0.000577
     },
     {
       "phase": "death",
-      "tilt": 0.0584,
-      "balls": 12,
-      "avg_delta": 0.004492
+      "tilt": 0.04037,
+      "balls": 16,
+      "avg_delta": 0.002375
     }
   ],
   "bowling_phases": [],
@@ -411,12 +431,12 @@
       "not_out": false
     },
     {
-      "match_id": "1473510",
-      "date": "2025-06-01",
-      "vs": "Mumbai Indians",
-      "tilt": 0.06916,
-      "runs": 38,
-      "balls": 21,
+      "match_id": "1529311",
+      "date": "2026-05-23",
+      "vs": "Punjab Kings",
+      "tilt": 0.07935,
+      "runs": 72,
+      "balls": 44,
       "not_out": false
     }
   ],
@@ -553,6 +573,12 @@
       "date": "2026-05-19",
       "tilt": -0.009,
       "cumulative": 0.88557
+    },
+    {
+      "match": 15,
+      "date": "2026-05-23",
+      "tilt": 0.07935,
+      "cumulative": 0.96492
     }
   ],
   "team_matchups": [
@@ -570,6 +596,11 @@
       "opponent": "Mumbai Indians",
       "tilt_per_match": 0.1355,
       "matches": 3
+    },
+    {
+      "opponent": "Punjab Kings",
+      "tilt_per_match": 0.07935,
+      "matches": 1
     },
     {
       "opponent": "Delhi Capitals",
@@ -594,15 +625,15 @@
   ],
   "bowling_team_matchups": [],
   "batting_stats": {
-    "runs": 461,
-    "innings": 14,
-    "balls": 264,
-    "avg": 35.46,
-    "sr": 174.62,
+    "runs": 533,
+    "innings": 15,
+    "balls": 308,
+    "avg": 38.07,
+    "sr": 173.05,
     "hs": 85,
-    "dismissals": 13,
+    "dismissals": 14,
     "not_outs": 1,
-    "fifties": 3,
+    "fifties": 4,
     "hundreds": 0
   },
   "bowling_stats": null,
@@ -620,6 +651,7 @@
     0.02989,
     0.39394,
     0.09796,
-    -0.009
+    -0.009,
+    0.07935
   ]
 }

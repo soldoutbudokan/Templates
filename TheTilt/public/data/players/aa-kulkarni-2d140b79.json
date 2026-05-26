@@ -8,20 +8,20 @@
   "teams": [
     "Lucknow Super Giants"
   ],
-  "total_tilt_per_match": -0.02286,
+  "total_tilt_per_match": -0.01983,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02327,
+  "shrunk_total_tilt_per_match": -0.02202,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.04462,
-  "tilt_ci_upper": -0.00191,
-  "tilt_ci_lower_90": -0.04119,
-  "tilt_ci_upper_90": -0.00534,
+  "tilt_ci_lower": -0.03893,
+  "tilt_ci_upper": -0.0051,
+  "tilt_ci_lower_90": -0.03622,
+  "tilt_ci_upper_90": -0.00782,
   "confidence": "low",
-  "total_tilt": -0.06857,
-  "total_matches": 3,
-  "batting_balls": 32,
+  "total_tilt": -0.07933,
+  "total_matches": 4,
+  "batting_balls": 33,
   "bowling_balls": 0,
   "seasons": [
     {
@@ -90,11 +90,11 @@
     {
       "season": "2026",
       "team": "Lucknow Super Giants",
-      "batting_tilt_per_match": 0.01342,
+      "batting_tilt_per_match": 0.00133,
       "bowling_tilt_per_match": 0.0,
-      "batting_matches": 1,
+      "batting_matches": 2,
       "bowling_matches": 0,
-      "batting_balls": 24,
+      "batting_balls": 25,
       "bowling_balls": 0,
       "matches": [
         {
@@ -116,14 +116,34 @@
           "bowl_econ": null,
           "bowl_tilt": null,
           "total_tilt": 0.01342
+        },
+        {
+          "match_id": "1529311",
+          "date": "2026-05-23",
+          "opponent": "Punjab Kings",
+          "venue": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow",
+          "team_score": "196/6",
+          "opponent_score": "200/3",
+          "winner": "Punjab Kings",
+          "bat_runs": 0,
+          "bat_balls": 1,
+          "bat_sr": 0.0,
+          "bat_tilt": -0.01075,
+          "bat_not_out": false,
+          "bowl_wkts": null,
+          "bowl_balls": null,
+          "bowl_runs": null,
+          "bowl_econ": null,
+          "bowl_tilt": null,
+          "total_tilt": -0.01075
         }
       ],
       "batting_stats": {
         "runs": 17,
-        "innings": 1,
-        "balls": 24,
-        "avg": 17.0,
-        "sr": 70.83,
+        "innings": 2,
+        "balls": 25,
+        "avg": 8.5,
+        "sr": 68.0,
         "hs": 17,
         "not_outs": 0,
         "fifties": 0,
@@ -134,9 +154,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.05937,
-      "balls": 20,
-      "avg_delta": -0.002968
+      "tilt": -0.07012,
+      "balls": 21,
+      "avg_delta": -0.003339
     },
     {
       "phase": "middle",
@@ -154,6 +174,15 @@
       "tilt": 0.01342,
       "runs": 17,
       "balls": 24,
+      "not_out": false
+    },
+    {
+      "match_id": "1529311",
+      "date": "2026-05-23",
+      "vs": "Punjab Kings",
+      "tilt": -0.01075,
+      "runs": 0,
+      "balls": 1,
       "not_out": false
     },
     {
@@ -195,6 +224,15 @@
       "not_out": false
     },
     {
+      "match_id": "1529311",
+      "date": "2026-05-23",
+      "vs": "Punjab Kings",
+      "tilt": -0.01075,
+      "runs": 0,
+      "balls": 1,
+      "not_out": false
+    },
+    {
       "match_id": "1529293",
       "date": "2026-05-07",
       "vs": "Royal Challengers Bangalore",
@@ -224,12 +262,23 @@
       "date": "2026-05-07",
       "tilt": 0.01342,
       "cumulative": -0.06857
+    },
+    {
+      "match": 4,
+      "date": "2026-05-23",
+      "tilt": -0.01075,
+      "cumulative": -0.07933
     }
   ],
   "team_matchups": [
     {
       "opponent": "Royal Challengers Bangalore",
       "tilt_per_match": 0.01342,
+      "matches": 1
+    },
+    {
+      "opponent": "Punjab Kings",
+      "tilt_per_match": -0.01075,
       "matches": 1
     },
     {
@@ -246,12 +295,12 @@
   "bowling_team_matchups": [],
   "batting_stats": {
     "runs": 26,
-    "innings": 3,
-    "balls": 32,
-    "avg": 8.67,
-    "sr": 81.25,
+    "innings": 4,
+    "balls": 33,
+    "avg": 6.5,
+    "sr": 78.79,
     "hs": 17,
-    "dismissals": 3,
+    "dismissals": 4,
     "not_outs": 0,
     "fifties": 0,
     "hundreds": 0
@@ -260,6 +309,7 @@
   "match_tilt_distribution": [
     -0.04221,
     -0.03979,
-    0.01342
+    0.01342,
+    -0.01075
   ]
 }

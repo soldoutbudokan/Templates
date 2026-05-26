@@ -8,21 +8,21 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.02291,
+  "total_tilt_per_match": -0.02266,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.02297,
-  "shrunk_total_tilt_per_match": -0.02306,
+  "bowling_tilt_per_match": -0.02464,
+  "shrunk_total_tilt_per_match": -0.02291,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.02106,
-  "tilt_ci_lower": -0.08678,
-  "tilt_ci_upper": 0.04066,
-  "tilt_ci_lower_90": -0.07654,
-  "tilt_ci_upper_90": 0.03042,
+  "shrunk_bowling_tilt_per_match": -0.02242,
+  "tilt_ci_lower": -0.083,
+  "tilt_ci_upper": 0.03718,
+  "tilt_ci_lower_90": -0.07334,
+  "tilt_ci_upper_90": 0.02752,
   "confidence": "low",
-  "total_tilt": -0.34359,
-  "total_matches": 15,
-  "batting_balls": 5,
-  "bowling_balls": 297,
+  "total_tilt": -0.36259,
+  "total_matches": 16,
+  "batting_balls": 8,
+  "bowling_balls": 321,
   "seasons": [
     {
       "season": "2024",
@@ -148,12 +148,12 @@
     {
       "season": "2026",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": 0.00097,
-      "bowling_tilt_per_match": -0.02569,
-      "batting_matches": 1,
-      "bowling_matches": 10,
-      "batting_balls": 5,
-      "bowling_balls": 195,
+      "batting_tilt_per_match": 0.01582,
+      "bowling_tilt_per_match": -0.02787,
+      "batting_matches": 2,
+      "bowling_matches": 11,
+      "batting_balls": 8,
+      "bowling_balls": 219,
       "matches": [
         {
           "match_id": "1527676",
@@ -354,26 +354,46 @@
           "bowl_econ": 13.67,
           "bowl_tilt": -0.1435,
           "total_tilt": -0.1435
+        },
+        {
+          "match_id": "1529312",
+          "date": "2026-05-24",
+          "opponent": "Mumbai Indians",
+          "venue": "Wankhede Stadium",
+          "team_score": "205/8",
+          "opponent_score": "175/9",
+          "winner": "Rajasthan Royals",
+          "bat_runs": 10,
+          "bat_balls": 3,
+          "bat_sr": 333.3,
+          "bat_tilt": 0.03067,
+          "bat_not_out": true,
+          "bowl_wkts": 2,
+          "bowl_balls": 24,
+          "bowl_runs": 43,
+          "bowl_econ": 10.75,
+          "bowl_tilt": -0.04967,
+          "total_tilt": -0.019
         }
       ],
       "batting_stats": {
-        "runs": 3,
-        "innings": 1,
-        "balls": 5,
-        "avg": 3.0,
-        "sr": 60.0,
-        "hs": 3,
-        "not_outs": 1,
+        "runs": 13,
+        "innings": 2,
+        "balls": 8,
+        "avg": 13.0,
+        "sr": 162.5,
+        "hs": 10,
+        "not_outs": 2,
         "fifties": 0,
         "hundreds": 0
       },
       "bowling_stats": {
-        "wickets": 9,
-        "innings": 10,
-        "balls": 195,
-        "runs_conceded": 357,
-        "avg": 39.67,
-        "economy": 10.98,
+        "wickets": 11,
+        "innings": 11,
+        "balls": 219,
+        "runs_conceded": 400,
+        "avg": 36.36,
+        "economy": 10.96,
         "best_figures": "2/32"
       }
     }
@@ -381,32 +401,41 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": 0.00097,
-      "balls": 5,
-      "avg_delta": 0.000194
+      "tilt": 0.03165,
+      "balls": 8,
+      "avg_delta": 0.003956
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.02079,
-      "balls": 180,
-      "avg_delta": 0.00011
+      "tilt": -0.10074,
+      "balls": 192,
+      "avg_delta": -0.000501
     },
     {
       "phase": "middle",
-      "tilt": -0.29056,
-      "balls": 72,
-      "avg_delta": -0.00398
+      "tilt": -0.25394,
+      "balls": 78,
+      "avg_delta": -0.003214
     },
     {
       "phase": "death",
-      "tilt": -0.07479,
-      "balls": 45,
-      "avg_delta": -0.001558
+      "tilt": -0.03956,
+      "balls": 51,
+      "avg_delta": -0.000706
     }
   ],
   "best_matches": [
+    {
+      "match_id": "1529312",
+      "date": "2026-05-24",
+      "vs": "Mumbai Indians",
+      "tilt": 0.03067,
+      "runs": 10,
+      "balls": 3,
+      "not_out": true
+    },
     {
       "match_id": "1529264",
       "date": "2026-04-13",
@@ -425,6 +454,15 @@
       "tilt": 0.00097,
       "runs": 3,
       "balls": 5,
+      "not_out": true
+    },
+    {
+      "match_id": "1529312",
+      "date": "2026-05-24",
+      "vs": "Mumbai Indians",
+      "tilt": 0.03067,
+      "runs": 10,
+      "balls": 3,
       "not_out": true
     }
   ],
@@ -504,12 +542,12 @@
       "balls": 18
     },
     {
-      "match_id": "1527689",
-      "date": "2026-04-10",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": -0.02594,
-      "wickets": 0,
-      "balls": 18
+      "match_id": "1529312",
+      "date": "2026-05-24",
+      "vs": "Mumbai Indians",
+      "tilt": -0.04967,
+      "wickets": 2,
+      "balls": 24
     }
   ],
   "career_trend": [
@@ -602,9 +640,20 @@
       "date": "2026-05-01",
       "tilt": -0.1435,
       "cumulative": -0.34359
+    },
+    {
+      "match": 16,
+      "date": "2026-05-24",
+      "tilt": -0.019,
+      "cumulative": -0.36259
     }
   ],
   "team_matchups": [
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": 0.03067,
+      "matches": 1
+    },
     {
       "opponent": "Sunrisers Hyderabad",
       "tilt_per_match": 0.00097,
@@ -618,11 +667,6 @@
       "matches": 1
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.06358,
-      "matches": 2
-    },
-    {
       "opponent": "Chennai Super Kings",
       "tilt_per_match": 0.05203,
       "matches": 2
@@ -631,6 +675,11 @@
       "opponent": "Lucknow Super Giants",
       "tilt_per_match": 0.02623,
       "matches": 2
+    },
+    {
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": 0.02583,
+      "matches": 3
     },
     {
       "opponent": "Kolkata Knight Riders",
@@ -659,24 +708,24 @@
     }
   ],
   "batting_stats": {
-    "runs": 3,
-    "innings": 1,
-    "balls": 5,
-    "avg": 3.0,
-    "sr": 60.0,
-    "hs": 3,
+    "runs": 13,
+    "innings": 2,
+    "balls": 8,
+    "avg": 13.0,
+    "sr": 162.5,
+    "hs": 10,
     "dismissals": 0,
-    "not_outs": 1,
+    "not_outs": 2,
     "fifties": 0,
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 16,
-    "innings": 15,
-    "balls": 297,
-    "runs_conceded": 509,
-    "avg": 31.81,
-    "economy": 10.28,
+    "wickets": 18,
+    "innings": 16,
+    "balls": 321,
+    "runs_conceded": 552,
+    "avg": 30.67,
+    "economy": 10.32,
     "best_figures": "2/30"
   },
   "match_tilt_distribution": [
@@ -694,6 +743,7 @@
     0.16562,
     -0.44673,
     -0.13191,
-    -0.1435
+    -0.1435,
+    -0.019
   ]
 }
