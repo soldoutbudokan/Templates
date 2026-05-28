@@ -31,12 +31,13 @@
 function toggleSeason(id) {
     const row = document.getElementById(id);
     const chev = document.getElementById('chev-' + id);
+    if (!row) return;
     if (row.style.display === 'none') {
         row.style.display = '';
-        chev.classList.add('open');
+        if (chev) chev.classList.add('open');
     } else {
         row.style.display = 'none';
-        chev.classList.remove('open');
+        if (chev) chev.classList.remove('open');
     }
 }
 
@@ -157,8 +158,8 @@ async function loadPlayer() {
         // Season breakdown
         if (p.seasons && p.seasons.length > 0) {
             const maxSeasonTilt = Math.max(
-                ...p.seasons.map(s => Math.abs(s.batting_tilt_per_match)),
-                ...p.seasons.map(s => Math.abs(s.bowling_tilt_per_match)),
+                ...p.seasons.map(s => Math.abs(s.batting_tilt_per_match || 0)),
+                ...p.seasons.map(s => Math.abs(s.bowling_tilt_per_match || 0)),
                 0.01
             );
             html += `<div class="section"><h3>season by season game log</h3><div class="table-wrap"><table class="detail-table">
@@ -236,7 +237,7 @@ async function loadPlayer() {
                     <td class="hide-mobile">${ph.balls}</td>
                 </tr>`;
             }
-            html += '</table></div></div>';
+            html += '</table></div>';
         }
 
         // Phase breakdown (bowling)
@@ -251,7 +252,7 @@ async function loadPlayer() {
                     <td class="hide-mobile">${ph.balls}</td>
                 </tr>`;
             }
-            html += '</table></div></div>';
+            html += '</table></div>';
         }
 
         // Best/worst batting performances (with match links)
@@ -265,7 +266,7 @@ async function loadPlayer() {
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}${m.not_out ? '*' : ''}</td><td>${m.balls}</td>
                 </tr>`;
             }
-            html += '</table></div></div>';
+            html += '</table></div>';
         }
 
         if (p.worst_matches && p.worst_matches.length > 0) {
@@ -278,7 +279,7 @@ async function loadPlayer() {
                     <td>${formatTilt(m.tilt)}</td><td>${m.runs}${m.not_out ? '*' : ''}</td><td>${m.balls}</td>
                 </tr>`;
             }
-            html += '</table></div></div>';
+            html += '</table></div>';
         }
 
         // Best/worst bowling performances (with match links)
@@ -292,7 +293,7 @@ async function loadPlayer() {
                     <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
-            html += '</table></div></div>';
+            html += '</table></div>';
         }
 
         if (p.bowling_worst_matches && p.bowling_worst_matches.length > 0) {
@@ -305,7 +306,7 @@ async function loadPlayer() {
                     <td>${formatTilt(m.tilt)}</td><td>${m.wickets}</td><td>${m.balls}</td>
                 </tr>`;
             }
-            html += '</table></div></div>';
+            html += '</table></div>';
         }
 
         // Career trend chart
@@ -458,7 +459,8 @@ async function loadPlayer() {
                                 label: (item) => {
                                     const i = item.dataIndex;
                                     const t = p.career_trend[i];
-                                    return `Cumulative: ${item.formattedValue}% | This match: ${(t.tilt*100).toFixed(2)}%`;
+                                    const sign = t.tilt >= 0 ? '+' : '';
+                                    return `Cumulative: ${item.formattedValue}% | This match: ${sign}${(t.tilt*100).toFixed(2)}%`;
                                 }
                             }
                         }
@@ -596,7 +598,7 @@ async function renderPlayerSeason(p, season, slug) {
             <h3 class="section-title">Match log</h3>
             <div class="table-wrap">
                 <table class="detail-table">
-                    <thead><tr><th>date</th><th>opponent</th><th class="hide-mobile">result</th><th>runs</th><th class="hide-mobile">balls</th><th class="hide-mobile">SR</th><th>wkts</th><th class="hide-mobile">RC</th><th class="hide-mobile">econ</th><th>TILT</th></tr></thead>
+                    <thead><tr><th>date</th><th>opponent</th><th class="hide-mobile">Scores</th><th>runs</th><th class="hide-mobile">balls</th><th class="hide-mobile">SR</th><th>wkts</th><th class="hide-mobile">RC</th><th class="hide-mobile">econ</th><th>TILT</th></tr></thead>
                     <tbody>
                         ${s.matches.map((m) => `
                             <tr>
