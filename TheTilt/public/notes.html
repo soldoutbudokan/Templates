@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
     <script defer src="/_vercel/insights/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@15/marked.min.js"></script>
     <style>
         /* Notes listing */
         .notes-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
@@ -34,49 +34,7 @@
         }
         .back-link:hover { color: var(--accent-green); }
 
-        /* Rendered markdown article */
-        .note-article { max-width: 800px; margin: 0 auto; }
-        .note-article h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
-        .note-article h2 { font-size: 1.15rem; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: var(--text-primary); }
-        .note-article h3 { font-size: 0.95rem; font-weight: 600; margin-top: 24px; margin-bottom: 8px; color: var(--text-primary); }
-        .note-article p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px; }
-        .note-article strong { color: var(--text-primary); }
-        .note-article em { color: var(--text-secondary); }
-        .note-article a { color: var(--accent-green); text-decoration: none; }
-        .note-article a:hover { text-decoration: underline; }
-        .note-article hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
-        .note-article img {
-            max-width: 100%; border-radius: var(--radius-md); margin: 16px 0;
-            border: 1px solid var(--border);
-        }
-        .note-article blockquote {
-            border-left: 3px solid var(--accent-green); padding: 8px 16px; margin: 12px 0;
-            background: var(--bg-card); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-        }
-        .note-article blockquote p { color: var(--text-muted); margin: 0; }
-        .note-article code {
-            font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem;
-            background: var(--bg-card); padding: 2px 6px; border-radius: 3px; color: var(--accent-green);
-        }
-        .note-article pre {
-            background: var(--bg-card); padding: 14px 18px; border-radius: var(--radius-sm);
-            overflow-x: auto; margin: 12px 0; border: 1px solid var(--border);
-        }
-        .note-article pre code { background: none; padding: 0; }
-        .note-article table {
-            width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 16px 0;
-        }
-        .note-article th {
-            text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border);
-            color: var(--text-muted); font-weight: 600; font-size: 0.72rem;
-            text-transform: uppercase; letter-spacing: 0.04em;
-        }
-        .note-article td {
-            padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary);
-        }
-        .note-article tr:hover td { background: var(--bg-hover); }
-        .note-article ul, .note-article ol { margin: 8px 0 12px 24px; }
-        .note-article li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 4px; }
+        /* .note-article rules live in style.css (shared with about.html). */
     </style>
 </head>
 <body>
@@ -130,7 +88,7 @@ function renderListing() {
     });
 }
 
-async function loadNote(id) {
+async function loadNote(id, push = true) {
     try {
         const res = await fetch(`notes/${id}.md`);
         if (!res.ok) throw new Error('not found');
@@ -155,8 +113,12 @@ async function loadNote(id) {
         const note = NOTES.find(n => n.id === id);
         if (note) document.title = `The TILT | ${note.title}`;
 
-        // Update URL without reload
-        history.pushState({ note: id }, '', `notes.html?note=${id}`);
+        // Update URL without reload. Only push a new history entry for a
+        // user-initiated open; when restoring from popstate or an initial
+        // deep-link, replace in place so the back/forward stack stays intact.
+        const url = `notes.html?note=${id}`;
+        if (push) history.pushState({ note: id }, '', url);
+        else history.replaceState({ note: id }, '', url);
 
         window.scrollTo(0, 0);
     } catch (e) {
@@ -164,35 +126,39 @@ async function loadNote(id) {
     }
 }
 
-function showListing() {
+function showListing(push = true) {
     document.getElementById('listing').style.display = '';
     document.getElementById('article').style.display = 'none';
     document.title = 'The TILT | Notes';
-    history.pushState({}, '', 'notes.html');
+    // Only push when the user explicitly navigated back to the listing.
+    // popstate already moved the history pointer, so pushing there would
+    // clobber the forward entry and trap the back button.
+    if (push) history.pushState({}, '', 'notes.html');
 }
 
 document.getElementById('backLink').addEventListener('click', (e) => {
     e.preventDefault();
-    showListing();
+    showListing(true);
 });
 
 window.addEventListener('popstate', (e) => {
     if (e.state && e.state.note) {
-        loadNote(e.state.note);
+        loadNote(e.state.note, false);
     } else {
-        showListing();
+        showListing(false);
     }
 });
+
+// Populate the listing unconditionally so "back to notes" works even when the
+// page was entered directly via a ?note= deep-link (NOTES is a sync constant).
+renderListing();
 
 // Check URL params on load
 const params = new URLSearchParams(window.location.search);
 const noteParam = params.get('note');
 if (noteParam) {
-    loadNote(noteParam);
-} else {
-    renderListing();
+    loadNote(noteParam, false);
 }
-if (!noteParam) renderListing();
 </script>
 </body>
 </html>
