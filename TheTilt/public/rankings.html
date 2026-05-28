@@ -127,8 +127,11 @@ function getFilteredPlayers() {
     }
 
     players.sort((a, b) => {
-        const va = a[currentSort.key];
-        const vb = b[currentSort.key];
+        // Missing numeric stats (e.g. bowl TILT on a pure batter) coalesce to
+        // -Infinity so they sink consistently instead of producing NaN, which
+        // Array.sort treats as "equal" and yields browser-specific row order.
+        const va = a[currentSort.key] ?? -Infinity;
+        const vb = b[currentSort.key] ?? -Infinity;
         if (typeof va === 'string') {
             return currentSort.desc ? vb.localeCompare(va) : va.localeCompare(vb);
         }
@@ -142,7 +145,7 @@ function render() {
     const players = getFilteredPlayers();
     const tiltKey = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
     const tiltLabel = rankMode === 'floor' ? 'TILT floor' : 'TILT/match';
-    const maxTilt = Math.max(...allPlayers.map(p => Math.abs(p[tiltKey] || p.total_tilt_per_match)), 0.01);
+    const maxTilt = Math.max(...allPlayers.map(p => Math.abs(p[tiltKey] ?? p.total_tilt_per_match)), 0.01);
 
     function sortCls(key) {
         return currentSort.key === key ? (currentSort.desc ? 'sorted-desc' : 'sorted-asc') : '';
@@ -169,7 +172,7 @@ function render() {
     const confColor = { high: cs.getPropertyValue('--accent-green').trim(), medium: cs.getPropertyValue('--accent-yellow').trim(), low: cs.getPropertyValue('--text-muted').trim() };
 
     players.forEach((p, i) => {
-        const tilt = p[tiltKey] || p.total_tilt_per_match;
+        const tilt = p[tiltKey] ?? p.total_tilt_per_match;
         const barWidth = Math.abs(tilt) / maxTilt * 60;
         const barClass = tilt >= 0 ? 'positive' : 'negative';
         const conf = p.confidence || 'low';
@@ -212,12 +215,15 @@ function render() {
 
     document.querySelectorAll('[data-sort]').forEach(th => {
         th.addEventListener('click', () => {
-            const key = th.dataset.sort;
+            // The "#" column has no real field; it reflects the active ranking
+            // metric, so map it to that key (otherwise sorting on undefined is a no-op).
+            const rawKey = th.dataset.sort;
+            const key = rawKey === 'rank' ? tiltKey : rawKey;
             if (currentSort.key === key) {
                 currentSort.desc = !currentSort.desc;
             } else {
                 currentSort.key = key;
-                currentSort.desc = key !== 'player' && key !== 'rank';
+                currentSort.desc = key !== 'player';
             }
             render();
         });
@@ -230,14 +236,16 @@ document.querySelectorAll('.tab').forEach(tab => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         currentFilter = tab.dataset.filter;
-        render();
+        // Skip until init() has populated allPlayers, else render() shows
+        // "no players found" over the loading state during the initial fetch.
+        if (allPlayers.length) render();
     });
 });
 
 // Search handler
 document.getElementById('search').addEventListener('input', (e) => {
     searchQuery = e.target.value;
-    render();
+    if (allPlayers.length) render();
 });
 
 // Rank toggle handler
@@ -248,7 +256,7 @@ document.querySelectorAll('.rank-btn').forEach(btn => {
         rankMode = btn.dataset.rank;
         currentSort.key = rankMode === 'floor' ? 'tilt_ci_lower_90' : 'shrunk_total_tilt_per_match';
         currentSort.desc = true;
-        render();
+        if (allPlayers.length) render();
     });
 });
 
