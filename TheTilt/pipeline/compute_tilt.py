@@ -795,6 +795,16 @@ def aggregate_team_season_tilt(
     return out
 
 
+# Manual corrections for full names that Wikidata resolves with a misspelling.
+# Keyed by the (wrong) resolved value; applied after the full_names.json merge in
+# compute_tilt(). See dependencies.md for the name-resolution chain.
+FULL_NAME_CORRECTIONS = {
+    "Akash Mandwaal": "Akash Madhwal",
+    "Nicolas Pooran": "Nicholas Pooran",
+    "Mahesh Theekshana": "Maheesh Theekshana",
+}
+
+
 # %% Main
 def compute_tilt(
     featured_balls_path: Optional[str] = None,
@@ -831,6 +841,10 @@ def compute_tilt(
             full_names: Dict[str, str] = json.load(f)
         player_tilt["full_name"] = player_tilt["player_id"].map(full_names)
         player_tilt["full_name"] = player_tilt["full_name"].fillna(player_tilt["player"])
+        # Correct Wikidata misspellings that survive the cached resolution. The
+        # full_names.json cache is gitignored and rebuilt from Wikidata on every
+        # refresh, so corrections must live here (downstream of the merge) to persist.
+        player_tilt["full_name"] = player_tilt["full_name"].replace(FULL_NAME_CORRECTIONS)
         resolved = player_tilt["full_name"].ne(player_tilt["player"]).sum()
         print(f"\n  Full names resolved: {resolved} / {len(player_tilt)}")
     else:
