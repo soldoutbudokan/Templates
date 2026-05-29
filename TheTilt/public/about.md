@@ -9,8 +9,8 @@ This page is the long-form methodology. The headline numbers and rankings live o
 | Coverage | Value |
 |:--|:--|
 | Seasons | IPL 2008 — 2026 |
-| Matches parsed | 1,209 |
-| Legal-ish deliveries scored | 288,670 |
+| Matches parsed | 1,230 |
+| Legal-ish deliveries scored | 293,754 |
 | Players ranked (≥ 10 matches) | 458 |
 | Model | K=100 LightGBM ensemble (gradient-boosted classifier) |
 | Default ranking | Bayesian-shrunk TILT, 90% CI lower bound |
@@ -420,7 +420,7 @@ These are tractable upgrades that future iterations may chase.
 
 ## 11. Top Results (Sanity Check)
 
-Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-05-08 (post K=100 ensemble, post Step-3 removal, post `recent_wickets` rolling-window fix).*
+Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-05-28 (post K=100 ensemble, post Step-3 removal, post `recent_wickets` rolling-window fix).* During an in-progress season the data refreshes through the day, so the live [rankings](rankings.html) can differ from this snapshot intra-tournament — especially around the medium-confidence ranks (#6–#10), where a handful of matches reshuffles the order.
 
 | Rank | Player | TILT/Match | Raw | Confidence | Matches |
 |:--|:--|:--|:--|:--|:--|
