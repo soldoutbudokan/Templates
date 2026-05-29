@@ -52,11 +52,11 @@ The snap's pathological top-of-leaderboard entries are gone. Top single-game bow
 
 | Rank | Bowler | Match | Figures | TILT |
 |:--|:--|:--|:--|--:|
-| 1 | Bhuvneshwar Kumar | 2017-04-17 SRH vs RCB | 5/19 (4 ov) | +0.67 |
-| 2 | MJ McClenaghan | 2016-04-16 MI vs RCB | 4/24 (4 ov) | +0.57 |
-| 3 | Basil Thampi | 2017-04-29 GL vs MI | 4/24 (4 ov) | +0.56 |
-| 4 | Rashid Khan | 2018-04-24 SRH vs KXIP | 2/24 (4 ov) | +0.56 |
-| 5 | A Nehra | 2015-04-22 CSK vs PBKS | 4/24 (4 ov) | +0.54 |
+| 1 | Mohammed Shami | 2019-04-10 KXIP vs MI | 3/21 (4 ov) | +0.71 |
+| 2 | Bhuvneshwar Kumar | 2017-04-17 SRH vs KXIP | 5/20 (4 ov) | +0.61 |
+| 3 | Dale Steyn | 2012-05-20 DC vs RCB | 3/8 (4 ov) | +0.61 |
+| 4 | Rashid Khan | 2018-04-24 SRH vs MI | 2/11 (4 ov) | +0.60 |
+| 5 | Amit Mishra | 2008-05-15 DD vs DC | 5/17 (4 ov) | +0.59 |
 
 Career rankings reshuffle in the opposite direction from the original snap-era post. **DJ Bravo**, who entered the snap-era all-time top 10 from #62 on the strength of his death-overs reputation, drops out again — the snap was inflating his match-end deliveries with credit the model never actually disagreed with. **Dhoni and Miller**, who lost 34 spots each under the snap, partially recover.
 
