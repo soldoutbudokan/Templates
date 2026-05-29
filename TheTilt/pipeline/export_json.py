@@ -148,6 +148,39 @@ def _compute_team_season_nrr(deltas_df: pd.DataFrame, team: str, season: str) ->
     return round(runs_for / overs_for - runs_against / overs_against, 3)
 
 
+def _season_position_map(team_season_tilt: pd.DataFrame, deltas_df: pd.DataFrame) -> dict:
+    """{(team, season_str): position} for every team-season, ranked by IPL
+    convention — points desc, then wins desc, then NRR desc — with genuine ties
+    sharing a position. Single source so the team pages agree with the season
+    standings (the team pages previously used a points-only rank) (#146).
+
+    NOTE: this mirrors the ranking in export_seasons() (which assigns the season
+    page's positions inline); keep the two tie-break rules in sync.
+    """
+    positions = {}
+    for season in team_season_tilt["season"].unique():
+        rows = []
+        for _, r in team_season_tilt[team_season_tilt["season"] == season].iterrows():
+            wins = int(r["wins"])
+            no_results = int(r.get("no_results", 0))
+            rows.append({
+                "team": r["team"],
+                "points": int(r.get("points", wins * 2 + no_results)),
+                "wins": wins,
+                "nrr": _compute_team_season_nrr(deltas_df, r["team"], str(season)),
+            })
+        rows.sort(key=lambda t: (-t["points"], -t["wins"], -(t["nrr"] if t["nrr"] is not None else -99)))
+        prev_key = None
+        prev_pos = 0
+        for i, t in enumerate(rows, 1):
+            key = (t["points"], t["wins"], t["nrr"])
+            if key != prev_key:
+                prev_pos = i
+                prev_key = key
+            positions[(t["team"], str(season))] = prev_pos
+    return positions
+
+
 # %% Legal-delivery flags
 # A batter "faces" legal deliveries + no-balls (wides don't count — re-bowled, batter not credited).
 # A bowler's over counts only legal deliveries (both wides and no-balls are re-bowled).
@@ -1264,7 +1297,13 @@ def export_goats(
         bat_season_teams.rename(columns={"batter_id": "batter_id", "batting_team": "team"}),
         on=["batter_id", "season"], how="left",
     )
-    top_bat_season = bat_season[bat_season["matches"] >= 5].nlargest(50, "tilt_per_match")
+    # Keep the top 50 by BOTH per-match and total TILT, so the goats page's
+    # default total_tilt sort isn't missing high-total/lower-per-match seasons (#158).
+    _bat_qual = bat_season[bat_season["matches"] >= 5]
+    top_bat_season = pd.concat([
+        _bat_qual.nlargest(50, "tilt_per_match"),
+        _bat_qual.nlargest(50, "total_tilt"),
+    ]).drop_duplicates(subset=["batter_id", "season"])
     goat_bat_season = [
         {
             "player": name_lookup.get(r["batter_id"], r["batter"]),
@@ -1293,7 +1332,11 @@ def export_goats(
         bowl_season_teams.rename(columns={"bowler_id": "bowler_id", "bowling_team": "team"}),
         on=["bowler_id", "season"], how="left",
     )
-    top_bowl_season = bowl_season[bowl_season["matches"] >= 5].nlargest(50, "tilt_per_match")
+    _bowl_qual = bowl_season[bowl_season["matches"] >= 5]
+    top_bowl_season = pd.concat([
+        _bowl_qual.nlargest(50, "tilt_per_match"),
+        _bowl_qual.nlargest(50, "total_tilt"),
+    ]).drop_duplicates(subset=["bowler_id", "season"])
     goat_bowl_season = [
         {
             "player": name_lookup.get(r["bowler_id"], r["bowler"]),
@@ -1424,6 +1467,8 @@ def export_team_details(
     slug_lookup = _build_player_slug_lookup(player_tilt)
     name_lookup = _build_player_name_lookup(player_tilt)
     match_info = _build_match_info_cache(deltas_df)
+    # NRR-aware standings positions, shared with the season page (#146).
+    position_map = _season_position_map(team_season_tilt, deltas_df)
 
     completed_seasons = load_completed_seasons()
     season_champions: dict = {}
@@ -1488,11 +1533,12 @@ def export_team_details(
                 "wins": int(r["wins"]),
                 "losses": int(r["losses"]),
                 "no_results": int(r.get("no_results", 0)),
+                "points": int(r["points"]),
                 "win_pct": float(round(r["win_pct"], 4)),
                 "nrr": _compute_team_season_nrr(deltas_df, canonical, season_str),
                 "team_total_tilt": round(float(r["team_total_tilt"]), 5),
                 "team_tilt_per_match": round(float(r["team_tilt_per_match"]), 5),
-                "position_est": int(r["position_est"]),
+                "position_est": position_map.get((canonical, season_str), int(r["position_est"])),
                 "champion": season_champions.get(season_str) == canonical,
                 "match_log": season_matches,
             })
@@ -1603,6 +1649,8 @@ def export_team_season_details(
     slug_lookup = _build_player_slug_lookup(player_tilt)
     name_lookup = _build_player_name_lookup(player_tilt)
     match_info = _build_match_info_cache(deltas_df)
+    # NRR-aware standings positions, shared with the season page (#146).
+    position_map = _season_position_map(team_season_tilt, deltas_df)
 
     exported = 0
     for _, ts in team_season_tilt.iterrows():
@@ -1675,11 +1723,12 @@ def export_team_season_details(
                 "wins": int(ts["wins"]),
                 "losses": int(ts["losses"]),
                 "no_results": int(ts.get("no_results", 0)),
+                "points": int(ts["points"]),
                 "win_pct": float(round(ts["win_pct"], 4)),
                 "nrr": _compute_team_season_nrr(deltas_df, canonical, season),
                 "team_total_tilt": round(float(ts["team_total_tilt"]), 5),
                 "team_tilt_per_match": round(float(ts["team_tilt_per_match"]), 5),
-                "position_est": int(ts["position_est"]),
+                "position_est": position_map.get((canonical, season), int(ts["position_est"])),
             },
             "batting_stats": _team_batting_counting_stats(bat_slice),
             "bowling_stats": _team_bowling_counting_stats(bowl_slice),

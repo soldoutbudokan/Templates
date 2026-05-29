@@ -154,7 +154,7 @@ async function renderTeamCareer(slug) {
                                 <td class="hide-mobile">${s.wins}</td>
                                 <td class="hide-mobile">${s.losses}</td>
                                 <td class="hide-mobile">${s.no_results || 0}</td>
-                                <td>${s.wins * 2 + (s.no_results || 0)}</td>
+                                <td>${s.points != null ? s.points : s.wins * 2 + (s.no_results || 0)}</td>
                                 <td>${(s.win_pct * 100).toFixed(1)}%</td>
                                 <td class="hide-mobile">${s.nrr != null ? (s.nrr > 0 ? '+' : '') + s.nrr.toFixed(2) : '—'}</td>
                                 <td>${formatTilt(s.team_tilt_per_match)}</td>
