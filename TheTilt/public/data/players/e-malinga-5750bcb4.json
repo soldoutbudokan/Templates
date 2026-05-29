@@ -8,21 +8,21 @@
   "teams": [
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.03148,
+  "total_tilt_per_match": 0.02941,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.03049,
-  "shrunk_total_tilt_per_match": 0.01987,
+  "bowling_tilt_per_match": 0.02974,
+  "shrunk_total_tilt_per_match": 0.01869,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.02046,
-  "tilt_ci_lower": -0.03614,
-  "tilt_ci_upper": 0.07587,
-  "tilt_ci_lower_90": -0.02714,
-  "tilt_ci_upper_90": 0.06687,
+  "shrunk_bowling_tilt_per_match": 0.02026,
+  "tilt_ci_lower": -0.03498,
+  "tilt_ci_upper": 0.07237,
+  "tilt_ci_lower_90": -0.02635,
+  "tilt_ci_upper_90": 0.06374,
   "confidence": "low",
-  "total_tilt": 0.62961,
-  "total_matches": 20,
-  "batting_balls": 9,
-  "bowling_balls": 438,
+  "total_tilt": 0.6176,
+  "total_matches": 21,
+  "batting_balls": 17,
+  "bowling_balls": 462,
   "seasons": [
     {
       "season": "2025",
@@ -168,12 +168,12 @@
     {
       "season": "2026",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": 0.0099,
-      "bowling_tilt_per_match": 0.04823,
-      "batting_matches": 2,
-      "bowling_matches": 14,
-      "batting_balls": 9,
-      "bowling_balls": 302,
+      "batting_tilt_per_match": -0.0023,
+      "bowling_tilt_per_match": 0.04599,
+      "batting_matches": 3,
+      "bowling_matches": 15,
+      "batting_balls": 17,
+      "bowling_balls": 326,
       "matches": [
         {
           "match_id": "1527674",
@@ -454,27 +454,47 @@
           "bowl_econ": 8.25,
           "bowl_tilt": 0.23377,
           "total_tilt": 0.23377
+        },
+        {
+          "match_id": "1535463",
+          "date": "2026-05-27",
+          "opponent": "Rajasthan Royals",
+          "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+          "team_score": "196/10",
+          "opponent_score": "243/8",
+          "winner": "Rajasthan Royals",
+          "bat_runs": 5,
+          "bat_balls": 8,
+          "bat_sr": 62.5,
+          "bat_tilt": -0.02668,
+          "bat_not_out": false,
+          "bowl_wkts": 1,
+          "bowl_balls": 24,
+          "bowl_runs": 40,
+          "bowl_econ": 10.0,
+          "bowl_tilt": 0.01466,
+          "total_tilt": -0.01202
         }
       ],
       "batting_stats": {
-        "runs": 2,
-        "innings": 2,
-        "balls": 9,
-        "avg": 2.0,
-        "sr": 22.22,
-        "hs": 2,
-        "dismissals": 0,
+        "runs": 7,
+        "innings": 3,
+        "balls": 17,
+        "avg": 7.0,
+        "sr": 41.18,
+        "hs": 5,
+        "dismissals": 1,
         "not_outs": 2,
         "fifties": 0,
         "hundreds": 0
       },
       "bowling_stats": {
-        "wickets": 19,
-        "innings": 14,
-        "balls": 302,
-        "runs_conceded": 470,
-        "avg": 24.74,
-        "economy": 9.34,
+        "wickets": 20,
+        "innings": 15,
+        "balls": 326,
+        "runs_conceded": 510,
+        "avg": 25.5,
+        "economy": 9.39,
         "best_figures": "4/32"
       }
     }
@@ -482,35 +502,35 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.00317,
-      "balls": 3,
-      "avg_delta": -0.001056
+      "tilt": -0.00579,
+      "balls": 4,
+      "avg_delta": -0.001449
     },
     {
       "phase": "death",
-      "tilt": 0.02296,
-      "balls": 6,
-      "avg_delta": 0.00328
+      "tilt": -0.00109,
+      "balls": 13,
+      "avg_delta": -7.8e-05
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.00974,
-      "balls": 132,
-      "avg_delta": -7e-05
+      "tilt": -0.01851,
+      "balls": 144,
+      "avg_delta": -0.000122
     },
     {
       "phase": "middle",
-      "tilt": 0.51886,
-      "balls": 168,
-      "avg_delta": 0.002867
+      "tilt": 0.51889,
+      "balls": 174,
+      "avg_delta": 0.00276
     },
     {
       "phase": "death",
-      "tilt": 0.1007,
-      "balls": 138,
-      "avg_delta": 0.00069
+      "tilt": 0.1241,
+      "balls": 144,
+      "avg_delta": 0.000816
     }
   ],
   "best_matches": [
@@ -531,9 +551,27 @@
       "runs": 0,
       "balls": 3,
       "not_out": true
+    },
+    {
+      "match_id": "1535463",
+      "date": "2026-05-27",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.02668,
+      "runs": 5,
+      "balls": 8,
+      "not_out": false
     }
   ],
   "worst_matches": [
+    {
+      "match_id": "1535463",
+      "date": "2026-05-27",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.02668,
+      "runs": 5,
+      "balls": 8,
+      "not_out": false
+    },
     {
       "match_id": "1529299",
       "date": "2026-05-12",
@@ -757,6 +795,12 @@
       "date": "2026-05-22",
       "tilt": 0.23377,
       "cumulative": 0.62961
+    },
+    {
+      "match": 21,
+      "date": "2026-05-27",
+      "tilt": -0.01201,
+      "cumulative": 0.6176
     }
   ],
   "team_matchups": [
@@ -768,6 +812,11 @@
     {
       "opponent": "Gujarat Titans",
       "tilt_per_match": -0.00317,
+      "matches": 1
+    },
+    {
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.02668,
       "matches": 1
     }
   ],
@@ -794,8 +843,8 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.00321,
-      "matches": 2
+      "tilt_per_match": 0.00703,
+      "matches": 3
     },
     {
       "opponent": "Lucknow Super Giants",
@@ -819,24 +868,24 @@
     }
   ],
   "batting_stats": {
-    "runs": 2,
-    "innings": 2,
-    "balls": 9,
-    "avg": 2.0,
-    "sr": 22.22,
-    "hs": 2,
-    "dismissals": 0,
+    "runs": 7,
+    "innings": 3,
+    "balls": 17,
+    "avg": 7.0,
+    "sr": 41.18,
+    "hs": 5,
+    "dismissals": 1,
     "not_outs": 2,
     "fifties": 0,
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 31,
-    "innings": 20,
-    "balls": 438,
-    "runs_conceded": 685,
-    "avg": 22.1,
-    "economy": 9.38,
+    "wickets": 32,
+    "innings": 21,
+    "balls": 462,
+    "runs_conceded": 725,
+    "avg": 22.66,
+    "economy": 9.42,
     "best_figures": "4/32"
   },
   "match_tilt_distribution": [
@@ -859,6 +908,7 @@
     0.0069,
     -0.11417,
     0.00801,
-    0.23377
+    0.23377,
+    -0.01201
   ]
 }
