@@ -26,25 +26,9 @@
     </div>
 
 <script>
-const STAT_LABELS = {
-    runs: 'Runs',
-    wickets: 'Wickets',
-    batting_tilt: 'Batting TILT',
-    bowling_tilt: 'Bowling TILT',
-    total_tilt: 'Total TILT',
-    sr: 'Strike Rate',
-    economy: 'Economy',
-    fifties: 'Fifties',
-    hundreds: 'Hundreds',
-    fours: 'Fours',
-    sixes: 'Sixes',
-};
-
-const STAT_ORDER = [
-    'total_tilt', 'batting_tilt', 'bowling_tilt',
-    'runs', 'wickets', 'sr', 'economy',
-    'fifties', 'hundreds', 'fours', 'sixes',
-];
+// Shared with leaders.html via common.js so chip labels/order can't drift (#138).
+const STAT_LABELS = window.STAT_LABELS;
+const STAT_ORDER = window.STAT_ORDER;
 
 function isTiltStat(stat) {
     return stat.endsWith('_tilt');
@@ -61,15 +45,17 @@ async function loadSeason() {
     let season = params.get('season');
     const teamIndex = await loadTeamIndex();
 
-    // If no season param, default to latest from meta.json
+    // Fetch meta once — reused for both default-season resolution and the
+    // picker chips below, instead of fetching data/meta.json twice (#151).
+    let meta = null;
+    try { meta = await (await fetch('data/meta.json')).json(); } catch (e) { /* fall through */ }
+
+    // If no season param, default to latest.
     if (!season) {
-        try {
-            const m = await (await fetch('data/meta.json')).json();
-            season = (m.seasons || []).slice(-1)[0];
-            if (season) {
-                window.history.replaceState(null, '', `season.html?season=${encodeURIComponent(season)}`);
-            }
-        } catch (e) { /* fall through */ }
+        season = (meta?.seasons || []).slice(-1)[0];
+        if (season) {
+            window.history.replaceState(null, '', `season.html?season=${encodeURIComponent(season)}`);
+        }
         if (!season) {
             document.getElementById('content').innerHTML = '<div class="loading">no season specified</div>';
             return;
@@ -82,24 +68,23 @@ async function loadSeason() {
         const res = await fetch(`data/seasons/${seasonSlug}.json`);
         if (!res.ok) throw new Error('not found');
         data = await res.json();
+        document.title = `The TILT | IPL ${data.season}`;
     } catch (e) {
         document.getElementById('content').innerHTML = `<div class="loading">no data for season ${season}</div>`;
         return;
     }
 
-    // Season picker chips
-    let allSeasons = [];
-    try {
-        const m = await (await fetch('data/meta.json')).json();
-        allSeasons = (m.seasons || []).slice().reverse();
-    } catch (e) {}
+    // Season picker chips (reuse the meta fetched above, #151).
+    const allSeasons = (meta?.seasons || []).slice().reverse();
 
     const seasonChips = allSeasons.map((s) => {
         const cls = s === data.season ? 'picker-chip active' : 'picker-chip';
         return `<a href="season.html?season=${encodeURIComponent(s)}" class="${cls}">${s}</a>`;
     }).join('');
 
-    const inProgress = data.matches < 60 && Number(data.season_year) >= new Date().getFullYear() - 1
+    // A season is "in progress" until it has a champion (mirrors index.html). The
+    // old matches<60 threshold broke mid-playoffs for the 74-match modern IPL (#124).
+    const inProgress = data.champion == null
         ? `<div class="subtitle">season in progress | ${data.matches} matches played</div>`
         : `<div class="subtitle">${data.matches} matches</div>`;
 

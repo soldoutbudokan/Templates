@@ -24,7 +24,7 @@
         <div class="tabs">
             <button class="tab active" data-section="match_batting">match batting</button>
             <button class="tab" data-section="match_bowling">match bowling</button>
-            <button class="tab" data-section="match_allround">match all-around</button>
+            <button class="tab" data-section="match_allround">match all-round</button>
             <button class="tab" data-section="season_batting">season batting</button>
             <button class="tab" data-section="season_bowling">season bowling</button>
             <button class="tab" data-section="match_batting_runs">match runs</button>
@@ -94,8 +94,11 @@ function sortCls(key) {
 
 function render() {
     const isMatchSection = matchSections.includes(currentSection);
+    // The innings-bias note is relevant to the all-round match tab too, even
+    // though the innings filter itself doesn't apply there (#136).
+    const showInningsNote = isMatchSection || currentSection === 'match_allround';
     document.getElementById('inningsFilter').style.display = isMatchSection ? '' : 'none';
-    document.getElementById('inningsNote').style.display = isMatchSection ? '' : 'none';
+    document.getElementById('inningsNote').style.display = showInningsNote ? '' : 'none';
 
     let raw = goats[currentSection] || [];
     if (isMatchSection && currentInnings !== 'all') {

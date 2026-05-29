@@ -88,6 +88,7 @@ async function renderTeamCareer(slug) {
         const res = await fetch(`data/teams/${slug}.json`);
         if (!res.ok) throw new Error('not found');
         team = await res.json();
+        document.title = `The TILT | ${team.team}`;
     } catch (e) {
         document.getElementById('content').innerHTML = `<div class="loading">team "${slug}" not found</div>`;
         return;
@@ -211,7 +212,7 @@ async function renderTeamCareer(slug) {
             data: {
                 labels: team.seasons.map((s) => s.season),
                 datasets: [{
-                    data: team.seasons.map((s) => s.team_tilt_per_match * 100),
+                    data: team.seasons.map((s) => s.team_tilt_per_match != null ? s.team_tilt_per_match * 100 : null),
                     borderColor: cssVar('--accent-green'),
                     backgroundColor: cssVar('--accent-green') + '33',
                     fill: false,
@@ -236,6 +237,7 @@ async function renderTeamSeason(slug, season) {
         const res = await fetch(`data/team_seasons/${slug}-${seasonSlug}.json`);
         if (!res.ok) throw new Error('not found');
         ts = await res.json();
+        document.title = `The TILT | ${ts.label} ${ts.season}`;
     } catch (e) {
         document.getElementById('content').innerHTML = `<div class="loading">no data for ${slug} ${season}</div>`;
         return;

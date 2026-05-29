@@ -148,6 +148,33 @@
         return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     }
 
+    // Balls -> cricket overs notation, e.g. 124 -> "20.4" (NOT 124/6=20.67).
+    function ballsToOvers(balls) {
+        const b = Number(balls) || 0;
+        return Math.floor(b / 6) + '.' + (b % 6);
+    }
+
+    // Shared stat metadata for season.html + leaders.html. Single source of truth
+    // so the chip labels and ordering can't drift between the two pages (#138).
+    const STAT_LABELS = {
+        runs: 'Runs',
+        wickets: 'Wickets',
+        batting_tilt: 'Batting TILT',
+        bowling_tilt: 'Bowling TILT',
+        total_tilt: 'Total TILT',
+        sr: 'Strike Rate',
+        economy: 'Economy',
+        fifties: 'Fifties',
+        hundreds: 'Hundreds',
+        fours: 'Fours',
+        sixes: 'Sixes',
+    };
+    const STAT_ORDER = [
+        'total_tilt', 'batting_tilt', 'bowling_tilt',
+        'runs', 'wickets', 'sr', 'economy',
+        'fifties', 'hundreds', 'fours', 'sixes',
+    ];
+
     let _teamIndexCache = null;
     let _teamIndexPromise = null;
     async function loadTeamIndex() {
@@ -156,7 +183,7 @@
         _teamIndexPromise = (async () => {
             try {
                 const res = await fetch('data/team_index.json');
-                if (!res.ok) return new Map();
+                if (!res.ok) throw new Error('team_index fetch failed');
                 const arr = await res.json();
                 const map = new Map();
                 arr.forEach((t) => {
@@ -166,6 +193,10 @@
                 _teamIndexCache = map;
                 return map;
             } catch (e) {
+                // Don't cache the failure: clear the in-flight promise so a later
+                // call retries the fetch instead of returning an empty Map for the
+                // rest of the session (which silently breaks every team link) (#137).
+                _teamIndexPromise = null;
                 return new Map();
             }
         })();
@@ -475,9 +506,12 @@
     window.initThemeToggle = initThemeToggle;
     window.formatTilt = formatTilt;
     window.cssVar = cssVar;
+    window.ballsToOvers = ballsToOvers;
     window.loadTeamIndex = loadTeamIndex;
     window.teamLink = teamLink;
     window.seasonLink = seasonLink;
     window.flagSpan = flagSpan;
     window.BLOG_NOTES = BLOG_NOTES;
+    window.STAT_LABELS = STAT_LABELS;
+    window.STAT_ORDER = STAT_ORDER;
 })();

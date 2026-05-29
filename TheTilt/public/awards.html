@@ -102,11 +102,12 @@ function renderAwardDetail(matches, season, teamIndex) {
     }
     const sorted = matches.slice().sort((a, b) => (a.date || '').localeCompare(b.date || ''));
     const rows = sorted.map((m) => {
-        const result = m.winner
-            ? (m.winner === m.opponent ? 'L' : 'W')
-            : '—';
+        // No winner = no result; mirror player.html's W/L/NR mapping (#149).
+        const result = m.winner == null
+            ? 'NR'
+            : (m.winner !== m.opponent ? 'W' : 'L');
         const bat = (m.bat_runs != null) ? `${m.bat_runs}${m.bat_not_out ? '*' : ''}(${m.bat_balls})` : '—';
-        const bowl = (m.bowl_wkts != null) ? `${m.bowl_wkts}/${m.bowl_runs} (${(m.bowl_balls / 6).toFixed(0)}ov)` : '—';
+        const bowl = (m.bowl_wkts != null) ? `${m.bowl_wkts}/${m.bowl_runs} (${ballsToOvers(m.bowl_balls)}ov)` : '—';
         return `<tr>
             <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
             <td>${teamLink(m.opponent, season, teamIndex)}</td>

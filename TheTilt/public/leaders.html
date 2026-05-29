@@ -26,26 +26,9 @@
     </div>
 
 <script>
-const STAT_LABELS = {
-    runs: 'Runs',
-    wickets: 'Wickets',
-    batting_tilt: 'Batting TILT',
-    bowling_tilt: 'Bowling TILT',
-    total_tilt: 'Total TILT',
-    sr: 'Strike Rate',
-    economy: 'Economy',
-    fifties: 'Fifties',
-    hundreds: 'Hundreds',
-    fours: 'Fours',
-    sixes: 'Sixes',
-};
-
-const STAT_ORDER = [
-    'runs', 'wickets',
-    'total_tilt', 'batting_tilt', 'bowling_tilt',
-    'sr', 'economy',
-    'fifties', 'hundreds', 'fours', 'sixes',
-];
+// Shared with season.html via common.js so chip labels/order can't drift (#138).
+const STAT_LABELS = window.STAT_LABELS;
+const STAT_ORDER = window.STAT_ORDER;
 
 const STAT_THRESHOLDS = {
     sr: 'min 100 balls faced',
@@ -61,9 +44,9 @@ function isTiltStat(stat) {
 
 function ancillaryColumns(stat, row) {
     if (stat === 'runs') return `<td>${row.balls}</td><td>${row.sr.toFixed(2)}</td><td>${row.innings}</td>`;
-    if (stat === 'wickets') return `<td>${(row.balls / 6).toFixed(1)} ov</td><td>${row.economy.toFixed(2)}</td><td>${row.innings}</td>`;
+    if (stat === 'wickets') return `<td>${ballsToOvers(row.balls)} ov</td><td>${row.economy.toFixed(2)}</td><td>${row.innings}</td>`;
     if (stat === 'sr') return `<td>${row.runs}</td><td>${row.balls}</td>`;
-    if (stat === 'economy') return `<td>${row.wickets}</td><td>${(row.balls / 6).toFixed(1)} ov</td>`;
+    if (stat === 'economy') return `<td>${row.wickets}</td><td>${ballsToOvers(row.balls)} ov</td>`;
     if (stat === 'batting_tilt' || stat === 'bowling_tilt') return `<td>${formatTilt(row.per_match)}</td><td>${row.matches}</td><td>${row.balls}</td>`;
     if (stat === 'total_tilt') return `<td>${formatTilt(row.per_match)}</td><td>${row.matches}</td>`;
     if (stat === 'fifties') return `<td>${row.hundreds}</td><td>${row.innings}</td>`;
@@ -117,6 +100,7 @@ async function loadLeaders() {
         const res = await fetch(`data/leaders/${seasonSlug}-${stat}.json`);
         if (!res.ok) throw new Error('not found');
         data = await res.json();
+        document.title = `The TILT | ${STAT_LABELS[stat]} Leaders – IPL ${data.season}`;
     } catch (e) {
         document.getElementById('content').innerHTML = `<div class="loading">no leaders for ${stat} in ${season}</div>`;
         return;
