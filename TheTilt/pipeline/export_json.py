@@ -151,10 +151,24 @@ def _compute_team_season_nrr(deltas_df: pd.DataFrame, team: str, season: str) ->
 # %% Legal-delivery flags
 # A batter "faces" legal deliveries + no-balls (wides don't count — re-bowled, batter not credited).
 # A bowler's over counts only legal deliveries (both wides and no-balls are re-bowled).
+
+# Cricsheet wicket kinds credited to the bowler (lowercase, as parsed).
+BOWLER_WICKET_KINDS = frozenset({
+    "bowled", "caught", "caught and bowled", "lbw", "stumped", "hit wicket",
+})
+
+
 def _add_legal_flags(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df["legal_bat"] = (~df["is_wide"]).astype(int)
     df["legal_bowl"] = (~df["is_wide"] & ~df["is_noball"]).astype(int)
+    # Wickets credited to the bowler (purple-cap convention). Run outs, retired,
+    # obstructing the field, etc. are dismissals but NOT bowling wickets (#123).
+    # Every *bowler* wicket count uses this; team wickets-fallen and the
+    # fall-of-wickets / dismissals list keep using is_wicket directly.
+    df["is_bowler_wicket"] = (
+        df["is_wicket"] & df["wicket_kind"].isin(BOWLER_WICKET_KINDS)
+    )
     return df
 
 
@@ -193,7 +207,8 @@ def _batting_counting_stats(
     if include_dismissals:
         out["dismissals"] = dismissals
     out["not_outs"] = innings - dismissals
-    out["fifties"] = int((match_runs >= 50).sum())
+    # A "fifty" is 50–99; centuries are counted separately (#156).
+    out["fifties"] = int(((match_runs >= 50) & (match_runs < 100)).sum())
     out["hundreds"] = int((match_runs >= 100).sum())
     return out
 
@@ -202,12 +217,12 @@ def _bowling_counting_stats(bowl_slice: pd.DataFrame) -> Optional[dict]:
     """Compute bowling counting stats over a legal-flagged slice. None if empty."""
     if len(bowl_slice) == 0:
         return None
-    wickets = int(bowl_slice["is_wicket"].sum())
+    wickets = int(bowl_slice["is_bowler_wicket"].sum())
     balls = int(bowl_slice["legal_bowl"].sum())
     runs_conceded = int(bowl_slice["runs_total"].sum())
     innings = int(bowl_slice["match_id"].nunique())
     bowl_match = bowl_slice.groupby("match_id").agg(
-        wickets=("is_wicket", "sum"),
+        wickets=("is_bowler_wicket", "sum"),
         runs=("runs_total", "sum"),
     )
     best_idx = bowl_match["wickets"].idxmax()
@@ -494,7 +509,7 @@ def export_player_details(
             # Per-season team and counting stats
             bat_season_df = bat_df[bat_df["season"] == season]
             bowl_season_df = bowl_df[bowl_df["season"] == season]
-            season_bat_stats = _batting_counting_stats(bat_season_df, player_id, player_name)
+            season_bat_stats = _batting_counting_stats(bat_season_df, player_id, player_name, include_dismissals=True)
             season_bowl_stats = _bowling_counting_stats(bowl_season_df)
             season_team = None
             if len(bat_season_df) > 0:
@@ -540,7 +555,7 @@ def export_player_details(
 
                 # Bowling stats for this match
                 bowl_m = bowl_season_df[bowl_season_df["match_id"] == mid] if mid in bowl_match_ids else pd.DataFrame()
-                bowl_wkts_val = int(bowl_m["is_wicket"].sum()) if len(bowl_m) > 0 else None
+                bowl_wkts_val = int(bowl_m["is_bowler_wicket"].sum()) if len(bowl_m) > 0 else None
                 bowl_balls_val = int(bowl_m["legal_bowl"].sum()) if len(bowl_m) > 0 else None
                 bowl_runs_val = int(bowl_m["runs_total"].sum()) if len(bowl_m) > 0 else None
                 bowl_econ_val = round(bowl_runs_val / max(bowl_balls_val, 1) * 6, 2) if bowl_runs_val is not None else None
@@ -639,7 +654,7 @@ def export_player_details(
         if len(bowl_df_copy) > 0:
             bowl_match_perf = (
                 bowl_df_copy.groupby(["match_id", "date", "batting_team"])
-                .agg(tilt=("bowling_delta", "sum"), balls=("legal_bowl", "sum"), wickets=("is_wicket", "sum"))
+                .agg(tilt=("bowling_delta", "sum"), balls=("legal_bowl", "sum"), wickets=("is_bowler_wicket", "sum"))
                 .reset_index()
                 .sort_values("tilt", ascending=False)
             )
@@ -942,7 +957,7 @@ def export_match_details(
                 .agg(
                     runs=("runs_total", "sum"),
                     legal_balls=("legal_bowl", "sum"),
-                    wickets=("is_wicket", "sum"),
+                    wickets=("is_bowler_wicket", "sum"),
                     tilt=("delta_wp", lambda x: -x.sum()),
                     first_ball=("ball_number", "min"),
                 )
@@ -1157,7 +1172,7 @@ def export_goats(
         deltas_df.groupby(["bowler_id", "bowler", "match_id", "date", "season", "bowling_team", "innings"])
         .agg(
             tilt=("delta_wp", lambda x: -x.sum()),
-            wickets=("is_wicket", "sum"),
+            wickets=("is_bowler_wicket", "sum"),
             runs_conceded=("runs_total", "sum"),
             balls=("legal_bowl", "sum"),
         )
@@ -1380,7 +1395,7 @@ def _team_batting_counting_stats(slice_df: pd.DataFrame) -> Optional[dict]:
 def _team_bowling_counting_stats(slice_df: pd.DataFrame) -> Optional[dict]:
     if len(slice_df) == 0:
         return None
-    wickets = int(slice_df["is_wicket"].sum())
+    wickets = int(slice_df["is_bowler_wicket"].sum())
     balls = int(slice_df["legal_bowl"].sum())
     runs_conceded = int(slice_df["runs_total"].sum())
     return {
@@ -1498,7 +1513,7 @@ def export_team_details(
             bowl_slice.groupby(["bowler_id", "bowler"])
             .agg(
                 bowl_matches=("match_id", "nunique"),
-                wickets=("is_wicket", "sum"),
+                wickets=("is_bowler_wicket", "sum"),
                 bowl_balls=("legal_bowl", "sum"),
                 bowl_total_tilt=("delta_wp", lambda x: -x.sum()),
             )
@@ -1728,7 +1743,7 @@ def _build_player_season_leaders(
     bowl = (
         season_balls.groupby(["bowler_id", "bowler", "bowling_team"])
         .agg(
-            wickets=("is_wicket", "sum"),
+            wickets=("is_bowler_wicket", "sum"),
             runs_conceded=("runs_total", "sum"),
             balls=("legal_bowl", "sum"),
             innings=("match_id", "nunique"),
