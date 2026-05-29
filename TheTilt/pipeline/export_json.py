@@ -1009,6 +1009,10 @@ def export_match_details(
                 "wicket": bool(r["is_wicket"]),
                 "wicket_kind": r["wicket_kind"] if r["is_wicket"] else None,
                 "player_dismissed": r["player_dismissed"] if r["is_wicket"] else None,
+                # Delivery type so the UI can phrase wides/no-balls correctly
+                # rather than crediting the batter with a "hit" (issue #165).
+                "is_wide": bool(r["is_wide"]),
+                "is_noball": bool(r["is_noball"]),
                 "delta": round(r["delta_wp"], 5),
                 "wp_after": round(r["wp_after"], 4),
             }

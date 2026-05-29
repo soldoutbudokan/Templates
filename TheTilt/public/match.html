@@ -121,10 +121,12 @@ async function loadMatch() {
                     return (parseInt(w, 10) || 0) * 6 + (parseInt(p, 10) || 0);
                 };
                 const totalBalls = inn.bowling.reduce((s, b) => s + oversToBalls(b.overs), 0);
-                const totalRuns = inn.batting.reduce((s, b) => s + (b.runs || 0), 0);
                 const totalTilt = inn.batting.reduce((s, b) => s + (b.tilt || 0), 0);
                 const oversFaced = totalBalls > 0 ? (Math.floor(totalBalls / 6) + (totalBalls % 6) / 10).toFixed(1) : '0.0';
-                const innRR = totalBalls > 0 ? (totalRuns / (totalBalls / 6)).toFixed(2) : '—';
+                // RR uses the real innings score (incl. extras), not the sum of
+                // batter runs, so it matches the total shown alongside it.
+                const innScore = parseInt(String(inn.total || '0').split('/')[0], 10) || 0;
+                const innRR = totalBalls > 0 ? (innScore / (totalBalls / 6)).toFixed(2) : '—';
                 html += `<tr class="total-row">
                     <td><strong>Total</strong></td>
                     <td class="hide-mobile">(${oversFaced} Ov, RR ${innRR})</td>
@@ -166,7 +168,11 @@ async function loadMatch() {
                     ? (km.wicket_kind === 'run out'
                         ? `${km.player_dismissed || km.batter} run out`
                         : `${km.player_dismissed || km.batter} ${km.wicket_kind} (${km.bowler})`)
-                    : `${km.batter} hits ${km.runs} off ${km.bowler}`;
+                    : km.is_wide
+                        ? `wide off ${km.bowler}${km.runs > 0 ? ` (${km.runs} run${km.runs === 1 ? '' : 's'})` : ''}`
+                        : km.is_noball
+                            ? `no-ball off ${km.bowler}${km.runs > 0 ? ` (${km.runs} run${km.runs === 1 ? '' : 's'})` : ''}`
+                            : `${km.batter} hits ${km.runs} off ${km.bowler}`;
                 const overLabel = `${km.inn === 1 ? '1st' : '2nd'} inn, ${km.over}.${km.ball}`;
                 html += `<div class="key-moment">
                     <div>
@@ -237,7 +243,10 @@ async function loadMatch() {
                     datasets: [{
                         label: `${refTeam} Win %`,
                         data: wpData,
-                        borderColor: wpData.map((_, i) => i < inningsBreak ? cssVar('--accent-green') : cssVar('--accent-red')),
+                        // Per-segment coloring (green for inn1, red for the chase) is
+                        // handled entirely by segment.borderColor. A dataset-level
+                        // borderColor array is dead code in Chart.js 4 (the segment
+                        // callback overrides it) and disagreed at the innings break.
                         segment: {
                             borderColor: ctx => ctx.p0DataIndex < inningsBreak - 1
                                 ? cssVar('--accent-green')
