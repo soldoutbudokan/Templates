@@ -221,6 +221,8 @@ See [Why we ensemble](notes.html?note=ensemble) for the full diagnostic of the r
 
 The K=100 ensemble made a clean A/B of the deeper chained-endpoints fix (issue #110) possible for the first time. Running V0 (calibration without Step 3) against the live production (calibration with the linear-decay Step 3) revealed that **Step 3 was distorting the bowling table more than the chart smoothness it bought was worth.**
 
+(To reconcile the changelog above: the exponential powerplay-decay variant of Step 3 was rolled back to the original issue-#71 linear-decay blend before this A/B, so "live production" here — and what was ultimately removed — is the linear version.)
+
 What Step 3 did: blend `wp_before` and `wp_after` toward the calibrated midpoint over the first 6 balls of inn2 with `α = (6−ball)/5`. Ball 1 was forced to delta=0; balls 2–5 carried (1−α) of their raw delta; ball 6+ was raw. The intent was visual continuity; the side effect was suppressing the powerplay-bowler's deltas in inn2 by an amount that mattered for career ranking.
 
 Concrete impact (Step 3 vs no-Step 3, top 10 by career total tilt):
@@ -288,8 +290,8 @@ Top 10 by career total TILT, before vs after the fix:
 | SP Narine | 11.27 | **9.89** | −1.38 |
 | JJ Bumrah | 8.85 | 7.93 | −0.92 |
 | AB de Villiers | 6.71 | **7.73** | **+1.02** |
-| YS Chahal | 6.94 | 5.80 | −1.13 |
-| DA Warner | 4.42 | **5.71** | **+1.30** |
+| YS Chahal | 6.94 | 5.80 | −1.14 |
+| DA Warner | 4.42 | **5.71** | **+1.29** |
 | SL Malinga | 6.52 | 5.66 | −0.86 |
 | Rashid Khan | 6.45 | 5.53 | −0.92 |
 | JC Buttler | 4.24 | 4.77 | +0.53 |
