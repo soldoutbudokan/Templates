@@ -1906,6 +1906,14 @@ span.flag-text {
 .brk-td.winner.brk-bgD {
     background: var(--accent-green-dim);
 }
+/* Placeholder cells for playoff matches not yet played / not yet in the data
+   (e.g. Qualifier 2 + Final mid-playoffs). Muted and italic; the cell has no
+   inner link, so it supplies its own padding to match the clickable cells. */
+.brk-td.brk-ph {
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 5px 8px;
+}
 
 /* Classic bracket (2008–2010): two semis on the left feeding a Final on the
    right, plus an optional 3rd-place playoff below. Each match is a small

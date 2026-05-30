@@ -229,8 +229,12 @@ function renderPlayoffsBracket(data, teamIndex) {
     const byStage = {};
     for (const p of playoffs) byStage[normStage(p.stage)] = p;
 
-    const isModern = ['Qualifier 1', 'Eliminator', 'Qualifier 2', 'Final']
-        .every(s => byStage[s]);
+    // Modern page-playoff format (2011+): Qualifier 1 + Eliminator + Qualifier 2
+    // + Final. Render the full bracket as soon as the season reaches the playoffs
+    // (Qualifier 1 present), filling not-yet-played / not-yet-in-Cricsheet slots
+    // with placeholders rather than collapsing to the flat card view (which looked
+    // broken mid-playoffs, e.g. 2026 with only Q1 + Eliminator in the data).
+    const isModern = !!(byStage['Qualifier 1'] || byStage['Qualifier 2']);
 
     // Classic format (2008–2010): two Semi Finals + Final, plus optional
     // 3rd Place Play-Off in 2010. Two semis share the same `stage` label
@@ -362,17 +366,30 @@ function renderModernBracket(data, teamIndex, byStage) {
     const seedMap = new Map();
     (data.team_table || []).forEach(t => seedMap.set(t.team, t.position_est));
 
-    const q1 = byStage['Qualifier 1'];
-    const elim = byStage['Eliminator'];
-    const q2 = byStage['Qualifier 2'];
-    const final = byStage['Final'];
+    const TBD = 'TBD';
+    // IPL page-playoff structure fixes who feeds each later round, so a match
+    // that hasn't been played yet (or that Cricsheet hasn't published yet) can
+    // still be shown as a placeholder with its known feeder teams:
+    //   Qualifier 2 = Qualifier 1 loser  vs  Eliminator winner
+    //   Final       = Qualifier 1 winner vs  Qualifier 2 winner
+    // Placeholder matches carry match_id=null (not clickable), no winner
+    // highlight, and a "to be played" label in place of a date/scores.
+    const ph = (stage, teams) => ({
+        stage, teams, winner: null, scores: {}, match_id: null, date: null, placeholder: true,
+    });
 
-    const q1W = q1.winner;
-    const q1L = q1.teams.find(t => t !== q1W) || null;
-    const eW = elim.winner;
-    const q2W = q2.winner;
-    const q2L = q2.teams.find(t => t !== q2W) || null;
-    const champ = final.winner;
+    const q1 = byStage['Qualifier 1'] || ph('Qualifier 1', [TBD, TBD]);
+    const elim = byStage['Eliminator'] || ph('Eliminator', [TBD, TBD]);
+
+    const q1W = q1.placeholder ? null : q1.winner;
+    const q1L = q1W ? (q1.teams.find(t => t !== q1W) || null) : null;
+    const eW = elim.placeholder ? null : elim.winner;
+
+    const q2 = byStage['Qualifier 2'] || ph('Qualifier 2', [q1L || TBD, eW || TBD]);
+    const q2W = q2.placeholder ? null : q2.winner;
+
+    const final = byStage['Final'] || ph('Final', [q1W || TBD, q2W || TBD]);
+    const champ = final.placeholder ? null : final.winner;
 
     const seedOf = (t) => seedMap.get(t) || 99;
     const orderBySeed = (teams) => [...teams].sort((a, b) => seedOf(a) - seedOf(b));
@@ -406,27 +423,31 @@ function renderModernBracket(data, teamIndex, byStage) {
     // match, so a CSS-only sibling selector can't express the highlight.
     //
     // borders is "T R B L" (top right bottom left) in px values like "1px 1px 1px 1px".
+    // Placeholder cells have no match_id, so they render as plain (un-clickable) content.
     const link = (matchId, content) =>
-        `<a class="brk-cell-link" data-match-id="${matchId}" href="match.html?id=${matchId}">${content}</a>`;
-    const seedCell = (seed, isW, matchId, borders) =>
-        `<td class="brk-td brk-bgD brk-center${isW ? ' winner' : ''}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${seed}</b>` : String(seed))}</td>`;
-    const teamCell = (team, isW, matchId, borders) =>
-        `<td class="brk-td brk-bgL${isW ? ' winner' : ''}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${team}</b>` : team)}</td>`;
-    const scoreCell = (score, isW, matchId, borders) =>
-        `<td class="brk-td brk-bgL brk-center${isW ? ' winner' : ''}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${score}</b>` : score)}</td>`;
+        matchId
+            ? `<a class="brk-cell-link" data-match-id="${matchId}" href="match.html?id=${matchId}">${content}</a>`
+            : content;
+    const seedCell = (seed, isW, matchId, borders, ph) =>
+        `<td class="brk-td brk-bgD brk-center${isW ? ' winner' : ''}${ph}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${seed}</b>` : String(seed))}</td>`;
+    const teamCell = (team, isW, matchId, borders, ph) =>
+        `<td class="brk-td brk-bgL${isW ? ' winner' : ''}${ph}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${team}</b>` : team)}</td>`;
+    const scoreCell = (score, isW, matchId, borders, ph) =>
+        `<td class="brk-td brk-bgL brk-center${isW ? ' winner' : ''}${ph}" rowspan="2" style="border-width:${borders}">${link(matchId, isW ? `<b>${score}</b>` : score)}</td>`;
     const matchTriple = (label, team, match, isFirst) => {
-        const isW = match.winner === team;
+        const isW = !match.placeholder && match.winner === team;
         const score = (match.scores || {})[team] || '';
+        const ph = match.placeholder ? ' brk-ph' : '';
         const seedLeft = isFirst ? '1px' : '0px';
         const seedTop = isFirst ? '1px' : '0px';
-        return seedCell(label, isW, match.match_id, `${seedTop} 1px 1px ${seedLeft}`)
-             + teamCell(team, isW, match.match_id, `${seedTop} 0px 1px 0px`)
-             + scoreCell(score, isW, match.match_id, `${seedTop} 1px 1px 0px`);
+        return seedCell(label, isW, match.match_id, `${seedTop} 1px 1px ${seedLeft}`, ph)
+             + teamCell(team, isW, match.match_id, `${seedTop} 0px 1px 0px`, ph)
+             + scoreCell(score, isW, match.match_id, `${seedTop} 1px 1px 0px`, ph);
     };
     const headerCell = (label) =>
         `<td class="brk-td brk-bgD brk-center brk-header" colspan="3" rowspan="2" style="border-width:1px 1px 1px 1px"><b>${label}</b></td>`;
     const dateCell = (m) =>
-        `<td class="brk-date" colspan="3" rowspan="2">${dateVenue(m)}</td>`;
+        `<td class="brk-date" colspan="3" rowspan="2">${m.placeholder ? 'to be played' : dateVenue(m)}</td>`;
 
     // 14-column, 18-row table porting Wikipedia's Page-playoff bracket.
     // Column widths: 1, 22, 165, 95, 4, 2, 22, 165, 95, 4, 2, 22, 165, 95.
