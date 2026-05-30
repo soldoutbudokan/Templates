@@ -9,9 +9,9 @@ This page is the long-form methodology. The headline numbers and rankings live o
 | Coverage | Value |
 |:--|:--|
 | Seasons | IPL 2008 — 2026 |
-| Matches parsed | 1,230 |
-| Legal-ish deliveries scored | 293,754 |
-| Players ranked (≥ 10 matches) | 458 |
+| Matches parsed | 1,232 |
+| Legal-ish deliveries scored | 294,255 |
+| Players ranked (≥ 10 matches) | 472 |
 | Model | K=100 LightGBM ensemble (gradient-boosted classifier) |
 | Default ranking | Bayesian-shrunk TILT, 90% CI lower bound |
 
@@ -379,17 +379,17 @@ TILT is honest about what it doesn't see.
 
 ### The second-innings asymmetry
 
-Win probability swings are **structurally larger in the 2nd innings**, because the target is known and every ball directly resolves the chase math. On average, a 2nd-innings ball produces a `|delta_wp|` that is **1.34×** a 1st-innings ball. This is concentrated in the death overs — **2.00× in overs 16–20** — while powerplay overs actually run slightly the other way (0.88×).
+Win probability swings are **structurally larger in the 2nd innings**, because the target is known and every ball directly resolves the chase math. On average, a 2nd-innings ball produces a `|delta_wp|` that is **1.57×** a 1st-innings ball. The gap widens through the innings — **1.23× in the powerplay, 1.69× in the middle overs, and 2.12× in the death (overs 16–20)**.
 
-The downstream effect on single-match GOAT-type rankings is large: 100% of the top-50 batting GOAT performances and 84% of the top-50 bowling GOAT performances are from 2nd innings. The GOAT page therefore exposes innings-filtered views so within-innings comparisons are fair.
+The downstream effect on single-match GOAT-type rankings is large: 100% of the top-50 batting GOAT performances and 100% of the top-50 bowling GOAT performances are from 2nd innings. The GOAT page therefore exposes innings-filtered views so within-innings comparisons are fair.
 
-The effect on **career** rankings is small. The Spearman rank correlation between raw and innings-normalized career TILT is **ρ = 0.99** — careers wash out the per-match asymmetry.
+The effect on **career** rankings is small. The Spearman rank correlation between raw and innings-normalized career TILT is **ρ = 0.98** — careers wash out the per-match asymmetry.
 
 The full diagnostic, including per-phase breakdowns and the qq-plot above, is at: [The Second Innings Problem](notes.html?note=innings-bias).
 
 ### The innings-boundary recalibration
 
-The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **8.7 pp** with a mean signed gap of **+4.5 pp** (the model is systematically more optimistic about the batting-first team at chase-start than at innings-1-end — direction depends on the trained model's tilt and is monitored on every retrain).
+The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **8.7 pp**: the model is systematically **more pessimistic about the batting-first team at the start of the chase** than at the end of its own innings, by a mean signed gap of about **4.3 pp** in the batting-first team's win probability (down from the **5.1 pp** that originally motivated this fix; magnitude and direction are monitored on every retrain).
 
 We close that gap with a two-step post-processing layer in `compute_tilt.apply_boundary_calibration`, applied only to the two boundary balls per match (~1.4% of all deliveries):
 

@@ -42,7 +42,17 @@ def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
 
 # %% Compute state after each ball
 def compute_state_after(row: pd.Series) -> dict:
-    """Compute match state features AFTER a ball is bowled."""
+    """Compute match state features AFTER a ball is bowled.
+
+    Note (issue #148): on the very first ball of an innings the runs=0 and
+    runs=1 after-states differ only in `runs_scored` (0 vs 1) and `run_rate`,
+    and the run-rate shrinkage prior (PRIOR_BALLS=18 at ~8.4 rpo) swamps a
+    single run after one ball — the two states land on the same LightGBM leaf,
+    so the model returns an identical probability and delta_wp == 0.0 exactly.
+    This is a model-granularity (leaf-quantization) artifact, not an off-by-one:
+    the additive updates below are correct. Impact is ~0.005 TILT, below ranking
+    relevance, so it is left as-is (wontfix) rather than perturbing the model.
+    """
     after = {}
     after["innings"] = row["innings"]
     after["runs_scored"] = row["runs_scored"] + row["runs_total"]

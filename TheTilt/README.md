@@ -45,8 +45,8 @@ The stat is denominated in **win probability percentage points per match**. A TI
 
 All data comes from [Cricsheet](https://cricsheet.org), an open cricket data project that provides ball-by-ball JSON files for every IPL match ever played.
 
-- **1,230 matches** parsed (2008-2026)
-- **293,754 individual deliveries** with batsman, bowler, runs, wickets, and match outcome
+- **1,232 matches** parsed (2008-2026)
+- **294,255 individual deliveries** with batsman, bowler, runs, wickets, and match outcome
 - Each delivery becomes a row with full match context
 - Team-name aliases normalized (e.g. "Royal Challengers Bengaluru" → "Royal Challengers Bangalore")
 

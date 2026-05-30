@@ -74,7 +74,11 @@ print("Loading model...")
 with open(MODELS_DIR / "win_prob_lgbm.pkl", "rb") as f:
     model = pickle.load(f)
 
-model_venue_cats = list(model.booster_.pandas_categorical[0])
+# The committed model is a K=100 EnsembleModel (issue #111), not a bare
+# LGBMClassifier, so it has no top-level `booster_`. All members share the same
+# training categorical dtype, so pull the venue category ordering from member 0.
+_base = model.models[0] if hasattr(model, "models") else model
+model_venue_cats = list(_base.booster_.pandas_categorical[0])
 missing = set(TARGET_VENUES) - set(model_venue_cats)
 assert not missing, f"Whitelist venues missing from model: {missing}"
 print(f"  model has {len(model_venue_cats)} venue categories; "

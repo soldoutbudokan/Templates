@@ -1044,8 +1044,25 @@ def export_match_details(
             for _, r in mdf.iterrows()
         ]
 
-        # Key moments (top 5 by |delta_wp|)
-        mdf_sorted = mdf.reindex(mdf["delta_wp"].abs().sort_values(ascending=False).index)
+        # Key moments (top 5 by |delta_wp|). The very first ball of innings 2
+        # (over 0, ball 0) carries the innings-boundary calibration residual in
+        # its delta: wp_before is the calibrated chase-start midpoint (issue #62)
+        # while wp_after is the model's raw forecast for the post-ball state, so
+        # even a dot/single there can post a large |delta| that reflects the
+        # boundary fix rather than anything the batter/bowler did. Drop that one
+        # ball from the highlights so it isn't surfaced as a "key moment" (#144).
+        # A wicket on that ball is kept — a genuine event outweighs the residual.
+        km_candidates = mdf[
+            ~(
+                (mdf["innings"] == 2)
+                & (mdf["over"] == 0)
+                & (mdf["ball"] == 0)
+                & (~mdf["is_wicket"].astype(bool))
+            )
+        ]
+        mdf_sorted = km_candidates.reindex(
+            km_candidates["delta_wp"].abs().sort_values(ascending=False).index
+        )
         key_moments = [
             {
                 "inn": int(r["innings"]),

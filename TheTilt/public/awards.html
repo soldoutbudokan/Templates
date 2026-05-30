@@ -58,6 +58,22 @@ async function fetchTopAward(season, stat) {
     }
 }
 
+// A season is "in progress" until it has a champion (mirrors season.html #124 /
+// index.html). Awards for an in-progress season are current leaders, not final
+// winners, so we badge those rows rather than crown them (#172). On any fetch
+// error we fall back to treating the season as completed (no false badge).
+async function fetchSeasonMeta(season) {
+    const seasonSlug = season.replace('/', '-');
+    try {
+        const res = await fetch(`data/seasons/${seasonSlug}.json`);
+        if (!res.ok) return { inProgress: false, matches: null };
+        const data = await res.json();
+        return { inProgress: data.champion == null, matches: data.matches };
+    } catch (e) {
+        return { inProgress: false, matches: null };
+    }
+}
+
 // Lazy-loaded player season match logs. Keyed by `${slug}|${season}`.
 const _matchLogCache = new Map();
 
@@ -135,18 +151,27 @@ function renderAwardDetail(matches, season, teamIndex) {
     <div class="award-detail-foot"><a href="season.html?season=${encodeURIComponent(season)}">view ${season} season →</a></div>`;
 }
 
+// Season cell with an "in progress" badge when the season hasn't crowned a
+// champion yet, so rank-1 reads as a current leader rather than a winner (#172).
+function awardSeasonCell(season, inProgress, matches) {
+    if (!inProgress) return `${season}`;
+    const played = matches != null ? ` · ${matches} played` : '';
+    return `${season}<span class="stage-badge" title="season in progress — current leader, not final winner">in progress${played}</span>`;
+}
+
 function awardCategoryTable(award, rows, teamIndex) {
-    const body = rows.map(({ season, winner }) => {
+    const body = rows.map(({ season, winner, inProgress, matches }) => {
+        const seasonCell = awardSeasonCell(season, inProgress, matches);
         if (!winner) {
             return `<tr class="award-empty-row">
-                <td>${season}</td>
+                <td>${seasonCell}</td>
                 <td colspan="3" class="award-empty">no qualifier</td>
                 <td></td>
             </tr>`;
         }
         const rowId = awardRowId(award.key, season, winner.slug);
         return `<tr class="award-row" onclick="toggleAwardRow('${award.key}', '${season}', '${winner.slug}', _teamIndex)">
-                <td>${season}</td>
+                <td>${seasonCell}</td>
                 <td><a href="player.html?player=${winner.slug}" onclick="event.stopPropagation()">${flagSpan(winner.country)}${winner.player}</a></td>
                 <td>${teamLink(winner.team, season, teamIndex, { cls: 'team-link-subtle' })}</td>
                 <td>${award.format(winner.value)}</td>
@@ -201,16 +226,20 @@ async function loadAwards() {
     document.getElementById('content').innerHTML = headerHtml + '<div id="awards-body"><div class="loading">loading…</div></div>';
     const body = document.getElementById('awards-body');
 
-    // Fetch in parallel: for each season × each award, pull rank-1.
+    // Fetch in parallel: for each season × each award, pull rank-1, plus the
+    // season's champion status so in-progress seasons can be badged (#172).
     const seasonPayloads = await Promise.all(seasons.map(async (season) => {
-        const winners = await Promise.all(AWARDS.map((a) => fetchTopAward(season, a.key)));
-        return { season, winners };
+        const [winners, meta] = await Promise.all([
+            Promise.all(AWARDS.map((a) => fetchTopAward(season, a.key))),
+            fetchSeasonMeta(season),
+        ]);
+        return { season, winners, inProgress: meta.inProgress, matches: meta.matches };
     }));
 
     // Pivot from per-season to per-category for table rendering.
     body.innerHTML = AWARDS.map((award, awardIdx) => {
-        const rows = seasonPayloads.map(({ season, winners }) => ({
-            season, winner: winners[awardIdx],
+        const rows = seasonPayloads.map(({ season, winners, inProgress, matches }) => ({
+            season, winner: winners[awardIdx], inProgress, matches,
         }));
         return awardCategoryTable(award, rows, _teamIndex);
     }).join('');

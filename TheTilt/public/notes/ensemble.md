@@ -10,7 +10,7 @@ This post is the diagnostic that surfaced the problem and the architectural fix 
 
 ## The thing that surfaced it
 
-In early May 2026 the career top-10 had **Bhuvneshwar Kumar above AB de Villiers**. That's not a defensible ordering by any cricketing read of those two careers — Kumar is a top-tier death-overs swing bowler, ABD is the most consistent T20 batter the IPL has produced, and across 200 vs 168 matches the gap should be the other way.
+In early May 2026 the career top-10 had **Bhuvneshwar Kumar above AB de Villiers**. That's not a defensible ordering by any cricketing read of those two careers — Kumar is a top-tier death-overs swing bowler, ABD is the most consistent T20 batter the IPL has produced, and across 205 vs 168 matches the gap should be the other way.
 
 The first instinct (the natural one) was that something about the model's calibration had drifted. We'd shipped a few things lately: an exponential PP-decay calibration, a final-ball wp_after snap, a hyperparameter retune. Maybe one of those was the culprit. So we reverted the bundle.
 
@@ -146,7 +146,7 @@ The original triggering symptom — Bhuvneshwar Kumar above AB de Villiers in th
 
 ABD now ranks above Kumar on the floor view (the leaderboard's default sort), and the gap on raw career total is also right-sized. The fix reaches this without any post-hoc rescaling, manual reshuffle, or threshold-based filtering. Ranks that move under the ensemble are moving because the average of 100 trajectories disagrees with the one we happened to draw.
 
-*A subsequent change in the same investigation (May 2026) removed the linear-decay Step 3 from `apply_boundary_calibration` because it was systematically over-crediting early-chase bowlers. After that change, ABD sits at #3 by total / #4 by floor, and B Kumar is outside the top 10 floor. The story above is unchanged — the K=100 ensemble is what stabilized the rankings — but the live numbers shifted again. See [innings boundary § Step 3 removed](notes.html?note=innings-boundary#update-step-3-removed-issue-110-follow-up).*
+*A subsequent change in the same investigation (May 2026) removed the linear-decay Step 3 from `apply_boundary_calibration` because it was systematically over-crediting early-chase bowlers. After that change, ABD sits at #3 by total / #5 by floor (a 22-match Vaibhav Suryavanshi sits third on the low-confidence floor sort), and B Kumar is outside the top 10 floor. The story above is unchanged — the K=100 ensemble is what stabilized the rankings — but the live numbers shifted again. See [innings boundary § Step 3 removed](notes.html?note=innings-boundary#update-step-3-removed-issue-110-follow-up).*
 
 More importantly: **the rankings will now hold across retrains.** A K=20 spot-check confirmed the top-10 floor is byte-identical to K=100 within the noise floor of normal data drift. Adding a match next week won't reshuffle the top of the leaderboard.
 
