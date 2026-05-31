@@ -420,29 +420,18 @@ These are tractable upgrades that future iterations may chase.
 
 ## 11. Top Results (Sanity Check)
 
-Top 10 players by **TILT floor** (90% CI lower bound). *As of 2026-05-28 (post K=100 ensemble, post Step-3 removal, post `recent_wickets` rolling-window fix).* During an in-progress season the data refreshes through the day, so the live [rankings](rankings.html) can differ from this snapshot intra-tournament — especially around the medium-confidence ranks (#6–#10), where a handful of matches reshuffles the order.
+Top 10 players by **TILT floor** (90% CI lower bound), rendered live from the current [rankings](rankings.html). *As of <span id="top10-asof">…</span> (post K=100 ensemble, post Step-3 removal, post `recent_wickets` rolling-window fix).* During an in-progress season the data refreshes through the day, so this list reshuffles intra-tournament — especially around the medium- and low-confidence ranks, where a handful of matches moves the order.
 
-| Rank | Player | TILT/Match | Raw | Confidence | Matches |
-|:--|:--|:--|:--|:--|:--|
-| 1 | Sunil Narine | +4.88% | +5.07% | **high** | 195 |
-| 2 | Jasprit Bumrah | +4.88% | +5.12% | **high** | 155 |
-| 3 | Lasith Malinga | +4.35% | +4.64% | **high** | 122 |
-| 4 | AB de Villiers | +4.39% | +4.60% | **high** | 168 |
-| 5 | Yuzvendra Chahal | +3.08% | +3.24% | **high** | 179 |
-| 6 | Nicholas Pooran | +4.15% | +4.50% | medium | 95 |
-| 7 | Rashid Khan | +3.57% | +3.79% | **high** | 146 |
-| 8 | Jos Buttler | +3.46% | +3.70% | **high** | 129 |
-| 9 | Phil Salt | +4.58% | +5.48% | medium | 40 |
-| 10 | KL Rahul | +3.08% | +3.28% | **high** | 144 |
+<div id="top10-floor" class="loading">loading…</div>
 
 A few sanity reads on this list:
 
-- **Narine #1 across 195 matches** — the most consistent all-round impact in IPL history. Top of the floor ranking and top of raw career total TILT (+9.89 lifetime, ahead of Bumrah at +7.93).
-- **AB de Villiers #4 floor / #3 by career total** rises another step after the May 2026 `recent_wickets` rolling-window fix to `compute_state_after`. The previous logic was over-counting recent wickets in the post-ball state (it added new ones but never subtracted ones that had rolled out of the 18-ball window), inflating bowling credit and depressing batting wp by an offsetting amount. ABD specifically gained +1.0 TILT once the inflation was removed.
-- **Top batters resurface** — Buttler #8 floor; Rahul #10 floor; Dhoni and Warner just behind. The fix redistributed phantom bowler credit back to the chasing side.
-- **Bumrah, Malinga, Rashid Khan, Chahal** still anchor the bowler tier — now without the inflated wicket-window credit. Their floors are 0.5–1.0pp lower than the pre-fix table but still high-confidence top of the table.
-- **Pooran and Salt at the medium-confidence ranks** are the floor ranking behaving as designed under medium-sample players posting extreme raw numbers — shrinkage pulls them hard, but the lower bound still clears most veterans.
-- **Old-era players are not punished.** Malinga's 2008–2019 career still floors at +4.35%; the `season_numeric` feature neutralises era effects.
+- **Narine tops the table** — first on the floor ranking and first on raw career-total TILT, the most consistent all-round impact in IPL history.
+- **AB de Villiers near the top of the floor ranking** rises after the May 2026 `recent_wickets` rolling-window fix to `compute_state_after`. The previous logic was over-counting recent wickets in the post-ball state (it added new ones but never subtracted ones that had rolled out of the 18-ball window), inflating bowling credit and depressing batting wp by an offsetting amount. ABD specifically gained ~1.0 TILT once the inflation was removed.
+- **Top batters resurface** — Buttler and Rahul sit near the floor cutline; Dhoni and Warner just behind. The fix redistributed phantom bowler credit back to the chasing side.
+- **Bumrah, Malinga, Rashid Khan, Chahal** still anchor the bowler tier — now without the inflated wicket-window credit. Their floors dropped 0.5–1.0pp from the pre-fix table but stay high-confidence near the top.
+- **Medium- and low-confidence players can crack the top tier on floor** when they post extreme raw numbers — shrinkage pulls them hard, but the lower bound still clears most veterans. The live table above shows which currently qualify (it can include a low-confidence, high-raw debutant on a short sample).
+- **Old-era players are not punished.** Malinga's 2008–2019 career still floors near the top of the bowler tier; the `season_numeric` feature neutralises era effects.
 
 ---
 

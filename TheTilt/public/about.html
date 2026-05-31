@@ -42,6 +42,56 @@
     </div>
 
 <script>
+// §11 "Top Results" table is rendered live from tilt_rankings.json so it can
+// never drift from the data (see dependencies.md). The markdown ships a
+// <div id="top10-floor"> placeholder and an <span id="top10-asof"> date that
+// this hydrates after marked() parses about.md.
+async function renderTop10Floor() {
+    const el = document.getElementById('top10-floor');
+    if (!el) return;
+    try {
+        const [rankRes, metaRes] = await Promise.all([
+            fetch('data/tilt_rankings.json'),
+            fetch('data/meta.json'),
+        ]);
+        if (!rankRes.ok) throw new Error('rankings not generated');
+        const players = await rankRes.json();
+        const meta = metaRes.ok ? await metaRes.json() : {};
+
+        const asof = document.getElementById('top10-asof');
+        if (asof && meta.last_updated) asof.textContent = meta.last_updated;
+
+        const top10 = [...players]
+            .sort((a, b) => (b.tilt_ci_lower_90 ?? -Infinity) - (a.tilt_ci_lower_90 ?? -Infinity))
+            .slice(0, 10);
+
+        const rows = top10.map((p, i) => {
+            const name = (p.full_name && p.full_name !== p.player) ? p.full_name : p.player;
+            const conf = p.confidence || 'low';
+            const confCell = conf === 'high' ? `<strong>${conf}</strong>` : conf;
+            return `<tr>`
+                + `<td>${i + 1}</td>`
+                + `<td>${name}</td>`
+                + `<td>${formatTilt(p.shrunk_total_tilt_per_match)}</td>`
+                + `<td>${formatTilt(p.total_tilt_per_match)}</td>`
+                + `<td>${confCell}</td>`
+                + `<td>${p.total_matches}</td>`
+                + `</tr>`;
+        }).join('');
+
+        el.classList.remove('loading');
+        el.innerHTML = `<table>`
+            + `<thead><tr>`
+            + `<th>Rank</th><th>Player</th><th>TILT/Match</th><th>Raw</th><th>Confidence</th><th>Matches</th>`
+            + `</tr></thead>`
+            + `<tbody>${rows}</tbody>`
+            + `</table>`;
+    } catch (e) {
+        el.classList.add('loading');
+        el.textContent = 'top-10 unavailable — rankings not yet generated.';
+    }
+}
+
 async function loadAbout() {
     try {
         const res = await fetch('about.md');
@@ -49,6 +99,7 @@ async function loadAbout() {
         const md = await res.text();
         const html = marked.parse(md);
         document.getElementById('aboutContent').innerHTML = html;
+        await renderTop10Floor();
     } catch (e) {
         document.getElementById('aboutContent').innerHTML = '<div class="loading">about page failed to load</div>';
     }
