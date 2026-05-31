@@ -50,13 +50,7 @@ Three changes, applied together:
 
 The snap's pathological top-of-leaderboard entries are gone. Top single-game bowling now reads like real bowling:
 
-| Rank | Bowler | Match | Figures | TILT |
-|:--|:--|:--|:--|--:|
-| 1 | Mohammed Shami | 2019-04-10 KXIP vs MI | 3/21 (4 ov) | +0.71 |
-| 2 | Bhuvneshwar Kumar | 2017-04-17 SRH vs KXIP | 5/20 (4 ov) | +0.62 |
-| 3 | Dale Steyn | 2012-05-20 DC vs RCB | 3/8 (4 ov) | +0.61 |
-| 4 | Jofra Archer | 2026-05-24 RR vs MI | 3/17 (4 ov) | +0.61 |
-| 5 | Rashid Khan | 2018-04-24 SRH vs MI | 2/11 (4 ov) | +0.60 |
+<div id="snap-top5-bowling" class="loading">loading…</div>
 
 Career rankings reshuffle in the opposite direction from the original snap-era post. **DJ Bravo**, who entered the snap-era all-time top 10 from #62 on the strength of his death-overs reputation, drops out again — the snap was inflating his match-end deliveries with credit the model never actually disagreed with. **Dhoni and Miller**, who lost 34 spots each under the snap, partially recover.
 

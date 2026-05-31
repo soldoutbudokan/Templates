@@ -42,54 +42,62 @@
     </div>
 
 <script>
-// §11 "Top Results" table is rendered live from tilt_rankings.json so it can
-// never drift from the data (see dependencies.md). The markdown ships a
-// <div id="top10-floor"> placeholder and an <span id="top10-asof"> date that
-// this hydrates after marked() parses about.md.
-async function renderTop10Floor() {
-    const el = document.getElementById('top10-floor');
-    if (!el) return;
+// The §2 coverage counts and the §11 "Top Results" table are rendered live
+// from tilt_rankings.json / meta.json so they can never drift from the data
+// (see dependencies.md). about.md ships hard-coded fallbacks plus placeholder
+// elements (<span id="cov-*">, <span id="top10-asof">, <div id="top10-floor">)
+// that this hydrates after marked() parses the page.
+async function hydrateAbout() {
+    let players = null, meta = {};
     try {
         const [rankRes, metaRes] = await Promise.all([
             fetch('data/tilt_rankings.json'),
             fetch('data/meta.json'),
         ]);
-        if (!rankRes.ok) throw new Error('rankings not generated');
-        const players = await rankRes.json();
-        const meta = metaRes.ok ? await metaRes.json() : {};
+        if (rankRes.ok) players = await rankRes.json();
+        if (metaRes.ok) meta = await metaRes.json();
+    } catch (e) { /* keep the static fallbacks already in the markdown */ }
 
-        const asof = document.getElementById('top10-asof');
-        if (asof && meta.last_updated) asof.textContent = meta.last_updated;
+    const setText = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.textContent = v; };
+    const fmt = n => (n == null ? null : Number(n).toLocaleString('en-US'));
 
-        const top10 = [...players]
-            .sort((a, b) => (b.tilt_ci_lower_90 ?? -Infinity) - (a.tilt_ci_lower_90 ?? -Infinity))
-            .slice(0, 10);
+    // §2 coverage table
+    setText('cov-matches', fmt(meta.matches_count));
+    setText('cov-balls', fmt(meta.balls_count));
+    if (players) setText('cov-players', fmt(players.length));
 
-        const rows = top10.map((p, i) => {
-            const name = (p.full_name && p.full_name !== p.player) ? p.full_name : p.player;
-            const conf = p.confidence || 'low';
-            const confCell = conf === 'high' ? `<strong>${conf}</strong>` : conf;
-            return `<tr>`
-                + `<td>${i + 1}</td>`
-                + `<td>${name}</td>`
-                + `<td>${formatTilt(p.shrunk_total_tilt_per_match)}</td>`
-                + `<td>${formatTilt(p.total_tilt_per_match)}</td>`
-                + `<td>${confCell}</td>`
-                + `<td>${p.total_matches}</td>`
-                + `</tr>`;
-        }).join('');
-
-        el.classList.remove('loading');
-        el.innerHTML = `<table>`
-            + `<thead><tr>`
-            + `<th>Rank</th><th>Player</th><th>TILT/Match</th><th>Raw</th><th>Confidence</th><th>Matches</th>`
-            + `</tr></thead>`
-            + `<tbody>${rows}</tbody>`
-            + `</table>`;
-    } catch (e) {
+    // §11 "as of" date + top-10-by-floor table
+    setText('top10-asof', meta.last_updated);
+    const el = document.getElementById('top10-floor');
+    if (!el) return;
+    if (!players) {
         el.classList.add('loading');
         el.textContent = 'top-10 unavailable — rankings not yet generated.';
+        return;
     }
+    const top10 = [...players]
+        .sort((a, b) => (b.tilt_ci_lower_90 ?? -Infinity) - (a.tilt_ci_lower_90 ?? -Infinity))
+        .slice(0, 10);
+    const rows = top10.map((p, i) => {
+        const name = (p.full_name && p.full_name !== p.player) ? p.full_name : p.player;
+        const conf = p.confidence || 'low';
+        const confCell = conf === 'high' ? `<strong>${conf}</strong>` : conf;
+        return `<tr>`
+            + `<td>${i + 1}</td>`
+            + `<td>${name}</td>`
+            + `<td>${formatTilt(p.shrunk_total_tilt_per_match)}</td>`
+            + `<td>${formatTilt(p.total_tilt_per_match)}</td>`
+            + `<td>${confCell}</td>`
+            + `<td>${p.total_matches}</td>`
+            + `</tr>`;
+    }).join('');
+    el.classList.remove('loading');
+    el.innerHTML = `<table>`
+        + `<thead><tr>`
+        + `<th>Rank</th><th>Player</th><th>TILT/Match</th><th>Raw</th><th>Confidence</th><th>Matches</th>`
+        + `</tr></thead>`
+        + `<tbody>${rows}</tbody>`
+        + `</table>`;
 }
 
 async function loadAbout() {
@@ -99,7 +107,7 @@ async function loadAbout() {
         const md = await res.text();
         const html = marked.parse(md);
         document.getElementById('aboutContent').innerHTML = html;
-        await renderTop10Floor();
+        await hydrateAbout();
     } catch (e) {
         document.getElementById('aboutContent').innerHTML = '<div class="loading">about page failed to load</div>';
     }

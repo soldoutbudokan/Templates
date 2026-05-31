@@ -118,6 +118,7 @@ async function loadNote(id, push = true) {
         };
         const html = marked.parse(md, { renderer });
         document.getElementById('noteContent').innerHTML = html;
+        await hydrateNoteAnchors();
 
         // Update page title
         const note = NOTES.find(n => n.id === id);
@@ -134,6 +135,62 @@ async function loadNote(id, push = true) {
     } catch (e) {
         document.getElementById('noteContent').innerHTML = '<div class="loading">note not found</div>';
     }
+}
+
+// Some notes embed live anchors that must not drift from the data (see
+// dependencies.md): the ensemble.md career-match counts + ABD floor/total
+// ranks, and the last-ball-snap.md top-5 single-game bowling table. After a
+// note renders, populate whichever placeholder elements are present in it from
+// the live JSON, leaving the markdown's hard-coded fallbacks if a fetch fails.
+async function hydrateNoteAnchors() {
+    const has = id => document.getElementById(id);
+    const needRankings = has('ens-kumar-mt') || has('ens-abd-mt') || has('ens-abd-total-rank') || has('ens-abd-floor-rank');
+    const needGoats = has('snap-top5-bowling');
+    if (!needRankings && !needGoats) return;
+
+    const setText = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.textContent = v; };
+    try {
+        const [rankings, goats] = await Promise.all([
+            needRankings ? fetch('data/tilt_rankings.json').then(r => r.ok ? r.json() : null) : null,
+            needGoats ? fetch('data/goats.json').then(r => r.ok ? r.json() : null) : null,
+        ]);
+
+        if (rankings) {
+            const bySlug = s => rankings.find(p => p.slug === s);
+            const kumar = bySlug('b-kumar-2e81a32d');
+            const abd = bySlug('ab-de-villiers-c4487b84');
+            if (kumar) setText('ens-kumar-mt', kumar.total_matches);
+            if (abd) {
+                setText('ens-abd-mt', abd.total_matches);
+                const byTotal = [...rankings].sort((a, b) => b.total_tilt - a.total_tilt);
+                const byFloor = [...rankings].sort((a, b) => b.tilt_ci_lower_90 - a.tilt_ci_lower_90);
+                setText('ens-abd-total-rank', byTotal.findIndex(p => p.slug === abd.slug) + 1);
+                setText('ens-abd-floor-rank', byFloor.findIndex(p => p.slug === abd.slug) + 1);
+            }
+        }
+
+        const snapEl = has('snap-top5-bowling');
+        if (snapEl) {
+            const top5 = (goats && goats.match_bowling ? [...goats.match_bowling] : [])
+                .sort((a, b) => b.tilt - a.tilt).slice(0, 5);
+            if (!top5.length) {
+                snapEl.classList.add('loading');
+                snapEl.textContent = 'top-5 unavailable — rankings not yet generated.';
+            } else {
+                const rows = top5.map((r, i) => {
+                    const tilt = (r.tilt >= 0 ? '+' : '') + r.tilt.toFixed(2);
+                    const overs = r.balls % 6 === 0 ? String(r.balls / 6) : ballsToOvers(r.balls);
+                    const match = `<a href="match.html?id=${r.match_id}" class="match-link">${r.date}</a> · ${r.team}`;
+                    return `<tr><td>${i + 1}</td><td>${r.player}</td><td>${match}</td>`
+                        + `<td>${r.wickets}/${r.runs_conceded} (${overs} ov)</td><td>${tilt}</td></tr>`;
+                }).join('');
+                snapEl.classList.remove('loading');
+                snapEl.innerHTML = `<table><thead><tr>`
+                    + `<th>#</th><th>Bowler</th><th>Match</th><th>Figures</th><th>TILT</th>`
+                    + `</tr></thead><tbody>${rows}</tbody></table>`;
+            }
+        }
+    } catch (e) { /* keep the static fallbacks already in the markdown */ }
 }
 
 function showListing(push = true) {
