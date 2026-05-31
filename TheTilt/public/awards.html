@@ -156,7 +156,7 @@ function renderAwardDetail(matches, season, teamIndex) {
 function awardSeasonCell(season, inProgress, matches) {
     if (!inProgress) return `${season}`;
     const played = matches != null ? ` · ${matches} played` : '';
-    return `${season}<span class="stage-badge" title="season in progress — current leader, not final winner">in progress${played}</span>`;
+    return `${season}<span class="stage-badge in-progress" title="season in progress — current leader, not final winner">current leader${played}</span>`;
 }
 
 function awardCategoryTable(award, rows, teamIndex) {

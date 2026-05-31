@@ -27,6 +27,7 @@
     --accent-red: #f87171;
     --accent-red-dim: rgba(248, 113, 113, 0.15);
     --accent-yellow: #fbbf24;
+    --accent-yellow-dim: rgba(251, 191, 36, 0.15);
     --nav-bg: rgba(18, 18, 18, 0.85);
     --radius-sm: 6px;
     --radius-md: 8px;
@@ -51,6 +52,7 @@
     --accent-red: #dc2626;
     --accent-red-dim: rgba(220, 38, 38, 0.1);
     --accent-yellow: #d97706;
+    --accent-yellow-dim: rgba(217, 119, 6, 0.12);
     --nav-bg: rgba(245, 245, 245, 0.85);
 }
 
@@ -1823,6 +1825,13 @@ span.flag-text {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     vertical-align: middle;
+}
+/* In-progress / provisional variant (awards.html #172): amber so a current
+   leader reads as not-yet-final, distinct from the muted match-stage badges. */
+.stage-badge.in-progress {
+    color: var(--accent-yellow);
+    border-color: var(--accent-yellow);
+    background: var(--accent-yellow-dim);
 }
 .result-margin {
     color: var(--text-dim);
