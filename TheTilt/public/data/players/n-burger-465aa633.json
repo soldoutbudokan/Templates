@@ -8,21 +8,21 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.0223,
+  "total_tilt_per_match": -0.01491,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.02065,
-  "shrunk_total_tilt_per_match": -0.0226,
+  "bowling_tilt_per_match": -0.01335,
+  "shrunk_total_tilt_per_match": -0.01687,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01948,
-  "tilt_ci_lower": -0.07948,
-  "tilt_ci_upper": 0.03428,
-  "tilt_ci_lower_90": -0.07033,
-  "tilt_ci_upper_90": 0.02514,
+  "shrunk_bowling_tilt_per_match": -0.01392,
+  "tilt_ci_lower": -0.07234,
+  "tilt_ci_upper": 0.0386,
+  "tilt_ci_lower_90": -0.06343,
+  "tilt_ci_upper_90": 0.02969,
   "confidence": "low",
-  "total_tilt": -0.37905,
-  "total_matches": 17,
+  "total_tilt": -0.26832,
+  "total_matches": 18,
   "batting_balls": 9,
-  "bowling_balls": 339,
+  "bowling_balls": 363,
   "seasons": [
     {
       "season": "2024",
@@ -149,11 +149,11 @@
       "season": "2026",
       "team": "Rajasthan Royals",
       "batting_tilt_per_match": -0.00934,
-      "bowling_tilt_per_match": -0.02195,
+      "bowling_tilt_per_match": -0.01174,
       "batting_matches": 3,
-      "bowling_matches": 12,
+      "bowling_matches": 13,
       "batting_balls": 9,
-      "bowling_balls": 237,
+      "bowling_balls": 261,
       "matches": [
         {
           "match_id": "1527676",
@@ -394,6 +394,26 @@
           "bowl_econ": 8.67,
           "bowl_tilt": 0.04321,
           "total_tilt": -0.01647
+        },
+        {
+          "match_id": "1535464",
+          "date": "2026-05-29",
+          "opponent": "Gujarat Titans",
+          "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+          "team_score": "214/6",
+          "opponent_score": "219/3",
+          "winner": "Gujarat Titans",
+          "bat_runs": null,
+          "bat_balls": null,
+          "bat_sr": null,
+          "bat_tilt": null,
+          "bat_not_out": null,
+          "bowl_wkts": 1,
+          "bowl_balls": 24,
+          "bowl_runs": 39,
+          "bowl_econ": 9.75,
+          "bowl_tilt": 0.11073,
+          "total_tilt": 0.11073
         }
       ],
       "batting_stats": {
@@ -409,12 +429,12 @@
         "hundreds": 0
       },
       "bowling_stats": {
-        "wickets": 13,
-        "innings": 12,
-        "balls": 237,
-        "runs_conceded": 426,
-        "avg": 32.77,
-        "economy": 10.78,
+        "wickets": 14,
+        "innings": 13,
+        "balls": 261,
+        "runs_conceded": 465,
+        "avg": 33.21,
+        "economy": 10.69,
         "best_figures": "2/32"
       }
     }
@@ -430,21 +450,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.06206,
-      "balls": 204,
-      "avg_delta": -0.000289
+      "tilt": -0.0761,
+      "balls": 216,
+      "avg_delta": -0.000334
     },
     {
       "phase": "middle",
-      "tilt": -0.25394,
-      "balls": 78,
-      "avg_delta": -0.003214
+      "tilt": -0.27002,
+      "balls": 84,
+      "avg_delta": -0.00314
     },
     {
       "phase": "death",
-      "tilt": -0.03502,
-      "balls": 57,
-      "avg_delta": -0.000565
+      "tilt": 0.10583,
+      "balls": 63,
+      "avg_delta": 0.001534
     }
   ],
   "best_matches": [
@@ -523,6 +543,14 @@
       "balls": 12
     },
     {
+      "match_id": "1535464",
+      "date": "2026-05-29",
+      "vs": "Gujarat Titans",
+      "tilt": 0.11073,
+      "wickets": 1,
+      "balls": 24
+    },
+    {
       "match_id": "1527676",
       "date": "2026-03-30",
       "vs": "Chennai Super Kings",
@@ -536,14 +564,6 @@
       "vs": "Gujarat Titans",
       "tilt": 0.08052,
       "wickets": 1,
-      "balls": 18
-    },
-    {
-      "match_id": "1535463",
-      "date": "2026-05-27",
-      "vs": "Sunrisers Hyderabad",
-      "tilt": 0.04321,
-      "wickets": 2,
       "balls": 18
     }
   ],
@@ -691,6 +711,12 @@
       "date": "2026-05-27",
       "tilt": -0.01647,
       "cumulative": -0.37905
+    },
+    {
+      "match": 18,
+      "date": "2026-05-29",
+      "tilt": 0.11073,
+      "cumulative": -0.26832
     }
   ],
   "team_matchups": [
@@ -708,8 +734,8 @@
   "bowling_team_matchups": [
     {
       "opponent": "Gujarat Titans",
-      "tilt_per_match": 0.08052,
-      "matches": 1
+      "tilt_per_match": 0.09563,
+      "matches": 2
     },
     {
       "opponent": "Chennai Super Kings",
@@ -765,12 +791,12 @@
     "hundreds": 0
   },
   "bowling_stats": {
-    "wickets": 20,
-    "innings": 17,
-    "balls": 339,
-    "runs_conceded": 578,
-    "avg": 28.9,
-    "economy": 10.23,
+    "wickets": 21,
+    "innings": 18,
+    "balls": 363,
+    "runs_conceded": 617,
+    "avg": 29.38,
+    "economy": 10.2,
     "best_figures": "2/30"
   },
   "match_tilt_distribution": [
@@ -790,6 +816,7 @@
     -0.13191,
     -0.1435,
     -0.019,
-    -0.01647
+    -0.01647,
+    0.11073
   ]
 }
