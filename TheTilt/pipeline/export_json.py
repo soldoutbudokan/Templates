@@ -907,7 +907,14 @@ def export_match_details(
         # Per-innings data
         innings_data = []
         for inn_num in sorted(mdf["innings"].unique()):
-            inn_df = mdf[mdf["innings"] == inn_num]
+            inn_df = mdf[mdf["innings"] == inn_num].sort_values("ball_number").copy()
+            # Legal-ball index within each over (1..6) for cricket over notation in
+            # fall-of-wickets. Counts only legal deliveries (legal_bowl excludes
+            # wides + no-balls), so it never exceeds .6 — the physical `ball` slot
+            # does, since a wide/no-ball earlier in the over pushes `ball + 1` to
+            # .7/.8 (#175). A wicket on an illegal delivery reports the legal balls
+            # completed so far, matching scorecard convention.
+            inn_df["legal_ball_in_over"] = inn_df.groupby("over")["legal_bowl"].cumsum()
             batting_team = str(inn_df.iloc[0]["batting_team"])
             bowling_team = str(inn_df.iloc[0]["bowling_team"])
 
@@ -922,7 +929,7 @@ def export_match_details(
             dismissal_map = {}
             for _, r in dismissals_df.iterrows():
                 fow_runs = int(r["runs_scored"]) + int(r["runs_total"])
-                over_label = f"{int(r['over'])}.{int(r['ball']) + 1}"
+                over_label = f"{int(r['over'])}.{int(r['legal_ball_in_over'])}"
                 wicket_pos = int(r["wicket_position"])
                 kind = r["wicket_kind"] if pd.notna(r["wicket_kind"]) else None
                 fielders = r.get("wicket_fielders")
@@ -1799,7 +1806,9 @@ def _build_player_season_leaders(
     match_runs = (
         season_balls.groupby(["batter_id", "match_id"])["runs_batter"].sum().reset_index()
     )
-    fifties = match_runs[match_runs["runs_batter"] >= 50].groupby("batter_id").size().reset_index(name="fifties")
+    # A "fifty" is 50–99; centuries are counted separately (#156, #176 — this
+    # season-leaders aggregation was the parallel path missed by #156's fix).
+    fifties = match_runs[(match_runs["runs_batter"] >= 50) & (match_runs["runs_batter"] < 100)].groupby("batter_id").size().reset_index(name="fifties")
     hundreds = match_runs[match_runs["runs_batter"] >= 100].groupby("batter_id").size().reset_index(name="hundreds")
     bat = bat.merge(fifties, on="batter_id", how="left").merge(hundreds, on="batter_id", how="left").fillna({"fifties": 0, "hundreds": 0})
     bat["sr"] = (bat["runs"] / bat["balls"].clip(lower=1) * 100).round(2)

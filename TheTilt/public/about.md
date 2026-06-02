@@ -428,7 +428,7 @@ A few sanity reads on this list:
 
 - **Narine tops the table** — first on the floor ranking and first on raw career-total TILT, the most consistent all-round impact in IPL history.
 - **AB de Villiers near the top of the floor ranking** rises after the May 2026 `recent_wickets` rolling-window fix to `compute_state_after`. The previous logic was over-counting recent wickets in the post-ball state (it added new ones but never subtracted ones that had rolled out of the 18-ball window), inflating bowling credit and depressing batting wp by an offsetting amount. ABD specifically gained ~1.0 TILT once the inflation was removed.
-- **Top batters resurface** — Buttler and Rahul sit near the floor cutline; Dhoni and Warner just behind. The fix redistributed phantom bowler credit back to the chasing side.
+- **Top batters resurface** — specialist batters (Buttler, Rahul, Warner among them) climb back toward the floor-ranking's upper tier now that the fix redistributed phantom bowler credit back to the chasing side.
 - **Bumrah, Malinga, Rashid Khan, Chahal** still anchor the bowler tier — now without the inflated wicket-window credit. Their floors dropped 0.5–1.0pp from the pre-fix table but stay high-confidence near the top.
 - **Medium- and low-confidence players can crack the top tier on floor** when they post extreme raw numbers — shrinkage pulls them hard, but the lower bound still clears most veterans. The live table above shows which currently qualify (it can include a low-confidence, high-raw debutant on a short sample).
 - **Old-era players are not punished.** Malinga's 2008–2019 career still floors near the top of the bowler tier; the `season_numeric` feature neutralises era effects.
