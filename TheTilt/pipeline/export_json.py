@@ -73,6 +73,26 @@ def load_completed_seasons(config_path: str = "config/seasons.yaml") -> set:
         return set()
 
 
+def _team_list(value, primary: str) -> list:
+    """Normalize a player's `teams` cell (read from player_tilt.parquet) to a
+    list of franchise names.
+
+    pandas reads a parquet list column back as a numpy ndarray, not a Python
+    list (pyarrow >= ~13 / pandas 2.x). A bare `isinstance(value, list)` check
+    therefore evaluates False on the read-back and silently collapses every
+    multi-franchise player down to their single primary team. Accept any
+    non-string sequence; fall back to [primary] when the cell is missing, NaN,
+    or empty.
+    """
+    if value is None or isinstance(value, str):
+        return [primary]
+    try:
+        names = [t for t in value if isinstance(t, str) and t]
+    except TypeError:
+        return [primary]
+    return names or [primary]
+
+
 def _compute_team_season_nrr(deltas_df: pd.DataFrame, team: str, season: str) -> Optional[float]:
     """Season-final NRR for a (team, season), per IPL convention (issue #107).
 
@@ -433,7 +453,7 @@ def export_rankings(
             "slug": make_slug(row["player"], player_id if player_id else None),
             "country": country_for(player_id),
             "team": row["team"],
-            "teams": row.get("teams", [row["team"]]) if isinstance(row.get("teams"), list) else [row["team"]],
+            "teams": _team_list(row.get("teams"), row["team"]),
             "role": row["role"],
             "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
             "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5) if bat_qualified else None,
@@ -773,7 +793,7 @@ def export_player_details(
             "slug": slug,
             "country": country_for(player_id),
             "team": row["team"],
-            "teams": row.get("teams", [row["team"]]) if isinstance(row.get("teams"), list) else [row["team"]],
+            "teams": _team_list(row.get("teams"), row["team"]),
             "total_tilt_per_match": round(row["total_tilt_per_match"], 5),
             "batting_tilt_per_match": round(row["batting_tilt_per_match"], 5) if bat_qualified else None,
             "bowling_tilt_per_match": round(row["bowling_tilt_per_match"], 5) if bowl_qualified else None,
