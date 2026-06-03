@@ -929,7 +929,10 @@ def export_match_details(
             dismissal_map = {}
             for _, r in dismissals_df.iterrows():
                 fow_runs = int(r["runs_scored"]) + int(r["runs_total"])
-                over_label = f"{int(r['over'])}.{int(r['legal_ball_in_over'])}"
+                # Clamp to .1 minimum: a wicket on a wide/no-ball before any
+                # legal ball in the over leaves legal_ball_in_over at 0, which
+                # would render the non-cricket "X.0" notation (#180).
+                over_label = f"{int(r['over'])}.{max(int(r['legal_ball_in_over']), 1)}"
                 wicket_pos = int(r["wicket_position"])
                 kind = r["wicket_kind"] if pd.notna(r["wicket_kind"]) else None
                 fielders = r.get("wicket_fielders")

@@ -45,8 +45,8 @@ The stat is denominated in **win probability percentage points per match**. A TI
 
 All data comes from [Cricsheet](https://cricsheet.org), an open cricket data project that provides ball-by-ball JSON files for every IPL match ever played.
 
-- **1,232 matches** parsed (2008-2026)
-- **294,255 individual deliveries** with batsman, bowler, runs, wickets, and match outcome
+- **1,234 matches** parsed (2008-2026)
+- **294,729 individual deliveries** with batsman, bowler, runs, wickets, and match outcome
 - Each delivery becomes a row with full match context
 - Team-name aliases normalized (e.g. "Royal Challengers Bengaluru" → "Royal Challengers Bangalore")
 
@@ -262,7 +262,7 @@ TheTilt/
 2. **No batting position context** — An opener facing the new ball operates in a different context than a #6 batsman.
 3. **No bowler type classification** — The model doesn't know if a bowler is pace or spin. PaceOrSpin × Venue interactions could improve predictions. This requires external data or manual classification.
 4. **Opponent quality is approximate** — We use career bowling economy as a proxy, but a full iterative system (using TILT-derived quality) would be more accurate.
-5. **Second innings TILT asymmetry** — Win probability swings are inherently larger in the 2nd innings because the target is known and the match resolves ball by ball. On average, 2nd innings balls produce **1.54x** larger |delta_wp| than 1st innings balls. The effect is concentrated in death overs (2.5x) while powerplay overs are nearly equal (1.07x). This inflates single-match TILT for 2nd innings performances — 94% of the top-50 batting and 98% of the top-50 bowling GOAT performances come from the 2nd innings. The GOAT page now provides innings-filtered views to enable fair within-innings comparisons. Career-level rankings are largely unaffected (Spearman ρ = 0.99 between raw and innings-normalized career TILT). See `notebooks/innings_bias_analysis.py` for the full diagnostic.
+5. **Second innings TILT asymmetry** — Win probability swings are inherently larger in the 2nd innings because the target is known and the match resolves ball by ball. On average, 2nd innings balls produce **1.57x** larger |delta_wp| than 1st innings balls. The effect is concentrated in death overs (2.12x) while powerplay overs are nearly equal (1.23x). This inflates single-match TILT for 2nd innings performances — 100% of the top-50 batting and 100% of the top-50 bowling GOAT performances come from the 2nd innings. The GOAT page now provides innings-filtered views to enable fair within-innings comparisons. Career-level rankings are largely unaffected (Spearman ρ = 0.98 between raw and innings-normalized career TILT). See `notebooks/innings_bias_analysis.py` for the full diagnostic.
 
 ### What's Been Addressed
 
