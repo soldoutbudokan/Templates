@@ -1,4 +1,5 @@
 # %% Imports
+import random
 import time
 import zipfile
 from pathlib import Path
@@ -6,6 +7,14 @@ from typing import Optional
 
 import requests
 import yaml
+
+# Cricsheet's CDN intermittently 415s/503s automated requests (e.g. the
+# 2026-06-03 21:52Z scheduled run failed all 3 bare retries inside 30s, while
+# the same URL served fine minutes later). Retry over a few minutes so a
+# transient blip self-heals instead of failing the whole refresh.
+MAX_DOWNLOAD_ATTEMPTS = 5
+BACKOFF_BASE_SECONDS = 15
+BACKOFF_CAP_SECONDS = 120
 
 DOWNLOAD_HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; TheTiltBot/1.0; +https://github.com/soldoutbudokan/Templates)",
@@ -40,21 +49,30 @@ def download_cricsheet_data(
         print("Use force=True to re-download.")
         return output_dir
 
-    # Download (with retries — cricsheet's CDN occasionally 415s bare requests)
+    # Download (with retries — see MAX_DOWNLOAD_ATTEMPTS note above)
     print(f"Downloading IPL data from {url}...")
     last_err: Optional[Exception] = None
     response = None
-    for attempt in range(1, 4):
+    for attempt in range(1, MAX_DOWNLOAD_ATTEMPTS + 1):
         try:
             response = requests.get(url, stream=True, headers=DOWNLOAD_HEADERS, timeout=60)
             response.raise_for_status()
             break
         except requests.exceptions.RequestException as e:
             last_err = e
-            print(f"  Attempt {attempt} failed ({e}); retrying in {attempt * 5}s...")
-            time.sleep(attempt * 5)
+            if attempt < MAX_DOWNLOAD_ATTEMPTS:
+                # Exponential backoff (15/30/60/120s) plus jitter to spread
+                # retries across a transient CDN block.
+                backoff = min(BACKOFF_BASE_SECONDS * 2 ** (attempt - 1), BACKOFF_CAP_SECONDS)
+                delay = backoff + random.uniform(0, 0.5 * backoff)
+                print(f"  Attempt {attempt} failed ({e}); retrying in {delay:.0f}s...")
+                time.sleep(delay)
+            else:
+                print(f"  Attempt {attempt} failed ({e}); giving up.")
     else:
-        raise RuntimeError(f"Failed to download {url} after 3 attempts") from last_err
+        raise RuntimeError(
+            f"Failed to download {url} after {MAX_DOWNLOAD_ATTEMPTS} attempts"
+        ) from last_err
 
     total_size = int(response.headers.get("content-length", 0))
     downloaded = 0
