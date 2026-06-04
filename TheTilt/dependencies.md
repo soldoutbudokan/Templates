@@ -192,6 +192,32 @@ Re-run `python pipeline/run_pipeline.py` (or `refresh_tilt_data_only`). Every pa
 | `public/data/tilt_rankings.json`, `players/*.json`, `goats.json`, `matches/*.json` | Every team string in these files re-canonicalizes; team links wire through `team_index.json` so no schema changes needed. |
 | `public/about.md` if it names a franchise | Hand-check that team mentions still match canonical naming. |
 
+**`season_labels` rule semantics (gotcha).** The resolver — `season_team_label()` in
+`pipeline/parse_matches.py` and its client mirror `teamLabelForSeason()` in `public/common.js` —
+evaluates each rule as: `through_year` matches **every season ≤ X** (and is checked *first*),
+`from_year` matches **every season ≥ X**. There is **no** true two-sided range — a
+`{ from_year: A, through_year: B }` rule silently mis-fires because the `through_year` test
+short-circuits and catches all years ≤ B (including ones below A). So:
+
+- "name used **up to** year X" (an *old* name, e.g. Delhi Daredevils through 2018) → `through_year: X`.
+- "name used **from** year X onward" (e.g. Rising Pune Supergiant in 2017, the franchise's final
+  season) → `from_year: X`.
+
+For a single defunct-season override, `from_year` alone is correct: RPS folded after 2017, so
+`{ from_year: 2017, label: Rising Pune Supergiant }` only ever hits 2017 while 2016 keeps the
+plural canonical (#181). Do **not** write `{ from_year: 2017, through_year: 2017 }` — it would also
+relabel 2016.
+
+**Re-export produces benign tie-order churn.** A local `refresh_tilt_data_only` (or a standalone
+`export_json.py`) re-sorts player/leader lists, and rows with equal sort keys (same economy, same
+per-match TILT) can reorder versus the committed JSON *without any value change* — `meta.json`'s
+`matches_count`/`balls_count` stay put. For a config-only change (e.g. a `season_labels` edit) this
+shows up as thousands of changed lines across every `teams/*.json` and tied `leaders/*.json`. Commit
+**only** the source edit plus the files that carry the real change — for a season-label edit those are
+the four label-bearing files: `team_index.json`, `seasons/{year}.json`, `teams/{slug}.json`,
+`team_seasons/{slug}-{year}.json` — and `git checkout --` the rest. The twice-daily CI refresh
+regenerates everything from the committed YAML anyway.
+
 ### If you change **TILT computation / shrinkage** (`compute_tilt.py`)
 
 - Every player's TILT changes — full leaderboard, per-player, GOATs all auto-refresh.
