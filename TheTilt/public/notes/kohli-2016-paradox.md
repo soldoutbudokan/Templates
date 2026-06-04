@@ -129,7 +129,7 @@ Plenty of high-volume seasons in IPL history do collapse under TILT, scoring lot
 | V Kohli | 2019 | 439 | 136.8 | 13 | +2.56% | 28.7 | 37.1 |
 | DA Warner | 2016 | 848 | 151.4 | 17 | +6.80% | 32.9 | 52.7 |
 | KL Rahul | 2018 | 659 | 158.4 | 14 | +14.29% | 34.1 | 67.8 |
-| F du Plessis | 2021 | 633 | 138.2 | 16 | +0.13% | 33.4 | 36.0 |
+| F du Plessis | 2021 | 633 | 138.2 | 16 | +0.07% | 33.4 | 36.0 |
 | AM Rahane | 2013 | 488 | 106.6 | 18 | -4.24% | 40.0 | 57.4 |
 | JH Kallis | 2012 | 409 | 106.5 | 17 | -4.09% | 37.8 | 69.0 |
 | Ishan Kishan | 2022 | 418 | 120.1 | 14 | -5.08% | 40.2 | 63.5 |
@@ -149,7 +149,7 @@ Kohli's 2016 lands a notch below Warner's chiefly because two-thirds of his ball
 
 ### du Plessis 2021: The Orange Cap Mirage
 
-Faf du Plessis won the Orange Cap in 2021 with 633 runs at SR 138. His TILT was **+0.13% per match**, essentially zero. He scored a lot of runs, but disproportionately in low-leverage situations. His dot rate (33.4%) and a batting-first lean (36% inn 2 balls) meant his volume translated to almost no impact by TILT's measure. This is the high-volume-collapses-under-TILT pattern that 2016 Kohli pointedly avoided.
+Faf du Plessis won the Orange Cap in 2021 with 633 runs at SR 138. His TILT was **+0.07% per match**, essentially zero. He scored a lot of runs, but disproportionately in low-leverage situations. His dot rate (33.4%) and a batting-first lean (36% inn 2 balls) meant his volume translated to almost no impact by TILT's measure. This is the high-volume-collapses-under-TILT pattern that 2016 Kohli pointedly avoided.
 
 ### Rahane 2013 & Kallis 2012: The Accumulator Penalty
 
