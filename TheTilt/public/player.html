@@ -38,6 +38,10 @@
     </div>
 
 <script>
+// Batting/bowling average is undefined with zero dismissals/wickets — the
+// exporter writes null in that case; render it as an em dash (issue #183).
+const avgFmt = v => (v == null ? '—' : v);
+
 function toggleSeason(id) {
     const row = document.getElementById(id);
     const chev = document.getElementById('chev-' + id);
@@ -114,14 +118,14 @@ async function loadPlayer() {
                 html += `<tr>
                     <td>${seasonLnk}</td>
                     <td class="hide-mobile"><span class="season-team">${teamLink(s.team, s.season, teamIndex)}</span></td>
-                    <td class="hide-mobile">${b.innings}</td><td>${b.runs}</td><td>${b.avg}</td><td>${b.sr}</td><td class="hide-mobile">${b.hs}</td><td class="hide-mobile">${b.fifties}</td><td class="hide-mobile">${b.hundreds}</td>
+                    <td class="hide-mobile">${b.innings}</td><td>${b.runs}</td><td>${avgFmt(b.avg)}</td><td>${b.sr}</td><td class="hide-mobile">${b.hs}</td><td class="hide-mobile">${b.fifties}</td><td class="hide-mobile">${b.hundreds}</td>
                 </tr>`;
             }
             if (p.batting_stats) {
                 const b = p.batting_stats;
                 html += `<tr class="career-total">
                     <td colspan="2">career</td>
-                    <td class="hide-mobile">${b.innings}</td><td>${b.runs}</td><td>${b.avg}</td><td>${b.sr}</td><td class="hide-mobile">${b.hs}</td><td class="hide-mobile">${b.fifties}</td><td class="hide-mobile">${b.hundreds}</td>
+                    <td class="hide-mobile">${b.innings}</td><td>${b.runs}</td><td>${avgFmt(b.avg)}</td><td>${b.sr}</td><td class="hide-mobile">${b.hs}</td><td class="hide-mobile">${b.fifties}</td><td class="hide-mobile">${b.hundreds}</td>
                 </tr>`;
             }
             html += '</table></div></div>';
@@ -139,14 +143,14 @@ async function loadPlayer() {
                 html += `<tr>
                     <td>${seasonLnk}</td>
                     <td class="hide-mobile"><span class="season-team">${teamLink(s.team, s.season, teamIndex)}</span></td>
-                    <td class="hide-mobile">${b.innings}</td><td>${b.wickets}</td><td class="hide-mobile">${b.runs_conceded}</td><td>${b.avg}</td><td>${b.economy}</td><td class="hide-mobile">${b.best_figures}</td>
+                    <td class="hide-mobile">${b.innings}</td><td>${b.wickets}</td><td class="hide-mobile">${b.runs_conceded}</td><td>${avgFmt(b.avg)}</td><td>${b.economy}</td><td class="hide-mobile">${b.best_figures}</td>
                 </tr>`;
             }
             if (p.bowling_stats) {
                 const b = p.bowling_stats;
                 html += `<tr class="career-total">
                     <td colspan="2">career</td>
-                    <td class="hide-mobile">${b.innings}</td><td>${b.wickets}</td><td class="hide-mobile">${b.runs_conceded}</td><td>${b.avg}</td><td>${b.economy}</td><td class="hide-mobile">${b.best_figures}</td>
+                    <td class="hide-mobile">${b.innings}</td><td>${b.wickets}</td><td class="hide-mobile">${b.runs_conceded}</td><td>${avgFmt(b.avg)}</td><td>${b.economy}</td><td class="hide-mobile">${b.best_figures}</td>
                 </tr>`;
             }
             html += '</table></div></div>';
@@ -580,7 +584,7 @@ async function renderPlayerSeason(p, season, slug) {
                     <thead><tr><th>inn</th><th>runs</th><th class="hide-mobile">balls</th><th>avg</th><th>SR</th><th class="hide-mobile">HS</th><th class="hide-mobile">50s</th><th class="hide-mobile">100s</th><th class="hide-mobile">NO</th></tr></thead>
                     <tbody><tr>
                         <td>${b.innings}</td><td>${b.runs}</td><td class="hide-mobile">${b.balls}</td>
-                        <td>${b.avg}</td><td>${b.sr}</td><td class="hide-mobile">${b.hs}</td>
+                        <td>${avgFmt(b.avg)}</td><td>${b.sr}</td><td class="hide-mobile">${b.hs}</td>
                         <td class="hide-mobile">${b.fifties}</td><td class="hide-mobile">${b.hundreds}</td><td class="hide-mobile">${b.not_outs}</td>
                     </tr></tbody>
                 </table>
@@ -596,7 +600,7 @@ async function renderPlayerSeason(p, season, slug) {
                     <thead><tr><th>inn</th><th>wkts</th><th class="hide-mobile">balls</th><th class="hide-mobile">runs</th><th>avg</th><th>econ</th><th class="hide-mobile">best</th></tr></thead>
                     <tbody><tr>
                         <td>${w.innings}</td><td>${w.wickets}</td><td class="hide-mobile">${w.balls}</td>
-                        <td class="hide-mobile">${w.runs_conceded}</td><td>${w.avg}</td><td>${w.economy}</td>
+                        <td class="hide-mobile">${w.runs_conceded}</td><td>${avgFmt(w.avg)}</td><td>${w.economy}</td>
                         <td class="hide-mobile">${w.best_figures}</td>
                     </tr></tbody>
                 </table>

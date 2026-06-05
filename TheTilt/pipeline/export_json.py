@@ -253,7 +253,7 @@ def _batting_counting_stats(
         "runs": runs,
         "innings": innings,
         "balls": balls,
-        "avg": round(runs / max(dismissals, 1), 2),
+        "avg": round(runs / dismissals, 2) if dismissals else None,
         "sr": round(runs / max(balls, 1) * 100, 2),
         "hs": int(match_runs.max()),
     }
@@ -286,7 +286,7 @@ def _bowling_counting_stats(bowl_slice: pd.DataFrame) -> Optional[dict]:
         "innings": innings,
         "balls": balls,
         "runs_conceded": runs_conceded,
-        "avg": round(runs_conceded / max(wickets, 1), 2),
+        "avg": round(runs_conceded / wickets, 2) if wickets else None,
         "economy": round(runs_conceded / max(balls, 1) * 6, 2),
         "best_figures": f"{best_w}/{best_r}",
     }
