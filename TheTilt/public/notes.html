@@ -148,9 +148,10 @@ async function loadNote(id, push = true) {
 async function hydrateNoteAnchors() {
     const has = id => document.getElementById(id);
     const needRankings = has('ens-kumar-mt') || has('ens-abd-mt') || has('ens-abd-total-rank') || has('ens-abd-floor-rank')
-        || has('ib-abd-total-rank') || has('ar-floor-top100-count');
+        || has('ib-abd-total-rank') || has('ib-top10-table') || has('ar-floor-top100-count');
     const needGoats = has('snap-top5-bowling');
-    if (!needRankings && !needGoats) return;
+    const needPlayers = has('kp-kohli-2016-tpm');
+    if (!needRankings && !needGoats && !needPlayers) return;
 
     const setText = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.textContent = v; };
     try {
@@ -183,6 +184,34 @@ async function hydrateNoteAnchors() {
                 setText('ib-bkumar-total-rank', rankOf(byTotal, 'b-kumar-2e81a32d'));
             }
 
+            // innings-boundary.md — the top-10 before/after table. Row set +
+            // "After" track live total_tilt; "Before" is the frozen pre-fix
+            // snapshot (commit 4830ea070^) kept as a per-slug constant. A live
+            // top-10 entrant with no frozen Before shows "—".
+            const ibTable = has('ib-top10-table');
+            if (ibTable) {
+                const BEFORE = {
+                    'sp-narine-9d430b40': 11.27, 'jj-bumrah-462411b3': 8.85,
+                    'ab-de-villiers-c4487b84': 6.71, 'ys-chahal-57ee1fde': 6.94,
+                    'sl-malinga-a12e1d51': 6.52, 'rashid-khan-5f547c8b': 6.45,
+                    'b-kumar-2e81a32d': 5.50, 'da-warner-dcce6f09': 4.42,
+                    'jc-buttler-99b75528': 4.24, 'kl-rahul-b17e2f24': 3.66,
+                    'ms-dhoni-4a8a2e3b': 3.32,
+                };
+                const signed = n => (n >= 0 ? '+' : '−') + Math.abs(n).toFixed(2);
+                const rows = byTotal.slice(0, 10).map(p => {
+                    const after = +p.total_tilt.toFixed(2);
+                    const before = BEFORE[p.slug];
+                    const d = before == null ? null : +(after - before).toFixed(2);
+                    const aCell = d != null && d > 0 ? `<strong>${after.toFixed(2)}</strong>` : after.toFixed(2);
+                    const dCell = d == null ? '—' : (d > 0 ? `<strong>${signed(d)}</strong>` : signed(d));
+                    return `<tr><td>${p.player}</td><td>${before == null ? '—' : before.toFixed(2)}</td>`
+                        + `<td>${aCell}</td><td>${dCell}</td></tr>`;
+                }).join('');
+                ibTable.innerHTML = `<table><thead><tr><th>Player</th><th>Before</th>`
+                    + `<th>After</th><th>Δ</th></tr></thead><tbody>${rows}</tbody></table>`;
+            }
+
             // all-rounders.md — floor-top-100 cohort count + named-player cells
             if (has('ar-floor-top100-count')) {
                 const arInTop100 = byFloor.slice(0, 100).filter(p => p.role === 'all-rounder').length;
@@ -210,6 +239,30 @@ async function hydrateNoteAnchors() {
                 setText('ar-hopes-raw-prose', rankOf(byRaw, 'jr-hopes-2498e163'));
                 setText('ar-hopes-floor-prose', rankOf(byFloor, 'jr-hopes-2498e163'));
                 setText('ar-stokes-raw-prose', rankOf(byRaw, 'ba-stokes-e087956b'));
+            }
+        }
+
+        if (needPlayers) {
+            // kohli-2016-paradox.md — the comparison-table TILT/match column +
+            // the line-148 prose echo, from each player's seasons[] JSON.
+            const KP = [
+                ['kohli-2016', 'v-kohli-ba607b88', '2016'], ['kohli-2019', 'v-kohli-ba607b88', '2019'],
+                ['warner-2016', 'da-warner-dcce6f09', '2016'], ['rahul-2018', 'kl-rahul-b17e2f24', '2018'],
+                ['faf-2021', 'f-du-plessis-3355b542', '2021'], ['rahane-2013', 'am-rahane-29e95537', '2013'],
+                ['kallis-2012', 'jh-kallis-86dc8f2e', '2012'], ['ishan-2022', 'ishan-kishan-752f7486', '2022'],
+            ];
+            const slugs = [...new Set(KP.map(x => x[1]))];
+            const files = {};
+            (await Promise.all(slugs.map(s => fetch(`data/players/${s}.json`).then(r => r.ok ? r.json() : null))))
+                .forEach((j, i) => { files[slugs[i]] = j; });
+            const pct = v => (v >= 0 ? '+' : '') + (v * 100).toFixed(2) + '%';
+            for (const [key, slug, season] of KP) {
+                const j = files[slug];
+                if (!j) continue;
+                const s = (j.seasons || []).find(x => x.season === season);
+                if (!s || s.batting_tilt_per_match == null) continue;
+                setText(`kp-${key}-tpm`, pct(s.batting_tilt_per_match));
+                if (key === 'rahul-2018') setText('kp-rahul-2018-tpm-prose', pct(s.batting_tilt_per_match));
             }
         }
 

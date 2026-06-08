@@ -285,19 +285,21 @@ The bug had been systematically over-crediting bowlers — every wicket they too
 
 Top 10 by career total TILT, before vs after the fix:
 
-| Player | Before | After | Δ |
-|:--|:--:|:--:|:--:|
-| SP Narine | 11.27 | 10.35 | −0.92 |
-| JJ Bumrah | 8.85 | 8.18 | −0.67 |
-| AB de Villiers | 6.71 | **7.66** | **+0.95** |
-| SL Malinga | 6.52 | 5.78 | −0.74 |
-| Rashid Khan | 6.45 | 5.69 | −0.76 |
-| YS Chahal | 6.94 | 5.63 | **−1.31** |
-| DA Warner | 4.42 | **5.61** | **+1.19** |
-| B Kumar | 5.50 | 5.27 | −0.23 |
-| KL Rahul | 3.66 | **4.70** | **+1.04** |
-| JC Buttler | 4.24 | 4.66 | +0.42 |
+<div id="ib-top10-table">
+<table><thead><tr><th>Player</th><th>Before</th><th>After</th><th>Δ</th></tr></thead><tbody>
+<tr><td>SP Narine</td><td>11.27</td><td>10.35</td><td>−0.92</td></tr>
+<tr><td>JJ Bumrah</td><td>8.85</td><td>8.18</td><td>−0.67</td></tr>
+<tr><td>AB de Villiers</td><td>6.71</td><td><strong>7.66</strong></td><td><strong>+0.95</strong></td></tr>
+<tr><td>SL Malinga</td><td>6.52</td><td>5.78</td><td>−0.74</td></tr>
+<tr><td>Rashid Khan</td><td>6.45</td><td>5.69</td><td>−0.76</td></tr>
+<tr><td>YS Chahal</td><td>6.94</td><td>5.63</td><td>−1.31</td></tr>
+<tr><td>DA Warner</td><td>4.42</td><td><strong>5.61</strong></td><td><strong>+1.19</strong></td></tr>
+<tr><td>B Kumar</td><td>5.50</td><td>5.27</td><td>−0.23</td></tr>
+<tr><td>KL Rahul</td><td>3.66</td><td><strong>4.70</strong></td><td><strong>+1.04</strong></td></tr>
+<tr><td>JC Buttler</td><td>4.24</td><td><strong>4.66</strong></td><td><strong>+0.42</strong></td></tr>
+</tbody></table>
+</div>
 
-Top bowlers all decline 0.2–1.3 TILT (the phantom credit removed). Top batters gain 0.4–1.2 TILT (wp restored). The rank inversion from issue #111 — ABD vs Bhuvneshwar Kumar — settles even more decisively now: ABD #<span id="ib-abd-total-rank">3</span> by total / #<span id="ib-abd-floor-rank">5</span> by floor, B Kumar #<span id="ib-bkumar-total-rank">8</span> by total and out of the top 10 floor.
+The top bowlers shed career TILT (the phantom credit removed) and the top batters regain it (wp restored). The rank inversion from issue #111 — ABD vs Bhuvneshwar Kumar — settles even more decisively now: ABD #<span id="ib-abd-total-rank">3</span> by total / #<span id="ib-abd-floor-rank">5</span> by floor, B Kumar #<span id="ib-bkumar-total-rank">8</span> by total and out of the top 10 floor.
 
 The fix is reversible (revert the lookup in `compute_ball_deltas`) but the diff is large enough that it shouldn't be reverted casually — the previous numbers had a real bug, and reverting would re-introduce it.
