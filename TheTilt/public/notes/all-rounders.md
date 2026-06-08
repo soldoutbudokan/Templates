@@ -26,7 +26,7 @@ Ranked by raw per-match TILT — the unadjusted "how big is the swing per game" 
 
 The chart shows the gap. Across every depth — 10, 25, 50, 100, 200 — all-rounders are underrepresented. The longer the list gets, the closer they come to their pool share, but they never catch up.
 
-One caveat worth being honest about: the leaderboard's *default* sort isn't raw per-match TILT — it's the 90% confidence floor (`tilt_ci_lower_90`), which rewards large, consistent samples and penalises small ones. On that floor sort, two veteran high-volume all-rounders do crack the top 50: Yusuf Pathan at #38 (161 matches) and Maxwell at #39 (139 matches), with five all-rounders in the top 100. So it's not strictly "zero in the top 50" on the page you land on. But two of an expected ~4.8 is still half-strength, and the moment you switch to raw impact per match, even those two fall out of the top 50 (Pathan #90, Maxwell #91). The under-representation holds under both metrics; it's just starkest on raw impact.
+One caveat worth being honest about: the leaderboard's *default* sort isn't raw per-match TILT — it's the 90% confidence floor (`tilt_ci_lower_90`), which rewards large, consistent samples and penalises small ones. On that floor sort, two veteran high-volume all-rounders do crack the top 50: Yusuf Pathan at #38 (161 matches) and Maxwell at #39 (139 matches), with <span id="ar-floor-top100-count">six</span> all-rounders in the top 100. So it's not strictly "zero in the top 50" on the page you land on. But two of an expected ~4.8 is still half-strength, and the moment you switch to raw impact per match, even those two fall out of the top 50 (Pathan #<span id="ar-pathan-raw-prose">88</span>, Maxwell #<span id="ar-maxwell-raw-prose">90</span>). The under-representation holds under both metrics; it's just starkest on raw impact.
 
 ---
 
@@ -102,18 +102,18 @@ For a sense of scale, here's where the famous IPL all-rounders rank — by the l
 
 | Floor rank | Raw rank | Player | Matches | TILT/match |
 |--:|--:|:--|--:|--:|
-| 38 | 90 | YK Pathan | 161 | 0.0214 |
-| 39 | 91 | GJ Maxwell | 139 | 0.0213 |
-| 87 | 144 | KA Pollard | 179 | 0.0097 |
-| 100 | 138 | SR Watson | 144 | 0.0114 |
-| 172 | 224 | AD Russell | 133 | -0.0011 |
-| 184 | 119 | BA Stokes | 45 | 0.0140 |
-| 190 | 292 | **HH Pandya** | 159 | -0.0122 |
-| 305 | 74 | JR Hopes | 20 | 0.0251 |
+| <span id="ar-pathan-floor">38</span> | <span id="ar-pathan-raw">88</span> | YK Pathan | 161 | <span id="ar-pathan-tpm">0.0214</span> |
+| <span id="ar-maxwell-floor">39</span> | <span id="ar-maxwell-raw">90</span> | GJ Maxwell | 139 | <span id="ar-maxwell-tpm">0.0212</span> |
+| <span id="ar-pollard-floor">86</span> | <span id="ar-pollard-raw">144</span> | KA Pollard | 179 | <span id="ar-pollard-tpm">0.0097</span> |
+| <span id="ar-watson-floor">99</span> | <span id="ar-watson-raw">137</span> | SR Watson | 144 | <span id="ar-watson-tpm">0.0115</span> |
+| <span id="ar-russell-floor">172</span> | <span id="ar-russell-raw">225</span> | AD Russell | 133 | <span id="ar-russell-tpm">-0.0011</span> |
+| <span id="ar-stokes-floor">184</span> | <span id="ar-stokes-raw">118</span> | BA Stokes | 45 | <span id="ar-stokes-tpm">0.0140</span> |
+| <span id="ar-pandya-floor">189</span> | <span id="ar-pandya-raw">292</span> | **HH Pandya** | 159 | <span id="ar-pandya-tpm">-0.0123</span> |
+| <span id="ar-hopes-floor">306</span> | <span id="ar-hopes-raw">75</span> | JR Hopes | 20 | <span id="ar-hopes-tpm">0.0251</span> |
 
-Yusuf Pathan (#38) and Maxwell (#39) lead the all-rounder block on the floor sort, and they're the only two inside the top 50 — both buoyed by 140-plus-match samples that the confidence floor rewards. Drop to raw per-match impact and both slide into the 90s. Hardik Pandya, the IPL's most decorated active all-rounder, sits at 190 on the floor and 292 on raw impact — above the pool median on the consistency floor, but below it on raw per-match impact. Russell and Pollard, two of the most decisive death-overs hitters in IPL history, land in the 80s–220s depending on which metric you trust.
+Yusuf Pathan (#38) and Maxwell (#39) lead the all-rounder block on the floor sort, and they're the only two inside the top 50 — both buoyed by 140-plus-match samples that the confidence floor rewards. Drop to raw per-match impact and both slide into the high 80s and 90s. Hardik Pandya, the IPL's most decorated active all-rounder, sits at <span id="ar-pandya-floor-prose">189</span> on the floor and 292 on raw impact — above the pool median on the consistency floor, but below it on raw per-match impact. Russell and Pollard, two of the most decisive death-overs hitters in IPL history, land in the 80s–220s depending on which metric you trust.
 
-Note the split personalities in that table. JR Hopes is the most extreme: a 20-match sample gives him the best raw TILT/match among the names in this table (#74 overall), but the same thin sample collapses his confidence floor to #305. Stokes is the mirror image of the veterans — 45 matches, a respectable raw #119, but a floor of #184 because the model doesn't trust the small sample. Sample size, not just role, drives where an all-rounder lands.
+Note the split personalities in that table. JR Hopes is the most extreme: a 20-match sample gives him the best raw TILT/match among the names in this table (#<span id="ar-hopes-raw-prose">75</span> overall), but the same thin sample collapses his confidence floor to #<span id="ar-hopes-floor-prose">306</span>. Stokes is the mirror image of the veterans — 45 matches, a respectable raw #<span id="ar-stokes-raw-prose">118</span>, but a floor of #184 because the model doesn't trust the small sample. Sample size, not just role, drives where an all-rounder lands.
 
 By comparison, the top of the leaderboard is full of specialists who concentrate their impact: Sohail Tanvir's bowling, AB Mhatre's and Vaibhav Suryavanshi's batting cameos, Priyansh Arya's small-sample heroics. None of them are diversified across roles. None of them are dragged down by a bad bowling day after a good bat.
 

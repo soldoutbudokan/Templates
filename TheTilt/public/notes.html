@@ -138,13 +138,17 @@ async function loadNote(id, push = true) {
 }
 
 // Some notes embed live anchors that must not drift from the data (see
-// dependencies.md): the ensemble.md career-match counts + ABD floor/total
-// ranks, and the last-ball-snap.md top-5 single-game bowling table. After a
-// note renders, populate whichever placeholder elements are present in it from
-// the live JSON, leaving the markdown's hard-coded fallbacks if a fetch fails.
+// dependencies.md): ensemble.md career-match counts + ABD floor/total ranks;
+// innings-boundary.md the ABD/B Kumar (#111) rank inversion (ib-* spans);
+// all-rounders.md the floor-top-100 cohort count + named-player floor/raw/tilt
+// cells (ar-* spans); and last-ball-snap.md the top-5 single-game bowling table.
+// After a note renders, populate whichever placeholder elements are present in
+// it from the live JSON, leaving the markdown's hard-coded fallbacks if a fetch
+// fails.
 async function hydrateNoteAnchors() {
     const has = id => document.getElementById(id);
-    const needRankings = has('ens-kumar-mt') || has('ens-abd-mt') || has('ens-abd-total-rank') || has('ens-abd-floor-rank');
+    const needRankings = has('ens-kumar-mt') || has('ens-abd-mt') || has('ens-abd-total-rank') || has('ens-abd-floor-rank')
+        || has('ib-abd-total-rank') || has('ar-floor-top100-count');
     const needGoats = has('snap-top5-bowling');
     if (!needRankings && !needGoats) return;
 
@@ -157,15 +161,55 @@ async function hydrateNoteAnchors() {
 
         if (rankings) {
             const bySlug = s => rankings.find(p => p.slug === s);
+            const byTotal = [...rankings].sort((a, b) => b.total_tilt - a.total_tilt);
+            const byFloor = [...rankings].sort((a, b) => b.tilt_ci_lower_90 - a.tilt_ci_lower_90);
+            const byRaw = [...rankings].sort((a, b) => b.total_tilt_per_match - a.total_tilt_per_match);
+            const rankOf = (arr, slug) => { const i = arr.findIndex(p => p.slug === slug); return i < 0 ? null : i + 1; };
+
+            // ensemble.md — career-match counts + ABD total/floor rank
             const kumar = bySlug('b-kumar-2e81a32d');
             const abd = bySlug('ab-de-villiers-c4487b84');
             if (kumar) setText('ens-kumar-mt', kumar.total_matches);
             if (abd) {
                 setText('ens-abd-mt', abd.total_matches);
-                const byTotal = [...rankings].sort((a, b) => b.total_tilt - a.total_tilt);
-                const byFloor = [...rankings].sort((a, b) => b.tilt_ci_lower_90 - a.tilt_ci_lower_90);
-                setText('ens-abd-total-rank', byTotal.findIndex(p => p.slug === abd.slug) + 1);
-                setText('ens-abd-floor-rank', byFloor.findIndex(p => p.slug === abd.slug) + 1);
+                setText('ens-abd-total-rank', rankOf(byTotal, abd.slug));
+                setText('ens-abd-floor-rank', rankOf(byFloor, abd.slug));
+            }
+
+            // innings-boundary.md — the #111 ABD-vs-Bhuvneshwar rank inversion
+            if (has('ib-abd-total-rank')) {
+                setText('ib-abd-total-rank', rankOf(byTotal, 'ab-de-villiers-c4487b84'));
+                setText('ib-abd-floor-rank', rankOf(byFloor, 'ab-de-villiers-c4487b84'));
+                setText('ib-bkumar-total-rank', rankOf(byTotal, 'b-kumar-2e81a32d'));
+            }
+
+            // all-rounders.md — floor-top-100 cohort count + named-player cells
+            if (has('ar-floor-top100-count')) {
+                const arInTop100 = byFloor.slice(0, 100).filter(p => p.role === 'all-rounder').length;
+                const numWord = { 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight' };
+                setText('ar-floor-top100-count', numWord[arInTop100] || String(arInTop100));
+                const arPlayers = [
+                    ['pathan', 'yk-pathan-3c6ffae8'], ['maxwell', 'gj-maxwell-b681e71e'],
+                    ['pollard', 'ka-pollard-a757b0d8'], ['watson', 'sr-watson-4329fbb5'],
+                    ['russell', 'ad-russell-bbd41817'], ['stokes', 'ba-stokes-e087956b'],
+                    ['pandya', 'hh-pandya-dbe50b21'], ['hopes', 'jr-hopes-2498e163'],
+                ];
+                for (const [key, slug] of arPlayers) {
+                    const p = bySlug(slug);
+                    if (!p) continue;
+                    setText(`ar-${key}-floor`, rankOf(byFloor, slug));
+                    setText(`ar-${key}-raw`, rankOf(byRaw, slug));
+                    setText(`ar-${key}-tpm`, p.total_tilt_per_match.toFixed(4));
+                }
+                // Several named ranks are echoed in the surrounding prose; an
+                // id hydrates only one element, so the prose copies get -prose
+                // ids set here (keeps prose and the table from drifting apart).
+                setText('ar-pathan-raw-prose', rankOf(byRaw, 'yk-pathan-3c6ffae8'));
+                setText('ar-maxwell-raw-prose', rankOf(byRaw, 'gj-maxwell-b681e71e'));
+                setText('ar-pandya-floor-prose', rankOf(byFloor, 'hh-pandya-dbe50b21'));
+                setText('ar-hopes-raw-prose', rankOf(byRaw, 'jr-hopes-2498e163'));
+                setText('ar-hopes-floor-prose', rankOf(byFloor, 'jr-hopes-2498e163'));
+                setText('ar-stokes-raw-prose', rankOf(byRaw, 'ba-stokes-e087956b'));
             }
         }
 

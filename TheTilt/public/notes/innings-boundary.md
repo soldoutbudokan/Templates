@@ -287,17 +287,17 @@ Top 10 by career total TILT, before vs after the fix:
 
 | Player | Before | After | Δ |
 |:--|:--:|:--:|:--:|
-| SP Narine | 11.27 | **9.89** | −1.38 |
-| JJ Bumrah | 8.85 | 7.93 | −0.92 |
-| AB de Villiers | 6.71 | **7.73** | **+1.02** |
-| YS Chahal | 6.94 | 5.80 | −1.14 |
-| DA Warner | 4.42 | **5.71** | **+1.29** |
-| SL Malinga | 6.52 | 5.66 | −0.86 |
-| Rashid Khan | 6.45 | 5.53 | −0.92 |
-| JC Buttler | 4.24 | 4.77 | +0.53 |
-| KL Rahul | 3.66 | 4.72 | +1.06 |
-| MS Dhoni | 3.32 | 4.67 | +1.35 |
+| SP Narine | 11.27 | 10.35 | −0.92 |
+| JJ Bumrah | 8.85 | 8.18 | −0.67 |
+| AB de Villiers | 6.71 | **7.66** | **+0.95** |
+| SL Malinga | 6.52 | 5.78 | −0.74 |
+| Rashid Khan | 6.45 | 5.69 | −0.76 |
+| YS Chahal | 6.94 | 5.63 | **−1.31** |
+| DA Warner | 4.42 | **5.61** | **+1.19** |
+| B Kumar | 5.50 | 5.27 | −0.23 |
+| KL Rahul | 3.66 | **4.70** | **+1.04** |
+| JC Buttler | 4.24 | 4.66 | +0.42 |
 
-Top bowlers all decline 0.9–1.4 TILT (the phantom credit removed). Top batters gain 0.5–1.4 TILT (wp restored). The rank inversion from issue #111 — ABD vs Bhuvneshwar Kumar — settles even more decisively now: ABD #3 by total / #4 by floor, B Kumar #11 by total and out of the top 10 floor.
+Top bowlers all decline 0.2–1.3 TILT (the phantom credit removed). Top batters gain 0.4–1.2 TILT (wp restored). The rank inversion from issue #111 — ABD vs Bhuvneshwar Kumar — settles even more decisively now: ABD #<span id="ib-abd-total-rank">3</span> by total / #<span id="ib-abd-floor-rank">5</span> by floor, B Kumar #<span id="ib-bkumar-total-rank">8</span> by total and out of the top 10 floor.
 
 The fix is reversible (revert the lookup in `compute_ball_deltas`) but the diff is large enough that it shouldn't be reverted casually — the previous numbers had a real bug, and reverting would re-introduce it.

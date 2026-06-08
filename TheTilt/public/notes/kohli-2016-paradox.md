@@ -128,11 +128,11 @@ Plenty of high-volume seasons in IPL history do collapse under TILT, scoring lot
 | **V Kohli** | **2016** | **973** | **152.0** | **16** | **+4.11%** | **26.4** | **32.5** |
 | V Kohli | 2019 | 439 | 136.8 | 13 | +2.56% | 28.7 | 37.1 |
 | DA Warner | 2016 | 848 | 151.4 | 17 | +6.80% | 32.9 | 52.7 |
-| KL Rahul | 2018 | 659 | 158.4 | 14 | +14.29% | 34.1 | 67.8 |
+| KL Rahul | 2018 | 659 | 158.4 | 14 | +14.28% | 34.1 | 67.8 |
 | F du Plessis | 2021 | 633 | 138.2 | 16 | +0.07% | 33.4 | 36.0 |
 | AM Rahane | 2013 | 488 | 106.6 | 18 | -4.24% | 40.0 | 57.4 |
 | JH Kallis | 2012 | 409 | 106.5 | 17 | -4.09% | 37.8 | 69.0 |
-| Ishan Kishan | 2022 | 418 | 120.1 | 14 | -5.08% | 40.2 | 63.5 |
+| Ishan Kishan | 2022 | 418 | 120.1 | 14 | -5.15% | 40.2 | 63.5 |
 
 ### Warner 2016: Same Volume, More TILT
 
@@ -145,7 +145,7 @@ Kohli's 2016 lands a notch below Warner's chiefly because two-thirds of his ball
 
 ### KL Rahul 2018: The TILT Machine
 
-659 runs, +14.29% per match, one of the highest single-season TILT totals in the database. Rahul batted in the 2nd innings 67.8% of the time, more than two-thirds of his balls in higher-leverage chase situations. This is partly a function of KXIP's batting order and toss decisions, but it compounds: more chase innings = more TILT opportunity. It is the clearest illustration of the lever Kohli's first-innings-heavy 2016 didn't get to pull.
+659 runs, +14.28% per match, one of the highest single-season TILT totals in the database. Rahul batted in the 2nd innings 67.8% of the time, more than two-thirds of his balls in higher-leverage chase situations. This is partly a function of KXIP's batting order and toss decisions, but it compounds: more chase innings = more TILT opportunity. It is the clearest illustration of the lever Kohli's first-innings-heavy 2016 didn't get to pull.
 
 ### du Plessis 2021: The Orange Cap Mirage
 
