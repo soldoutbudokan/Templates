@@ -1,5 +1,6 @@
 # %% Imports
 import random
+import shutil
 import time
 import zipfile
 from pathlib import Path
@@ -40,7 +41,7 @@ def download_cricsheet_data(
     output_dir = Path(output_dir or config["data"]["raw_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    zip_path = output_dir / "ipl_json.zip"
+    zip_path = output_dir / "ipl_json.zip.part"
 
     # Check if already downloaded
     json_files = list(output_dir.glob("*.json"))
@@ -87,16 +88,43 @@ def download_cricsheet_data(
 
     print(f"\n  Saved to {zip_path}")
 
-    # Extract
+    # Validate, extract to a temp dir, then swap into place on success only —
+    # a corrupt/partial download can no longer strand a half-extracted corpus
+    # that the next non-force run silently parses (issue #196).
+    if not zipfile.is_zipfile(zip_path):
+        zip_path.unlink()
+        raise RuntimeError(f"Downloaded file from {url} is not a valid zip archive")
+
     print("Extracting...")
+    extract_dir = output_dir / ".extract_tmp"
+    if extract_dir.exists():
+        shutil.rmtree(extract_dir)
+    extract_dir.mkdir()
+    extract_root = extract_dir.resolve()
     with zipfile.ZipFile(zip_path, "r") as zf:
-        zf.extractall(output_dir)
+        for member in zf.namelist():
+            # Zip-slip guard (issue #196): every member must resolve inside
+            # the extraction dir — a compromised CDN response must not be able
+            # to write outside the tree on the runner.
+            target = (extract_dir / member).resolve()
+            if target != extract_root and extract_root not in target.parents:
+                raise RuntimeError(f"Zip member escapes extraction dir (zip-slip): {member!r}")
+        zf.extractall(extract_dir)
+
+    # Swap: clear the old corpus, then move the fresh files in. Also drops
+    # any matches removed upstream instead of parsing them forever.
+    for stale in output_dir.glob("*.json"):
+        stale.unlink()
+    for p in sorted(extract_dir.iterdir()):
+        dest = output_dir / p.name
+        if dest.exists():
+            dest.unlink()
+        p.rename(dest)
+    extract_dir.rmdir()
+    zip_path.unlink()
 
     json_files = list(output_dir.glob("*.json"))
     print(f"  Extracted {len(json_files)} match files to {output_dir}")
-
-    # Clean up zip
-    zip_path.unlink()
 
     return output_dir
 

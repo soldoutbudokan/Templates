@@ -255,11 +255,8 @@ function goatCard(g, label, statLine, matchById, teamIndex) {
     `;
 }
 
-// Convert legal-balls to over format ("4.0" for 24 balls, "3.4" for 22 balls).
-function ballsToOvers(balls) {
-    const b = Number(balls) || 0;
-    return `${Math.floor(b / 6)}.${b % 6}`;
-}
+// ballsToOvers comes from common.js (issue #199: a local shadow copy here
+// would silently diverge if either is edited).
 
 function battingStat(g) {
     const notOut = g.not_out ? '*' : '';

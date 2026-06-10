@@ -158,29 +158,44 @@ function awardSeasonCell(season, inProgress, matches) {
     return `${season}<span class="stage-badge in-progress" title="season in progress — current leader, not final winner">current leader</span>`;
 }
 
-function awardCategoryTable(award, rows, teamIndex) {
-    const body = rows.map(({ season, winner, inProgress, matches }) => {
-        const seasonCell = awardSeasonCell(season, inProgress, matches);
-        if (!winner) {
-            return `<tr class="award-empty-row">
-                <td>${seasonCell}</td>
-                <td colspan="3" class="award-empty">no qualifier</td>
-                <td></td>
-            </tr>`;
-        }
-        const rowId = awardRowId(award.key, season, winner.slug);
-        return `<tr class="award-row" onclick="toggleAwardRow('${award.key}', '${season}', '${winner.slug}', _teamIndex)">
-                <td>${seasonCell}</td>
-                <td><a href="player.html?player=${winner.slug}" onclick="event.stopPropagation()">${flagSpan(winner.country)}${winner.player}</a></td>
-                <td>${teamLink(winner.team, season, teamIndex, { cls: 'team-link-subtle' })}</td>
-                <td>${award.format(winner.value)}</td>
-                <td><span class="season-chevron" id="${rowId}-chev">&#9654;</span></td>
-            </tr>
-            <tr class="award-detail-row" id="${rowId}-detail" style="display:none">
-                <td colspan="5"><div class="award-detail-body" data-loaded="false"></div></td>
-            </tr>`;
-    }).join('');
+// Rows for one season within one category table (two <tr>s when there's a
+// winner: summary + hidden detail).
+function awardRowsHtml(award, { season, winner, inProgress, matches }) {
+    const seasonCell = awardSeasonCell(season, inProgress, matches);
+    if (!winner) {
+        return `<tr class="award-empty-row">
+            <td>${seasonCell}</td>
+            <td colspan="3" class="award-empty">no qualifier</td>
+            <td></td>
+        </tr>`;
+    }
+    const rowId = awardRowId(award.key, season, winner.slug);
+    return `<tr class="award-row" onclick="toggleAwardRow('${award.key}', '${season}', '${winner.slug}', _teamIndex)">
+            <td>${seasonCell}</td>
+            <td><a href="player.html?player=${winner.slug}" onclick="event.stopPropagation()">${flagSpan(winner.country)}${winner.player}</a></td>
+            <td>${teamLink(winner.team, season, _teamIndex, { cls: 'team-link-subtle' })}</td>
+            <td>${award.format(winner.value)}</td>
+            <td><span class="season-chevron" id="${rowId}-chev">&#9654;</span></td>
+        </tr>
+        <tr class="award-detail-row" id="${rowId}-detail" style="display:none">
+            <td colspan="5"><div class="award-detail-body" data-loaded="false"></div></td>
+        </tr>`;
+}
 
+function awardSeasonBodyId(awardKey, season) {
+    return `awbody-${awardKey}-${String(season).replace('/', '-')}`;
+}
+
+// Table shell with one placeholder <tbody> per season — rendered before any
+// leaders fetch resolves, then filled per season as data arrives (issue #199:
+// previously a single Promise.all blocked the whole page on the slowest of
+// 114 parallel fetches).
+function awardCategoryTable(award, seasons) {
+    const placeholders = seasons.map((season) =>
+        `<tbody id="${awardSeasonBodyId(award.key, season)}">
+            <tr class="award-empty-row"><td>${season}</td><td colspan="3" class="award-empty">loading…</td><td></td></tr>
+        </tbody>`
+    ).join('');
     return `<section class="awards-table-section" id="award-${award.key}">
         <h2 class="awards-category-title">${award.label}<span class="awards-category-note">${award.note ? ' · ' + award.note : ''}</span></h2>
         <div class="table-wrap">
@@ -188,7 +203,7 @@ function awardCategoryTable(award, rows, teamIndex) {
                 <thead><tr>
                     <th>Season</th><th>Player</th><th>Team</th><th>${award.valueLabel}</th><th></th>
                 </tr></thead>
-                <tbody>${body}</tbody>
+                ${placeholders}
             </table>
         </div>
     </section>`;
@@ -222,26 +237,30 @@ async function loadAwards() {
         <div class="awards-season-strip">${seasonStrip}</div>
     `;
 
-    document.getElementById('content').innerHTML = headerHtml + '<div id="awards-body"><div class="loading">loading…</div></div>';
+    document.getElementById('content').innerHTML = headerHtml + '<div id="awards-body"></div>';
     const body = document.getElementById('awards-body');
 
-    // Fetch in parallel: for each season × each award, pull rank-1, plus the
-    // season's champion status so in-progress seasons can be badged (#172).
-    const seasonPayloads = await Promise.all(seasons.map(async (season) => {
+    // Render the five table shells immediately; rows fill in below.
+    body.innerHTML = AWARDS.map((award) => awardCategoryTable(award, seasons)).join('');
+
+    // Per season: pull rank-1 for each award plus the season's champion
+    // status so in-progress seasons can be badged (#172), then fill that
+    // season's row in all five tables as soon as its fetches land.
+    await Promise.all(seasons.map(async (season) => {
         const [winners, meta] = await Promise.all([
             Promise.all(AWARDS.map((a) => fetchTopAward(season, a.key))),
             fetchSeasonMeta(season),
         ]);
-        return { season, winners, inProgress: meta.inProgress, matches: meta.matches };
+        AWARDS.forEach((award, awardIdx) => {
+            const tbody = document.getElementById(awardSeasonBodyId(award.key, season));
+            if (tbody) {
+                tbody.innerHTML = awardRowsHtml(award, {
+                    season, winner: winners[awardIdx],
+                    inProgress: meta.inProgress, matches: meta.matches,
+                });
+            }
+        });
     }));
-
-    // Pivot from per-season to per-category for table rendering.
-    body.innerHTML = AWARDS.map((award, awardIdx) => {
-        const rows = seasonPayloads.map(({ season, winners, inProgress, matches }) => ({
-            season, winner: winners[awardIdx], inProgress, matches,
-        }));
-        return awardCategoryTable(award, rows, _teamIndex);
-    }).join('');
 }
 
 loadAwards();

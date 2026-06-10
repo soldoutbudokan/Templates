@@ -8,18 +8,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": -0.02502,
+  "total_tilt_per_match": -0.0147,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.01415,
-  "shrunk_total_tilt_per_match": -0.02437,
+  "bowling_tilt_per_match": -0.00382,
+  "shrunk_total_tilt_per_match": -0.01852,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.01486,
-  "tilt_ci_lower": -0.08304,
-  "tilt_ci_upper": 0.03429,
-  "tilt_ci_lower_90": -0.07361,
-  "tilt_ci_upper_90": 0.02486,
+  "shrunk_bowling_tilt_per_match": -0.00902,
+  "tilt_ci_lower": -0.08528,
+  "tilt_ci_upper": 0.04824,
+  "tilt_ci_lower_90": -0.07455,
+  "tilt_ci_upper_90": 0.03751,
   "confidence": "low",
-  "total_tilt": -0.17516,
+  "total_tilt": -0.10287,
   "total_matches": 7,
   "batting_balls": 3,
   "bowling_balls": 150,
@@ -121,7 +121,7 @@
       "season": "2015",
       "team": "Punjab Kings",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.04535,
+      "bowling_tilt_per_match": 0.06342,
       "batting_matches": 1,
       "bowling_matches": 4,
       "batting_balls": 2,
@@ -184,8 +184,8 @@
           "bowl_balls": 12,
           "bowl_runs": 11,
           "bowl_econ": 5.5,
-          "bowl_tilt": 0.07806,
-          "total_tilt": 0.07806
+          "bowl_tilt": 0.15035,
+          "total_tilt": 0.15035
         },
         {
           "match_id": "829809",
@@ -242,15 +242,15 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.38476,
+      "tilt": -0.32995,
       "balls": 60,
-      "avg_delta": -0.006012
+      "avg_delta": -0.005156
     },
     {
       "phase": "middle",
-      "tilt": 0.12177,
+      "tilt": 0.13925,
       "balls": 36,
-      "avg_delta": 0.003291
+      "avg_delta": 0.003763
     },
     {
       "phase": "death",
@@ -301,20 +301,20 @@
   ],
   "bowling_best_matches": [
     {
+      "match_id": "829803",
+      "date": "2015-05-13",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": 0.15035,
+      "wickets": 1,
+      "balls": 12
+    },
+    {
       "match_id": "829791",
       "date": "2015-05-09",
       "vs": "Kolkata Knight Riders",
       "tilt": 0.08075,
       "wickets": 1,
       "balls": 24
-    },
-    {
-      "match_id": "829803",
-      "date": "2015-05-13",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": 0.07806,
-      "wickets": 1,
-      "balls": 12
     },
     {
       "match_id": "829799",
@@ -417,14 +417,14 @@
     {
       "match": 6,
       "date": "2015-05-13",
-      "tilt": 0.07806,
-      "cumulative": -0.13587
+      "tilt": 0.15035,
+      "cumulative": -0.06359
     },
     {
       "match": 7,
       "date": "2015-05-16",
       "tilt": -0.03929,
-      "cumulative": -0.17516
+      "cumulative": -0.10287
     }
   ],
   "team_matchups": [
@@ -441,13 +441,13 @@
   ],
   "bowling_team_matchups": [
     {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.08075,
+      "opponent": "Royal Challengers Bangalore",
+      "tilt_per_match": 0.15035,
       "matches": 1
     },
     {
-      "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.07806,
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": 0.08075,
       "matches": 1
     },
     {
@@ -503,7 +503,7 @@
     -0.18126,
     0.08075,
     0.06188,
-    0.07806,
+    0.15035,
     -0.03929
   ]
 }

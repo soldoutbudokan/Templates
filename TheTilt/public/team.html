@@ -39,7 +39,7 @@
 <script>
 function toggleSeason(id) {
     const row = document.getElementById(id);
-    const chev = document.getElementById(id + '-chev');
+    const chev = document.getElementById('chev-' + id);  // chev-${id} scheme, aligned with player.html (#199)
     if (!row) return;
     if (row.style.display === 'none') {
         row.style.display = '';
@@ -148,7 +148,7 @@ async function renderTeamCareer(slug) {
                         const champBadge = s.champion ? '<span class="champion-badge" title="Won the championship">🏆</span> ' : '';
                         const summaryRow = `
                             <tr class="${rowClasses}" ${hasMatches ? `onclick="toggleSeason('${seasonId}')"` : ''}>
-                                <td>${hasMatches ? `<span class="season-chevron" id="${seasonId}-chev">&#9654;</span>` : ''}</td>
+                                <td>${hasMatches ? `<span class="season-chevron" id="chev-${seasonId}">&#9654;</span>` : ''}</td>
                                 <td>${champBadge}<a href="team.html?team=${team.slug}&season=${encodeURIComponent(s.season)}" onclick="event.stopPropagation()">${s.season}</a></td>
                                 <td class="hide-mobile">${s.label}</td>
                                 <td class="hide-mobile">${s.wins}</td>

@@ -22,7 +22,7 @@
         {
             id: 'ensemble',
             title: 'Why We Ensemble',
-            summary: 'A single LightGBM retrain on a +2-match dataset shifted ABD\'s ball-0 prediction by 4.85pp on a fully-deterministic feature vector and pushed his career rank from #3 to #9. The career signal between #1 and #20 (~10 TILT units) is smaller than the noise floor of one retrain (max 5.5, p95 1.34) — about 14× louder than seven days of daily refreshes. Fix: K=100 ensemble averaged at inference, fixed 10% holdout locked at seed=42, plus a RETRAIN=1 env-var guardrail to block silent retrains.',
+            summary: 'A single LightGBM retrain on a +2-match dataset shifted ABD\'s ball-0 prediction by 4.85pp on a fully-deterministic feature vector and pushed his career rank from #3 to #9. The career signal between #1 and #20 (~10 TILT units) is smaller than the noise floor of one retrain (max 5.5, p95 1.34) — about 14× louder than seven days of daily refreshes. Fix: K=100 ensemble averaged at inference, a 10% holdout frozen via a persisted match list (a fixed seed alone reshuffles as data grows — #193), plus a RETRAIN=1 env-var guardrail to block silent retrains.',
             tags: ['methodology', 'model'],
             date: '2026-05-07',
         },
@@ -36,7 +36,7 @@
         {
             id: 'all-rounders',
             title: 'Why TILT Underrates All-Rounders',
-            summary: 'By raw per-match impact, zero all-rounders crack the top 50; only four make the top 100. Two veterans — Yusuf Pathan (#38) and Maxwell (#39) — sneak into the top 50 on the consistency floor, still about half the expected share. The gap is structural: 44.2% of all-rounder matches are mixed-sign, producing a 16.5% cancellation drag. Their GOAT-tier rate (3.95%) leads all roles; the floor is the problem.',
+            summary: 'By raw per-match impact, zero all-rounders crack the top 50; only three make the top 100. Two veterans — Yusuf Pathan and Maxwell — sneak into the top 50 on the consistency floor, still about half the expected share. The gap is structural: 44.1% of all-rounder matches are mixed-sign, producing a 16.6% cancellation drag. Their GOAT-tier rate (3.95%) leads all roles; the floor is the problem.',
             tags: ['methodology', 'roles'],
             date: '2026-05-04',
         },
@@ -57,14 +57,14 @@
         {
             id: 'kohli-2016-paradox',
             title: 'The 2016 Kohli Dilemma: Why His Greatest Season Survives the TILT Test',
-            summary: '973 runs at 152 strike rate. Four centuries. And a TILT of +4.11% per match. The season that should have triggered every one of TILT\'s structural penalties comes through them anyway, just as efficient per ball as his celebrated 2019 and across twice the workload.',
+            summary: '973 runs at 152 strike rate. Four centuries. And a TILT of +4.08% per match. The season that should have triggered every one of TILT\'s structural penalties comes through them anyway, just as efficient per ball as his celebrated 2019 and across twice the workload.',
             tags: ['batting', 'case study'],
             date: '2026-04-15',
         },
         {
             id: 'innings-bias',
             title: 'The Second Innings Problem',
-            summary: '100% of the top-50 batting GOATs are from the 2nd innings. Win probability swings are 1.57x larger when chasing, rising to 2.12x in the death overs. How this affects single-match rankings (and why careers, rho 0.98, barely move) and what we do about it.',
+            summary: '100% of the top-50 batting GOATs are from the 2nd innings. Win probability swings are 1.57x larger when chasing, rising to 2.11x in the death overs. How this affects single-match rankings (and why careers, rho 0.98, barely move) and what we do about it.',
             tags: ['methodology', 'model'],
             date: '2026-04-15',
         },
@@ -203,14 +203,24 @@
         return _teamIndexPromise;
     }
 
+    // Each season_labels rule is a true (optionally one-sided) range:
+    // from_year <= year <= through_year, with a missing bound treated as open
+    // (issue #199 — the old short-circuit on through_year made a rule with
+    // both bounds match every year <= through_year). A rule with neither
+    // bound matches nothing. Mirrors season_team_label() in
+    // pipeline/parse_matches.py — keep in sync.
     function teamLabelForSeason(team, season) {
         if (!team || !team.season_labels || season == null) return team ? team.name : '';
         const sStr = String(season);
         const year = parseInt(sStr.split('/')[0], 10);
         if (Number.isNaN(year)) return team.name;
         for (const rule of team.season_labels) {
-            if (rule.through_year != null && year <= Number(rule.through_year)) return rule.label;
-            if (rule.from_year != null && year >= Number(rule.from_year)) return rule.label;
+            const through = rule.through_year != null ? Number(rule.through_year) : null;
+            const from = rule.from_year != null ? Number(rule.from_year) : null;
+            if (through == null && from == null) continue;
+            if (through != null && year > through) continue;
+            if (from != null && year < from) continue;
+            return rule.label;
         }
         return team.name;
     }
@@ -509,6 +519,7 @@
     window.ballsToOvers = ballsToOvers;
     window.loadTeamIndex = loadTeamIndex;
     window.teamLink = teamLink;
+    window.teamLabelForSeason = teamLabelForSeason;  // used by season.html bracket labels (#190)
     window.seasonLink = seasonLink;
     window.flagSpan = flagSpan;
     window.BLOG_NOTES = BLOG_NOTES;

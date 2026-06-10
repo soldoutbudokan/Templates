@@ -11,18 +11,18 @@
     "Royal Challengers Bangalore",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": 0.04738,
+  "total_tilt_per_match": 0.04947,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.05524,
-  "shrunk_total_tilt_per_match": 0.03358,
+  "bowling_tilt_per_match": 0.05731,
+  "shrunk_total_tilt_per_match": 0.03529,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.04101,
-  "tilt_ci_lower": -0.01098,
-  "tilt_ci_upper": 0.07813,
-  "tilt_ci_lower_90": -0.00381,
-  "tilt_ci_upper_90": 0.07097,
+  "shrunk_bowling_tilt_per_match": 0.04282,
+  "tilt_ci_lower": -0.00932,
+  "tilt_ci_upper": 0.0799,
+  "tilt_ci_lower_90": -0.00215,
+  "tilt_ci_upper_90": 0.07273,
   "confidence": "low",
-  "total_tilt": 1.04246,
+  "total_tilt": 1.08831,
   "total_matches": 22,
   "batting_balls": 24,
   "bowling_balls": 467,
@@ -31,7 +31,7 @@
       "season": "2016",
       "team": "Rising Pune Supergiants",
       "batting_tilt_per_match": -0.05389,
-      "bowling_tilt_per_match": 0.14252,
+      "bowling_tilt_per_match": 0.15165,
       "batting_matches": 1,
       "bowling_matches": 5,
       "batting_balls": 1,
@@ -74,8 +74,8 @@
           "bowl_balls": 24,
           "bowl_runs": 19,
           "bowl_econ": 4.75,
-          "bowl_tilt": 0.38801,
-          "total_tilt": 0.33412
+          "bowl_tilt": 0.39172,
+          "total_tilt": 0.33783
         },
         {
           "match_id": "980989",
@@ -94,8 +94,8 @@
           "bowl_balls": 6,
           "bowl_runs": 9,
           "bowl_econ": 9.0,
-          "bowl_tilt": -0.0112,
-          "total_tilt": -0.0112
+          "bowl_tilt": 0.03072,
+          "total_tilt": 0.03072
         },
         {
           "match_id": "980997",
@@ -397,7 +397,7 @@
     {
       "season": "2023",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.03951,
+      "batting_tilt_per_match": -0.03944,
       "bowling_tilt_per_match": 0.0715,
       "batting_matches": 3,
       "bowling_matches": 6,
@@ -415,14 +415,14 @@
           "bat_runs": 1,
           "bat_balls": 1,
           "bat_sr": 100.0,
-          "bat_tilt": -0.00497,
+          "bat_tilt": -9e-05,
           "bat_not_out": false,
           "bowl_wkts": 1,
           "bowl_balls": 24,
           "bowl_runs": 43,
           "bowl_econ": 10.75,
           "bowl_tilt": 0.02681,
-          "total_tilt": 0.02184
+          "total_tilt": 0.02672
         },
         {
           "match_id": "1359497",
@@ -475,14 +475,14 @@
           "bat_runs": 7,
           "bat_balls": 9,
           "bat_sr": 77.8,
-          "bat_tilt": -0.09026,
+          "bat_tilt": -0.09493,
           "bat_not_out": false,
           "bowl_wkts": 0,
           "bowl_balls": 18,
           "bowl_runs": 40,
           "bowl_econ": 13.33,
           "bowl_tilt": -0.05927,
-          "total_tilt": -0.14953
+          "total_tilt": -0.1542
         },
         {
           "match_id": "1359534",
@@ -618,17 +618,17 @@
     },
     {
       "phase": "death",
-      "tilt": -0.15236,
+      "tilt": -0.15214,
       "balls": 10,
-      "avg_delta": -0.013851
+      "avg_delta": -0.013831
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.17637,
+      "tilt": 0.2183,
       "balls": 42,
-      "avg_delta": 0.004102
+      "avg_delta": 0.005077
     },
     {
       "phase": "middle",
@@ -638,12 +638,21 @@
     },
     {
       "phase": "death",
-      "tilt": 0.28635,
+      "tilt": 0.29006,
       "balls": 89,
-      "avg_delta": 0.003182
+      "avg_delta": 0.003223
     }
   ],
   "best_matches": [
+    {
+      "match_id": "1359491",
+      "date": "2023-04-12",
+      "vs": "Chennai Super Kings",
+      "tilt": -9e-05,
+      "runs": 1,
+      "balls": 1,
+      "not_out": false
+    },
     {
       "match_id": "1082599",
       "date": "2017-04-11",
@@ -651,15 +660,6 @@
       "tilt": -0.00029,
       "runs": 5,
       "balls": 7,
-      "not_out": false
-    },
-    {
-      "match_id": "1359491",
-      "date": "2023-04-12",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.00497,
-      "runs": 1,
-      "balls": 1,
       "not_out": false
     },
     {
@@ -684,7 +684,7 @@
       "match_id": "1359522",
       "date": "2023-05-05",
       "vs": "Gujarat Titans",
-      "tilt": -0.09026,
+      "tilt": -0.09493,
       "runs": 7,
       "balls": 9,
       "not_out": false
@@ -695,7 +695,7 @@
       "match_id": "1359522",
       "date": "2023-05-05",
       "vs": "Gujarat Titans",
-      "tilt": -0.09026,
+      "tilt": -0.09493,
       "runs": 7,
       "balls": 9,
       "not_out": false
@@ -719,21 +719,21 @@
       "not_out": false
     },
     {
-      "match_id": "1359491",
-      "date": "2023-04-12",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.00497,
-      "runs": 1,
-      "balls": 1,
-      "not_out": false
-    },
-    {
       "match_id": "1082599",
       "date": "2017-04-11",
       "vs": "Delhi Capitals",
       "tilt": -0.00029,
       "runs": 5,
       "balls": 7,
+      "not_out": false
+    },
+    {
+      "match_id": "1359491",
+      "date": "2023-04-12",
+      "vs": "Chennai Super Kings",
+      "tilt": -9e-05,
+      "runs": 1,
+      "balls": 1,
       "not_out": false
     }
   ],
@@ -742,7 +742,7 @@
       "match_id": "980979",
       "date": "2016-05-10",
       "vs": "Sunrisers Hyderabad",
-      "tilt": 0.38801,
+      "tilt": 0.39172,
       "wickets": 6,
       "balls": 24
     },
@@ -831,139 +831,139 @@
     {
       "match": 2,
       "date": "2016-05-10",
-      "tilt": 0.33412,
-      "cumulative": 0.43792
+      "tilt": 0.33783,
+      "cumulative": 0.44163
     },
     {
       "match": 3,
       "date": "2016-05-14",
-      "tilt": -0.0112,
-      "cumulative": 0.42672
+      "tilt": 0.03072,
+      "cumulative": 0.47236
     },
     {
       "match": 4,
       "date": "2016-05-17",
       "tilt": 0.18167,
-      "cumulative": 0.60839
+      "cumulative": 0.65402
     },
     {
       "match": 5,
       "date": "2016-05-21",
       "tilt": 0.05031,
-      "cumulative": 0.6587
+      "cumulative": 0.70434
     },
     {
       "match": 6,
       "date": "2017-04-06",
       "tilt": 0.01409,
-      "cumulative": 0.67279
+      "cumulative": 0.71843
     },
     {
       "match": 7,
       "date": "2017-04-11",
       "tilt": -0.09428,
-      "cumulative": 0.57851
+      "cumulative": 0.62415
     },
     {
       "match": 8,
       "date": "2017-05-12",
       "tilt": -0.02021,
-      "cumulative": 0.5583
+      "cumulative": 0.60394
     },
     {
       "match": 9,
       "date": "2017-05-14",
       "tilt": 0.1094,
-      "cumulative": 0.66771
+      "cumulative": 0.71334
     },
     {
       "match": 10,
       "date": "2017-05-16",
       "tilt": -0.06365,
-      "cumulative": 0.60406
+      "cumulative": 0.64969
     },
     {
       "match": 11,
       "date": "2017-05-21",
       "tilt": 0.1643,
-      "cumulative": 0.76835
+      "cumulative": 0.81399
     },
     {
       "match": 12,
       "date": "2020-09-28",
       "tilt": -0.06663,
-      "cumulative": 0.70173
+      "cumulative": 0.74736
     },
     {
       "match": 13,
       "date": "2020-10-03",
       "tilt": -0.04768,
-      "cumulative": 0.65404
+      "cumulative": 0.69968
     },
     {
       "match": 14,
       "date": "2020-11-06",
       "tilt": 0.14533,
-      "cumulative": 0.79937
+      "cumulative": 0.845
     },
     {
       "match": 15,
       "date": "2023-04-12",
-      "tilt": 0.02184,
-      "cumulative": 0.82121
+      "tilt": 0.02672,
+      "cumulative": 0.87173
     },
     {
       "match": 16,
       "date": "2023-04-16",
       "tilt": 0.08928,
-      "cumulative": 0.91049
+      "cumulative": 0.96101
     },
     {
       "match": 17,
       "date": "2023-04-27",
       "tilt": 0.24732,
-      "cumulative": 1.15781
+      "cumulative": 1.20833
     },
     {
       "match": 18,
       "date": "2023-05-05",
-      "tilt": -0.14953,
-      "cumulative": 1.00829
+      "tilt": -0.1542,
+      "cumulative": 1.05414
     },
     {
       "match": 19,
       "date": "2023-05-14",
       "tilt": 0.09719,
-      "cumulative": 1.10547
+      "cumulative": 1.15132
     },
     {
       "match": 20,
       "date": "2023-05-19",
       "tilt": 0.00434,
-      "cumulative": 1.10982
+      "cumulative": 1.15567
     },
     {
       "match": 21,
       "date": "2025-03-23",
       "tilt": 0.00951,
-      "cumulative": 1.11933
+      "cumulative": 1.16518
     },
     {
       "match": 22,
       "date": "2025-03-27",
       "tilt": -0.07687,
-      "cumulative": 1.04246
+      "cumulative": 1.08831
     }
   ],
   "team_matchups": [
     {
-      "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.00029,
+      "opponent": "Chennai Super Kings",
+      "tilt_per_match": -9e-05,
       "matches": 1
     },
     {
-      "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.00497,
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": -0.00029,
       "matches": 1
     },
     {
@@ -978,14 +978,14 @@
     },
     {
       "opponent": "Gujarat Titans",
-      "tilt_per_match": -0.09026,
+      "tilt_per_match": -0.09493,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": 0.26667,
+      "tilt_per_match": 0.26852,
       "matches": 2
     },
     {
@@ -1004,6 +1004,11 @@
       "matches": 3
     },
     {
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": 0.03072,
+      "matches": 1
+    },
+    {
       "opponent": "Delhi Capitals",
       "tilt_per_match": 0.02249,
       "matches": 3
@@ -1017,11 +1022,6 @@
       "opponent": "Mumbai Indians",
       "tilt_per_match": 0.01203,
       "matches": 4
-    },
-    {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.0112,
-      "matches": 1
     },
     {
       "opponent": "Rajasthan Royals",
@@ -1057,8 +1057,8 @@
   },
   "match_tilt_distribution": [
     0.1038,
-    0.33412,
-    -0.0112,
+    0.33783,
+    0.03072,
     0.18167,
     0.05031,
     0.01409,
@@ -1070,10 +1070,10 @@
     -0.06663,
     -0.04768,
     0.14533,
-    0.02184,
+    0.02672,
     0.08928,
     0.24732,
-    -0.14953,
+    -0.1542,
     0.09719,
     0.00434,
     0.00951,

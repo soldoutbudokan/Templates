@@ -257,6 +257,17 @@ function renderPlayoffsBracket(data, teamIndex) {
     `;
 }
 
+// Season-specific display label for a bracket cell (issue #190): the playoffs
+// arrays store raw canonical names, so without this the 2017 bracket printed
+// "Rising Pune Supergiants" (plural) while the standings table two sections
+// above printed the singular via teamLink(). Logic (winner/seed comparisons)
+// stays on the raw canonical string; only display goes through here.
+function bracketLabel(name, data, teamIndex) {
+    if (!name) return name;
+    const t = teamIndex && teamIndex.get(name);
+    return t ? teamLabelForSeason(t, data.season) : name;
+}
+
 function renderFlatBracket(data, teamIndex, playoffs) {
     const card = (p) => {
         const [t1, t2] = p.teams;
@@ -265,7 +276,7 @@ function renderFlatBracket(data, teamIndex, playoffs) {
             const isW = p.winner === t;
             const s = scores[t] || '';
             return `<div class="brk-flat-row${isW ? ' winner' : ''}">
-                        <span class="brk-flat-team">${t}</span>
+                        <span class="brk-flat-team">${bracketLabel(t, data, teamIndex)}</span>
                         <span class="brk-flat-score">${s}</span>
                     </div>`;
         };
@@ -314,10 +325,11 @@ function renderClassicBracket(data, teamIndex, playoffs, semis) {
             const isW = match.winner === team;
             const score = (match.scores || {})[team] || '';
             const seed = seedOf(team);
+            const label = bracketLabel(team, data, teamIndex);
             return `
                 <tr>
                     <td class="brk-td brk-bgD brk-center${isW ? ' winner' : ''}" style="border-width:1px">${link(match.match_id, isW ? `<b>${seed}</b>` : seed)}</td>
-                    <td class="brk-td brk-bgL${isW ? ' winner' : ''}" style="border-width:1px">${link(match.match_id, isW ? `<b>${team}</b>` : team)}</td>
+                    <td class="brk-td brk-bgL${isW ? ' winner' : ''}" style="border-width:1px">${link(match.match_id, isW ? `<b>${label}</b>` : label)}</td>
                     <td class="brk-td brk-bgL brk-center${isW ? ' winner' : ''}" style="border-width:1px">${link(match.match_id, isW ? `<b>${score}</b>` : score)}</td>
                 </tr>
             `;
@@ -441,7 +453,7 @@ function renderModernBracket(data, teamIndex, byStage) {
         const seedLeft = isFirst ? '1px' : '0px';
         const seedTop = isFirst ? '1px' : '0px';
         return seedCell(label, isW, match.match_id, `${seedTop} 1px 1px ${seedLeft}`, ph)
-             + teamCell(team, isW, match.match_id, `${seedTop} 0px 1px 0px`, ph)
+             + teamCell(bracketLabel(team, data, teamIndex), isW, match.match_id, `${seedTop} 0px 1px 0px`, ph)
              + scoreCell(score, isW, match.match_id, `${seedTop} 1px 1px 0px`, ph);
     };
     const headerCell = (label) =>

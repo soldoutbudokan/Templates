@@ -178,8 +178,10 @@ async function loadPlayer() {
             );
             html += `<div class="section"><h3>season by season game log</h3><div class="table-wrap"><table class="detail-table">
                 <tr><th>season</th><th>bat TILT/m</th><th>bowl TILT/m</th><th class="hide-mobile"></th><th class="hide-mobile">bat m</th><th class="hide-mobile">bowl m</th></tr>`;
-            p.seasons.sort((a, b) => a.season.localeCompare(b.season));
-            for (const s of p.seasons) {
+            // slice() first — sorting the parsed JSON in place would surprise
+            // any later reader of p.seasons (team.html does the same, #199)
+            const seasonsSorted = p.seasons.slice().sort((a, b) => a.season.localeCompare(b.season));
+            for (const s of seasonsSorted) {
                 const batTilt = s.batting_tilt_per_match || 0;
                 const bowlTilt = s.bowling_tilt_per_match || 0;
                 const totalTilt = batTilt + bowlTilt;

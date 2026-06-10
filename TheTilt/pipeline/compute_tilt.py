@@ -1,4 +1,5 @@
 # %% Imports
+import hashlib
 import json
 import pickle
 import re
@@ -386,14 +387,14 @@ def _compute_shrinkage(
     if between_var is None or pd.isna(between_var) or between_var <= 0 or pd.isna(within_var) or within_var <= 0:
         print(f"  Warning: cannot compute shrinkage for {col} (between={between_var}, within={within_var})")
         combined_df[f"shrunk_{col}"] = combined_df[col]
-        return combined_df, 0
+        return combined_df, 0, 0.0
 
     k = within_var / between_var
     print(f"  {col}: k={k:.1f} (within_var={within_var:.6f}, between_var={between_var:.6f}, pop_mean={pop_mean:.6f})")
 
     n = combined_df[n_col]
     combined_df[f"shrunk_{col}"] = (n / (n + k)) * combined_df[col] + (k / (n + k)) * pop_mean
-    return combined_df, k
+    return combined_df, k, within_var
 
 
 def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataFrame:
@@ -427,38 +428,38 @@ def apply_shrinkage(combined: pd.DataFrame, deltas_df: pd.DataFrame) -> pd.DataF
     ]).groupby(["player_id", "match_id"])["match_tilt"].sum().reset_index()
 
     # Apply to each TILT column
-    combined, k_total = _compute_shrinkage(combined, "total_tilt_per_match", total_match)
+    combined, k_total, _ = _compute_shrinkage(combined, "total_tilt_per_match", total_match)
 
-    # For batting/bowling shrinkage, use batting/bowling specific match data
-    bat_player_match = bat_match.copy()
-    combined, k_bat = _compute_shrinkage(combined, "batting_tilt_per_match", bat_player_match)
-    bowl_player_match = bowl_match.copy()
-    combined, k_bowl = _compute_shrinkage(combined, "bowling_tilt_per_match", bowl_player_match)
+    # For batting/bowling shrinkage, use batting/bowling specific match data for
+    # the variance/k estimate AND role-specific match counts for the evidence
+    # weight n — a 150-match specialist bowler with 40 batting appearances gets
+    # 40 matches of batting evidence, not 150 (issue #195).
+    combined, k_bat, _ = _compute_shrinkage(combined, "batting_tilt_per_match", bat_match, n_col="batting_matches")
+    combined, k_bowl, _ = _compute_shrinkage(combined, "bowling_tilt_per_match", bowl_match, n_col="bowling_matches")
 
     # Bayesian posterior confidence intervals
     # The shrinkage formula is: shrunk = (n/(n+k)) * observed + (k/(n+k)) * pop_mean
     # The posterior variance is: var_posterior = within_var / (n + k)
     # This is narrower than the frequentist SE^2 = within_var / n because
     # shrinkage itself reduces uncertainty (we're borrowing strength from the population)
-    player_std = total_match.groupby("player_id")["match_tilt"].std().fillna(0)
-    combined = combined.merge(
-        player_std.rename("match_tilt_std").reset_index(),
-        on="player_id",
-        how="left",
-    )
-    combined["match_tilt_std"] = combined["match_tilt_std"].fillna(0)
     n = combined["total_matches"]
-    # Use within_var (average match-to-match variance) for posterior, not per-player std
-    # This is more stable and consistent with the shrinkage model
-    player_var = total_match.groupby("player_id")["match_tilt"].var().fillna(0)
+    # Per-player variance for the posterior — a DELIBERATE choice (issue #195):
+    # each player's own match-to-match variance sets their interval width, so
+    # erratic short samples (boom-bust debutants) get wide floors while
+    # consistent veterans get tight ones. The alternative — the pooled
+    # within_var that produced k — is more internally consistent with the
+    # shrinkage model, but it makes floor width depend on n alone, which lets
+    # a hot 20-30-match sample top the default leaderboard. The cost of
+    # per-player is that the variance estimate at n = 10-30 is itself noisy.
+    # about.md §9 documents this choice — keep the two in sync.
+    player_var = total_match.groupby("player_id")["match_tilt"].var()
     combined = combined.merge(
         player_var.rename("match_tilt_var").reset_index(),
         on="player_id",
         how="left",
     )
     combined["match_tilt_var"] = combined["match_tilt_var"].fillna(0)
-    # Posterior SE: sqrt(within_var / (n + k)) — accounts for shrinkage reducing uncertainty
-    posterior_se = np.sqrt(combined["match_tilt_var"] / (n + k_total).clip(lower=1))
+    posterior_se = np.sqrt(combined["match_tilt_var"] / (n + k_total))
     combined["tilt_ci_lower"] = combined["shrunk_total_tilt_per_match"] - 1.96 * posterior_se
     combined["tilt_ci_upper"] = combined["shrunk_total_tilt_per_match"] + 1.96 * posterior_se
     combined["tilt_ci_lower_90"] = combined["shrunk_total_tilt_per_match"] - 1.645 * posterior_se
@@ -622,9 +623,10 @@ def aggregate_player_season_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
         .sum()
         .reset_index()
     )
-    combined, _ = _compute_shrinkage(combined, "total_tilt_per_match", total_match_df, group_keys=["player_id", "season"])
-    combined, _ = _compute_shrinkage(combined, "batting_tilt_per_match", bat_match_df, group_keys=["player_id", "season"])
-    combined, _ = _compute_shrinkage(combined, "bowling_tilt_per_match", bowl_match_df, group_keys=["player_id", "season"])
+    combined, _, _ = _compute_shrinkage(combined, "total_tilt_per_match", total_match_df, group_keys=["player_id", "season"])
+    # Role-specific n for role-specific shrinkage, mirroring the career path (issue #195)
+    combined, _, _ = _compute_shrinkage(combined, "batting_tilt_per_match", bat_match_df, n_col="batting_matches", group_keys=["player_id", "season"])
+    combined, _, _ = _compute_shrinkage(combined, "bowling_tilt_per_match", bowl_match_df, n_col="bowling_matches", group_keys=["player_id", "season"])
 
     combined = combined.sort_values(["season", "shrunk_total_tilt_per_match"], ascending=[True, False]).reset_index(drop=True)
     print(f"  Total player-seasons: {len(combined)}")
@@ -828,6 +830,23 @@ def compute_tilt(
     model_path = model_path or config["model"]["save_path"]
 
     print(f"Loading model from {model_path}...")
+    # Verify the sha256 sidecar before unpickling — pickle.load executes
+    # arbitrary code, so anyone who can write the pickle on the default branch
+    # would get code execution on the Actions runner at the next scheduled
+    # refresh (issue #196). Sidecar is written by train_win_prob.save_model.
+    sidecar = Path(model_path).with_suffix(Path(model_path).suffix + ".sha256")
+    if sidecar.exists():
+        expected = sidecar.read_text().split()[0]
+        actual = hashlib.sha256(Path(model_path).read_bytes()).hexdigest()
+        if actual != expected:
+            raise RuntimeError(
+                f"Model pickle {model_path} fails sha256 verification "
+                f"(expected {expected[:12]}…, got {actual[:12]}…). Refusing to unpickle. "
+                f"If the model was retrained legitimately, regenerate the sidecar via save_model."
+            )
+        print(f"  sha256 verified against {sidecar.name}")
+    else:
+        print(f"  Warning: no sha256 sidecar at {sidecar.name} — loading unverified pickle")
     with open(model_path, "rb") as f:
         model = pickle.load(f)
     if isinstance(model, EnsembleModel):

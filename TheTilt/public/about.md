@@ -9,8 +9,8 @@ This page is the long-form methodology. The headline numbers and rankings live o
 | Coverage | Value |
 |:--|:--|
 | Seasons | IPL 2008 — 2026 |
-| Matches parsed | <span id="cov-matches">1,232</span> |
-| Legal-ish deliveries scored | <span id="cov-balls">294,255</span> |
+| Matches parsed | <span id="cov-matches">1,234</span> |
+| Legal-ish deliveries scored | <span id="cov-balls">294,729</span> |
 | Players ranked (≥ 10 matches) | <span id="cov-players">472</span> |
 | Model | K=100 LightGBM ensemble (gradient-boosted classifier) |
 | Default ranking | Bayesian-shrunk TILT, 90% CI lower bound |
@@ -66,7 +66,7 @@ Cricsheet is excellent but raw cricket data is messy. The pipeline does a few cl
 - **Team name aliases.** "Royal Challengers Bengaluru" and "Royal Challengers Bangalore" collapse to a single canonical name. Likewise for the Punjab Kings / Kings XI Punjab / Punjab XI variants and the various Pune franchises.
 - **Venue deduplication.** Cricsheet ships 59 raw venue strings — a mix of stadium-only and stadium-with-city ("Wankhede Stadium" vs "Wankhede Stadium, Mumbai") and renamings ("Feroz Shah Kotla" → "Arun Jaitley Stadium", "Sardar Patel Stadium, Motera" → "Narendra Modi Stadium, Ahmedabad"). After mapping, the model sees **38 canonical venues**, which materially reduces categorical overfitting.
 - **Season parsing.** Cricsheet labels three IPL seasons in cross-year form ("2007/08", "2009/10", "2020/21") even though each was played within a single calendar year. The pipeline rewrites those to their year of play (2008, 2010, 2020) so URLs, picker chips, and the integer feature `season_numeric` all use the year people actually remember.
-- **DLS exclusion.** 22 DLS-affected matches are excluded from the model's training set — their outcomes don't reflect "fair" win probability — but the rest of the pipeline still scores them so players aren't penalised for appearing in them.
+- **DLS exclusion.** 23 DLS-affected matches (as of June 2026) are excluded from the model's training set — their outcomes don't reflect "fair" win probability — but the rest of the pipeline still scores them so players aren't penalised for appearing in them.
 - **Player ID resolution.** Cricsheet ships short IDs; the pipeline resolves full names against Wikidata so the leaderboard can show e.g. "Sunil Narine" instead of the registry handle.
 
 The cleaned dataset is what every downstream stage sees.
@@ -151,7 +151,7 @@ Input  : 15 features describing match state before a ball
 Output : P(batting team wins) ∈ [0, 1]
 ```
 
-LightGBM is a good fit here for several reasons: it handles mixed continuous/categorical inputs natively (no one-hot for venues), it trains fast on the ~276K-row dataset, and it produces well-calibrated probabilities out of the box without a Platt scaler or isotonic step.
+LightGBM is a good fit here for several reasons: it handles mixed continuous/categorical inputs natively (no one-hot for venues), it trains fast on the ~291K-row training set (all scored deliveries minus the 23 DLS-affected matches), and it produces well-calibrated probabilities out of the box without a Platt scaler or isotonic step.
 
 ### Training configuration
 
@@ -165,7 +165,7 @@ These are the production hyperparameters from `config/pipeline_config.yaml` for 
 | `reg_lambda` | 5.0 | L2 — keeps individual trees smooth so member-to-member disagreement is genuine trajectory variance, not leaf noise |
 | `n_estimators` | 2000 | Big upper bound; early stopping per member picks the actual count |
 | `learning_rate` | 0.03 | Low and steady |
-| `test_size` | 0.1 | Fixed 90/10 holdout (locked seed=42 forever) — same 119 matches validate every retrain |
+| `test_size` | 0.1 | Fixed 90/10 holdout — the holdout match list is persisted in `models/holdout_match_ids.json` and reused on every retrain (matches added since go to train), keeping Brier/AUC comparable. A locked seed alone does *not* freeze the split: `GroupShuffleSplit` reshuffles as the match set grows (issue #193) |
 | `ensemble_size` | 100 | K=100 members with seeds 42…141 (see *§ Ensemble*, below) |
 | `random_state` | 42 | Base seed; ensemble members use 42…42+K−1 |
 
@@ -185,7 +185,7 @@ The single most important design decision in training is splitting by `match_id`
 
 ### DLS handling
 
-Matches affected by DLS recalculation have unreliable "fair" outcomes — the actual win was determined by a rain rule, not by playing out the cricket. Those 22 matches are dropped from training. The rest of the pipeline still scores them so players aren't penalised for appearing.
+Matches affected by DLS recalculation have unreliable "fair" outcomes — the actual win was determined by a rain rule, not by playing out the cricket. Those 23 matches (as of June 2026) are dropped from training. The rest of the pipeline still scores them so players aren't penalised for appearing.
 
 ### No post-hoc calibration
 
@@ -282,7 +282,7 @@ A few details that matter for fair attribution:
 - **Wides and no-balls.** Wides aren't credited to the batsman (they didn't face it); no-balls aren't counted against the bowler's *legal-delivery* count for per-ball stats. Both still produce a `delta_wp` and both still flow into the batting/bowling totals — the legal flags only affect denominators in per-ball reporting.
 - **Wickets are credited to the bowler regardless of wicket-kind.** Run-outs are an exception flagged in the parsing step but credited the same way at the WP layer; a future model could reattribute based on fielder.
 - **The non-striker gets nothing.** TILT only credits the two players directly involved in the delivery.
-- **DLS-revised innings carry their reduced ball allocation through `balls_remaining`.** A 12-over chase is 72 balls, not 120 — feeding the model the default 120 made truncated chases look chaseable late on, which previously inflated the bowler-of-the-final-ball's TILT enormously.
+- **DLS-revised innings carry their reduced ball allocation through `balls_remaining`.** A 12-over chase is 72 balls, not 120 — feeding the model the default 120 made truncated chases look chaseable late on, which previously inflated the bowler-of-the-final-ball's TILT enormously. (This fix originally shipped in the #111 bundle, was unknowingly reverted with it, and was re-landed in June 2026 — issue #192. It covers every shortened innings: the 23 DLS-revised matches, which are excluded from training anyway, and ~10 rain-shortened matches that were never DLS-revised — e.g. a 16-overs-a-side game — which remain in training and whose features self-correct at the next retrain.)
 
 ### What this looks like across a match
 
@@ -328,6 +328,8 @@ shrunk = (n / (n + k)) * raw + (k / (n + k)) * pop_mean
 
 `k` is the **within-player variance ÷ between-player variance**, estimated empirically from match-level TILT distributions. For IPL data, **k ≈ 5.3**.
 
+Shrinkage is applied per column with matching evidence counts: the total-TILT column uses total career matches as `n`, while the batting and bowling columns use **matches in that role** (each with its own role-estimated `k`) — a 150-match specialist bowler who has batted in 40 of them gets 40 matches of batting evidence, not 150 (issue #195).
+
 What that means in practice:
 
 | Matches | Raw weight | Population weight |
@@ -345,12 +347,14 @@ A high-raw-TILT player with 18 matches will see their number pulled noticeably t
 On top of shrinkage the rankings expose a **90% credible interval** on each player's TILT, computed from the *posterior* variance:
 
 ```
-posterior_se = sqrt(within_var / (n + k))
+posterior_se = sqrt(var_player / (n + k))
 ci_lower_90  = shrunk − 1.645 * posterior_se
 ci_upper_90  = shrunk + 1.645 * posterior_se
 ```
 
 Posterior — not frequentist `s/√n` — because shrinkage itself buys back some of the uncertainty by borrowing strength from the population. Using the frequentist SE here would double-count noise.
+
+`var_player` is **each player's own match-to-match TILT variance** — a deliberate choice (issue #195). The internally cleaner alternative is the pooled within-player variance (the same number that produces `k`), but pooling makes the interval width depend on match count alone, which lets a hot 20–30-match sample top the floor sort. Using the player's own variance means erratic boom-bust samples get wide floors while consistent veterans get tight ones, at the cost of the variance estimate itself being noisy at n ≈ 10–30. Consistency, not just magnitude, is what the floor rewards.
 
 The default leaderboard sort is the **lower bound of the 90% CI** ("TILT floor"). This naturally penalises small samples without the usual blunt-instrument fix of a hard match cutoff. A player can post a higher raw TILT than someone above them and still rank lower because their interval is wider.
 
@@ -379,7 +383,7 @@ TILT is honest about what it doesn't see.
 
 ### The second-innings asymmetry
 
-Win probability swings are **structurally larger in the 2nd innings**, because the target is known and every ball directly resolves the chase math. On average, a 2nd-innings ball produces a `|delta_wp|` that is **1.57×** a 1st-innings ball. The gap widens through the innings — **1.23× in the powerplay, 1.69× in the middle overs, and 2.12× in the death (overs 16–20)**.
+Win probability swings are **structurally larger in the 2nd innings**, because the target is known and every ball directly resolves the chase math. On average, a 2nd-innings ball produces a `|delta_wp|` that is **1.57×** a 1st-innings ball. The gap widens through the innings — **1.23× in the powerplay, 1.69× in the middle overs, and 2.11× in the death (overs 16–20)**.
 
 The downstream effect on single-match GOAT-type rankings is large: 100% of the top-50 batting GOAT performances and 100% of the top-50 bowling GOAT performances are from 2nd innings. The GOAT page therefore exposes innings-filtered views so within-innings comparisons are fair.
 
@@ -389,7 +393,7 @@ The full diagnostic, including per-phase breakdowns and the qq-plot above, is at
 
 ### The innings-boundary recalibration
 
-The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **8.7 pp**: the model is systematically **more pessimistic about the batting-first team at the start of the chase** than at the end of its own innings, by a mean signed gap of about **4.3 pp** in the batting-first team's win probability (down from the **5.1 pp** that originally motivated this fix; magnitude and direction are monitored on every retrain).
+The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **8.7 pp**: the model is systematically **more pessimistic about the batting-first team at the start of the chase** than at the end of its own innings, by a mean signed gap of about **3.6 pp** in the batting-first team's win probability. (These are the *current build's* measurements — `compute_tilt` re-measures and prints them on every data refresh and retrain, and the mean drifts a little as data grows. The original diagnostic that motivated the fix measured **8.4 pp** median and **−5.1 pp** mean signed — those numbers are deliberately frozen as history in the [innings-boundary note](notes.html?note=innings-boundary) and its blog summary, which is why that note and this page differ — issue #198.)
 
 We close that gap with a two-step post-processing layer in `compute_tilt.apply_boundary_calibration`, applied only to the two boundary balls per match (~1.4% of all deliveries):
 
@@ -431,7 +435,7 @@ A few sanity reads on this list:
 - **Top batters resurface** — specialist batters (Buttler, Rahul, Warner among them) climb back toward the floor-ranking's upper tier now that the fix redistributed phantom bowler credit back to the chasing side.
 - **Bumrah, Malinga, Rashid Khan, Chahal** still anchor the bowler tier — now without the inflated wicket-window credit. Their floors dropped 0.5–1.0pp from the pre-fix table but stay high-confidence near the top.
 - **Medium- and low-confidence players can crack the top tier on floor** when they post extreme raw numbers — shrinkage pulls them hard, but the lower bound still clears most veterans. The live table above shows which currently qualify (it can include a low-confidence, high-raw debutant on a short sample).
-- **Old-era players are not punished.** Malinga's 2008–2019 career still floors near the top of the bowler tier; the `season_numeric` feature neutralises era effects.
+- **Old-era players are not punished.** Malinga's 2009–2019 career still floors near the top of the bowler tier; the `season_numeric` feature neutralises era effects.
 
 ---
 

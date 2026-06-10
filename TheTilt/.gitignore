@@ -9,7 +9,14 @@ build/
 
 # Data (raw is large — keep processed outputs in public/data/)
 data/raw/
-data/processed/
+# `/*` (not a bare dir rule) so the Wikidata cache negations below can work —
+# git won't descend into a directory excluded by a trailing-slash rule.
+data/processed/*
+# Wikidata caches are committed (issue #196): without them every fresh
+# Actions runner cold-starts and re-resolves ~1,000 players against Wikidata
+# (rate-limit exposure, +1-2 min per run, twice daily). Small, stable JSON.
+!data/processed/full_names.json
+!data/processed/player_citizenship.json
 
 # Models — the win-prob pickle is committed so the data-refresh workflow
 # can load it without retraining. joblib and any other formats stay ignored.

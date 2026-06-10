@@ -1,14 +1,13 @@
-import json
 import os
-from pathlib import Path
 
-from flask import Flask, jsonify, request, send_from_directory
-from flask_cors import CORS
+from flask import Flask, jsonify, send_from_directory
 
+# /api/search and its CORS pin were removed in issue #197: no page ever
+# called the endpoint (all search is client-side via search_index.json in
+# common.js initGlobalSearch), it matched only the short `player` field, and
+# the CORS origin pinned to the deployment subdomain would have silently
+# broken any future custom domain and all preview deployments.
 app = Flask(__name__, static_folder="../public", static_url_path="")
-CORS(app, origins=["https://thetilt-rust.vercel.app"])
-
-DATA_DIR = Path(__file__).parent.parent / "public" / "data"
 
 
 @app.route("/")
@@ -22,32 +21,8 @@ def api_info():
         "app": "The TILT API",
         "version": "1.0.0",
         "description": "Win Probability Added for IPL Cricket",
-        "endpoints": {
-            "/api/search?q=<query>": "Search players by name",
-        },
+        "endpoints": {},
     })
-
-
-@app.route("/api/search")
-def search_players():
-    query = request.args.get("q", "").lower().strip()
-    if not query or len(query) < 2 or len(query) > 100:
-        return jsonify([])
-
-    rankings_path = DATA_DIR / "tilt_rankings.json"
-    if not rankings_path.exists():
-        return jsonify({"error": "Rankings data not yet generated"}), 404
-
-    try:
-        with open(rankings_path) as f:
-            rankings = json.load(f)
-    except (IOError, json.JSONDecodeError):
-        return jsonify({"error": "Failed to load rankings data"}), 500
-
-    results = [p for p in rankings if query in p["player"].lower()]
-    response = jsonify(results[:20])
-    response.headers["Cache-Control"] = "public, max-age=300"
-    return response
 
 
 if __name__ == "__main__":

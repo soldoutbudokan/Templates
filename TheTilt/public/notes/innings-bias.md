@@ -18,9 +18,9 @@ In the 2nd innings, the equation is precise. You need X runs from Y balls with Z
 
 | Metric | 1st Innings | 2nd Innings | Ratio |
 |:--|:--|:--|:--|
-| **Balls** | 152,214 | 142,041 | |
-| **Mean WP shift per ball** | 1.129% | 1.773% | **1.57x** |
-| **Death overs mean shift** | - | - | **2.12x** |
+| **Balls** | 152,460 | 142,269 | |
+| **Mean WP shift per ball** | 1.130% | 1.773% | **1.57x** |
+| **Death overs mean shift** | - | - | **2.11x** |
 | **Middle overs mean shift** | - | - | **1.69x** |
 | **Powerplay mean shift** | - | - | **1.23x** |
 
@@ -32,7 +32,7 @@ But even this isn't uniform - the disparity is concentrated in the later overs.
 
 ![Volatility by over](plots/innings_volatility_by_over.png)
 
-The chart tells the story. In the powerplay (overs 1-6), the gap is smallest (ratio 1.23x) — the 2nd innings is already more volatile, but only modestly so, because early in a chase the target is still distant. By the middle overs, it's 1.69x. And in the death overs (16-20), where matches are decided, 2nd innings balls produce **2.12x** the WP swing.
+The chart tells the story. In the powerplay (overs 1-6), the gap is smallest (ratio 1.23x) — the 2nd innings is already more volatile, but only modestly so, because early in a chase the target is still distant. By the middle overs, it's 1.69x. And in the death overs (16-20), where matches are decided, 2nd innings balls produce **2.11x** the WP swing.
 
 This makes intuitive sense. At over 18 of a chase with 20 needed from 12 balls, every boundary is a huge swing. At over 18 of a first innings at 160/4, a boundary changes the projected total by a few runs and the model can't be sure it will matter.
 
@@ -56,7 +56,7 @@ The phase breakdown confirms the pattern. The powerplay shows the smallest gap -
 |:------|:------------|:------------|:------|
 | Powerplay | mean 0.0160 | mean 0.0196 | 1.23x |
 | Middle | mean 0.0083 | mean 0.0141 | 1.69x |
-| Death | mean 0.0109 | mean 0.0232 | **2.12x** |
+| Death | mean 0.0110 | mean 0.0232 | **2.11x** |
 
 ---
 
@@ -71,9 +71,9 @@ This chart shows what percentage of the top-N single-match performances come fro
 | 10 | 100% | 100% |
 | 25 | 100% | 100% |
 | 50 | 100% | 100% |
-| 100 | 100% | 93% |
-| 200 | 96% | 86% |
-| 500 | 86% | 79% |
+| 100 | 100% | 94% |
+| 200 | 96% | 88% |
+| 500 | 87% | 79% |
 
 A brilliant 1st innings performance simply cannot produce the same magnitude of WP shift as a brilliant 2nd innings performance. A batsman who scores an unbeaten 100 chasing 180 in the final over generates enormous TILT. A batsman who scores 100 in the first innings setting 200 generates a fraction of that.
 
@@ -85,7 +85,7 @@ Here's the good news: **career rankings are barely affected**.
 
 ![Career correlation](plots/innings_career_correlation.png)
 
-Over a career, most batsmen face a roughly similar mix of 1st and 2nd innings balls. The correlation between a player's 2nd-innings ball share and their career TILT is essentially zero (Pearson r = 0.042, p = 0.51; Spearman r = 0.036, p = 0.57 across 249 players with 30+ matches).
+Over a career, most batsmen face a roughly similar mix of 1st and 2nd innings balls. The correlation between a player's 2nd-innings ball share and their career TILT is essentially zero (Pearson r = 0.047, p = 0.46; Spearman r = 0.038, p = 0.55 across 249 players with 30+ matches).
 
 When we normalize all deltas to remove the innings effect (scaling each innings' deltas so the mean absolute shift is equal), the career rankings barely move:
 

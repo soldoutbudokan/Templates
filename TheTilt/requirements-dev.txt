@@ -1,0 +1,6 @@
+# Dev-only dependencies — NOT installed by the CI pipeline workflows
+# (they install requirements.txt only).
+#
+# playwright is imported by pipeline/scrape_player_meta.py, a manual ad-hoc
+# script (issue #196). After installing, run: playwright install chromium
+playwright==1.58.0

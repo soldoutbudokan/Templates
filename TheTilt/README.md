@@ -85,18 +85,19 @@ Output: averaged P(batting team wins) ∈ [0, 1]   ← mean of 100 LGBM members
 
 **Why LightGBM?**
 - Handles mixed feature types (categorical + continuous) natively
-- Fast to train on 256K rows
+- Fast to train on ~291K rows (all scored deliveries minus the 23 DLS-affected matches)
 - Excellent probability calibration out of the box
 - Easy to inspect feature importances
 
 **Why K=100 ensemble?** A single LightGBM run on this dataset is fitted enough that adding one or two new matches to Cricsheet can flip the career top-10 (issue #111: AB de Villiers fell from #3 to #9 across a single retrain on a +2-match delta). Train/holdout reshuffles, the boosting trajectory diverges, and individual ball predictions can swing by **5+ percentage points** for the same input. K=100 members trained on the same fixed split with random states 42…141 average that variance away. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*.
 
 **Training details:**
-- Train/test split: **90/10 by match**, locked at `random_state=42` forever — every retrain validates on the same 119 matches so Brier/AUC numbers are directly comparable
+- Train/test split: **90/10 by match**, with the holdout match list persisted in `models/holdout_match_ids.json` — every retrain validates on the same matches (newly added matches go to train), so Brier/AUC numbers stay directly comparable. A locked seed alone does *not* freeze the split — `GroupShuffleSplit` reshuffles as the match set grows (issue #193); the list is written at the next retrain, which is the one documented comparability break
+- Early stopping per member uses a validation fold carved from *train* (keyed on the member seed) — the reported holdout is never used for iteration selection (issue #193)
 - 100 ensemble members, each: 2000 trees (with early stopping), learning rate 0.03, max depth 4, num_leaves 16
 - Heavy L2 regularization (reg_lambda=5.0, min_child_samples=500) — keeps individual trees smooth so member-to-member disagreement is genuine trajectory variance, not leaf noise
 - Venue names deduplicated (59 raw → 38 canonical) to reduce categorical overfitting
-- DLS-affected matches excluded from training (22 matches); their balls are still scored using the per-innings DLS allocation so revised chases aren't treated as full T20s
+- DLS-affected matches excluded from training (23 matches as of June 2026); their balls are still scored using the per-innings DLS allocation so revised chases aren't treated as full T20s (this fix was silently reverted with the #111 bundle and re-landed in June 2026 — issue #192)
 - No post-hoc calibration needed — the LightGBM probabilities are well-calibrated (max calibration error ~5%)
 - `RETRAIN=1` env-var guardrail required to overwrite the committed pickle (prevents ad-hoc local pipeline runs from silently swapping in a noisier model)
 
@@ -271,7 +272,7 @@ TheTilt/
 - ~~No venue context~~ → **Venue** as categorical feature (deduplicated, highest importance)
 - ~~No toss context~~ → **Toss** parsed and used as `batting_team_chose_to_bat`
 - ~~No opponent quality~~ → **Bowling economy** proxy added as feature
-- ~~DLS matches~~ → Excluded from training (22 matches)
+- ~~DLS matches~~ → Excluded from training (23 matches as of June 2026)
 - ~~Model too volatile~~ → Strong L2 regularization, reduced depth, removed Platt calibration
 - ~~No GOAT rankings~~ → Top match and season performances page
 - ~~Manual data refresh~~ → GitHub Actions weekly cron job

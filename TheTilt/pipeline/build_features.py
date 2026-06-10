@@ -36,17 +36,29 @@ def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = Non
     df = innings_df.copy().reset_index(drop=True)
     n = len(df)
 
-    # Cumulative runs and wickets (BEFORE each ball)
+    # Cumulative runs and wickets (BEFORE each ball). Every dismissal on a
+    # delivery counts — cricsheet can record two on one ball (issue #194);
+    # is_wicket alone would understate wickets_fallen for the innings tail.
     df["runs_scored"] = df["runs_total"].cumsum().shift(1, fill_value=0)
-    df["wickets_fallen"] = df["is_wicket"].astype(int).cumsum().shift(1, fill_value=0)
+    wicket_counts = df["wicket_count"] if "wicket_count" in df.columns else df["is_wicket"].astype(int)
+    df["wickets_fallen"] = wicket_counts.cumsum().shift(1, fill_value=0)
 
-    # Ball number in innings (1-indexed, legal deliveries only)
+    # Ball number in innings (1-indexed, counts every delivery incl. wides/
+    # no-balls). Switching to a legal-delivery count changes the feature for
+    # every innings with extras and therefore must ship with a retrain —
+    # deferred half of issue #192.
     df["ball_number"] = range(1, n + 1)
 
-    # Balls remaining (T20 = 120 legal deliveries max)
-    # Note: extras like wides/no-balls add extra deliveries, but we approximate
-    # using the over.ball structure. Max 120 balls per innings.
+    # Balls remaining. Default T20 = 120 deliveries; DLS-revised innings carry
+    # their reduced allocation through (a 12-over chase is 72 balls, not 120),
+    # so revised chases aren't scored as if phantom deliveries remained
+    # (issue #192 — re-landed from the reverted #111 bundle; DLS matches are
+    # excluded from training, so this only affects scoring).
     total_balls = 120
+    if "innings_allocation" in df.columns:
+        alloc = df["innings_allocation"].iloc[0]
+        if pd.notna(alloc) and alloc > 0:
+            total_balls = int(round(float(alloc) * 6))
     df["balls_bowled"] = df["ball_number"] - 1  # Before this ball
     df["balls_remaining"] = total_balls - df["balls_bowled"]
     df["balls_remaining"] = df["balls_remaining"].clip(lower=1)
@@ -74,7 +86,7 @@ def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = Non
 
     # Recent form: wickets in last 18 balls (3 overs)
     window = 18
-    df["recent_wickets"] = df["is_wicket"].astype(int).rolling(window=window, min_periods=1).sum().shift(1, fill_value=0)
+    df["recent_wickets"] = wicket_counts.rolling(window=window, min_periods=1).sum().shift(1, fill_value=0)
 
     return df
 
@@ -167,7 +179,12 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
     )
 
     # Opponent quality proxy: career bowling economy per bowler
-    # Computed across all data (career-level, not in-match) as a static lookup
+    # Computed across all data (career-level, not in-match) as a static lookup.
+    # ACCEPTED APPROXIMATION (#199): this is a full-career lookup, i.e. a mild
+    # temporal lookahead — a 2008 delivery sees the bowler's whole-career
+    # economy including future seasons. Feature importance is low (~32), so the
+    # leakage is tolerated; switching to an expanding as-of-date mean is a
+    # feature change that must ship with a retrain.
     bowler_stats = (
         result.groupby("bowler_id")
         .agg(total_runs=("runs_total", "sum"), total_balls=("runs_total", "count"))
@@ -234,7 +251,7 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         # Raw event data
         "runs_batter", "runs_extras", "runs_total",
         "is_wide", "is_noball",
-        "is_wicket", "wicket_kind", "player_dismissed", "player_dismissed_id", "wicket_fielders",
+        "is_wicket", "wicket_count", "wicket_kind", "player_dismissed", "player_dismissed_id", "wicket_fielders",
         # Features (state before delivery)
         "ball_number", "balls_remaining", "wickets_in_hand",
         "runs_scored", "wickets_fallen", "run_rate",

@@ -31,6 +31,12 @@ class BallEvent:
     is_wide: bool
     is_noball: bool
     is_wicket: bool
+    # Number of dismissals on this delivery. Cricsheet can record two (e.g. a
+    # run-out of the non-striker alongside an obstructing-the-field); counting
+    # only wickets[0] would overstate wickets_in_hand for the rest of the
+    # innings (issue #194). Zero occurrences in the current corpus — this is
+    # defensive. kind/dismissed fields below report the primary dismissal.
+    wicket_count: int
     wicket_kind: Optional[str]
     player_dismissed: Optional[str]
     player_dismissed_id: Optional[str]
@@ -113,6 +119,13 @@ def normalize_team(name: Optional[str]) -> Optional[str]:
 def season_team_label(canonical: Optional[str], season_year: Optional[int]) -> Optional[str]:
     """Return the display label for a canonical team in a given season year.
 
+    Each rule is a true (optionally one-sided) range: it matches when
+    `from_year <= season_year <= through_year`, treating a missing bound as
+    open (issue #199 — the old implementation short-circuited on
+    `through_year` first, so a rule carrying both bounds silently matched
+    every year <= through_year). A rule with neither bound matches nothing.
+    Mirrored by `teamLabelForSeason()` in public/common.js — keep in sync.
+
     Falls back to the canonical name when no season override applies.
     """
     if canonical is None:
@@ -122,10 +135,13 @@ def season_team_label(canonical: Optional[str], season_year: Optional[int]) -> O
         for rule in rules:
             through = rule.get("through_year")
             from_year = rule.get("from_year")
-            if through is not None and season_year <= int(through):
-                return rule["label"]
-            if from_year is not None and season_year >= int(from_year):
-                return rule["label"]
+            if through is None and from_year is None:
+                continue
+            if through is not None and season_year > int(through):
+                continue
+            if from_year is not None and season_year < int(from_year):
+                continue
+            return rule["label"]
     return canonical
 
 
@@ -288,6 +304,7 @@ def parse_match(filepath: Path) -> List[BallEvent]:
                 extras = delivery.get("extras", {})
 
                 is_wicket = len(wickets) > 0
+                wicket_count = len(wickets)
                 is_wide = "wides" in extras
                 is_noball = "noballs" in extras
                 wicket_kind = wickets[0].get("kind") if is_wicket else None
@@ -326,6 +343,7 @@ def parse_match(filepath: Path) -> List[BallEvent]:
                     is_wide=is_wide,
                     is_noball=is_noball,
                     is_wicket=is_wicket,
+                    wicket_count=wicket_count,
                     wicket_kind=wicket_kind,
                     player_dismissed=player_dismissed,
                     player_dismissed_id=registry.get(player_dismissed) if player_dismissed else None,

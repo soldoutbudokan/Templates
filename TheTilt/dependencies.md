@@ -40,6 +40,16 @@ build_features.py ──> data/processed/featured_balls.parquet
     ├──> train_win_prob.py ──> models/win_prob_lgbm.pkl  (committed; K=100 EnsembleModel pickle, ~33 MB)
     │     RETRAIN=1 env var required to overwrite (issue #111 guardrail).
     │     The cron retrain workflow sets it; ad-hoc local pipeline runs do not.
+    │     Also writes (both committed, issue #193/#196):
+    │       models/win_prob_lgbm.pkl.sha256   — integrity sidecar; compute_tilt
+    │                                           verifies it before pickle.load
+    │                                           (fails loud on mismatch, warns
+    │                                           if absent)
+    │       models/holdout_match_ids.json     — frozen holdout match list;
+    │                                           split_by_match loads it when
+    │                                           present (new matches → train)
+    │                                           and persists it on first
+    │                                           training run after #193
     │
     ▼
 compute_tilt.py (uses model + features; applies boundary calibration — issue #62)
@@ -90,7 +100,11 @@ data/raw/*.json (Cricsheet) ──> pipeline/parse_matches.parse_no_results_from
                                                               merged into the dataframe by
                                                               parse_no_results_from_raw (issue #83).
 
-data/processed/player_citizenship.json (generator-maintained, Wikidata-derived)
+data/processed/player_citizenship.json (generator-maintained, Wikidata-derived;
+                       committed alongside data/processed/full_names.json since
+                       issue #196 so Actions runners don't cold-start against
+                       Wikidata twice daily — the rest of data/processed/ stays
+                       gitignored)
                        └── pipeline/build_player_countries.py
                                   ── primary country source via Wikidata P27 (country of citizenship)
                                      mapped to ICC team codes by pipeline/wikidata_country_map.py.
@@ -192,21 +206,20 @@ Re-run `python pipeline/run_pipeline.py` (or `refresh_tilt_data_only`). Every pa
 | `public/data/tilt_rankings.json`, `players/*.json`, `goats.json`, `matches/*.json` | Every team string in these files re-canonicalizes; team links wire through `team_index.json` so no schema changes needed. |
 | `public/about.md` if it names a franchise | Hand-check that team mentions still match canonical naming. |
 
-**`season_labels` rule semantics (gotcha).** The resolver — `season_team_label()` in
-`pipeline/parse_matches.py` and its client mirror `teamLabelForSeason()` in `public/common.js` —
-evaluates each rule as: `through_year` matches **every season ≤ X** (and is checked *first*),
-`from_year` matches **every season ≥ X**. There is **no** true two-sided range — a
-`{ from_year: A, through_year: B }` rule silently mis-fires because the `through_year` test
-short-circuits and catches all years ≤ B (including ones below A). So:
+**`season_labels` rule semantics.** The resolver — `season_team_label()` in
+`pipeline/parse_matches.py` and its client mirror `teamLabelForSeason()` in `public/common.js`
+(keep the two in sync) — evaluates each rule as a true, optionally one-sided range:
+it matches when `from_year <= season_year <= through_year`, with a missing bound treated as
+open (issue #199 — the old implementation short-circuited on `through_year` first, so a rule
+carrying both bounds silently matched every year ≤ `through_year`). A rule with **neither**
+bound matches nothing. First matching rule wins; no rule → canonical name. So:
 
 - "name used **up to** year X" (an *old* name, e.g. Delhi Daredevils through 2018) → `through_year: X`.
-- "name used **from** year X onward" (e.g. Rising Pune Supergiant in 2017, the franchise's final
-  season) → `from_year: X`.
-
-For a single defunct-season override, `from_year` alone is correct: RPS folded after 2017, so
-`{ from_year: 2017, label: Rising Pune Supergiant }` only ever hits 2017 while 2016 keeps the
-plural canonical (#181). Do **not** write `{ from_year: 2017, through_year: 2017 }` — it would also
-relabel 2016.
+- "name used **from** year X onward" → `from_year: X`.
+- "name used **only between** A and B" (incl. a single season, A = B) → `{ from_year: A, through_year: B }` —
+  now safe; e.g. `{ from_year: 2017, through_year: 2017, label: Rising Pune Supergiant }` hits 2017
+  only, while 2016 keeps the plural canonical (#181 used `from_year: 2017` alone, also still correct
+  since RPS folded after 2017).
 
 **Re-export produces benign tie-order churn.** A local `refresh_tilt_data_only` (or a standalone
 `export_json.py`) re-sorts player/leader lists, and rows with equal sort keys (same economy, same
@@ -312,13 +325,13 @@ Files containing hard-coded numbers, names, or claims that must be reviewed on e
 | File | What's in it that goes stale |
 |:--|:--|
 | `public/about.md` | Hyperparameters, Brier/AUC/calibration, feature importances, k value, innings asymmetry ratios, innings-boundary recalibration numbers (median \|jump\|, mean signed jump, season trend). *(§2's match/ball/player counts and §11's top-10 table + "as of" date are no longer hand-maintained here — they're live-rendered client-side by `about.html` (`hydrateAbout()`) from `tilt_rankings.json`/`meta.json`, so they can't go stale. Only §11's qualitative prose is.)* |
-| `public/notes/innings-bias.md` | Innings ball counts, mean WP shifts, the four phase ratios, top-N share %, Spearman rho, and the three innings-2-only feature importances. Source: `notebooks/innings_bias_analysis.py`. |
+| `public/notes/innings-bias.md` | Innings ball counts, mean WP shifts, the four phase ratios, top-N share %, Spearman rho, and the three innings-2-only feature importances. Source: `notebooks/innings_bias_analysis.py`. **The core-asymmetry table's absolute ball-count cells (and the per-ball mean WP shifts computed with them) are data-refresh-sensitive, not just retrain-sensitive** — the twice-daily refresh moves them under the prose (#189); re-pull from the notebook on any pass that touches this note. |
 | `public/notes/kohli-2016-paradox.md` | Kohli 2016 vs 2019 headline table, full 2016 match log (with `match_id`s wired into in-table links), phase breakdown table, dot-ball table, comparison player-seasons table, runs-vs-TILT scatter `r`, GL credit-sharing numbers (ABD's TILT, Kohli WP at ABD's 100). Source: `notebooks/kohli_2016_analysis.py`. Headline multiplier phrases ("six times the TILT") drift with model retrains. **The comparison player-seasons table's TILT/match column is now live-rendered** by `notes.html`'s `hydrateNoteAnchors()` from each player's `players/<slug>.json` `seasons[].batting_tilt_per_match` (spans `#kp-<who>-<season>-tpm`, plus the line-148 KL Rahul prose echo), so those eight per-season percentages can't drift; the Dot%/Inn2% columns and everything else in the table stay notebook-sourced and hand-maintained. |
 | `public/notes/venue-importance.md` | All 6 cohort counterfactual numbers (real and swap TILT/match, and full 9-venue sweep tables for ABD 2016, Kohli 2016, Gayle RCB, Dhoni CSK, Rohit MI, and the data-driven pick); per-match ABD and Kohli 2016 tables (same 8 matches); and the data-driven pick's identity (currently TH David at Wankhede — re-resolve on retrain/refresh, it can change; was JC Archer at Sawai Mansingh under the prior model). Also note the per-match figures are the model's **pre-boundary-calibration** re-score, so second-innings (chase) absolutes can differ from the calibrated per-match TILT on player pages — the measured quantity is the venue *delta*. Source: `notebooks/venue_importance_analysis.py`. Replay-sanity: the notebook asserts the untouched cohort sum matches the committed `deltas.parquet` to <1e-9 before any counterfactual. |
 | `public/notes/innings-boundary.md` | Pre-cal cliff numbers (8.4pp median, −5.1pp mean signed) are historical — frozen as the diagnostic that drove the A2 calibration shipped in commit for issue #62. Top-10 before/after tables embed live names (B Kumar #6→#9 bowling, Bumrah #3→#2 overall, etc.). The trailing **PP-decay update** section embeds telescoping-residual numbers (0.086 → 0.038 abs mean per match) and live ranks for the gainers/losers tables (Kohli +51, Uthappa +29, Gilchrist +25; MM Sharma −36, Russell −29, etc.) — now historical since Step 3 was removed in May 2026. The **"Step 3 removed" update** section embeds an inline top-10 table comparing pre/post Step-3-removal totals (Narine 11.32 → 11.27, Bumrah 9.03 → 8.85, Malinga 7.15 → 6.52, B Kumar 6.93 → 5.50, etc.). If `compute_tilt.apply_boundary_calibration` changes again, re-pull all four sets of after-tables from `tilt_rankings.json`. **The recent_wickets-fix section's rank-inversion prose is now live-rendered** by `notes.html`'s `hydrateNoteAnchors()` from `tilt_rankings.json` (spans `#ib-abd-total-rank`/`#ib-abd-floor-rank`/`#ib-bkumar-total-rank`), so ABD's total/floor rank and B Kumar's total rank can't drift; the before/after **table** in that section is now live-rendered too (placeholder `#ib-top10-table`: the "Before" column is a frozen per-slug map baked into the hydrator, while the row set + "After" column + Δ are computed live from `tilt_rankings.json`'s `total_tilt` on page load — a future top-10 entrant with no frozen "Before" shows "—"). The earlier (#62 isotonic, #71, PP-decay, Step-3-removed) before/after tables remain frozen historical snapshots. |
 | `public/notes/last-ball-snap.md` | Now a **post-mortem** of the reverted snap. Embeds: the Boult 1136592 worked example with wp_before 0.89 → 0.16 numbers (frozen — these are the historical motivating example that drove the revert), the snap-credit decomposition table for the snap-era top-5 single-game bowling tilts (frozen — pre-revert leaderboard), the new top-5 single-game bowling table (**now live-rendered** client-side by `notes.html`'s `hydrateNoteAnchors()` from `goats.json` `match_bowling` into the `#snap-top5-bowling` placeholder — no manual re-pull; a newly-played match entering the top 5 via the twice-daily refresh is picked up automatically), the post-revert calibration averages (won 0.87 / lost 0.18, live across model retrains), and the model-metric improvement (Brier 0.198 → 0.178, AUC 0.761 → 0.820 — the "before" numbers are frozen, the May 2026 update note shows the post-K=100-ensemble Brier 0.191 / AUC 0.780 settled state). |
 | `public/notes/ensemble.md` | The K=100 ensemble methodology note (issue #111). Embeds: the four-match ball-0 drift table (335982/734047/1082591/1304051 with two pickles, frozen — these are the historical evidence for the retrain-variance issue), the retrain-vs-data-drift comparison (p95 1.343 vs 0.226, max 5.55 vs 0.566, frozen empirical numbers from the diagnostic run), the K=20/50/100 convergence table for tracked players (recompute if K or hyperparameters change), the cost table (Brier/AUC/disagreement-pp — refresh on every retrain from training-script output), and the headline before/after for ABD #9→#6 / B Kumar #3→#4 (refresh from `tilt_rankings.json` if the ensemble changes). **Two anchors here are now live-rendered** client-side by `notes.html`'s `hydrateNoteAnchors()` from `tilt_rankings.json` (so they can't drift): the §13 career-match counts (B Kumar vs ABD `total_matches`, spans `#ens-kumar-mt`/`#ens-abd-mt`) and the §149 footnote ranks (ABD's total-tilt rank and floor rank, spans `#ens-abd-total-rank`/`#ens-abd-floor-rank`). The transient "22-match Suryavanshi sits third" parenthetical was generalised to be rank-agnostic so the surrounding prose can't go stale either. |
-| `public/notes/all-rounders.md` | Pool size (458 ranked, 45 all-rounders, 9.8% share), top-N representation table (0/0/1/4/14 in top 10/25/50/100/200), per-role distribution stats (mean / p75 / p90 / top-quintile mean), match-outcome split (9.7% both-pos / 45.9% both-neg / 44.3% mixed), cancellation drag 16.9%, GOAT-tier rate per role (~3.78% all-rounders), per-match variance + p99 by role. Source: `notebooks/all_rounders_analysis.py`; these notebook-derived headline numbers drift on every retrain. **The named-rank table (≈ lines 105–112), the line-29 floor-top-100 cohort count, and the named-player ranks echoed in the surrounding prose are now live-rendered** client-side by `notes.html`'s `hydrateNoteAnchors()` from `tilt_rankings.json` (spans `#ar-floor-top100-count` and `#ar-<player>-floor`/`-raw`/`-tpm`, plus `-prose` copies for the duplicated prose references), so per-player floor/raw ranks, TILT/match cells, and the cohort count can't drift. |
+| `public/notes/all-rounders.md` | Pool size (472 ranked, 45 all-rounders, 9.5% share), top-N representation table (0/0/0/3/13 in top 10/25/50/100/200), per-role distribution stats (mean / p75 / p90 / top-quintile mean), match-outcome split (10.0% both-pos / 45.9% both-neg / 44.1% mixed), cancellation drag 16.6%, GOAT-tier rate per role (~3.95% all-rounders), per-match variance + p99 by role. Source: `notebooks/all_rounders_analysis.py`; these notebook-derived headline numbers drift on every retrain *and on data refreshes* — re-derive from the notebook, never from this row (#198: a stale registry row here nearly invited a "correction" of accurate note prose). **The named-rank table (≈ lines 105–112), the line-29 floor-top-100 cohort count, and the named-player ranks echoed in the surrounding prose are now live-rendered** client-side by `notes.html`'s `hydrateNoteAnchors()` from `tilt_rankings.json` (spans `#ar-floor-top100-count` and `#ar-<player>-floor`/`-raw`/`-tpm`, plus `-prose` copies for the duplicated prose references), so per-player floor/raw ranks, TILT/match cells, and the cohort count can't drift. |
 | `public/common.js` | Hard-coded `BLOG_NOTES` array (id, title, summary, date, tags) for every blog post, rendered by `notes.html`. Summaries embed model-derived numbers pulled from the underlying `notes/*.md` (median \|jump\|, ABD/Kohli venue deltas, Kohli 4.31% per match, 1.54x innings-bias multiplier, etc.). Adding a blog requires both creating `notes/<id>.md` *and* appending an entry here. |
 | `README.md` | Match/ball counts, feature importances, model metrics. (Top-10 leaderboard removed — now a link to the live rankings page.) |
 | `public/notes/plots/innings_*.png`, `kohli_*.png`, `venue_*.png`, `all_rounders_*.png` | Regenerated by the four notebooks. The `about_*.png` siblings are static copies and don't auto-refresh. |
@@ -337,7 +350,7 @@ When publishing a blog post, **add a row here** with what numbers it embeds and 
 | Trigger | What it does | What it doesn't do |
 |:--|:--|:--|
 | `refresh-tilt-data.yml` (cron, twice daily) | Re-downloads Cricsheet, regenerates `public/data/*` using the committed pickle. Auto-commits if changed. | Doesn't retrain. Doesn't touch any `.md` — but `about.md` §11's top-10 table and "as of" date now track each refresh automatically (rendered client-side from the refreshed JSON), so they no longer drift between refreshes. |
-| `retrain-tilt-model.yml` (cron, March 1; manual dispatch) | Full pipeline including training. Auto-commits the new pickle and refreshed JSON. | Doesn't touch any `.md`. The hand-maintained content above must be updated by hand. |
+| `retrain-tilt-model.yml` (cron, March 1; manual dispatch) | Full pipeline including training. Auto-commits the new pickle, its sha256 sidecar, the frozen-holdout list (`models/`), and refreshed JSON. | Doesn't touch any `.md`. The hand-maintained content above must be updated by hand. |
 | `python pipeline/run_pipeline.py` (local) | Same as the retrain workflow, locally. | Same caveat — doesn't touch `.md`. |
 | `python -c "from pipeline.run_pipeline import refresh_tilt_data_only; refresh_tilt_data_only()"` | Same as the data-refresh workflow, locally. | Same caveat. |
 

@@ -404,6 +404,39 @@ def _build_player_name_lookup(player_tilt: pd.DataFrame) -> dict:
     return {row.get("player_id", ""): row.get("full_name", row["player"]) for _, row in player_tilt.iterrows()}
 
 
+# %% Season champion helper
+def _season_champion(season_df: pd.DataFrame, match_info: dict) -> Optional[str]:
+    """Winner of the season's Final, falling back to the last-dated match.
+
+    Picking purely by date crowns the wrong team if a rescheduled fixture is
+    played after the final (issue #196). Cricsheet tags the Final explicitly
+    via event_stage, so prefer it; the date fallback covers any season whose
+    raw data lacks stage tags.
+    """
+    if len(season_df) == 0:
+        return None
+    if "event_stage" in season_df.columns:
+        finals = season_df[season_df["event_stage"] == "Final"]
+        if len(finals) > 0:
+            final_match_id = finals.sort_values("date").iloc[-1]["match_id"]
+            return match_info.get(final_match_id, {}).get("winner")
+    last_match_id = season_df.sort_values("date").iloc[-1]["match_id"]
+    return match_info.get(last_match_id, {}).get("winner")
+
+
+# %% Stale-file cleanup helper
+def _clear_dir_json(dir_path: Path) -> None:
+    """Drop leftover JSON files before re-exporting a per-entity directory.
+
+    Exports are keyed by slug/id; when a key changes (e.g. a player_id
+    becoming available turns `ms-dhoni` into `ms-dhoni-<id>`), the old file
+    would otherwise be left behind and served forever (issue #196). Each
+    export fully regenerates its directory, so clearing first is safe.
+    """
+    for p in dir_path.glob("*.json"):
+        p.unlink()
+
+
 # %% Export rankings
 def export_rankings(
     player_tilt: pd.DataFrame,
@@ -504,6 +537,7 @@ def export_player_details(
     output_dir = Path(output_dir or config["export"]["output_dir"])
     players_dir = output_dir / config["export"]["players_dir"]
     players_dir.mkdir(parents=True, exist_ok=True)
+    _clear_dir_json(players_dir)
 
     qualified = player_tilt
 
@@ -887,6 +921,7 @@ def export_match_details(
     output_dir = Path(output_dir or config["export"]["output_dir"])
     matches_dir = output_dir / "matches"
     matches_dir.mkdir(parents=True, exist_ok=True)
+    _clear_dir_json(matches_dir)
 
     slug_lookup = _build_player_slug_lookup(player_tilt)
 
@@ -1509,6 +1544,7 @@ def export_team_details(
     output_dir = Path(output_dir or config["export"]["output_dir"])
     teams_dir = output_dir / "teams"
     teams_dir.mkdir(parents=True, exist_ok=True)
+    _clear_dir_json(teams_dir)
 
     deltas_df = _add_legal_flags(deltas_df)
     slug_lookup = _build_player_slug_lookup(player_tilt)
@@ -1524,12 +1560,8 @@ def export_team_details(
         if season_str not in completed_seasons:
             season_champions[season_str] = None
             continue
-        sm = deltas_df[deltas_df["season"] == season_value].sort_values("date")
-        if len(sm) == 0:
-            season_champions[season_str] = None
-            continue
-        last_match_id = sm.iloc[-1]["match_id"]
-        season_champions[season_str] = match_info.get(last_match_id, {}).get("winner")
+        sm = deltas_df[deltas_df["season"] == season_value]
+        season_champions[season_str] = _season_champion(sm, match_info)
 
     exported = 0
     for canonical, slug in TEAM_SLUG.items():
@@ -1691,6 +1723,7 @@ def export_team_season_details(
     output_dir = Path(output_dir or config["export"]["output_dir"])
     ts_dir = output_dir / "team_seasons"
     ts_dir.mkdir(parents=True, exist_ok=True)
+    _clear_dir_json(ts_dir)
 
     deltas_df = _add_legal_flags(deltas_df)
     slug_lookup = _build_player_slug_lookup(player_tilt)
@@ -1980,6 +2013,7 @@ def export_seasons(
     output_dir = Path(output_dir or config["export"]["output_dir"])
     seasons_dir = output_dir / "seasons"
     seasons_dir.mkdir(parents=True, exist_ok=True)
+    _clear_dir_json(seasons_dir)
 
     deltas_df = _add_legal_flags(deltas_df)
     match_info = _build_match_info_cache(deltas_df)
@@ -2032,8 +2066,7 @@ def export_seasons(
         # so the website doesn't crown a winner mid-tournament.
         season_matches_df = deltas_df[deltas_df["season"] == season]
         if season in completed_seasons:
-            last_match_id = season_matches_df.sort_values("date").iloc[-1]["match_id"]
-            champion = match_info.get(last_match_id, {}).get("winner")
+            champion = _season_champion(season_matches_df, match_info)
         else:
             champion = None
 
@@ -2093,6 +2126,7 @@ def export_leaders(
     output_dir = Path(output_dir or config["export"]["output_dir"])
     leaders_dir = output_dir / "leaders"
     leaders_dir.mkdir(parents=True, exist_ok=True)
+    _clear_dir_json(leaders_dir)
 
     deltas_df = _add_legal_flags(deltas_df)
 

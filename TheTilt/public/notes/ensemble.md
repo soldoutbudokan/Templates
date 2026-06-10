@@ -10,7 +10,7 @@ This post is the diagnostic that surfaced the problem and the architectural fix 
 
 ## The thing that surfaced it
 
-In early May 2026 the career top-10 had **Bhuvneshwar Kumar above AB de Villiers**. That's not a defensible ordering by any cricketing read of those two careers — Kumar is a top-tier death-overs swing bowler, ABD is the most consistent T20 batter the IPL has produced, and across <span id="ens-kumar-mt">205</span> vs <span id="ens-abd-mt">168</span> matches the gap should be the other way.
+In early May 2026 the career top-10 had **Bhuvneshwar Kumar above AB de Villiers**. That's not a defensible ordering by any cricketing read of those two careers — Kumar is a top-tier death-overs swing bowler, ABD is the most consistent T20 batter the IPL has produced, and across <span id="ens-kumar-mt">206</span> vs <span id="ens-abd-mt">168</span> matches the gap should be the other way.
 
 The first instinct (the natural one) was that something about the model's calibration had drifted. We'd shipped a few things lately: an exponential PP-decay calibration, a final-ball wp_after snap, a hyperparameter retune. Maybe one of those was the culprit. So we reverted the bundle.
 
@@ -62,11 +62,13 @@ Three changes, applied together:
 
 ### 1. Lock the holdout split
 
-The 90/10 train/holdout split is now computed once with `random_state=42` and is the same 119 matches *forever*. Brier, AUC, and log-loss numbers are directly comparable across pipeline runs because they're measured on the same held-out games. Adding new IPL data shifts which matches sit in the *training* set; the holdout doesn't move.
+The 90/10 train/holdout split is frozen by **persisting the holdout match list** (`models/holdout_match_ids.json`): every retrain validates on the listed matches, and anything added to Cricsheet since goes to train. Brier, AUC, and log-loss numbers are directly comparable across pipeline runs because they're measured on the same held-out games.
+
+*(June 2026 correction — issue #193: the original version of this section claimed `random_state=42` alone locked the holdout "forever". It doesn't — as the diagnostic above explains, `GroupShuffleSplit` permutes the **current** match set, so a fixed seed reshuffles the 10% every time data grows. The persisted list ships at the next retrain, which is the one documented comparability break; until then the headline Brier 0.191 / AUC 0.780 were measured on a seed-42 split of the then-current data. Early stopping was also moved off the holdout at the same time: each member now early-stops on its own validation fold carved from train, so the reported metrics are no longer selected on the reporting set.)*
 
 ```python
 # config/pipeline_config.yaml
-test_size: 0.1     # 10% holdout = 119 matches, locked
+test_size: 0.1     # 10% holdout, frozen via models/holdout_match_ids.json
 random_state: 42
 ```
 
@@ -157,7 +159,7 @@ More importantly: **the rankings will now hold across retrains.** A K=20 spot-ch
 A few open items that K=100 doesn't address:
 
 - **Telescoping residual at over boundaries** ([issue #110](https://github.com/soldoutbudokan/Templates/issues/110)). With retrain variance now controlled, the chained-endpoints A/B was finally clean. Two variants tested in `notebooks/boundary_cliff_prototype.py`: V5 (chain across all balls) and V6 (chain only at over boundaries). Both close the per-match telescoping residual (~5.5pp inn2 mean abs under the production Steps 1+2 calibration) but reshuffle the top-10 by 5–30 ranks for tracked players and surface medium/low-confidence short-career bowlers in the top-10 floor. Both stay deferred. Separate fallout from the same investigation: production's previous Step 3 (linear-decay damping over inn2 first six balls) was found to over-credit early-chase bowlers, and was removed — see [Innings boundary](notes.html?note=innings-boundary).
-- **DLS handling beyond training-time exclusion.** 22 DLS-affected matches are filtered from training; their balls still flow through compute_tilt with the standard model, contributing to player TILTs from out-of-distribution states. Excluding them from ranking aggregation is a separate decision worth making.
+- **DLS handling beyond training-time exclusion.** The DLS-affected matches (23 as of June 2026) are filtered from training. *(June 2026 update: their balls are now scored with the per-innings DLS allocation again — the #111 revert had silently dropped that fix, leaving them scored from out-of-distribution 120-ball states; issue #192 re-landed it.)* Excluding them from ranking aggregation entirely is still a separate decision worth making.
 - **Out-of-distribution feature combinations**, including the example in the diagnostic above (a 2022 RCB venue at a season the model has limited support for). Ensembling reduces the variance of the prediction on those points but doesn't fix the underlying coverage gap. More years of data fix it eventually; nothing in the model class fixes it now.
 
 ---

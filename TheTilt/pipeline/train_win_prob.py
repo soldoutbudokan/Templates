@@ -1,4 +1,6 @@
 # %% Imports
+import hashlib
+import json
 import os
 import pickle
 from dataclasses import dataclass, field
@@ -18,12 +20,14 @@ from sklearn.model_selection import GroupShuffleSplit
 class EnsembleModel:
     """Average predict_proba across K identically-configured LGBM members.
 
-    Members differ only in `random_state` (42, 43, ..., 42+K-1) and are all
-    trained on the same fixed 10% holdout split (also seed=42). Differences
-    between members are pure gradient-boosting trajectory variance —
-    averaging cancels it. See issue #111: a single retrain on a +2-match
-    delta moved AB de Villiers from rank #3 to rank #9 because the random
-    train/holdout reshuffle produced a substantively different model.
+    Members differ only in `random_state` (42, 43, ..., 42+K-1): each seed
+    sets the member's boosting trajectory and its early-stop validation fold
+    (carved from train — issue #193). All members share one frozen holdout
+    (models/holdout_match_ids.json), used solely for reporting. Differences
+    between members are pure trajectory variance — averaging cancels it. See
+    issue #111: a single retrain on a +2-match delta moved AB de Villiers
+    from rank #3 to rank #9 because the random train/holdout reshuffle
+    produced a substantively different model.
 
     Exposes the same `predict_proba` / `feature_importances_` interface as
     a single LGBMClassifier, so all callers (compute_tilt, sanity_check)
@@ -86,15 +90,22 @@ class WinProbModelConfig:
         "venue",
     ])
     target: str = "batting_team_won"
-    n_estimators: int = 500
-    learning_rate: float = 0.05
-    max_depth: int = 6
-    min_child_samples: int = 100
-    num_leaves: int = 31
-    reg_lambda: float = 0.0
-    test_size: float = 0.2
+    # Defaults mirror config/pipeline_config.yaml — keep them in sync (issue
+    # #199: they used to diverge, so a bare WinProbModelConfig() silently
+    # produced a different model than the YAML the pipeline always loads).
+    n_estimators: int = 2000
+    learning_rate: float = 0.03
+    max_depth: int = 4
+    min_child_samples: int = 500
+    num_leaves: int = 16
+    reg_lambda: float = 5.0
+    test_size: float = 0.1
     random_state: int = 42
-    ensemble_size: int = 1
+    ensemble_size: int = 100
+    # Frozen-holdout match list (issue #193). When the file exists, the listed
+    # matches are the holdout and everything else trains; when absent, a seeded
+    # GroupShuffleSplit picks the holdout and persists it here.
+    holdout_path: Optional[str] = None
 
 
 def load_config(config_path: str = "config/pipeline_config.yaml") -> dict:
@@ -107,28 +118,78 @@ def split_by_match(
     df: pd.DataFrame,
     config: WinProbModelConfig,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Split data by match (not by ball) to avoid leakage."""
+    """Split data by match (not by ball) to avoid leakage.
+
+    Frozen holdout (issue #193): a fixed seed alone does NOT freeze the
+    holdout — GroupShuffleSplit permutes the *current* match set, so every
+    data refresh reshuffles which matches land in the 10%. When
+    `config.holdout_path` exists, the listed match_ids are the holdout and
+    every other match (including ones added since the list was written) goes
+    to train, keeping Brier/AUC comparable across retrains. When the file is
+    absent, the seeded split picks the holdout once and persists it.
+    """
+    holdout_path = Path(config.holdout_path) if config.holdout_path else None
+
+    if holdout_path is not None and holdout_path.exists():
+        with open(holdout_path) as f:
+            holdout_ids = set(json.load(f)["match_ids"])
+        present = set(df["match_id"].unique())
+        missing = holdout_ids - present
+        if missing:
+            print(f"  Warning: {len(missing)} frozen-holdout matches absent from current data")
+        test_mask = df["match_id"].isin(holdout_ids)
+        print(f"  Frozen holdout loaded from {holdout_path} ({len(holdout_ids)} matches)")
+        return df[~test_mask], df[test_mask]
+
     splitter = GroupShuffleSplit(
         n_splits=1,
         test_size=config.test_size,
         random_state=config.random_state,
     )
     train_idx, test_idx = next(splitter.split(df, groups=df["match_id"]))
-    return df.iloc[train_idx], df.iloc[test_idx]
+    train_df, test_df = df.iloc[train_idx], df.iloc[test_idx]
+
+    if holdout_path is not None:
+        holdout_ids = sorted(str(m) for m in test_df["match_id"].unique())
+        holdout_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(holdout_path, "w") as f:
+            json.dump(
+                {
+                    "match_ids": holdout_ids,
+                    "note": "Frozen holdout (issue #193). Delete only to deliberately re-draw the split — that breaks metric comparability across retrains.",
+                    "seed": config.random_state,
+                    "test_size": config.test_size,
+                },
+                f,
+                indent=1,
+            )
+        print(f"  Persisted frozen holdout to {holdout_path} ({len(holdout_ids)} matches)")
+
+    return train_df, test_df
 
 
 # %% Fit a single ensemble member
 def _fit_member(
     train_df: pd.DataFrame,
-    test_df: pd.DataFrame,
     config: WinProbModelConfig,
     seed: int,
 ) -> lgb.LGBMClassifier:
-    """Train one LGBMClassifier on a fixed split with the given seed."""
-    X_train = train_df[config.features].copy()
-    y_train = train_df[config.target]
-    X_test = test_df[config.features].copy()
-    y_test = test_df[config.target]
+    """Train one LGBMClassifier with the given seed.
+
+    Early stopping selects each member's iteration count on a per-member
+    validation fold carved from TRAIN (grouped by match, keyed on the member
+    seed) — never on the reported holdout. Early-stopping on the holdout
+    biased the headline Brier/AUC optimistically, in the same direction for
+    all K members (issue #193).
+    """
+    val_splitter = GroupShuffleSplit(n_splits=1, test_size=config.test_size, random_state=seed)
+    fit_idx, val_idx = next(val_splitter.split(train_df, groups=train_df["match_id"]))
+    fit_df, val_df = train_df.iloc[fit_idx], train_df.iloc[val_idx]
+
+    X_train = fit_df[config.features].copy()
+    y_train = fit_df[config.target]
+    X_val = val_df[config.features].copy()
+    y_val = val_df[config.target]
 
     # Monotone constraints guard against pathological splits. Applied only to
     # features whose direction is unambiguous from the batting team's point of
@@ -157,11 +218,11 @@ def _fit_member(
     for col in config.categorical_features:
         if col in X_train.columns:
             X_train[col] = X_train[col].astype("category")
-            X_test[col] = X_test[col].astype("category")
+            X_val[col] = X_val[col].astype("category")
 
     model.fit(
         X_train, y_train,
-        eval_set=[(X_test, y_test)],
+        eval_set=[(X_val, y_val)],
         categorical_feature=config.categorical_features,
         callbacks=[
             lgb.early_stopping(stopping_rounds=50, verbose=False),
@@ -193,7 +254,7 @@ def train_ensemble(
     members: List[lgb.LGBMClassifier] = []
     for i, seed in enumerate(range(config.random_state, config.random_state + K)):
         print(f"  [{i + 1:3d}/{K}] random_state={seed} ...", end=" ", flush=True)
-        m = _fit_member(train_df, test_df, config, seed)
+        m = _fit_member(train_df, config, seed)
         members.append(m)
         best_iter = getattr(m, "best_iteration_", None)
         if best_iter is not None:
@@ -270,11 +331,17 @@ def sanity_check(model: EnsembleModel, config: WinProbModelConfig) -> None:
     """Run sanity checks on the model with known scenarios."""
     print("\n--- Sanity Checks ---")
 
+    # Scenario feature values must mirror the real pipeline's feature space
+    # (issue #193): `run_rate` is the SHRUNK rate (runs+25.2)/((balls+18)/6),
+    # not raw runs/overs — at 0 balls it is exactly 8.4, never 0.0 — and
+    # `required_run_rate` is clipped at 36 in build_features.py. `over` is
+    # 0-indexed (18 complete overs bowled → currently in over index 18).
     scenarios = [
         {
             "name": "Innings 2, need 2 off 6 balls, 8 wickets in hand",
             "features": {
                 "innings": 2, "balls_remaining": 6, "wickets_in_hand": 8,
+                # shrunk: (160+25.2)/((114+18)/6) = 8.42
                 "runs_scored": 160, "run_rate": 8.42, "required_run_rate": 2.0,
                 "target": 162, "runs_needed": 2, "over": 19,
                 "recent_wickets": 0, "venue": "Wankhede Stadium",
@@ -287,7 +354,8 @@ def sanity_check(model: EnsembleModel, config: WinProbModelConfig) -> None:
             "name": "Innings 2, need 60 off 6 balls, 2 wickets in hand",
             "features": {
                 "innings": 2, "balls_remaining": 6, "wickets_in_hand": 2,
-                "runs_scored": 100, "run_rate": 5.26, "required_run_rate": 60.0,
+                # shrunk: (100+25.2)/((114+18)/6) = 5.69; rrr 60 clips to 36
+                "runs_scored": 100, "run_rate": 5.69, "required_run_rate": 36.0,
                 "target": 160, "runs_needed": 60, "over": 19,
                 "recent_wickets": 3, "venue": "Wankhede Stadium",
                 "batting_team_chose_to_bat": 0, "season_numeric": 2024,
@@ -299,7 +367,8 @@ def sanity_check(model: EnsembleModel, config: WinProbModelConfig) -> None:
             "name": "Innings 1, start of match, 0/0",
             "features": {
                 "innings": 1, "balls_remaining": 120, "wickets_in_hand": 10,
-                "runs_scored": 0, "run_rate": 0.0, "required_run_rate": 0.0,
+                # shrunk: (0+25.2)/((0+18)/6) = 8.4 — the prior, not raw 0.0
+                "runs_scored": 0, "run_rate": 8.4, "required_run_rate": 0.0,
                 "target": 0, "runs_needed": 0, "over": 0,
                 "recent_wickets": 0, "venue": "Wankhede Stadium",
                 "batting_team_chose_to_bat": 1, "season_numeric": 2024,
@@ -311,8 +380,9 @@ def sanity_check(model: EnsembleModel, config: WinProbModelConfig) -> None:
             "name": "Innings 1, 200/2 off 18 overs (dominant)",
             "features": {
                 "innings": 1, "balls_remaining": 12, "wickets_in_hand": 8,
-                "runs_scored": 200, "run_rate": 11.11, "required_run_rate": 0.0,
-                "target": 0, "runs_needed": 0, "over": 19,
+                # shrunk: (200+25.2)/((108+18)/6) = 10.72; over 18 (0-indexed)
+                "runs_scored": 200, "run_rate": 10.72, "required_run_rate": 0.0,
+                "target": 0, "runs_needed": 0, "over": 18,
                 "recent_wickets": 0, "venue": "M Chinnaswamy Stadium",
                 "batting_team_chose_to_bat": 1, "season_numeric": 2024,
                 "opponent_bowler_economy": 8.0, "batting_team_nrr": 1.0,
@@ -340,8 +410,15 @@ def save_model(model: EnsembleModel, path: Optional[str] = None) -> Path:
     with open(path, "wb") as f:
         pickle.dump(model, f)
 
+    # sha256 sidecar — compute_tilt verifies it before unpickling, so a
+    # tampered pickle on the default branch can't get code execution on the
+    # Actions runner (issue #196). Commit the sidecar alongside the pickle.
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    sidecar = path.with_suffix(path.suffix + ".sha256")
+    sidecar.write_text(f"{digest}  {path.name}\n")
+
     size_mb = path.stat().st_size / (1024 * 1024)
-    print(f"\nModel saved to {path}  ({size_mb:.1f} MB)")
+    print(f"\nModel saved to {path}  ({size_mb:.1f} MB; sha256 sidecar {sidecar.name})")
     return path
 
 
@@ -374,6 +451,9 @@ def train_and_evaluate(featured_balls_path: Optional[str] = None) -> EnsembleMod
         test_size=config_dict["model"]["test_size"],
         random_state=config_dict["model"]["random_state"],
         ensemble_size=int(config_dict["model"].get("ensemble_size", 1)),
+        # Frozen holdout lives next to the pickle; committed so every retrain
+        # validates on the same matches (issue #193).
+        holdout_path=str(Path(save_path).with_name("holdout_match_ids.json")),
     )
 
     processed_dir = Path(config_dict["data"]["processed_dir"])

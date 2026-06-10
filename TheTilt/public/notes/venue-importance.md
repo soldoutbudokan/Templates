@@ -56,25 +56,25 @@ The venue lever, in other words, is not a uniform multiplier on performance. It'
 
 ---
 
-## Gayle: the sweep spans 3.8 percentage points
+## Gayle: the sweep spans 3.9 percentage points
 
-Gayle played 38 home matches for RCB across his career, 2011 to 2017. Real career TILT at Chinnaswamy is **+0.63%/match**. Relocate to Wankhede: **−0.70%** (−1.33pp). Relocate to Chepauk: **+2.64%** (+2.01pp).
+Gayle played 38 home matches for RCB across his career, 2011 to 2017. Real career TILT at Chinnaswamy is **+0.78%/match**. Relocate to Wankhede: **−0.55%** (−1.33pp). Relocate to Chepauk: **+2.92%** (+2.14pp).
 
 His full nine-venue sweep:
 
 | Target venue | Gayle TILT/match |
 |:---|:---:|
-| M Chinnaswamy Stadium (home) | **+0.63%** |
-| Wankhede Stadium | −0.70% |
-| Sawai Mansingh Stadium | +0.98% |
-| Arun Jaitley Stadium | +0.99% |
-| Eden Gardens | +1.73% |
-| Narendra Modi Stadium, Ahmedabad | +2.61% |
-| MA Chidambaram Stadium, Chepauk | **+2.64%** |
-| Rajiv Gandhi International, Uppal | +2.69% |
-| PCA IS Bindra Stadium, Mohali | +3.07% |
+| M Chinnaswamy Stadium (home) | **+0.78%** |
+| Wankhede Stadium | −0.55% |
+| Sawai Mansingh Stadium | +1.11% |
+| Arun Jaitley Stadium | +1.21% |
+| Eden Gardens | +1.87% |
+| Narendra Modi Stadium, Ahmedabad | +2.87% |
+| MA Chidambaram Stadium, Chepauk | **+2.92%** |
+| Rajiv Gandhi International, Uppal | +2.94% |
+| PCA IS Bindra Stadium, Mohali | +3.30% |
 
-The range is 3.8pp — not small for a career-level cohort with 38 matches. And the shape is odd: the venue that looks structurally most similar to Chinnaswamy (flat, batsman-friendly Wankhede) *suppresses* Gayle's TILT below his home figure; the lower-scoring venues lift him. Again the logic is about where the WP ceiling sits relative to his scoring: Gayle on a Chinnaswamy-clone spends a lot of balls at states the model already considers resolved.
+The range is 3.9pp — not small for a career-level cohort with 38 matches. And the shape is odd: the venue that looks structurally most similar to Chinnaswamy (flat, batsman-friendly Wankhede) *suppresses* Gayle's TILT below his home figure; the lower-scoring venues lift him. Again the logic is about where the WP ceiling sits relative to his scoring: Gayle on a Chinnaswamy-clone spends a lot of balls at states the model already considers resolved.
 
 ---
 
@@ -155,7 +155,7 @@ The venue lever quantified here is the model's reliance on the venue categorical
 
 Venue is a real feature in TILT, and its lever is player-specific, often small, and occasionally counterintuitive.
 
-For Dhoni the lever barely exists, and what there is points the conventional way (Chepauk tops his band by a hair). For Rohit it exists but points the wrong way — his Wankhede home isn't where the model rates him highest. For Kohli 2016 it's large and points up; for ABD 2016 it's small and points up too, in the very direction the spin-track stereotype says it shouldn't. For Gayle the lever's magnitude depends entirely on which alternate venue you pick: a 3.8pp range across the nine-venue sweep, with the lower-scoring targets *lifting* him.
+For Dhoni the lever barely exists, and what there is points the conventional way (Chepauk tops his band by a hair). For Rohit it exists but points the wrong way — his Wankhede home isn't where the model rates him highest. For Kohli 2016 it's large and points up; for ABD 2016 it's small and points up too, in the very direction the spin-track stereotype says it shouldn't. For Gayle the lever's magnitude depends entirely on which alternate venue you pick: a 3.9pp range across the nine-venue sweep, with the lower-scoring targets *lifting* him.
 
 The cleanest methodological finding isn't in any individual number. It's that the same eight matches, under the same venue swap, lift two batsmen's TILT by very different amounts — Kohli roughly three times ABD. That's the signature of a lever that's being filtered through the shape of each player's innings, not a lever that scales uniformly with "how friendly is this ground." It also exposes a quieter surprise: the model reads Chinnaswamy as so batsman-friendly that almost *any* harder venue inflates the per-ball WP weight, so relocating RCB's 2016 home slate to Chepauk lifts both men rather than punishing either.
 

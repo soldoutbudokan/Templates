@@ -11,6 +11,13 @@ on:
 permissions:
   contents: write
 
+# Serialize pipeline runs (issue #196): shared group with
+# retrain-tilt-model.yml so a refresh can't race the seasonal retrain (or a
+# second refresh) and clobber its push.
+concurrency:
+  group: tilt-pipeline
+  cancel-in-progress: false
+
 jobs:
   refresh:
     runs-on: ubuntu-latest

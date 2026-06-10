@@ -1,14 +1,12 @@
 # %% Imports
 """Download Cricsheet people register and resolve full player names + citizenship via Wikidata."""
 import csv
-import io
 import json
 import time
-import urllib.parse
-import urllib.request
 from pathlib import Path
 from typing import Dict, Optional, Set
 
+import requests
 import yaml
 
 
@@ -22,6 +20,31 @@ PEOPLE_CSV_URL = "https://cricsheet.org/register/people.csv"
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 WIKIDATA_BATCH_SIZE = 150
 WIKIDATA_RATE_LIMIT = 1.0  # seconds between batches
+MAX_HTTP_ATTEMPTS = 4
+HTTP_BACKOFF_BASE_SECONDS = 5
+
+
+def _get_with_retries(url: str, *, params: Optional[Dict] = None, timeout: int = 60) -> requests.Response:
+    """GET with the same retry/backoff discipline as download_data.py.
+
+    This module used to be the one pipeline downloader on bare
+    urllib.request — two HTTP/TLS stacks, one of them unretried (issue #199).
+    """
+    last_err: Optional[Exception] = None
+    for attempt in range(1, MAX_HTTP_ATTEMPTS + 1):
+        try:
+            resp = requests.get(
+                url, params=params, headers={"User-Agent": "TheTilt/1.0"}, timeout=timeout
+            )
+            resp.raise_for_status()
+            return resp
+        except requests.exceptions.RequestException as e:
+            last_err = e
+            if attempt < MAX_HTTP_ATTEMPTS:
+                delay = HTTP_BACKOFF_BASE_SECONDS * 2 ** (attempt - 1)
+                print(f"    Attempt {attempt} failed ({e}); retrying in {delay}s...")
+                time.sleep(delay)
+    raise RuntimeError(f"Failed to GET {url} after {MAX_HTTP_ATTEMPTS} attempts") from last_err
 
 
 # %% Download and parse Cricsheet people register
@@ -32,9 +55,7 @@ def download_people_csv(output_path: Optional[str] = None) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     print(f"Downloading Cricsheet people register...")
-    req = urllib.request.Request(PEOPLE_CSV_URL, headers={"User-Agent": "TheTilt/1.0"})
-    resp = urllib.request.urlopen(req, timeout=30)
-    data = resp.read()
+    data = _get_with_retries(PEOPLE_CSV_URL, timeout=30).content
 
     with open(output_path, "wb") as f:
         f.write(data)
@@ -107,14 +128,11 @@ def resolve_full_names(
         }}
         """
 
-        url = WIKIDATA_SPARQL_URL + "?" + urllib.parse.urlencode(
-            {"query": query, "format": "json"}
-        )
-        req = urllib.request.Request(url, headers={"User-Agent": "TheTilt/1.0"})
-
         try:
-            resp = urllib.request.urlopen(req, timeout=60)
-            data = json.loads(resp.read())
+            resp = _get_with_retries(
+                WIKIDATA_SPARQL_URL, params={"query": query, "format": "json"}, timeout=60
+            )
+            data = resp.json()
             for r in data["results"]["bindings"]:
                 ckey = r["cricinfo_id"]["value"]
                 name = r["itemLabel"]["value"]
@@ -186,14 +204,11 @@ def resolve_citizenships(
         }}
         """
 
-        url = WIKIDATA_SPARQL_URL + "?" + urllib.parse.urlencode(
-            {"query": query, "format": "json"}
-        )
-        req = urllib.request.Request(url, headers={"User-Agent": "TheTilt/1.0"})
-
         try:
-            resp = urllib.request.urlopen(req, timeout=60)
-            data = json.loads(resp.read())
+            resp = _get_with_retries(
+                WIKIDATA_SPARQL_URL, params={"query": query, "format": "json"}, timeout=60
+            )
+            data = resp.json()
             for r in data["results"]["bindings"]:
                 ckey = r["cricinfo_id"]["value"]
                 if ckey not in to_resolve:

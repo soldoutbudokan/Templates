@@ -8,18 +8,18 @@
   "teams": [
     "Mumbai Indians"
   ],
-  "total_tilt_per_match": 0.06125,
-  "batting_tilt_per_match": -0.01131,
-  "bowling_tilt_per_match": 0.06821,
-  "shrunk_total_tilt_per_match": 0.03663,
-  "shrunk_batting_tilt_per_match": -0.01254,
-  "shrunk_bowling_tilt_per_match": 0.04321,
-  "tilt_ci_lower": -0.03637,
-  "tilt_ci_upper": 0.10964,
-  "tilt_ci_lower_90": -0.02464,
-  "tilt_ci_upper_90": 0.09791,
+  "total_tilt_per_match": 0.06155,
+  "batting_tilt_per_match": -0.01279,
+  "bowling_tilt_per_match": 0.06942,
+  "shrunk_total_tilt_per_match": 0.0369,
+  "shrunk_batting_tilt_per_match": -0.0139,
+  "shrunk_bowling_tilt_per_match": 0.04428,
+  "tilt_ci_lower": -0.03685,
+  "tilt_ci_upper": 0.11065,
+  "tilt_ci_lower_90": -0.025,
+  "tilt_ci_upper_90": 0.0988,
   "confidence": "low",
-  "total_tilt": 0.79624,
+  "total_tilt": 0.8001,
   "total_matches": 13,
   "batting_balls": 111,
   "bowling_balls": 276,
@@ -27,8 +27,8 @@
     {
       "season": "2008",
       "team": "Mumbai Indians",
-      "batting_tilt_per_match": -0.01131,
-      "bowling_tilt_per_match": 0.06821,
+      "batting_tilt_per_match": -0.01279,
+      "bowling_tilt_per_match": 0.06942,
       "batting_matches": 8,
       "bowling_matches": 13,
       "batting_balls": 111,
@@ -45,14 +45,14 @@
           "bat_runs": 28,
           "bat_balls": 12,
           "bat_sr": 233.3,
-          "bat_tilt": -0.01071,
+          "bat_tilt": -0.02261,
           "bat_not_out": false,
           "bowl_wkts": 0,
           "bowl_balls": 24,
           "bowl_runs": 17,
           "bowl_econ": 4.25,
           "bowl_tilt": 0.18237,
-          "total_tilt": 0.17166
+          "total_tilt": 0.15976
         },
         {
           "match_id": "335989",
@@ -151,8 +151,8 @@
           "bowl_balls": 24,
           "bowl_runs": 16,
           "bowl_econ": 4.0,
-          "bowl_tilt": 0.22998,
-          "total_tilt": 0.3277
+          "bowl_tilt": 0.24553,
+          "total_tilt": 0.34325
         },
         {
           "match_id": "336008",
@@ -251,8 +251,8 @@
           "bowl_balls": 18,
           "bowl_runs": 35,
           "bowl_econ": 11.67,
-          "bowl_tilt": -0.00596,
-          "total_tilt": -0.05671
+          "bowl_tilt": -0.00547,
+          "total_tilt": -0.05622
         },
         {
           "match_id": "336036",
@@ -291,8 +291,8 @@
           "bowl_balls": 24,
           "bowl_runs": 23,
           "bowl_econ": 5.75,
-          "bowl_tilt": 0.04083,
-          "total_tilt": 0.04083
+          "bowl_tilt": 0.04056,
+          "total_tilt": 0.04056
         }
       ],
       "batting_stats": {
@@ -333,23 +333,23 @@
     },
     {
       "phase": "death",
-      "tilt": -0.09216,
+      "tilt": -0.10407,
       "balls": 42,
-      "avg_delta": -0.002095
+      "avg_delta": -0.002365
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.69948,
+      "tilt": 0.71515,
       "balls": 204,
-      "avg_delta": 0.003363
+      "avg_delta": 0.003438
     },
     {
       "phase": "middle",
-      "tilt": 0.19796,
+      "tilt": 0.19806,
       "balls": 66,
-      "avg_delta": 0.002999
+      "avg_delta": 0.003001
     },
     {
       "phase": "death",
@@ -390,7 +390,7 @@
       "match_id": "335985",
       "date": "2008-04-20",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.01071,
+      "tilt": -0.02261,
       "runs": 28,
       "balls": 12,
       "not_out": false
@@ -446,7 +446,7 @@
       "match_id": "335985",
       "date": "2008-04-20",
       "vs": "Royal Challengers Bangalore",
-      "tilt": -0.01071,
+      "tilt": -0.02261,
       "runs": 28,
       "balls": 12,
       "not_out": false
@@ -465,7 +465,7 @@
       "match_id": "336004",
       "date": "2008-05-04",
       "vs": "Delhi Capitals",
-      "tilt": 0.22998,
+      "tilt": 0.24553,
       "wickets": 2,
       "balls": 24
     },
@@ -523,7 +523,7 @@
       "match_id": "336032",
       "date": "2008-05-24",
       "vs": "Delhi Capitals",
-      "tilt": -0.00596,
+      "tilt": -0.00547,
       "wickets": 0,
       "balls": 18
     },
@@ -540,80 +540,80 @@
     {
       "match": 1,
       "date": "2008-04-20",
-      "tilt": 0.17166,
-      "cumulative": 0.17166
+      "tilt": 0.15976,
+      "cumulative": 0.15976
     },
     {
       "match": 2,
       "date": "2008-04-23",
       "tilt": -0.25611,
-      "cumulative": -0.08444
+      "cumulative": -0.09635
     },
     {
       "match": 3,
       "date": "2008-04-25",
       "tilt": -0.00124,
-      "cumulative": -0.08569
+      "cumulative": -0.09759
     },
     {
       "match": 4,
       "date": "2008-04-27",
       "tilt": -0.08454,
-      "cumulative": -0.17023
+      "cumulative": -0.18213
     },
     {
       "match": 5,
       "date": "2008-04-29",
       "tilt": 0.05648,
-      "cumulative": -0.11375
+      "cumulative": -0.12566
     },
     {
       "match": 6,
       "date": "2008-05-04",
-      "tilt": 0.3277,
-      "cumulative": 0.21394
+      "tilt": 0.34325,
+      "cumulative": 0.21759
     },
     {
       "match": 7,
       "date": "2008-05-07",
       "tilt": 0.09236,
-      "cumulative": 0.3063
+      "cumulative": 0.30995
     },
     {
       "match": 8,
       "date": "2008-05-14",
       "tilt": 0.15244,
-      "cumulative": 0.45874
+      "cumulative": 0.46239
     },
     {
       "match": 9,
       "date": "2008-05-16",
       "tilt": 0.32068,
-      "cumulative": 0.77942
+      "cumulative": 0.78307
     },
     {
       "match": 10,
       "date": "2008-05-21",
       "tilt": 0.03807,
-      "cumulative": 0.81749
+      "cumulative": 0.82114
     },
     {
       "match": 11,
       "date": "2008-05-24",
-      "tilt": -0.05671,
-      "cumulative": 0.76078
+      "tilt": -0.05622,
+      "cumulative": 0.76492
     },
     {
       "match": 12,
       "date": "2008-05-26",
       "tilt": -0.00537,
-      "cumulative": 0.75541
+      "cumulative": 0.75955
     },
     {
       "match": 13,
       "date": "2008-05-28",
-      "tilt": 0.04083,
-      "cumulative": 0.79624
+      "tilt": 0.04056,
+      "cumulative": 0.8001
     }
   ],
   "team_matchups": [
@@ -629,7 +629,7 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.01071,
+      "tilt_per_match": -0.02261,
       "matches": 1
     },
     {
@@ -656,12 +656,12 @@
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.11201,
+      "tilt_per_match": 0.12003,
       "matches": 2
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.1116,
+      "tilt_per_match": 0.11146,
       "matches": 2
     },
     {
@@ -707,18 +707,18 @@
     "best_figures": "3/12"
   },
   "match_tilt_distribution": [
-    0.17166,
+    0.15976,
     -0.25611,
     -0.00124,
     -0.08454,
     0.05648,
-    0.3277,
+    0.34325,
     0.09236,
     0.15244,
     0.32068,
     0.03807,
-    -0.05671,
+    -0.05622,
     -0.00537,
-    0.04083
+    0.04056
   ]
 }

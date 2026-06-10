@@ -9,18 +9,18 @@
     "Kolkata Knight Riders",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.00368,
-  "batting_tilt_per_match": 0.00393,
-  "bowling_tilt_per_match": 0.0014,
-  "shrunk_total_tilt_per_match": -0.00311,
-  "shrunk_batting_tilt_per_match": -0.00138,
-  "shrunk_bowling_tilt_per_match": -0.00299,
-  "tilt_ci_lower": -0.04542,
-  "tilt_ci_upper": 0.03921,
-  "tilt_ci_lower_90": -0.03862,
-  "tilt_ci_upper_90": 0.03241,
+  "total_tilt_per_match": 0.00464,
+  "batting_tilt_per_match": 0.00441,
+  "bowling_tilt_per_match": 0.00215,
+  "shrunk_total_tilt_per_match": -0.00238,
+  "shrunk_batting_tilt_per_match": -0.0031,
+  "shrunk_bowling_tilt_per_match": -0.00284,
+  "tilt_ci_lower": -0.04495,
+  "tilt_ci_upper": 0.0402,
+  "tilt_ci_lower_90": -0.03811,
+  "tilt_ci_upper_90": 0.03335,
   "confidence": "low",
-  "total_tilt": 0.05889,
+  "total_tilt": 0.07423,
   "total_matches": 16,
   "batting_balls": 93,
   "bowling_balls": 272,
@@ -28,8 +28,8 @@
     {
       "season": "2015",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": 0.00414,
-      "bowling_tilt_per_match": 0.02612,
+      "batting_tilt_per_match": 0.00495,
+      "bowling_tilt_per_match": 0.02699,
       "batting_matches": 6,
       "bowling_matches": 12,
       "batting_balls": 78,
@@ -112,8 +112,8 @@
           "bowl_balls": 20,
           "bowl_runs": 18,
           "bowl_econ": 5.4,
-          "bowl_tilt": 0.13515,
-          "total_tilt": 0.13515
+          "bowl_tilt": 0.13982,
+          "total_tilt": 0.13982
         },
         {
           "match_id": "829771",
@@ -126,14 +126,14 @@
           "bat_runs": 9,
           "bat_balls": 7,
           "bat_sr": 128.6,
-          "bat_tilt": 0.0288,
+          "bat_tilt": 0.03374,
           "bat_not_out": true,
           "bowl_wkts": 1,
           "bowl_balls": 12,
           "bowl_runs": 20,
           "bowl_econ": 10.0,
-          "bowl_tilt": -0.02535,
-          "total_tilt": 0.00345
+          "bowl_tilt": -0.02537,
+          "total_tilt": 0.00837
         },
         {
           "match_id": "829779",
@@ -206,14 +206,14 @@
           "bat_runs": 4,
           "bat_balls": 5,
           "bat_sr": 80.0,
-          "bat_tilt": 0.02408,
+          "bat_tilt": 0.02399,
           "bat_not_out": true,
           "bowl_wkts": 1,
           "bowl_balls": 12,
           "bowl_runs": 17,
           "bowl_econ": 8.5,
-          "bowl_tilt": 0.01069,
-          "total_tilt": 0.03477
+          "bowl_tilt": 0.0108,
+          "total_tilt": 0.03479
         },
         {
           "match_id": "829807",
@@ -232,8 +232,8 @@
           "bowl_balls": 12,
           "bowl_runs": 20,
           "bowl_econ": 10.0,
-          "bowl_tilt": 0.03895,
-          "total_tilt": 0.03895
+          "bowl_tilt": 0.04469,
+          "total_tilt": 0.04469
         },
         {
           "match_id": "829819",
@@ -448,9 +448,9 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": 0.00155,
+      "tilt": 0.00639,
       "balls": 24,
-      "avg_delta": 6.2e-05
+      "avg_delta": 0.000256
     },
     {
       "phase": "death",
@@ -462,21 +462,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.23249,
+      "tilt": 0.23821,
       "balls": 66,
-      "avg_delta": 0.003369
+      "avg_delta": 0.003452
     },
     {
       "phase": "middle",
-      "tilt": -0.34966,
+      "tilt": -0.34955,
       "balls": 150,
-      "avg_delta": -0.002256
+      "avg_delta": -0.002255
     },
     {
       "phase": "death",
-      "tilt": 0.1368,
+      "tilt": 0.14147,
       "balls": 56,
-      "avg_delta": 0.002319
+      "avg_delta": 0.002398
     }
   ],
   "best_matches": [
@@ -502,7 +502,7 @@
       "match_id": "829771",
       "date": "2015-05-02",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.0288,
+      "tilt": 0.03374,
       "runs": 9,
       "balls": 7,
       "not_out": true
@@ -511,7 +511,7 @@
       "match_id": "829803",
       "date": "2015-05-13",
       "vs": "Punjab Kings",
-      "tilt": 0.02408,
+      "tilt": 0.02399,
       "runs": 4,
       "balls": 5,
       "not_out": true
@@ -578,7 +578,7 @@
       "match_id": "829757",
       "date": "2015-04-26",
       "vs": "Delhi Capitals",
-      "tilt": 0.13515,
+      "tilt": 0.13982,
       "wickets": 2,
       "balls": 20
     },
@@ -652,7 +652,7 @@
       "match_id": "829771",
       "date": "2015-05-02",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.02535,
+      "tilt": -0.02537,
       "wickets": 1,
       "balls": 12
     }
@@ -679,80 +679,80 @@
     {
       "match": 4,
       "date": "2015-04-26",
-      "tilt": 0.13515,
-      "cumulative": 0.08437
+      "tilt": 0.13982,
+      "cumulative": 0.08904
     },
     {
       "match": 5,
       "date": "2015-05-02",
-      "tilt": 0.00346,
-      "cumulative": 0.08783
+      "tilt": 0.00837,
+      "cumulative": 0.09741
     },
     {
       "match": 6,
       "date": "2015-05-04",
       "tilt": 0.03202,
-      "cumulative": 0.11985
+      "cumulative": 0.12944
     },
     {
       "match": 7,
       "date": "2015-05-06",
       "tilt": 0.0,
-      "cumulative": 0.11986
+      "cumulative": 0.12944
     },
     {
       "match": 8,
       "date": "2015-05-10",
       "tilt": -0.00364,
-      "cumulative": 0.11621
+      "cumulative": 0.1258
     },
     {
       "match": 9,
       "date": "2015-05-13",
-      "tilt": 0.03477,
-      "cumulative": 0.15098
+      "tilt": 0.03478,
+      "cumulative": 0.16058
     },
     {
       "match": 10,
       "date": "2015-05-15",
-      "tilt": 0.03895,
-      "cumulative": 0.18993
+      "tilt": 0.04469,
+      "cumulative": 0.20527
     },
     {
       "match": 11,
       "date": "2015-05-20",
       "tilt": 0.10956,
-      "cumulative": 0.29949
+      "cumulative": 0.31483
     },
     {
       "match": 12,
       "date": "2015-05-22",
       "tilt": 0.03875,
-      "cumulative": 0.33824
+      "cumulative": 0.35359
     },
     {
       "match": 13,
       "date": "2016-04-17",
       "tilt": -0.23827,
-      "cumulative": 0.09997
+      "cumulative": 0.11531
     },
     {
       "match": 14,
       "date": "2023-04-23",
       "tilt": -0.10541,
-      "cumulative": -0.00544
+      "cumulative": 0.00991
     },
     {
       "match": 15,
       "date": "2023-04-26",
       "tilt": 0.06485,
-      "cumulative": 0.05942
+      "cumulative": 0.07476
     },
     {
       "match": 16,
       "date": "2023-04-29",
       "tilt": -0.00053,
-      "cumulative": 0.05889
+      "cumulative": 0.07423
     }
   ],
   "team_matchups": [
@@ -768,12 +768,12 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.0288,
+      "tilt_per_match": 0.03374,
       "matches": 1
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.02408,
+      "tilt_per_match": 0.02399,
       "matches": 1
     },
     {
@@ -795,7 +795,7 @@
   "bowling_team_matchups": [
     {
       "opponent": "Sunrisers Hyderabad",
-      "tilt_per_match": 0.03895,
+      "tilt_per_match": 0.04469,
       "matches": 1
     },
     {
@@ -810,7 +810,7 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.00534,
+      "tilt_per_match": 0.0054,
       "matches": 2
     },
     {
@@ -820,12 +820,12 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.02535,
+      "tilt_per_match": -0.02537,
       "matches": 1
     },
     {
       "opponent": "Delhi Capitals",
-      "tilt_per_match": -0.03642,
+      "tilt_per_match": -0.03409,
       "matches": 2
     }
   ],
@@ -854,13 +854,13 @@
     0.1336,
     -0.15039,
     -0.03399,
-    0.13515,
-    0.00346,
+    0.13982,
+    0.00837,
     0.03202,
     0.0,
     -0.00364,
-    0.03477,
-    0.03895,
+    0.03478,
+    0.04469,
     0.10956,
     0.03875,
     -0.23827,
