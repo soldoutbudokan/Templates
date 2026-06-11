@@ -39,7 +39,23 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run data-only refresh (no retrain)
-        run: python -c "from pipeline.run_pipeline import refresh_tilt_data_only; refresh_tilt_data_only()"
+        # Cricsheet CDN blocks occasionally outlast even the stretched retry
+        # window (issue #205). A failed download here soft-fails with a
+        # ::warning:: annotation instead of a red X — the refresh is skipped,
+        # the site keeps serving the last good public/data/, and the next
+        # cron run catches up. Any other pipeline error still hard-fails,
+        # and retrain-tilt-model.yml hard-fails on download too (by design).
+        run: |
+          python - <<'EOF'
+          import sys
+          from pipeline.download_data import CricsheetDownloadError
+          from pipeline.run_pipeline import refresh_tilt_data_only
+          try:
+              refresh_tilt_data_only()
+          except CricsheetDownloadError as e:
+              print(f"::warning title=Cricsheet unreachable — refresh skipped::{e}")
+              sys.exit(0)
+          EOF
 
       - name: Check for changes
         id: changes

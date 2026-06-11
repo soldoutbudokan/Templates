@@ -13,14 +13,26 @@ import yaml
 # 2026-06-03 21:52Z scheduled run failed all 3 bare retries inside 30s, while
 # the same URL served fine minutes later). Retry over a few minutes so a
 # transient blip self-heals instead of failing the whole refresh.
-MAX_DOWNLOAD_ATTEMPTS = 5
+# The 2026-06-11 episode outlasted the original 5-attempt/~5-min window
+# (issue #205), so the schedule now stretches to ~26 min before jitter:
+# sleeps of 15/30/60/120/240/480/600s between 8 attempts.
+MAX_DOWNLOAD_ATTEMPTS = 8
 BACKOFF_BASE_SECONDS = 15
-BACKOFF_CAP_SECONDS = 120
+BACKOFF_CAP_SECONDS = 600
 
 DOWNLOAD_HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; TheTiltBot/1.0; +https://github.com/soldoutbudokan/Templates)",
     "Accept": "application/zip, application/octet-stream, */*",
 }
+
+
+class CricsheetDownloadError(RuntimeError):
+    """Cricsheet stayed unreachable through the whole retry window.
+
+    Distinguishable from real pipeline failures so the refresh workflow can
+    soft-fail on it (skip the refresh, next cron catches up — issue #205)
+    while the retrain workflow keeps hard-failing.
+    """
 
 
 # %% Configuration
@@ -62,8 +74,8 @@ def download_cricsheet_data(
         except requests.exceptions.RequestException as e:
             last_err = e
             if attempt < MAX_DOWNLOAD_ATTEMPTS:
-                # Exponential backoff (15/30/60/120s) plus jitter to spread
-                # retries across a transient CDN block.
+                # Exponential backoff (15s doubling, capped at 10 min) plus
+                # jitter to spread retries across a transient CDN block.
                 backoff = min(BACKOFF_BASE_SECONDS * 2 ** (attempt - 1), BACKOFF_CAP_SECONDS)
                 delay = backoff + random.uniform(0, 0.5 * backoff)
                 print(f"  Attempt {attempt} failed ({e}); retrying in {delay:.0f}s...")
@@ -71,7 +83,7 @@ def download_cricsheet_data(
             else:
                 print(f"  Attempt {attempt} failed ({e}); giving up.")
     else:
-        raise RuntimeError(
+        raise CricsheetDownloadError(
             f"Failed to download {url} after {MAX_DOWNLOAD_ATTEMPTS} attempts"
         ) from last_err
 
