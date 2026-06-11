@@ -241,7 +241,7 @@ TheTilt/
 2. Outputs static JSON to `public/data/`
 3. Website serves JSON directly — no computation at request time
 4. Deployed to Vercel (Python Flask for routing + static file serving)
-5. GitHub Actions refreshes data twice daily (07:00 / 14:00 UTC) reusing the committed model pickle; full retrains happen on March 1 or on-demand via `workflow_dispatch`
+5. GitHub Actions refreshes data twice daily (19:00 / 02:00 UTC, locked to EDT) reusing the committed model pickle; full retrains happen on March 1 or on-demand via `workflow_dispatch`
 
 ---
 

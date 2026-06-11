@@ -457,7 +457,7 @@ Everything that produces the live numbers is in the [project repo](https://githu
 
 Run `RETRAIN=1 python pipeline/run_pipeline.py` from the repo root and you get the same numbers shown on this site, modulo whatever has been added to Cricsheet since the last refresh. The pipeline is deterministic given a fixed seed (`random_state=42` for the holdout split; ensemble members use 42…141). The `RETRAIN=1` env var is required to overwrite the committed pickle — a guardrail (issue #111) that prevents ad-hoc local pipeline runs from silently swapping in a noisier model. The data-only refresh (which never retrains) doesn't need it.
 
-A GitHub Actions workflow refreshes the data twice daily (07:00 and 14:00 UTC) without retraining; full retrains run on March 1 each year and on demand via `workflow_dispatch`.
+A GitHub Actions workflow refreshes the data twice daily (19:00 and 02:00 UTC, locked to EDT) without retraining; full retrains run on March 1 each year and on demand via `workflow_dispatch`.
 
 ---
 

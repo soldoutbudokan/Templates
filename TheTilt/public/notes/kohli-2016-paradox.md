@@ -69,9 +69,9 @@ AB de Villiers scored 129(52) in the same innings. By the time ABD reached his h
 
 This isn't because Kohli batted poorly. It's because ABD happened to be on strike for the balls that moved win probability the most. In a ball-by-ball model, whoever faces the delivery gets the credit, even when partnership dynamics created the opportunity. The notable thing is that Kohli had already done the heavy lifting *before* ABD took over: most of his +4.58% came in the first half of his innings, when the match was still live.
 
-### 113(50) vs KXIP, TILT +11.22%
+### 113(50) vs KXIP, TILT +10.64%
 
-Chris Gayle scored 73(35) at the top and captured a large slice of the early innings delta. Even so, Kohli's century registered a clearly positive +11.22% TILT. He built through the middle overs and then accelerated late, and the model rewards the runs he added even on top of Gayle's start. This is the case that most cleanly refutes the idea that a century on a stacked side is worth nothing by TILT: Gayle took the biggest slice, and Kohli still banked double-digit impact.
+Chris Gayle scored 73(35) at the top and captured a large slice of the early innings delta. Even so, Kohli's century registered a clearly positive +10.64% TILT. He built through the middle overs and then accelerated late, and the model rewards the runs he added even on top of Gayle's start. This is the case that most cleanly refutes the idea that a century on a stacked side is worth nothing by TILT: Gayle took the biggest slice, and Kohli still banked double-digit impact.
 
 The honest version of the credit-sharing story, then, is not that brilliance gets erased on a stacked team. It's that it gets *split*. The WP "pie" for an innings is finite, and when Gayle and ABD are taking the biggest slices, a century registers less than it would on a weaker side. But "less" still left Kohli net positive in every century he scored in 2016, including the two he shared.
 
