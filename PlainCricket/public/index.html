@@ -4,36 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlainCricket</title>
+    <meta name="description" content="Live cricket scores without the ads, popups, and clutter.">
+    <meta property="og:title" content="PlainCricket">
+    <meta property="og:description" content="Live cricket scores without the ads, popups, and clutter.">
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f6f6f4" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%8F%3C/text%3E%3C/svg%3E">
     <style>
+        :root {
+            --bg: #1a1a1a;
+            --fg: #e0e0e0;
+            --accent: #4ade80;
+            --accent-contrast: #1a1a1a;
+            --dim: #9a9a9a;
+            --dimmer: #888;
+            --status: #f59e0b;
+            --live: #ef4444;
+            --border: #333;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f6f6f4;
+                --fg: #1f1f1f;
+                --accent: #15803d;
+                --accent-contrast: #f6f6f4;
+                --dim: #565656;
+                --dimmer: #6b6b6b;
+                --status: #b45309;
+                --live: #dc2626;
+                --border: #d8d8d4;
+            }
+        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background: #1a1a1a;
-            color: #e0e0e0;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+            background: var(--bg);
+            color: var(--fg);
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.6;
         }
         h1 {
-            color: #4ade80;
+            color: var(--accent);
             margin-bottom: 10px;
             font-size: 1.5rem;
         }
         .subtitle {
-            color: #666;
+            color: var(--dim);
             margin-bottom: 30px;
             font-size: 0.9rem;
+        }
+        #updated {
+            color: var(--dimmer);
+        }
+        .notice {
+            border: 1px solid var(--status);
+            color: var(--status);
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
         }
         .match {
             display: block;
             text-decoration: none;
             color: inherit;
-            border: 1px solid #333;
+            border: 1px solid var(--border);
             padding: 15px;
             margin-bottom: 15px;
             cursor: pointer;
@@ -42,20 +82,24 @@
             -webkit-user-select: text;
         }
         .match:hover {
-            border-color: #4ade80;
+            border-color: var(--accent);
+        }
+        .match:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
         }
         .match-title {
-            color: #888;
+            color: var(--dim);
             font-size: 0.8rem;
             margin-bottom: 4px;
         }
         .venue {
-            color: #666;
+            color: var(--dimmer);
             font-size: 0.75rem;
             margin-bottom: 2px;
         }
         .match-time {
-            color: #555;
+            color: var(--dimmer);
             font-size: 0.7rem;
             margin-bottom: 8px;
         }
@@ -67,31 +111,41 @@
         .team-row {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
         }
         .team-name {
-            color: #e0e0e0;
+            color: var(--fg);
         }
         .team-score {
-            color: #4ade80;
+            color: var(--accent);
             font-weight: bold;
-            user-select: text;
-            -webkit-user-select: text;
+            text-align: right;
         }
         .status {
-            color: #f59e0b;
+            color: var(--status);
             font-size: 0.85rem;
             margin-top: 8px;
-            user-select: text;
-            -webkit-user-select: text;
         }
         .status.live {
-            color: #ef4444;
+            color: var(--live);
+        }
+        .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--live);
+            margin-right: 6px;
         }
         .loading {
-            color: #666;
+            color: var(--dimmer);
         }
         .error {
-            color: #ef4444;
+            color: var(--live);
+        }
+        .empty-note {
+            color: var(--dimmer);
+            margin-top: 20px;
         }
         .detail-view {
             display: none;
@@ -100,24 +154,62 @@
             display: block;
         }
         .back-btn {
-            color: #4ade80;
+            background: none;
+            border: none;
+            font: inherit;
+            color: var(--accent);
             cursor: pointer;
             margin-bottom: 20px;
             display: inline-block;
+            padding: 0;
         }
         .back-btn:hover {
             text-decoration: underline;
         }
-        .score-big {
-            font-size: 1.5rem;
-            color: #4ade80;
-            margin: 15px 0;
+        .back-btn:focus-visible,
+        .refresh-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        .detail-title {
+            color: var(--fg);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        .innings {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+        .innings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+        }
+        .innings-team {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .innings-score {
+            color: var(--accent);
+            font-size: 1.3rem;
+            text-align: right;
+        }
+        .innings-overs {
+            color: var(--dimmer);
+            font-size: 0.9rem;
+        }
+        .yet-note {
+            color: var(--dimmer);
+            font-size: 0.9rem;
         }
         .section {
             margin: 20px 0;
         }
         .section-title {
-            color: #888;
+            color: var(--dim);
             font-size: 0.8rem;
             margin-bottom: 10px;
             text-transform: uppercase;
@@ -125,34 +217,46 @@
         .player-row {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
             padding: 5px 0;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid var(--border);
         }
         .player-name {
-            color: #e0e0e0;
+            color: var(--fg);
+        }
+        .player-name.dim {
+            color: var(--dim);
         }
         .player-stats {
-            color: #888;
-            user-select: text;
-            -webkit-user-select: text;
+            color: var(--dim);
+            text-align: right;
         }
-        .recent {
-            color: #666;
+        .dnb {
+            color: var(--dimmer);
             font-size: 0.9rem;
-            margin-top: 15px;
         }
         .refresh-btn {
             background: none;
-            border: 1px solid #4ade80;
-            color: #4ade80;
+            border: 1px solid var(--accent);
+            color: var(--accent);
             padding: 8px 16px;
             font-family: inherit;
             cursor: pointer;
             margin-top: 20px;
         }
         .refresh-btn:hover {
-            background: #4ade80;
-            color: #1a1a1a;
+            background: var(--accent);
+            color: var(--accent-contrast);
+        }
+        footer {
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            color: var(--dimmer);
+            font-size: 0.75rem;
+        }
+        footer a {
+            color: var(--dimmer);
         }
         @media (max-width: 500px) {
             body {
@@ -166,7 +270,13 @@
 </head>
 <body>
     <h1>PlainCricket</h1>
-    <p class="subtitle">live scores, no clutter</p>
+    <p class="subtitle">live scores, no clutter<span id="updated" aria-hidden="true"></span></p>
+
+    <noscript><p class="error">PlainCricket needs JavaScript to fetch live scores.</p></noscript>
+
+    <div id="degraded" class="notice" role="status" hidden>
+        having trouble reading scores from the source — data may be stale or incomplete
+    </div>
 
     <div id="matches-view">
         <div id="matches-list">
@@ -175,188 +285,285 @@
     </div>
 
     <div id="detail-view" class="detail-view">
-        <span class="back-btn" onclick="showMatches()">← back to matches</span>
+        <button type="button" class="back-btn" id="back-btn">← back to matches</button>
         <div id="match-detail"></div>
-        <button class="refresh-btn" onclick="refreshScore()">refresh</button>
+        <button type="button" class="refresh-btn" id="refresh-btn">refresh</button>
     </div>
 
+    <footer>scores via <a href="https://www.cricbuzz.com" rel="noopener">Cricbuzz</a> · auto-refreshes while open</footer>
+
     <script>
-        let currentMatchId = null;
         const API_BASE = '/api';
+        const LIST_REFRESH_MS = 60000;
+        const SCORE_REFRESH_MS = 30000;
 
-        async function loadMatches() {
-            const container = document.getElementById('matches-list');
-            container.innerHTML = '<p class="loading">loading matches...</p>';
+        let currentMatchId = null;
+        let lastListFetch = 0;
+        let lastScoreFetch = 0;
+        let listLoading = false;
+        let scoreLoading = false;
 
-            try {
-                const res = await fetch(`${API_BASE}/matches`);
-                const data = await res.json();
+        const $ = (id) => document.getElementById(id);
 
-                if (data.matches && data.matches.length > 0) {
-                    container.innerHTML = data.matches.map(m => `
-                        <a href="#match/${m.id}" class="match" onclick="event.preventDefault(); showScore('${m.id}')">
-                            <div class="match-title">${m.title || 'Unknown Match'}</div>
-                            ${m.venue ? `<div class="venue">${m.venue}</div>` : ''}
-                            ${m.timeEST ? `<div class="match-time">${m.timeEST} / ${m.timeLocal}</div>` : ''}
-                            ${m.team1 || m.team2 ? `
-                                <div class="teams">
-                                    <div class="team-row">
-                                        <span class="team-name">${m.team1 || ''}</span>
-                                        <span class="team-score">${m.score1 || ''}</span>
-                                    </div>
-                                    <div class="team-row">
-                                        <span class="team-name">${m.team2 || ''}</span>
-                                        <span class="team-score">${m.score2 || ''}</span>
-                                    </div>
-                                </div>
-                            ` : ''}
-                            ${m.status ? `<div class="status ${m.status.toLowerCase().includes('live') ? 'live' : ''}">${m.status}</div>` : ''}
-                        </a>
-                    `).join('');
-                } else {
-                    container.innerHTML = '<p class="error">no matches found</p>';
-                }
-            } catch (err) {
-                container.innerHTML = `<p class="error">error loading matches: ${err.message}</p>`;
+        // All API data is scraped from a third party - escape it before it
+        // touches innerHTML.
+        const esc = (s) => String(s ?? '').replace(/[&<>"']/g,
+            (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+        async function fetchJSON(path) {
+            const res = await fetch(path);
+            let data = null;
+            try { data = await res.json(); } catch (e) { /* non-JSON error body */ }
+            if (!res.ok) throw new Error((data && data.error) || `request failed (${res.status})`);
+            return data;
+        }
+
+        function fmtAgo(ts) {
+            const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+            if (s < 5) return 'just now';
+            if (s < 60) return `${s}s ago`;
+            return `${Math.floor(s / 60)}m ago`;
+        }
+
+        function updateAgoLine() {
+            const ts = currentMatchId ? lastScoreFetch : lastListFetch;
+            $('updated').textContent = ts ? ` · updated ${fmtAgo(ts)}` : '';
+        }
+
+        function statusLine(status, state) {
+            if (!status) return '';
+            const live = state === 'live';
+            const dot = live ? '<span class="live-dot" aria-hidden="true"></span>' : '';
+            return `<div class="status${live ? ' live' : ''}">${dot}${esc(status)}</div>`;
+        }
+
+        function matchCard(m) {
+            const time = m.timeEST
+                ? `<div class="match-time">${esc(m.timeEST)}${m.timeLocal ? ' / ' + esc(m.timeLocal) : ''}</div>`
+                : '';
+            const teams = (m.team1 || m.team2) ? `
+                <div class="teams">
+                    <div class="team-row">
+                        <span class="team-name">${esc(m.team1 || '')}</span>
+                        <span class="team-score">${esc(m.score1 || '')}</span>
+                    </div>
+                    ${(m.team2 || m.score2) ? `
+                    <div class="team-row">
+                        <span class="team-name">${esc(m.team2 || '')}</span>
+                        <span class="team-score">${esc(m.score2 || '')}</span>
+                    </div>` : ''}
+                </div>` : '';
+            return `
+                <a href="#match/${esc(m.id)}" class="match" data-id="${esc(m.id)}">
+                    <div class="match-title">${esc(m.title || 'Unknown Match')}</div>
+                    ${m.venue ? `<div class="venue">${esc(m.venue)}</div>` : ''}
+                    ${time}
+                    ${teams}
+                    ${statusLine(m.status, m.state)}
+                </a>`;
+        }
+
+        function renderMatches(data) {
+            $('degraded').hidden = !data.degraded;
+            const container = $('matches-list');
+            if (data.matches && data.matches.length > 0) {
+                container.innerHTML = data.matches.map(matchCard).join('');
+            } else {
+                container.innerHTML = '<p class="error">no matches found</p>';
             }
         }
 
-        async function showScore(matchId) {
-            currentMatchId = matchId;
-            window.location.hash = `match/${matchId}`;
-            document.getElementById('matches-view').style.display = 'none';
-            document.getElementById('detail-view').classList.add('active');
-
-            const container = document.getElementById('match-detail');
-            container.innerHTML = '<p class="loading">loading score...</p>';
-
+        async function loadMatches({ soft = false } = {}) {
+            if (listLoading) return;
+            listLoading = true;
+            const container = $('matches-list');
+            if (!soft) container.innerHTML = '<p class="loading">loading matches...</p>';
             try {
-                const res = await fetch(`${API_BASE}/score?id=${matchId}`);
-                const data = await res.json();
+                const data = await fetchJSON(`${API_BASE}/matches`);
+                lastListFetch = Date.now();
+                renderMatches(data);
+            } catch (err) {
+                // Soft refreshes keep showing the previous (stale) list.
+                if (!soft) {
+                    container.innerHTML = `
+                        <p class="error">error loading matches: ${esc(err.message)}</p>
+                        <button type="button" class="refresh-btn" id="retry-btn">retry</button>`;
+                }
+            } finally {
+                listLoading = false;
+                updateAgoLine();
+            }
+        }
 
-                let html = `
-                    <h2 style="color: #e0e0e0; margin-bottom: 5px; font-size: 1.1rem;">${data.title}</h2>
-                    ${data.venue ? `<div class="venue">${data.venue}</div>` : ''}
-                    ${data.date ? `<div class="match-time">${data.date}</div>` : ''}
-                    ${data.status ? `<div class="status ${data.status.toLowerCase().includes('live') ? 'live' : ''}">${data.status}</div>` : ''}
-                `;
+        function renderScore(data) {
+            let html = `
+                <h2 class="detail-title">${esc(data.title)}</h2>
+                ${data.venue ? `<div class="venue">${esc(data.venue)}</div>` : ''}
+                ${data.date ? `<div class="match-time">${esc(data.date)}</div>` : ''}
+                ${statusLine(data.status, data.state)}
+            `;
 
-                // Show each innings
-                if (data.innings && data.innings.length > 0) {
-                    data.innings.forEach((inn, idx) => {
-                        html += `
-                            <div class="innings" style="margin-top: 25px; padding-top: 15px; ${idx > 0 ? 'border-top: 1px solid #333;' : ''}">
-                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                                    <span style="color: #4ade80; font-size: 1.2rem; font-weight: bold;">${inn.team}</span>
-                                    <span style="color: #4ade80; font-size: 1.3rem;">${inn.score} <span style="color: #666; font-size: 0.9rem;">${inn.overs}</span></span>
-                                </div>
-                        `;
+            (data.innings || []).forEach((inn) => {
+                html += `
+                    <div class="innings">
+                        <div class="innings-header">
+                            <span class="innings-team">${esc(inn.team)}</span>
+                            <span class="innings-score">${esc(inn.score || '--')} <span class="innings-overs">${esc(inn.overs || '')}</span></span>
+                        </div>`;
 
-                        if (inn.batsmen && inn.batsmen.length > 0) {
-                            html += `
-                                <div class="section">
-                                    <div class="section-title">Batting</div>
-                                    ${inn.batsmen.map(b => `
-                                        <div class="player-row">
-                                            <span class="player-name">${b.name}${b.isNotOut ? '*' : ''}</span>
-                                            <span class="player-stats">${b.runs} (${b.balls})</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            `;
-                        }
-
-                        if (inn.bowlers && inn.bowlers.length > 0) {
-                            html += `
-                                <div class="section">
-                                    <div class="section-title">Bowling</div>
-                                    ${inn.bowlers.map(b => `
-                                        <div class="player-row">
-                                            <span class="player-name">${b.name}</span>
-                                            <span class="player-stats">${b.overs} ov, ${b.wickets}/${b.runs}</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            `;
-                        }
-
-                        if (inn.didNotBat && inn.didNotBat.length > 0) {
-                            html += `
-                                <div class="section">
-                                    <div class="section-title" style="color: #555;">Did not bat</div>
-                                    <div style="color: #666; font-size: 0.9rem;">${inn.didNotBat.join(', ')}</div>
-                                </div>
-                            `;
-                        }
-
-                        html += `</div>`;
-                    });
-                } else {
-                    html += `<p style="color: #666; margin-top: 20px;">Scorecard not available yet</p>`;
+                if (inn.batsmen && inn.batsmen.length > 0) {
+                    html += `
+                        <div class="section">
+                            <div class="section-title">Batting</div>
+                            ${inn.batsmen.map((b) => `
+                                <div class="player-row">
+                                    <span class="player-name">${esc(b.name)}${b.isNotOut ? '*' : ''}</span>
+                                    <span class="player-stats">${esc(b.runs)} (${esc(b.balls)})</span>
+                                </div>`).join('')}
+                            ${inn.extras ? `
+                                <div class="player-row">
+                                    <span class="player-name dim">Extras</span>
+                                    <span class="player-stats">${esc(inn.extras)}</span>
+                                </div>` : ''}
+                        </div>`;
                 }
 
-                // Show playing XI for teams not yet in innings
-                if (data.playingXI) {
-                    const inningsTeams = (data.innings || []).map(inn => inn.team.toLowerCase());
-                    Object.entries(data.playingXI).forEach(([team, players]) => {
-                        const teamLower = team.toLowerCase();
-                        if (inningsTeams.some(t => t.includes(teamLower) || teamLower.includes(t))) return;
-                        const isSquad = players.length > 11;
-                        html += `
-                            <div class="innings" style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #333;">
-                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                                    <span style="color: #4ade80; font-size: 1.2rem; font-weight: bold;">${team}</span>
-                                    <span style="color: #666; font-size: 0.9rem;">Yet to bat</span>
-                                </div>
-                                <div class="section">
-                                    <div class="section-title">${isSquad ? 'Squad' : 'Playing XI'}</div>
-                                    ${players.map((p, i) => `
-                                        <div class="player-row">
-                                            <span class="player-name">${p}</span>
-                                            <span class="player-stats" style="color: #555;">${i + 1}</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
+                if (inn.bowlers && inn.bowlers.length > 0) {
+                    html += `
+                        <div class="section">
+                            <div class="section-title">Bowling</div>
+                            ${inn.bowlers.map((b) => `
+                                <div class="player-row">
+                                    <span class="player-name">${esc(b.name)}</span>
+                                    <span class="player-stats">${esc(b.overs)} ov, ${esc(b.wickets)}/${esc(b.runs)}</span>
+                                </div>`).join('')}
+                        </div>`;
+                }
+
+                if (inn.didNotBat && inn.didNotBat.length > 0) {
+                    html += `
+                        <div class="section">
+                            <div class="section-title">${esc(inn.didNotBatLabel || 'Did not bat')}</div>
+                            <div class="dnb">${inn.didNotBat.map((n) => esc(n)).join(', ')}</div>
+                        </div>`;
+                }
+
+                html += '</div>';
+            });
+
+            if (!data.innings || data.innings.length === 0) {
+                html += '<p class="empty-note">Scorecard not available yet</p>';
+            }
+
+            // Squads for teams that haven't batted yet.
+            if (data.playingXI) {
+                const inningsTeams = (data.innings || []).map((inn) => (inn.team || '').toLowerCase());
+                for (const [team, players] of Object.entries(data.playingXI)) {
+                    const teamLower = team.toLowerCase();
+                    if (inningsTeams.some((t) => t.includes(teamLower) || teamLower.includes(t))) continue;
+                    const label = players.length > 11 ? 'Squad' : 'Playing XI';
+                    html += `
+                        <div class="innings">
+                            <div class="innings-header">
+                                <span class="innings-team">${esc(team)}</span>
+                                <span class="yet-note">Yet to bat</span>
                             </div>
-                        `;
-                    });
+                            <div class="section">
+                                <div class="section-title">${label}</div>
+                                ${players.map((p, i) => `
+                                    <div class="player-row">
+                                        <span class="player-name">${esc(p)}</span>
+                                        <span class="player-stats">${i + 1}</span>
+                                    </div>`).join('')}
+                            </div>
+                        </div>`;
                 }
+            }
 
-                container.innerHTML = html;
+            $('match-detail').innerHTML = html;
+        }
+
+        async function showScore(matchId, { soft = false } = {}) {
+            if (soft && scoreLoading) return;
+            currentMatchId = matchId;
+            scoreLoading = true;
+            const container = $('match-detail');
+            if (!soft) container.innerHTML = '<p class="loading">loading score...</p>';
+            try {
+                const data = await fetchJSON(`${API_BASE}/score?id=${encodeURIComponent(matchId)}`);
+                lastScoreFetch = Date.now();
+                if (currentMatchId !== matchId) return; // user navigated away mid-fetch
+                renderScore(data);
+                document.title = data.title && data.title !== 'Unknown Match'
+                    ? `${data.title} — PlainCricket`
+                    : 'PlainCricket';
             } catch (err) {
-                container.innerHTML = `<p class="error">error loading score: ${err.message}</p>`;
+                if (!soft && currentMatchId === matchId) {
+                    container.innerHTML = `<p class="error">error loading score: ${esc(err.message)}</p>`;
+                }
+            } finally {
+                scoreLoading = false;
+                updateAgoLine();
             }
         }
 
-        function showMatches() {
-            document.getElementById('detail-view').classList.remove('active');
-            document.getElementById('matches-view').style.display = 'block';
+        function showMatchesView() {
             currentMatchId = null;
-            history.pushState('', document.title, window.location.pathname);
-        }
-
-        function refreshScore() {
-            if (currentMatchId) {
-                showScore(currentMatchId);
+            $('detail-view').classList.remove('active');
+            $('matches-view').style.display = 'block';
+            document.title = 'PlainCricket';
+            updateAgoLine();
+            if (Date.now() - lastListFetch > LIST_REFRESH_MS) {
+                loadMatches({ soft: lastListFetch > 0 });
             }
         }
 
-        // Handle hash-based navigation for direct links
+        function showDetailView() {
+            $('matches-view').style.display = 'none';
+            $('detail-view').classList.add('active');
+        }
+
+        // The hash is the single source of truth for navigation: clicking a
+        // match card (a real link) sets it, the browser back/forward buttons
+        // change it, and this handler reacts.
         function handleHash() {
-            const hash = window.location.hash;
-            if (hash.startsWith('#match/')) {
-                const matchId = hash.replace('#match/', '');
-                showScore(matchId);
+            const m = window.location.hash.match(/^#match\/(\d+)/);
+            if (m) {
+                showDetailView();
+                showScore(m[1]);
+            } else {
+                showMatchesView();
             }
         }
         window.addEventListener('hashchange', handleHash);
 
-        // Initial load
-        loadMatches();
+        $('back-btn').addEventListener('click', () => { window.location.hash = ''; });
+        $('refresh-btn').addEventListener('click', () => {
+            if (currentMatchId) showScore(currentMatchId);
+        });
+        $('matches-list').addEventListener('click', (e) => {
+            if (e.target.closest('#retry-btn')) loadMatches();
+        });
 
-        // Check for hash on initial page load
+        // Auto-refresh: a 5s heartbeat refreshes the active view when stale
+        // and the tab is visible, and keeps the "updated" line ticking.
+        function maybeRefresh() {
+            updateAgoLine();
+            if (document.visibilityState !== 'visible') return;
+            if (currentMatchId) {
+                if (Date.now() - lastScoreFetch >= SCORE_REFRESH_MS) showScore(currentMatchId, { soft: true });
+            } else if (Date.now() - lastListFetch >= LIST_REFRESH_MS) {
+                loadMatches({ soft: true });
+            }
+        }
+        setInterval(maybeRefresh, 5000);
+        document.addEventListener('visibilitychange', maybeRefresh);
+
+        // Initial load.
+        handleHash();
         if (window.location.hash) {
-            handleHash();
+            // Deep-linked straight to a match: warm the list in the background.
+            loadMatches({ soft: true });
         }
     </script>
 </body>
