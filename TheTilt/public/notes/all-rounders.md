@@ -1,6 +1,6 @@
 # Why TILT Underrates All-Rounders
 
-**By raw per-match impact, zero all-rounders crack the top 50 and only three make the top 100. Three high-volume names — Maxwell, Yusuf Pathan, and Pollard — squeak into the top 50 on the leaderboard's consistency-weighted floor, but that's still short of where their pool share says they belong. This is structural, not bias.**
+**By raw per-match impact, zero all-rounders crack the top 50 and only three make the top 100. Two high-volume names — Yusuf Pathan and Maxwell — squeak into the top 50 on the leaderboard's consistency-weighted floor, but that's still well short of where their pool share says they belong. This is structural, not bias.**
 
 If you sort the TILT leaderboard by raw per-match impact and scroll, something is missing. Russell, Pollard, Stokes, Watson, Pandya — the players who decide T20 matches by their dual-threat — sit far below where their reputation suggests they belong. The metric that asks "how much does this player tilt the game per match" produces a top-50 of batters and bowlers and not a single all-rounder.
 
@@ -20,13 +20,13 @@ Ranked by raw per-match TILT — the unadjusted "how big is the swing per game" 
 | 25 | 0 | 2.4 | 0.0x |
 | 50 | 0 | 4.8 | **0.0x** |
 | 100 | 3 | 9.5 | 0.3x |
-| 200 | 13 | 19.0 | 0.7x |
+| 200 | 12 | 19.0 | 0.6x |
 
 ![Top-N share by role](plots/all_rounders_topn_share.png)
 
 The chart shows the gap. Across every depth — 10, 25, 50, 100, 200 — all-rounders are underrepresented. The longer the list gets, the closer they come to their pool share, but they never catch up.
 
-One caveat worth being honest about: the leaderboard's *default* sort isn't raw per-match TILT — it's the 90% confidence floor (`tilt_ci_lower_90`), which rewards large, consistent samples and penalises small ones. On that floor sort, three veteran high-volume all-rounders do crack the top 50: Maxwell (139 matches), Yusuf Pathan (161), and Pollard (179), with <span id="ar-floor-top100-count">five</span> all-rounders in the top 100. So it's not strictly "zero in the top 50" on the page you land on. But three of an expected ~4.8 is still under-strength, and the moment you switch to raw impact per match, all of them fall out of the top 50 (Pathan #<span id="ar-pathan-raw-prose">98</span>, Maxwell #<span id="ar-maxwell-raw-prose">62</span>). The under-representation holds under both metrics; it's just starkest on raw impact.
+One caveat worth being honest about: the leaderboard's *default* sort isn't raw per-match TILT — it's the 90% confidence floor (`tilt_ci_lower_90`), which rewards large, consistent samples and penalises small ones. On that floor sort, two veteran high-volume all-rounders do crack the top 50: Yusuf Pathan (161 matches) and Maxwell (139 matches), with <span id="ar-floor-top100-count">five</span> all-rounders in the top 100. So it's not strictly "zero in the top 50" on the page you land on. But two of an expected ~4.8 is still half-strength, and the moment you switch to raw impact per match, even those two fall out of the top 50 (Pathan #<span id="ar-pathan-raw-prose">86</span>, Maxwell #<span id="ar-maxwell-raw-prose">83</span>). The under-representation holds under both metrics; it's just starkest on raw impact.
 
 ---
 
@@ -38,11 +38,11 @@ Look at the boxes. Batters and bowlers have wide distributions with long upper t
 
 | Role | n | Mean TILT/match | p75 | p90 | Top-quintile mean |
 |:--|--:|--:|--:|--:|--:|
-| Batter | 185 | -0.0036 | 0.015 | 0.035 | **0.040** |
-| All-rounder | 45 | -0.0149 | 0.003 | 0.014 | **0.015** |
-| Bowler | 242 | -0.0063 | 0.014 | 0.039 | **0.042** |
+| Batter | 185 | -0.0018 | 0.019 | 0.035 | **0.042** |
+| All-rounder | 45 | -0.0114 | 0.006 | 0.015 | **0.016** |
+| Bowler | 242 | -0.0078 | 0.011 | 0.031 | **0.035** |
 
-The top quintile of each role tells the story most cleanly. The best 37 batters average 0.040 TILT/match. The best 48 bowlers average 0.042. The best 9 all-rounders average **0.015** — roughly a third of either specialist cohort.
+The top quintile of each role tells the story most cleanly. The best 37 batters average 0.042 TILT/match. The best 48 bowlers average 0.035. The best 9 all-rounders average **0.016** — roughly 40–45% of either specialist cohort.
 
 That's the headline. An all-rounder at the top of their role is not even close to a specialist at the top of theirs.
 
@@ -54,17 +54,17 @@ That's the headline. An all-rounder at the top of their role is not even close t
 
 This is every match an all-rounder has played, plotted by their batting TILT (x-axis) versus their bowling TILT (y-axis). The dashed line is the cancellation line — points below it have a positive bat and negative bowl, or vice versa, where the two contributions partially cancel.
 
-43.4% of all-rounder matches are mixed-sign. They have a good batting day and a bad bowling day, or the reverse. Specialists never have this problem — a pure batter only has a bat row, a pure bowler only a bowl row.
+44.0% of all-rounder matches are mixed-sign. They have a good batting day and a bad bowling day, or the reverse. Specialists never have this problem — a pure batter only has a bat row, a pure bowler only a bowl row.
 
-The drag is quantifiable. If you treat each all-rounder match as if the bat and bowl contributions belonged to two different specialists, the average absolute impact is **0.123 TILT**. The actual combined value (where the contributions add up, including cancellation) is **0.103 TILT**. That's a **16.0% reduction** — pure cancellation drag, not a measurement issue.
+The drag is quantifiable. If you treat each all-rounder match as if the bat and bowl contributions belonged to two different specialists, the average absolute impact is **0.122 TILT**. The actual combined value (where the contributions add up, including cancellation) is **0.101 TILT**. That's a **17.1% reduction** — pure cancellation drag, not a measurement issue.
 
 | Match outcome | Share of all-rounder matches |
 |:--|--:|
-| Both bat and bowl positive | 10.2% |
-| Both bat and bowl negative | **46.4%** |
-| Mixed sign (cancellation) | 43.4% |
+| Both bat and bowl positive | 9.2% |
+| Both bat and bowl negative | **46.8%** |
+| Mixed sign (cancellation) | 44.0% |
 
-The 46.4% both-negative number is even worse than the cancellation. Almost half of an all-rounder's matches are *bad in both roles*. A specialist only has one role to be bad at; an all-rounder has two surfaces to fail on. Their floor is lower because they're exposed twice.
+The 46.8% both-negative number is even worse than the cancellation. Almost half of an all-rounder's matches are *bad in both roles*. A specialist only has one role to be bad at; an all-rounder has two surfaces to fail on. Their floor is lower because they're exposed twice.
 
 ---
 
@@ -76,9 +76,9 @@ This part is interesting. If you only look at the top tail of single-match perfo
 
 | Role | % matches with TILT ≥ 0.30 (GOAT-tier) |
 |:--|--:|
-| Batter | 2.80% |
-| **All-rounder** | **4.06%** |
-| Bowler | 2.72% |
+| Batter | 2.97% |
+| **All-rounder** | **3.84%** |
+| Bowler | 2.50% |
 
 All-rounders actually produce GOAT-tier matches at the *highest* rate of the three roles — ahead of batters and well ahead of bowlers. When everything clicks — they bat 50 off 25 *and* take 2/15 — the combined TILT is enormous, and they get more "everything clicks" days than specialists do "perfect bat" or "perfect bowl" days.
 
@@ -88,11 +88,11 @@ You can see the same thing in the per-match standard deviation:
 
 | Role | Match-TILT mean | Match-TILT std | p99 |
 |:--|--:|--:|--:|
-| Batter | 0.0020 | 0.129 | 0.468 |
-| All-rounder | -0.0049 | **0.154** | **0.518** |
-| Bowler | 0.0037 | 0.150 | 0.421 |
+| Batter | 0.0038 | 0.126 | 0.453 |
+| All-rounder | -0.0046 | **0.148** | **0.487** |
+| Bowler | 0.0017 | 0.144 | 0.389 |
 
-All-rounders have the highest variance and the highest p99 (their per-match p95 is 0.262). They are not boring middle-of-the-pack contributors. They are *boom-or-bust* contributors whose mean is the only one of the three to sit below zero, dragged there by deep busts.
+All-rounders have the highest variance and the highest p99 (their per-match p95 is 0.259). They are not boring middle-of-the-pack contributors. They are *boom-or-bust* contributors whose mean is the only one of the three to sit below zero, dragged there by deep busts.
 
 ---
 
@@ -102,16 +102,16 @@ For a sense of scale, here's where the famous IPL all-rounders rank — by the l
 
 | Floor rank | Raw rank | Player | Matches | TILT/match |
 |--:|--:|:--|--:|--:|
-| <span id="ar-pathan-floor">44</span> | <span id="ar-pathan-raw">98</span> | YK Pathan | 161 | <span id="ar-pathan-tpm">0.0173</span> |
-| <span id="ar-maxwell-floor">23</span> | <span id="ar-maxwell-raw">62</span> | GJ Maxwell | 139 | <span id="ar-maxwell-tpm">0.0277</span> |
-| <span id="ar-pollard-floor">47</span> | <span id="ar-pollard-raw">76</span> | KA Pollard | 179 | <span id="ar-pollard-tpm">0.0223</span> |
-| <span id="ar-watson-floor">136</span> | <span id="ar-watson-raw">162</span> | SR Watson | 144 | <span id="ar-watson-tpm">0.0062</span> |
-| <span id="ar-russell-floor">94</span> | <span id="ar-russell-raw">112</span> | AD Russell | 133 | <span id="ar-russell-tpm">0.0146</span> |
-| <span id="ar-stokes-floor">266</span> | <span id="ar-stokes-raw">186</span> | BA Stokes | 45 | <span id="ar-stokes-tpm">0.0024</span> |
-| <span id="ar-pandya-floor">177</span> | <span id="ar-pandya-raw">269</span> | **HH Pandya** | 159 | <span id="ar-pandya-tpm">-0.0109</span> |
-| <span id="ar-hopes-floor">413</span> | <span id="ar-hopes-raw">446</span> | JR Hopes | 20 | <span id="ar-hopes-tpm">-0.0548</span> |
+| <span id="ar-pathan-floor">34</span> | <span id="ar-pathan-raw">86</span> | YK Pathan | 161 | <span id="ar-pathan-tpm">0.0220</span> |
+| <span id="ar-maxwell-floor">36</span> | <span id="ar-maxwell-raw">83</span> | GJ Maxwell | 139 | <span id="ar-maxwell-tpm">0.0224</span> |
+| <span id="ar-pollard-floor">74</span> | <span id="ar-pollard-raw">118</span> | KA Pollard | 179 | <span id="ar-pollard-tpm">0.0139</span> |
+| <span id="ar-watson-floor">110</span> | <span id="ar-watson-raw">148</span> | SR Watson | 144 | <span id="ar-watson-tpm">0.0089</span> |
+| <span id="ar-russell-floor">166</span> | <span id="ar-russell-raw">219</span> | AD Russell | 133 | <span id="ar-russell-tpm">-0.0009</span> |
+| <span id="ar-stokes-floor">209</span> | <span id="ar-stokes-raw">153</span> | BA Stokes | 45 | <span id="ar-stokes-tpm">0.0083</span> |
+| <span id="ar-pandya-floor">181</span> | <span id="ar-pandya-raw">282</span> | **HH Pandya** | 159 | <span id="ar-pandya-tpm">-0.0109</span> |
+| <span id="ar-hopes-floor">326</span> | <span id="ar-hopes-raw">114</span> | JR Hopes | 20 | <span id="ar-hopes-tpm">0.0152</span> |
 
-Maxwell, Yusuf Pathan, and Pollard lead the all-rounder block on the floor sort, and they're the only three inside the top 50 — all buoyed by 140-plus-match samples that the confidence floor rewards. Drop to raw per-match impact and all three fall outside the top 50 — the live ranks are in the table above. Hardik Pandya, the IPL's most decorated active all-rounder, sits at <span id="ar-pandya-floor-prose">177</span> on the floor and 269 on raw impact — above the pool median on the consistency floor, but below it on raw per-match impact. Russell and Pollard, two of the most decisive death-overs hitters in IPL history, land anywhere from the 40s to the low 100s depending on which metric you trust.
+Yusuf Pathan and Maxwell lead the all-rounder block on the floor sort, and they're the only two inside the top 50 — both buoyed by 140-plus-match samples that the confidence floor rewards. Drop to raw per-match impact and both fall well outside the top 50 — the live ranks are in the table above. Hardik Pandya, the IPL's most decorated active all-rounder, sits at <span id="ar-pandya-floor-prose">181</span> on the floor and 282 on raw impact — above the pool median on the consistency floor, but below it on raw per-match impact. Russell and Pollard, two of the most decisive death-overs hitters in IPL history, land anywhere from the 70s to the 220s depending on which metric you trust.
 
 Note the split personalities in that table. JR Hopes is the most extreme: a 20-match sample (one of them a DLS-shortened match whose re-scoring moved his career average materially) leaves his raw rank at #<span id="ar-hopes-raw-prose">161</span> while the confidence floor — which prices in how *erratic* a sample is, not just how long — drops him to #<span id="ar-hopes-floor-prose">339</span>. Stokes is the mirror image of the veterans: 45 matches, a respectable raw #<span id="ar-stokes-raw-prose">116</span>, but a floor near #175 because the model doesn't trust the small sample. Sample size, not just role, drives where an all-rounder lands.
 

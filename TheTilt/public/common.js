@@ -36,7 +36,7 @@
         {
             id: 'all-rounders',
             title: 'Why TILT Underrates All-Rounders',
-            summary: 'By raw per-match impact, zero all-rounders crack the top 50; only three make the top 100. Three veterans — Maxwell, Yusuf Pathan, and Pollard — sneak into the top 50 on the consistency floor, still under the expected share. The gap is structural: 43.4% of all-rounder matches are mixed-sign, producing a 16.0% cancellation drag. Their GOAT-tier rate (4.06%) leads all roles; the floor is the problem.',
+            summary: 'By raw per-match impact, zero all-rounders crack the top 50; only three make the top 100. Two veterans — Yusuf Pathan and Maxwell — sneak into the top 50 on the consistency floor, still about half the expected share. The gap is structural: 44.0% of all-rounder matches are mixed-sign, producing a 17.1% cancellation drag. Their GOAT-tier rate (3.84%) leads all roles; the floor is the problem.',
             tags: ['methodology', 'roles'],
             date: '2026-05-04',
         },
@@ -50,21 +50,21 @@
         {
             id: 'venue-importance',
             title: 'The Importance of Venue',
-            summary: 'Relocate RCB\'s 2016 home matches to Chepauk and re-score: ABD\'s TILT rises +0.80pp, Kohli\'s rises +2.50pp — same direction, Kohli roughly three times more. The model reads Chinnaswamy as so batsman-friendly that almost any harder venue lifts both. A model-sensitivity probe of TILT\'s venue feature across 6 player cohorts.',
+            summary: 'Relocate RCB\'s 2016 home matches to Chepauk and re-score: ABD\'s TILT barely moves (+0.06pp) while Kohli\'s rises +2.35pp. The venue lever is real but specific to the shape of each batsman\'s innings, not a uniform multiplier. A model-sensitivity probe of TILT\'s venue feature across 6 player cohorts.',
             tags: ['methodology', 'case study'],
             date: '2026-04-22',
         },
         {
             id: 'kohli-2016-paradox',
             title: 'The 2016 Kohli Dilemma: Why His Greatest Season Survives the TILT Test',
-            summary: '973 runs at 152 strike rate. Four centuries. And a TILT of +5.93% per match. The season that should have triggered every one of TILT\'s structural penalties comes through them anyway, more efficient per ball than his celebrated 2019 and across twice the workload.',
+            summary: '973 runs at 152 strike rate. Four centuries. And a TILT of +4.91% per match. The season that should have triggered every one of TILT\'s structural penalties comes through them anyway, nearly as efficient per ball as his celebrated 2019 and across twice the workload.',
             tags: ['batting', 'case study'],
             date: '2026-04-15',
         },
         {
             id: 'innings-bias',
             title: 'The Second Innings Problem',
-            summary: '100% of the top-50 batting GOATs are from the 2nd innings. Win probability swings are 1.65x larger when chasing, rising to 2.35x in the death overs. How this affects single-match rankings (and why careers, rho 0.99, barely move) and what we do about it.',
+            summary: '100% of the top-50 batting GOATs are from the 2nd innings. Win probability swings are 1.58x larger when chasing, rising to 2.14x in the death overs. How this affects single-match rankings (and why careers, rho 0.98, barely move) and what we do about it.',
             tags: ['methodology', 'model'],
             date: '2026-04-15',
         },

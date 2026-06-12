@@ -57,7 +57,7 @@ For each ball, we compute the **match state before the delivery is bowled**:
 | Feature | Description |
 |---------|-------------|
 | `innings` | 1st or 2nd innings |
-| `balls_remaining` | Legal deliveries left in the innings (max 120) |
+| `balls_remaining` | Deliveries left in the innings, max 120 (counts every delivery; legal-only counting deferred — issue #192) |
 | `wickets_in_hand` | Wickets remaining (0-10) |
 | `runs_scored` | Runs scored so far this innings |
 | `run_rate` | Current scoring rate (runs per over) |
@@ -69,7 +69,7 @@ For each ball, we compute the **match state before the delivery is bowled**:
 | `venue` | Match venue (categorical — LightGBM native handling) |
 | `batting_team_chose_to_bat` | 1 if batting team won toss and chose to bat |
 | `season_numeric` | IPL season year (2008-2026) for era adjustment |
-| `opponent_bowler_economy` | Career-to-date bowling economy of the bowler, prior matches only (opponent quality proxy) |
+| `opponent_bowler_economy` | Career bowling economy of the bowler (opponent quality proxy) |
 | `batting_team_nrr` | Season-to-date net run rate of the batting team (prior matches only — no leakage) |
 
 **Key design decision:** We use a single model for both innings. For innings 1, the target/required run rate features are set to 0. This lets the model learn that innings 1 is about *setting a total* while innings 2 is about *chasing*. The `innings` feature acts as a switch.
@@ -105,31 +105,31 @@ Output: averaged P(batting team wins) ∈ [0, 1]   ← mean of 100 LGBM members
 
 | Metric | Value |
 |--------|-------|
-| Brier Score | 0.191 (lower is better, perfect = 0) |
-| AUC | 0.774 |
-| K-member disagreement (std) | median 3.4pp · p95 6.4pp · max 9.7pp |
+| Brier Score | 0.192 (lower is better, perfect = 0) |
+| AUC | 0.773 |
+| K-member disagreement (std) | median 3.6pp · p95 6.8pp · max 10.6pp |
 
 **Feature importances** (mean across 100 ensemble members):
 
 ```
-venue                        ████████████████████████████████   (679)
-required_run_rate            ███████████████                    (325)
-batting_team_nrr             ██████████████                     (304)
-runs_scored                  ██████████                         (221)
-wickets_in_hand              ██████████                         (203)
-target                       █████████                          (189)
-run_rate                     █████████                          (188)
-innings                      ███████                            (155)
-runs_needed                  ███████                            (145)
-season_numeric               ██████                             (135)
-balls_remaining              █                                   (30)
-recent_wickets               █                                   (27)
-batting_team_chose_to_bat    █                                   (19)
-opponent_bowler_economy      ▏                                   (12)
-over                         ▏                                    (6)
+venue                        ████████████████████████████████   (763)
+batting_team_nrr             ███████████████                    (351)
+target                       ████████████                       (285)
+wickets_in_hand              ██████████                         (243)
+run_rate                     █████████                          (221)
+required_run_rate            █████████                          (206)
+innings                      ████████                           (192)
+runs_scored                  ████████                           (191)
+runs_needed                  ████████                           (190)
+season_numeric               ██████                             (146)
+opponent_bowler_economy      ██                                  (52)
+over                         █                                   (27)
+recent_wickets               █                                   (26)
+batting_team_chose_to_bat    █                                   (25)
+balls_remaining              ▏                                   (12)
 ```
 
-Venue dominates — ground conditions significantly affect win probability. Chase mechanics (required run rate out front, then runs scored, wickets, target, run rate) fill the next tier. Team-strength (batting_team_nrr) is up there as well. Season captures era effects. `opponent_bowler_economy` fell from 32 to 12 when the June 2026 retrain replaced its full-career lookup with an as-of-date mean (issue #199) — part of the old signal was the lookahead itself.
+Venue dominates — ground conditions significantly affect win probability. Chase mechanics (target, wickets, run rate, required run rate) cluster together in the next tier. Team-strength (batting_team_nrr) is up there as well. Season captures era effects.
 
 ### Step 4: Computing TILT
 
@@ -162,7 +162,7 @@ Raw per-match averages are noisy for players with few matches. We apply empirica
 shrunk_tilt = (n / (n + k)) * raw_tilt + (k / (n + k)) * population_mean
 ```
 
-Where `k` is estimated from the ratio of within-player to between-player variance (k ≈ 4.8 for IPL data). This means:
+Where `k` is estimated from the ratio of within-player to between-player variance (k ≈ 5.2 for IPL data). This means:
 - A player with 5 matches: 50% raw, 50% population mean
 - A player with 50 matches: 90% raw, 10% population mean
 - A player with 188 matches (Narine): 97% raw, 3% population mean
@@ -262,12 +262,12 @@ TheTilt/
 1. **Fielding is invisible** — The model can't attribute catches, run-outs, or misfields to specific fielders.
 2. **No batting position context** — An opener facing the new ball operates in a different context than a #6 batsman.
 3. **No bowler type classification** — The model doesn't know if a bowler is pace or spin. PaceOrSpin × Venue interactions could improve predictions. This requires external data or manual classification.
-4. **Opponent quality is approximate** — We use career-to-date bowling economy (prior matches only) as a proxy, but a full iterative system (using TILT-derived quality) would be more accurate.
-5. **Second innings TILT asymmetry** — Win probability swings are inherently larger in the 2nd innings because the target is known and the match resolves ball by ball. On average, 2nd innings balls produce **1.65x** larger |delta_wp| than 1st innings balls. The effect is concentrated in death overs (2.35x) while powerplay overs are nearly equal (1.21x). This inflates single-match TILT for 2nd innings performances — 100% of the top-50 batting and 100% of the top-50 bowling GOAT performances come from the 2nd innings. The GOAT page now provides innings-filtered views to enable fair within-innings comparisons. Career-level rankings are largely unaffected (Spearman ρ = 0.99 between raw and innings-normalized career TILT). See `notebooks/innings_bias_analysis.py` for the full diagnostic.
+4. **Opponent quality is approximate** — We use career bowling economy as a proxy, but a full iterative system (using TILT-derived quality) would be more accurate.
+5. **Second innings TILT asymmetry** — Win probability swings are inherently larger in the 2nd innings because the target is known and the match resolves ball by ball. On average, 2nd innings balls produce **1.58x** larger |delta_wp| than 1st innings balls. The effect is concentrated in death overs (2.14x) while powerplay overs are nearly equal (1.25x). This inflates single-match TILT for 2nd innings performances — 100% of the top-50 batting and 96% of the top-50 bowling GOAT performances come from the 2nd innings. The GOAT page now provides innings-filtered views to enable fair within-innings comparisons. Career-level rankings are largely unaffected (Spearman ρ = 0.98 between raw and innings-normalized career TILT). See `notebooks/innings_bias_analysis.py` for the full diagnostic.
 
 ### What's Been Addressed
 
-- ~~Small sample bias~~ → **Bayesian shrinkage** with empirical Bayes (k ≈ 4.8) + posterior CIs
+- ~~Small sample bias~~ → **Bayesian shrinkage** with empirical Bayes (k ≈ 5.2) + posterior CIs
 - ~~Single model for all eras~~ → **Season year** as a continuous feature
 - ~~No venue context~~ → **Venue** as categorical feature (deduplicated, highest importance)
 - ~~No toss context~~ → **Toss** parsed and used as `batting_team_chose_to_bat`

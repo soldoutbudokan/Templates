@@ -2,7 +2,7 @@
 
 **Why 100% of the greatest batting performances come from the 2nd innings.**
 
-If you browse the GOAT performances page, you'll notice something immediately: nearly every top entry is from a chase. All 50 of the top 50 batting performances and all 50 of the top 50 bowling performances are from the 2nd innings. That's not random. It's a structural feature of how win probability works in cricket.
+If you browse the GOAT performances page, you'll notice something immediately: nearly every top entry is from a chase. All 50 of the top 50 batting performances and 48 of the top 50 bowling performances are from the 2nd innings. That's not random. It's a structural feature of how win probability works in cricket.
 
 ---
 
@@ -19,10 +19,10 @@ In the 2nd innings, the equation is precise. You need X runs from Y balls with Z
 | Metric | 1st Innings | 2nd Innings | Ratio |
 |:--|:--|:--|:--|
 | **Balls** | 152,460 | 142,269 | |
-| **Mean WP shift per ball** | 1.088% | 1.799% | **1.65x** |
-| **Death overs mean shift** | - | - | **2.35x** |
-| **Middle overs mean shift** | - | - | **1.80x** |
-| **Powerplay mean shift** | - | - | **1.21x** |
+| **Mean WP shift per ball** | 1.096% | 1.732% | **1.58x** |
+| **Death overs mean shift** | - | - | **2.14x** |
+| **Middle overs mean shift** | - | - | **1.67x** |
+| **Powerplay mean shift** | - | - | **1.25x** |
 
 But even this isn't uniform - the disparity is concentrated in the later overs.
 
@@ -32,7 +32,7 @@ But even this isn't uniform - the disparity is concentrated in the later overs.
 
 ![Volatility by over](plots/innings_volatility_by_over.png)
 
-The chart tells the story. In the powerplay (overs 1-6), the gap is smallest (ratio 1.21x) — the 2nd innings is already more volatile, but only modestly so, because early in a chase the target is still distant. By the middle overs, it's 1.80x. And in the death overs (16-20), where matches are decided, 2nd innings balls produce **2.35x** the WP swing.
+The chart tells the story. In the powerplay (overs 1-6), the gap is smallest (ratio 1.25x) — the 2nd innings is already more volatile, but only modestly so, because early in a chase the target is still distant. By the middle overs, it's 1.67x. And in the death overs (16-20), where matches are decided, 2nd innings balls produce **2.14x** the WP swing.
 
 This makes intuitive sense. At over 18 of a chase with 20 needed from 12 balls, every boundary is a huge swing. At over 18 of a first innings at 160/4, a boundary changes the projected total by a few runs and the model can't be sure it will matter.
 
@@ -54,9 +54,9 @@ The phase breakdown confirms the pattern. The powerplay shows the smallest gap -
 
 | Phase | 1st Innings | 2nd Innings | Ratio |
 |:------|:------------|:------------|:------|
-| Powerplay | mean 0.0149 | mean 0.0181 | 1.21x |
-| Middle | mean 0.0082 | mean 0.0148 | 1.80x |
-| Death | mean 0.0107 | mean 0.0251 | **2.35x** |
+| Powerplay | mean 0.0152 | mean 0.0189 | 1.25x |
+| Middle | mean 0.0082 | mean 0.0137 | 1.67x |
+| Death | mean 0.0108 | mean 0.0231 | **2.14x** |
 
 ---
 
@@ -70,10 +70,10 @@ This chart shows what percentage of the top-N single-match performances come fro
 |:------|:---------------------|:---------------------|
 | 10 | 100% | 100% |
 | 25 | 100% | 100% |
-| 50 | 100% | 100% |
-| 100 | 99% | 96% |
-| 200 | 96% | 94% |
-| 500 | 82% | 82% |
+| 50 | 100% | 96% |
+| 100 | 99% | 91% |
+| 200 | 95% | 87% |
+| 500 | 85% | 78% |
 
 A brilliant 1st innings performance simply cannot produce the same magnitude of WP shift as a brilliant 2nd innings performance. A batsman who scores an unbeaten 100 chasing 180 in the final over generates enormous TILT. A batsman who scores 100 in the first innings setting 200 generates a fraction of that.
 
@@ -85,11 +85,11 @@ Here's the good news: **career rankings are barely affected**.
 
 ![Career correlation](plots/innings_career_correlation.png)
 
-Over a career, most batsmen face a roughly similar mix of 1st and 2nd innings balls. The correlation between a player's 2nd-innings ball share and their career TILT is weak and not significant (Pearson r = −0.090, p = 0.16; Spearman r = −0.122, p = 0.06 across 249 players with 30+ matches) — and to the extent there's any signal at all, it currently points slightly *against* chase-heavy careers.
+Over a career, most batsmen face a roughly similar mix of 1st and 2nd innings balls. The correlation between a player's 2nd-innings ball share and their career TILT is essentially zero (Pearson r = 0.043, p = 0.50; Spearman r = 0.022, p = 0.73 across 249 players with 30+ matches).
 
 When we normalize all deltas to remove the innings effect (scaling each innings' deltas so the mean absolute shift is equal), the career rankings barely move:
 
-**Spearman rank correlation between raw and normalized career TILT: 0.99**
+**Spearman rank correlation between raw and normalized career TILT: 0.98**
 
 The per-match career TILT is robust because the innings effect washes out over many matches. It's only the single-match GOAT rankings that are heavily distorted.
 
@@ -118,9 +118,9 @@ The asymmetry arises from three features that are active only in the 2nd innings
 
 | Feature | 1st Innings Value | 2nd Innings Value | Feature Importance |
 |:--------|:------------------|:------------------|:-------------------|
-| `target` | 0 | Actual chase target | 189 |
-| `runs_needed` | 0 | Runs still required | 145 |
-| `required_run_rate` | 0 | Required scoring rate | 325 |
+| `target` | 0 | Actual chase target | 285 |
+| `runs_needed` | 0 | Runs still required | 190 |
+| `required_run_rate` | 0 | Required scoring rate | 206 |
 
 These three features account for roughly a quarter of the model's total split-count importance. They give the 2nd innings model much more precision about the match state, which translates to larger ball-by-ball probability shifts.
 

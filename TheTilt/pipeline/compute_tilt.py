@@ -59,13 +59,9 @@ def compute_state_after(row: pd.Series) -> dict:
     after["runs_scored"] = row["runs_scored"] + row["runs_total"]
     after["wickets_fallen"] = row["wickets_fallen"] + (1 if row["is_wicket"] else 0)
     after["wickets_in_hand"] = 10 - after["wickets_fallen"]
-    # A wide/no-ball doesn't consume a delivery (issue #192): balls_remaining
-    # and the legal-ball count behind run_rate advance only on legal balls.
-    # Mirrors build_features.build_innings_features' legal-delivery cumsum.
-    is_legal = 0 if (row["is_wide"] or row["is_noball"]) else 1
-    after["balls_remaining"] = max(row["balls_remaining"] - is_legal, 1)
+    after["balls_remaining"] = max(row["balls_remaining"] - 1, 1)
 
-    balls_bowled_after = row["balls_bowled"] + is_legal
+    balls_bowled_after = row["ball_number"]  # ball_number is 1-indexed, equals balls bowled after this delivery
     after["run_rate"] = shrunk_run_rate(after["runs_scored"], balls_bowled_after)
 
     after["over"] = row["over"]
