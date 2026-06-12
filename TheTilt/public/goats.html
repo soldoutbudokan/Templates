@@ -114,7 +114,18 @@ function render() {
     if (isMatchSection && currentInnings !== 'all') {
         raw = raw.filter(r => r.innings === parseInt(currentInnings));
     }
-    const data = sortData(raw).slice(0, 50);
+    let data = sortData(raw);
+    if (currentSection === 'season_batting' || currentSection === 'season_bowling') {
+        // These sections export the true top-200 by total TILT plus the true
+        // top-50 by TILT/match, with per-axis ranks (#200). Show the active
+        // TILT axis's full prefix; rows that only qualified via the other
+        // axis are hidden so no view shows a season while hiding a
+        // higher-ranked one. Other sort keys browse the whole exported pool.
+        if (currentSort.key === 'total_tilt') data = data.filter(r => r.rank_total <= 200);
+        else if (currentSort.key === 'tilt_per_match') data = data.filter(r => r.rank_tpm <= 50);
+    } else {
+        data = data.slice(0, 50);
+    }
     let html = '';
 
     if (currentSection === 'match_batting') {

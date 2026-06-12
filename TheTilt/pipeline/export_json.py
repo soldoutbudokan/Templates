@@ -1109,22 +1109,20 @@ def export_match_details(
             for _, r in mdf.iterrows()
         ]
 
-        # Key moments (top 5 by |delta_wp|). The very first ball of innings 2
-        # (over 0, ball 0) carries the innings-boundary calibration residual in
-        # its delta: wp_before is the calibrated chase-start midpoint (issue #62)
-        # while wp_after is the model's raw forecast for the post-ball state, so
-        # even a dot/single there can post a large |delta| that reflects the
-        # boundary fix rather than anything the batter/bowler did. Drop that one
-        # ball from the highlights so it isn't surfaced as a "key moment" (#144).
-        # A wicket on that ball is kept — a genuine event outweighs the residual.
-        km_candidates = mdf[
-            ~(
-                (mdf["innings"] == 2)
-                & (mdf["over"] == 0)
-                & (mdf["ball"] == 0)
-                & (~mdf["is_wicket"].astype(bool))
-            )
-        ]
+        # Key moments (top 5 by |delta_wp|). Both innings-boundary balls are
+        # excluded: the boundary calibration (issue #62) replaces inn-1's
+        # last-ball wp_after and inn-2's first-ball wp_before with the
+        # calibrated midpoint, so each ball's delta carries the residual
+        # between the raw model and that midpoint — median ~6pp, the same
+        # order as a top-5 delta. A highlight whose delta is mostly
+        # calibration artifact misleads; for wickets the displayed delta can
+        # even carry the wrong sign (a last-ball dismissal posting a large
+        # POSITIVE delta for the batting side). The #144 wicket carve-out is
+        # gone for exactly that reason — #204's worst cases were all wickets.
+        # The two stashed *_raw columns are non-NaN only on the boundary rows.
+        # Per-ball attribution elsewhere is unchanged (methodology decision
+        # deferred — see #144/#204).
+        km_candidates = mdf[mdf["wp_after_raw"].isna() & mdf["wp_before_raw"].isna()]
         mdf_sorted = km_candidates.reindex(
             km_candidates["delta_wp"].abs().sort_values(ascending=False).index
         )
@@ -1379,13 +1377,17 @@ def export_goats(
         bat_season_teams.rename(columns={"batter_id": "batter_id", "batting_team": "team"}),
         on=["batter_id", "season"], how="left",
     )
-    # Keep the top 50 by BOTH per-match and total TILT, so the goats page's
-    # default total_tilt sort isn't missing high-total/lower-per-match seasons (#158).
-    _bat_qual = bat_season[bat_season["matches"] >= 5]
-    top_bat_season = pd.concat([
-        _bat_qual.nlargest(50, "tilt_per_match"),
-        _bat_qual.nlargest(50, "total_tilt"),
-    ]).drop_duplicates(subset=["batter_id", "season"])
+    # Keep the page's two TILT sort axes hole-free (#158, #200): export the
+    # true top-200 by total season TILT — deep enough to carry high-volume
+    # record seasons (Kohli 2016's 973 runs ranks ~#134; Purple-Cap bowling
+    # seasons sit ~#50–#195) — plus the true top-50 by per-match TILT. Each
+    # row carries its rank on both axes so goats.html can render exactly the
+    # active sort's prefix; a row that only qualified via the other axis no
+    # longer dangles below the cutoff implying the list is complete there.
+    _bat_qual = bat_season[bat_season["matches"] >= 5].copy()
+    _bat_qual["rank_total"] = _bat_qual["total_tilt"].rank(ascending=False, method="min").astype(int)
+    _bat_qual["rank_tpm"] = _bat_qual["tilt_per_match"].rank(ascending=False, method="min").astype(int)
+    top_bat_season = _bat_qual[(_bat_qual["rank_total"] <= 200) | (_bat_qual["rank_tpm"] <= 50)]
     goat_bat_season = [
         {
             "player": name_lookup.get(r["batter_id"], r["batter"]),
@@ -1397,6 +1399,8 @@ def export_goats(
             "total_tilt": round(r["total_tilt"], 5),
             "matches": int(r["matches"]),
             "runs": int(r["runs"]),
+            "rank_total": int(r["rank_total"]),
+            "rank_tpm": int(r["rank_tpm"]),
         }
         for _, r in top_bat_season.iterrows()
     ]
@@ -1414,11 +1418,11 @@ def export_goats(
         bowl_season_teams.rename(columns={"bowler_id": "bowler_id", "bowling_team": "team"}),
         on=["bowler_id", "season"], how="left",
     )
-    _bowl_qual = bowl_season[bowl_season["matches"] >= 5]
-    top_bowl_season = pd.concat([
-        _bowl_qual.nlargest(50, "tilt_per_match"),
-        _bowl_qual.nlargest(50, "total_tilt"),
-    ]).drop_duplicates(subset=["bowler_id", "season"])
+    # Same two-axis rank export as season batting (#200).
+    _bowl_qual = bowl_season[bowl_season["matches"] >= 5].copy()
+    _bowl_qual["rank_total"] = _bowl_qual["total_tilt"].rank(ascending=False, method="min").astype(int)
+    _bowl_qual["rank_tpm"] = _bowl_qual["tilt_per_match"].rank(ascending=False, method="min").astype(int)
+    top_bowl_season = _bowl_qual[(_bowl_qual["rank_total"] <= 200) | (_bowl_qual["rank_tpm"] <= 50)]
     goat_bowl_season = [
         {
             "player": name_lookup.get(r["bowler_id"], r["bowler"]),
@@ -1431,6 +1435,8 @@ def export_goats(
             "matches": int(r["matches"]),
             "wickets": int(r["wickets"]),
             "runs_conceded": int(r["runs_conceded"]),
+            "rank_total": int(r["rank_total"]),
+            "rank_tpm": int(r["rank_tpm"]),
         }
         for _, r in top_bowl_season.iterrows()
     ]
