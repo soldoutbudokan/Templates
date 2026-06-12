@@ -8,18 +8,18 @@
   "teams": [
     "Chennai Super Kings"
   ],
-  "total_tilt_per_match": 0.04375,
+  "total_tilt_per_match": -0.0131,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.00512,
+  "shrunk_total_tilt_per_match": -0.0217,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.07282,
-  "tilt_ci_upper": 0.06257,
-  "tilt_ci_lower_90": -0.06194,
-  "tilt_ci_upper_90": 0.05169,
+  "tilt_ci_lower": -0.03946,
+  "tilt_ci_upper": -0.00394,
+  "tilt_ci_lower_90": -0.0366,
+  "tilt_ci_upper_90": -0.00679,
   "confidence": "low",
-  "total_tilt": 0.0875,
+  "total_tilt": -0.02619,
   "total_matches": 2,
   "batting_balls": 0,
   "bowling_balls": 36,
@@ -28,7 +28,7 @@
       "season": "2022",
       "team": "Chennai Super Kings",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.04375,
+      "bowling_tilt_per_match": -0.0131,
       "batting_matches": 0,
       "bowling_matches": 2,
       "batting_balls": 0,
@@ -51,8 +51,8 @@
           "bowl_balls": 24,
           "bowl_runs": 18,
           "bowl_econ": 4.5,
-          "bowl_tilt": -0.02223,
-          "total_tilt": -0.02223
+          "bowl_tilt": 0.00362,
+          "total_tilt": 0.00362
         },
         {
           "match_id": "1304114",
@@ -71,8 +71,8 @@
           "bowl_balls": 12,
           "bowl_runs": 21,
           "bowl_econ": 10.5,
-          "bowl_tilt": 0.10973,
-          "total_tilt": 0.10973
+          "bowl_tilt": -0.02981,
+          "total_tilt": -0.02981
         }
       ],
       "bowling_stats": {
@@ -90,79 +90,79 @@
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": 0.04147,
+      "tilt": -0.01095,
       "balls": 24,
-      "avg_delta": 0.001728
+      "avg_delta": -0.000456
     },
     {
       "phase": "death",
-      "tilt": 0.04603,
+      "tilt": -0.01524,
       "balls": 12,
-      "avg_delta": 0.003835
+      "avg_delta": -0.00127
     }
   ],
   "best_matches": [],
   "worst_matches": [],
   "bowling_best_matches": [
     {
-      "match_id": "1304114",
-      "date": "2022-05-20",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.10973,
-      "wickets": 2,
-      "balls": 12
-    },
-    {
       "match_id": "1304108",
       "date": "2022-05-15",
       "vs": "Gujarat Titans",
-      "tilt": -0.02223,
+      "tilt": 0.00362,
       "wickets": 0,
       "balls": 24
+    },
+    {
+      "match_id": "1304114",
+      "date": "2022-05-20",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.02981,
+      "wickets": 2,
+      "balls": 12
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "1304108",
-      "date": "2022-05-15",
-      "vs": "Gujarat Titans",
-      "tilt": -0.02223,
-      "wickets": 0,
-      "balls": 24
-    },
-    {
       "match_id": "1304114",
       "date": "2022-05-20",
       "vs": "Rajasthan Royals",
-      "tilt": 0.10973,
+      "tilt": -0.02981,
       "wickets": 2,
       "balls": 12
+    },
+    {
+      "match_id": "1304108",
+      "date": "2022-05-15",
+      "vs": "Gujarat Titans",
+      "tilt": 0.00362,
+      "wickets": 0,
+      "balls": 24
     }
   ],
   "career_trend": [
     {
       "match": 1,
       "date": "2022-05-15",
-      "tilt": -0.02223,
-      "cumulative": -0.02223
+      "tilt": 0.00362,
+      "cumulative": 0.00362
     },
     {
       "match": 2,
       "date": "2022-05-20",
-      "tilt": 0.10973,
-      "cumulative": 0.0875
+      "tilt": -0.02981,
+      "cumulative": -0.02619
     }
   ],
   "team_matchups": [],
   "bowling_team_matchups": [
     {
-      "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.10973,
+      "opponent": "Gujarat Titans",
+      "tilt_per_match": 0.00362,
       "matches": 1
     },
     {
-      "opponent": "Gujarat Titans",
-      "tilt_per_match": -0.02223,
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.02981,
       "matches": 1
     }
   ],
@@ -177,7 +177,7 @@
     "best_figures": "2/21"
   },
   "match_tilt_distribution": [
-    -0.02223,
-    0.10973
+    0.00362,
+    -0.02981
   ]
 }

@@ -1,8 +1,8 @@
 # The 2016 Kohli Dilemma: Why His Greatest Season Survives the TILT Test
 
-**973 runs at 152 strike rate. Four centuries. Seven fifties. And a TILT of +4.08% per match.**
+**973 runs at 152 strike rate. Four centuries. Seven fifties. And a TILT of +5.93% per match.**
 
-Virat Kohli's 2016 IPL season is widely considered the greatest individual batting season in tournament history. The counting stats are staggering. The natural worry with a metric like TILT is that it would punish exactly this kind of season: huge volume, much of it first-innings, on a stacked lineup where credit gets shared. It doesn't. By TILT, 2016 stands as one of Kohli's best impact seasons too, comfortably ahead of his celebrated 2019 (+2.56% per match), where he scored less than half the runs at a lower strike rate.
+Virat Kohli's 2016 IPL season is widely considered the greatest individual batting season in tournament history. The counting stats are staggering. The natural worry with a metric like TILT is that it would punish exactly this kind of season: huge volume, much of it first-innings, on a stacked lineup where credit gets shared. It doesn't. By TILT, 2016 stands as one of Kohli's best impact seasons too, comfortably ahead of his celebrated 2019 (+2.54% per match), where he scored less than half the runs at a lower strike rate.
 
 In this post, we dig into why a season that *should* have triggered every one of TILT's structural penalties came through them anyway, and what that says about the metric.
 
@@ -16,13 +16,13 @@ In this post, we dig into why a season that *should* have triggered every one of
 | **Balls** | 640 | 321 |
 | **Strike Rate** | 152.0 | 136.8 |
 | **Matches** | 16 | 13 |
-| **Batting TILT/match** | **+4.08%** | **+2.56%** |
-| **Total WPA** | +65% | +33% |
-| **TILT per ball** | +0.102% | +0.104% |
+| **Batting TILT/match** | **+5.93%** | **+2.54%** |
+| **Total WPA** | +95% | +33% |
+| **TILT per ball** | +0.148% | +0.103% |
 
-The 2016 season generated **twice the total win probability added** of 2019, from twice the balls. And the per-ball rate is essentially identical: +0.102% vs +0.104%. Kohli wasn't trading efficiency for volume in 2016. He was just as impactful per delivery as in his vaunted 2019, and he sustained it across twice as many of them.
+The 2016 season generated **nearly three times the total win probability added** of 2019, from twice the balls. And the per-ball rate isn't even close: +0.148% vs +0.103%. Kohli wasn't trading efficiency for volume in 2016. On the current model he was *more* impactful per delivery than in his vaunted 2019, and he sustained it across twice as many deliveries.
 
-That is the dilemma in a sentence. The conventional read says 2016 was the volume year and 2019 was the efficient year. TILT says they were equally efficient per ball, and 2016 simply did far more of it.
+That is the dilemma in a sentence. The conventional read says 2016 was the volume year and 2019 was the efficient year. TILT says 2016 was more efficient per ball too, and simply did far more of it.
 
 ---
 
@@ -36,24 +36,24 @@ Each bar is one match. Green is positive batting TILT, red is negative. Labels a
 
 | Date | Inn | Runs | TILT | Note |
 |:-----|:---:|-----:|-----:|:-----|
-| [Apr 12](match.html?id=980907) | 1st | 75(51) | +5.07% | |
-| [Apr 17](match.html?id=980921) | 1st | 79(48) | -3.64% | |
-| [Apr 20](match.html?id=980927) | 1st | 33(30) | -4.05% | |
-| [Apr 22](match.html?id=980931) | 1st | 80(63) | +4.35% | |
-| [Apr 24](match.html?id=980937) | 1st | 100(63) | +19.78% | Century in low-scoring game |
-| [Apr 30](match.html?id=980953) | 2nd | 14(17) | -25.96% | Failed chase, caught early |
-| [May 02](match.html?id=980959) | 1st | 52(44) | +1.33% | |
-| [May 07](match.html?id=980969) | 2nd | 108(58) | +69.43% | Best match, chase masterclass |
-| **[May 09](match.html?id=980977)** | **1st** | **20(21)** | **-23.38%** | **Slow start, team rescued by KL Rahul** |
-| [May 11](match.html?id=980981) | 1st | 7(7) | -7.82% | |
-| [May 14](match.html?id=980987) | 1st | 109(55) | +4.58% | Century alongside ABD's 129 |
-| [May 16](match.html?id=980995) | 2nd | 75(51) | +9.32% | |
-| [May 18](match.html?id=980999) | 1st | 113(50) | +10.64% | Century, solidly positive TILT |
-| [May 22](match.html?id=981011) | 2nd | 54(45) | +3.82% | |
-| [May 24](match.html?id=981013) | 2nd | 0(2) | -6.49% | Golden duck |
-| [May 29](match.html?id=981019) | 2nd | 54(35) | +8.35% | |
+| [Apr 12](match.html?id=980907) | 1st | 75(51) | +7.73% | |
+| [Apr 17](match.html?id=980921) | 1st | 79(48) | +10.82% | |
+| [Apr 20](match.html?id=980927) | 1st | 33(30) | +6.72% | |
+| [Apr 22](match.html?id=980931) | 1st | 80(63) | +15.90% | |
+| [Apr 24](match.html?id=980937) | 1st | 100(63) | +7.08% | Century in low-scoring game |
+| [Apr 30](match.html?id=980953) | 2nd | 14(17) | -7.68% | Failed chase, caught early |
+| [May 02](match.html?id=980959) | 1st | 52(44) | +2.35% | |
+| [May 07](match.html?id=980969) | 2nd | 108(58) | +66.37% | Best match, chase masterclass |
+| **[May 09](match.html?id=980977)** | **1st** | **20(21)** | **-24.25%** | **Slow start, team rescued by KL Rahul** |
+| [May 11](match.html?id=980981) | 1st | 7(7) | -9.01% | |
+| [May 14](match.html?id=980987) | 1st | 109(55) | +8.68% | Century alongside ABD's 129 |
+| [May 16](match.html?id=980995) | 2nd | 75(51) | -8.34% | |
+| [May 18](match.html?id=980999) | 1st | 113(50) | +13.08% | Century, solidly positive TILT |
+| [May 22](match.html?id=981011) | 2nd | 54(45) | +8.22% | |
+| [May 24](match.html?id=981013) | 2nd | 0(2) | -4.56% | Golden duck |
+| [May 29](match.html?id=981019) | 2nd | 54(35) | +1.79% | |
 
-The chase masterclass on May 7, 108(58) for +69.43% TILT, is the single most valuable batting performance in the season and one of the largest in the database. It is exactly the kind of innings the counting stats and TILT agree on completely.
+The chase masterclass on May 7, 108(58) for +66.37% TILT, is the single most valuable batting performance in the season and one of the largest in the database. It is exactly the kind of innings the counting stats and TILT agree on completely.
 
 ---
 
@@ -63,29 +63,29 @@ The chase masterclass on May 7, 108(58) for +69.43% TILT, is the single most val
 
 If anything was going to drag 2016 down, it was credit sharing. RCB's batting card that year read Kohli, ABD, Gayle, Watson. When two world-class batsmen tear an innings apart together, the marginal win probability of each run is lower than if one of them had carried the load alone. The chart above shows where the win-probability credit went in each century innings, with Kohli highlighted. In two of the four centuries another batsman at the other end captured a large share of what was on offer, and yet Kohli still came out positive in both.
 
-### 109(55) vs Gujarat Lions, TILT +4.58%
+### 109(55) vs Gujarat Lions, TILT +8.68%
 
-AB de Villiers scored 129(52) in the same innings. By the time ABD reached his hundred, RCB's win probability was already up to 74%. Kohli at that moment was 51 off 40, with +4.05% of his TILT for the match already banked. From that ball forward his remaining runs added only +0.53% more, because ABD had already shifted the match decisively and there was little WP left to capture.
+AB de Villiers scored 129(52) in the same innings. By the time ABD reached his hundred, RCB's win probability was already up to 76%. Kohli at that moment was 51 off 40, with +5.15% of his TILT for the match already banked. From that ball forward his remaining runs added +3.53% more — a smaller share, because ABD had already shifted the match decisively and less WP was left to capture.
 
-This isn't because Kohli batted poorly. It's because ABD happened to be on strike for the balls that moved win probability the most. In a ball-by-ball model, whoever faces the delivery gets the credit, even when partnership dynamics created the opportunity. The notable thing is that Kohli had already done the heavy lifting *before* ABD took over: most of his +4.58% came in the first half of his innings, when the match was still live.
+This isn't because Kohli batted poorly. It's because ABD happened to be on strike for the balls that moved win probability the most. In a ball-by-ball model, whoever faces the delivery gets the credit, even when partnership dynamics created the opportunity. The notable thing is that Kohli had already done the heavy lifting *before* ABD took over: most of his +8.68% came in the first half of his innings, when the match was still live.
 
-### 113(50) vs KXIP, TILT +10.64%
+### 113(50) vs KXIP, TILT +13.08%
 
-Chris Gayle scored 73(35) at the top and captured a large slice of the early innings delta. Even so, Kohli's century registered a clearly positive +10.64% TILT. He built through the middle overs and then accelerated late, and the model rewards the runs he added even on top of Gayle's start. This is the case that most cleanly refutes the idea that a century on a stacked side is worth nothing by TILT: Gayle took the biggest slice, and Kohli still banked double-digit impact.
+Chris Gayle scored 73(35) at the top and captured a large slice of the early innings delta. Even so, Kohli's century registered a clearly positive +13.08% TILT. He built through the middle overs and then accelerated late, and the model rewards the runs he added even on top of Gayle's start. This is the case that most cleanly refutes the idea that a century on a stacked side is worth nothing by TILT: Gayle took the biggest slice, and Kohli still banked double-digit impact.
 
 The honest version of the credit-sharing story, then, is not that brilliance gets erased on a stacked team. It's that it gets *split*. The WP "pie" for an innings is finite, and when Gayle and ABD are taking the biggest slices, a century registers less than it would on a weaker side. But "less" still left Kohli net positive in every century he scored in 2016, including the two he shared.
 
 ---
 
-## The -23.38% Catastrophe
+## The -24.25% Catastrophe
 
 On May 9th, Kohli scored 20(21), a strike rate of 95.2, before being caught early in the innings. Here's the ball-by-ball:
 
 He started with a lucky boundary, but a sequence of dots and singles through the powerplay and into the middle overs steadily eroded RCB's position. Each dot ball in the powerplay is a small negative WP shift. Twenty-one of them compound.
 
-KL Rahul then came in and scored 42(26) for +23.6% TILT. RCB won the match. Kohli's slow start was the problem that someone else had to fix.
+KL Rahul then came in and scored 42(25) for +20.1% TILT. RCB won the match. Kohli's slow start was the problem that someone else had to fix.
 
-This single match cost roughly as much TILT as a top-tier match earns, and it happened because the model captures exactly what matters: Kohli consumed 21 balls at a below-par rate during the phase of the innings when scoring rates matter most. What is striking is that the rest of the season was strong enough that even a -23.38% match (plus a -25.96% failed chase in April) couldn't pull the average below +4.08%.
+This single match cost roughly as much TILT as a top-tier match earns, and it happened because the model captures exactly what matters: Kohli consumed 21 balls at a below-par rate during the phase of the innings when scoring rates matter most. What is striking is that the rest of the season was strong enough that even a -24.25% match (plus a -7.68% failed chase in April) couldn't pull the average below +5.93%.
 
 ---
 
@@ -95,11 +95,11 @@ This single match cost roughly as much TILT as a top-tier match earns, and it ha
 
 | Phase | 2016 Runs | 2016 TILT | 2019 Runs | 2019 TILT |
 |:------|----------:|----------:|----------:|----------:|
-| Powerplay | 278(230) SR 121 | **-19.52%** | 214(165) SR 130 | **+17.00%** |
-| Middle | 462(304) SR 152 | +37.58% | 148(123) SR 120 | -10.92% |
-| Death | 233(106) SR 220 | +47.66% | 77(33) SR 233 | +27.24% |
+| Powerplay | 278(230) SR 121 | **-14.18%** | 214(165) SR 130 | **+24.96%** |
+| Middle | 462(304) SR 152 | +56.03% | 148(123) SR 120 | -7.05% |
+| Death | 233(106) SR 220 | +53.07% | 77(33) SR 233 | +15.05% |
 
-The powerplay is the one phase where 2016 leaks: at SR 121 across 230 powerplay balls, the accumulated dots dragged WPA down by 19.89 percentage points. But Kohli more than made it back in the middle and death overs, which added +37.57 and +47.66 points respectively, the two phases together accounting for essentially all of his +65% season WPA. The 2016 profile is a slow-ish start paid back with interest later; the 2019 profile is the mirror image, a fast powerplay followed by a sluggish middle. The two phase distributions are nearly opposite, which is part of why the volume comparison is so misleading: these were different-shaped seasons, not a high-volume one and an efficient one.
+The powerplay is the one phase where 2016 leaks: at SR 121 across 230 powerplay balls, the accumulated dots dragged WPA down by 14.2 percentage points. But Kohli more than made it back in the middle and death overs, which added +56.0 and +53.1 points respectively, the two phases together accounting for essentially all of his +95% season WPA. The 2016 profile is a slow-ish start paid back with interest later; the 2019 profile is the mirror image, a fast powerplay followed by a sluggish middle. The two phase distributions are nearly opposite, which is part of why the volume comparison is so misleading: these were different-shaped seasons, not a high-volume one and an efficient one.
 
 ---
 
@@ -110,10 +110,10 @@ The powerplay is the one phase where 2016 leaks: at SR 121 across 230 powerplay 
 | | 2016 | 2019 |
 |:--|:--|:--|
 | Dot balls | 169 (26.4%) | 92 (28.7%) |
-| Dot ball TILT penalty | **-280.3%** | **-122.4%** |
-| Scoring ball TILT | +347.2% | +156.2% |
+| Dot ball TILT penalty | **-237.6%** | **-124.2%** |
+| Scoring ball TILT | +323.5% | +153.1% |
 
-The dot percentages are similar; 2019 actually had the slightly higher dot rate. Because Kohli faced *roughly twice as many total balls* in 2016, he ate roughly twice as many dots, and the gross dot-ball penalty is correspondingly about twice as large (-280.3% vs -122.4%). But his scoring-ball TILT scaled the same way (+347.3% vs +156.2%), so the two effects net out to a similar per-ball rate. The dot-ball tax in 2016 was real and large in absolute terms; it just wasn't large *relative to the boundaries* that paid it off.
+The dot percentages are similar; 2019 actually had the slightly higher dot rate. Because Kohli faced *roughly twice as many total balls* in 2016, he ate roughly twice as many dots, and the gross dot-ball penalty is correspondingly about twice as large (-237.6% vs -124.2%). But his scoring-ball TILT scaled faster (+323.5% vs +153.1%), so the dots were paid off with room to spare. The dot-ball tax in 2016 was real and large in absolute terms; it just wasn't large *relative to the boundaries* that paid it off.
 
 ---
 
@@ -125,31 +125,31 @@ Plenty of high-volume seasons in IPL history do collapse under TILT, scoring lot
 
 | Player | Season | Runs | SR | Matches | TILT/match | Dot % | Inn 2 % |
 |:-------|:-------|-----:|---:|--------:|-----------:|------:|--------:|
-| **V Kohli** | **2016** | **973** | **152.0** | **16** | **<span id="kp-kohli-2016-tpm">+4.08%</span>** | **26.4** | **32.5** |
-| V Kohli | 2019 | 439 | 136.8 | 13 | <span id="kp-kohli-2019-tpm">+2.56%</span> | 28.7 | 37.1 |
-| DA Warner | 2016 | 848 | 151.4 | 17 | <span id="kp-warner-2016-tpm">+6.77%</span> | 32.9 | 52.7 |
-| KL Rahul | 2018 | 659 | 158.4 | 14 | <span id="kp-rahul-2018-tpm">+12.29%</span> | 34.1 | 67.8 |
-| F du Plessis | 2021 | 633 | 138.2 | 16 | <span id="kp-faf-2021-tpm">+0.08%</span> | 33.4 | 36.0 |
-| AM Rahane | 2013 | 488 | 106.6 | 18 | <span id="kp-rahane-2013-tpm">-4.23%</span> | 40.0 | 57.4 |
-| JH Kallis | 2012 | 409 | 106.5 | 17 | <span id="kp-kallis-2012-tpm">-4.12%</span> | 37.8 | 69.0 |
-| Ishan Kishan | 2022 | 418 | 120.1 | 14 | <span id="kp-ishan-2022-tpm">-5.30%</span> | 40.2 | 63.5 |
+| **V Kohli** | **2016** | **973** | **152.0** | **16** | **<span id="kp-kohli-2016-tpm">+5.93%</span>** | **26.4** | **32.5** |
+| V Kohli | 2019 | 439 | 136.8 | 13 | <span id="kp-kohli-2019-tpm">+2.54%</span> | 28.7 | 37.1 |
+| DA Warner | 2016 | 848 | 151.4 | 17 | <span id="kp-warner-2016-tpm">+8.80%</span> | 32.9 | 52.7 |
+| KL Rahul | 2018 | 659 | 158.4 | 14 | <span id="kp-rahul-2018-tpm">+6.24%</span> | 34.1 | 67.8 |
+| F du Plessis | 2021 | 633 | 138.2 | 16 | <span id="kp-faf-2021-tpm">+2.19%</span> | 33.4 | 36.0 |
+| AM Rahane | 2013 | 488 | 106.6 | 18 | <span id="kp-rahane-2013-tpm">-3.38%</span> | 40.0 | 57.4 |
+| JH Kallis | 2012 | 409 | 106.5 | 17 | <span id="kp-kallis-2012-tpm">-4.57%</span> | 37.8 | 69.0 |
+| Ishan Kishan | 2022 | 418 | 120.1 | 14 | <span id="kp-ishan-2022-tpm">-5.71%</span> | 40.2 | 63.5 |
 
 ### Warner 2016: Same Volume, More TILT
 
-Warner scored 848 runs at SR 151, on a par with Kohli's counting stats, and posted an even higher +6.77% per match. The gap isn't about efficiency per run, it's about leverage:
+Warner scored 848 runs at SR 151, on a par with Kohli's counting stats, and posted an even higher +8.80% per match. The gap isn't about efficiency per run, it's about leverage:
 
 - **More 2nd innings batting**: Warner batted in the 2nd innings 52.7% of the time (vs Kohli's 32.5%). Second-innings balls carry structurally larger WP swings, so the same quality of batting converts to more TILT.
-- **Smaller catastrophes**: Warner's worst match was less severe than Kohli's -25.96% failed chase, so less of his ceiling was clawed back by disasters.
+- **Smaller catastrophes**: Warner's worst match was less severe than Kohli's -24.25% May-9 collapse, so less of his ceiling was clawed back by disasters.
 
 Kohli's 2016 lands a notch below Warner's chiefly because two-thirds of his balls came in the first innings, where the WP pie is smaller, not because his batting was lower-impact ball for ball.
 
-### KL Rahul 2018: The TILT Machine
+### KL Rahul 2018: The Chase-Share Lever
 
-659 runs, <span id="kp-rahul-2018-tpm-prose">+12.29%</span> per match, one of the highest single-season TILT totals in the database. Rahul batted in the 2nd innings 67.8% of the time, more than two-thirds of his balls in higher-leverage chase situations. This is partly a function of KXIP's batting order and toss decisions, but it compounds: more chase innings = more TILT opportunity. It is the clearest illustration of the lever Kohli's first-innings-heavy 2016 didn't get to pull.
+659 runs, <span id="kp-rahul-2018-tpm-prose">+6.24%</span> per match — ahead of Kohli's 2016 despite three hundred fewer runs. Rahul batted in the 2nd innings 67.8% of the time, more than two-thirds of his balls in higher-leverage chase situations. This is partly a function of KXIP's batting order and toss decisions, but it compounds: more chase innings = more TILT opportunity. It is the clearest illustration of the lever Kohli's first-innings-heavy 2016 didn't get to pull.
 
-### du Plessis 2021: The Orange Cap Mirage
+### du Plessis 2021: The Orange Cap Discount
 
-Faf du Plessis won the Orange Cap in 2021 with 633 runs at SR 138. His TILT was **+0.08% per match**, essentially zero. He scored a lot of runs, but disproportionately in low-leverage situations. His dot rate (33.4%) and a batting-first lean (36% inn 2 balls) meant his volume translated to almost no impact by TILT's measure. This is the high-volume-collapses-under-TILT pattern that 2016 Kohli pointedly avoided.
+Faf du Plessis won the Orange Cap in 2021 with 633 runs at SR 138. His TILT was **+2.19% per match** — positive, but well under half of what Kohli's 2016 banked per match, and roughly what Kohli's 439-run 2019 produced. He scored a lot of runs, but disproportionately in lower-leverage situations: a 33.4% dot rate and a batting-first lean (36% inn 2 balls) meant the volume translated to modest impact by TILT's measure. This is the high-volume-discounted-by-TILT pattern that 2016 Kohli pointedly avoided.
 
 ### Rahane 2013 & Kallis 2012: The Accumulator Penalty
 
@@ -161,7 +161,7 @@ Both scored 400+ runs at sub-107 strike rates with 38-40% dot ball percentages. 
 
 ![Runs vs TILT scatter](plots/runs_vs_tilt_scatter.png)
 
-Every dot is an IPL season with 400+ runs. The correlation between runs scored and TILT per match is **weak positive** (r = 0.27). Scoring lots of runs helps, but the *rate* and *timing* matter far more than the volume.
+Every dot is an IPL season with 400+ runs. The correlation between runs scored and TILT per match is **weak positive** (r = 0.31). Scoring lots of runs helps, but the *rate* and *timing* matter far more than the volume.
 
 Kohli 2016 sits in the upper region of the cloud: high runs and high TILT together, which is a rarer combination than it sounds. The seasons up there tend to be from players who scored fast, chased often, and didn't have too many catastrophic matches. 2016 qualifies on the first two and survives despite the third.
 
@@ -179,13 +179,13 @@ The purple line shows runs by season. The bars show batting TILT per match (2016
 
 TILT is picking up something real and, in this case, flattering about 2016. The 108(58) chase, the SR 220 in the death overs, the consistently positive centuries: the model rewards all of it because the runs came at rates and moments that actually moved matches. The catastrophic matches are real too. 20(21) in the powerplay when your team needs a fast start is genuinely harmful, and the heavy penalty the model applies isn't the model misbehaving, it's the model doing exactly what it's designed to do. And credit sharing reflects reality: when ABD scores 129 and Kohli scores 109 in the same innings, the marginal impact of each run is lower than if one of them had carried the load alone, even though Kohli still came out positive.
 
-Where TILT arguably still leaves value on the table is on the first-innings and volume sides. The first innings has a structural ceiling: the total WP available in innings 1 is limited and gets divided across all batsmen, so on a stacked 2016 RCB lineup the pie is split several ways while a single dominant batsman on a weaker team can capture everything. Two-thirds of Kohli's 2016 balls came in that lower-ceiling first innings, which is most of the gap to Warner. And volume should count for something in its own right: adding +0.103% per ball across 640 balls is a different achievement from adding the same rate across 321, and a per-match number doesn't fully capture that. Both of these, if anything, suggest TILT may still slightly *understate* 2016 rather than overstate it.
+Where TILT arguably still leaves value on the table is on the first-innings and volume sides. The first innings has a structural ceiling: the total WP available in innings 1 is limited and gets divided across all batsmen, so on a stacked 2016 RCB lineup the pie is split several ways while a single dominant batsman on a weaker team can capture everything. Two-thirds of Kohli's 2016 balls came in that lower-ceiling first innings, which is most of the gap to Warner. And volume should count for something in its own right: adding +0.148% per ball across 640 balls is a different achievement from adding +0.103% across 321, and a per-match number doesn't fully capture that. Both of these, if anything, suggest TILT may still slightly *understate* 2016 rather than overstate it.
 
 ---
 
 ## So Is 2016 Overrated?
 
-No, and TILT agrees. It was a historically great season by the counting stats, and it remains one of Kohli's best by impact too: equally efficient per ball as his celebrated 2019, sustained across twice the workload, and net positive even after two genuinely costly failures.
+No, and TILT agrees. It was a historically great season by the counting stats, and it remains one of Kohli's best by impact too: more efficient per ball than his celebrated 2019, sustained across twice the workload, and net positive even after two genuinely costly failures.
 
 The old worry, that an impact metric would expose 2016 as empty volume, simply doesn't hold up. The credit-sharing, dot-ball, and first-innings-ceiling effects are all real, and they shave something off the top. But they don't erase the season; they explain why it lands a notch below the most leverage-rich campaigns like Warner's 2016 or Rahul's 2018 rather than at the very summit.
 

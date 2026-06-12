@@ -8,18 +8,18 @@
   "teams": [
     "Delhi Capitals"
   ],
-  "total_tilt_per_match": -0.08422,
-  "batting_tilt_per_match": -0.08422,
+  "total_tilt_per_match": -0.06308,
+  "batting_tilt_per_match": -0.06308,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.05302,
-  "shrunk_batting_tilt_per_match": -0.04625,
+  "shrunk_total_tilt_per_match": -0.04455,
+  "shrunk_batting_tilt_per_match": -0.03904,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.12459,
-  "tilt_ci_upper": 0.01855,
-  "tilt_ci_lower_90": -0.11309,
-  "tilt_ci_upper_90": 0.00705,
+  "tilt_ci_lower": -0.11003,
+  "tilt_ci_upper": 0.02092,
+  "tilt_ci_lower_90": -0.0995,
+  "tilt_ci_upper_90": 0.0104,
   "confidence": "low",
-  "total_tilt": -0.4211,
+  "total_tilt": -0.31541,
   "total_matches": 5,
   "batting_balls": 58,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2011",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": -0.08422,
+      "batting_tilt_per_match": -0.06308,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 5,
       "bowling_matches": 0,
@@ -45,14 +45,14 @@
           "bat_runs": 8,
           "bat_balls": 11,
           "bat_sr": 72.7,
-          "bat_tilt": -0.24352,
+          "bat_tilt": -0.20602,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.24352
+          "total_tilt": -0.20602
         },
         {
           "match_id": "501233",
@@ -65,14 +65,14 @@
           "bat_runs": 20,
           "bat_balls": 13,
           "bat_sr": 153.8,
-          "bat_tilt": 0.03466,
+          "bat_tilt": 0.0176,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.03466
+          "total_tilt": 0.0176
         },
         {
           "match_id": "501238",
@@ -85,14 +85,14 @@
           "bat_runs": 27,
           "bat_balls": 15,
           "bat_sr": 180.0,
-          "bat_tilt": -0.0131,
+          "bat_tilt": 0.03552,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.0131
+          "total_tilt": 0.03552
         },
         {
           "match_id": "501243",
@@ -105,14 +105,14 @@
           "bat_runs": 4,
           "bat_balls": 8,
           "bat_sr": 50.0,
-          "bat_tilt": -0.16987,
+          "bat_tilt": -0.13804,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.16987
+          "total_tilt": -0.13804
         },
         {
           "match_id": "501257",
@@ -125,14 +125,14 @@
           "bat_runs": 16,
           "bat_balls": 11,
           "bat_sr": 145.5,
-          "bat_tilt": -0.02926,
+          "bat_tilt": -0.02448,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.02926
+          "total_tilt": -0.02448
         }
       ],
       "batting_stats": {
@@ -152,42 +152,42 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.40849,
+      "tilt": -0.3275,
       "balls": 21,
-      "avg_delta": -0.018568
+      "avg_delta": -0.014887
     },
     {
       "phase": "death",
-      "tilt": -0.01261,
+      "tilt": 0.01209,
       "balls": 37,
-      "avg_delta": -0.000341
+      "avg_delta": 0.000327
     }
   ],
   "bowling_phases": [],
   "best_matches": [
     {
-      "match_id": "501233",
-      "date": "2011-04-30",
-      "vs": "Kochi Tuskers Kerala",
-      "tilt": 0.03466,
-      "runs": 20,
-      "balls": 13,
-      "not_out": false
-    },
-    {
       "match_id": "501238",
       "date": "2011-05-02",
       "vs": "Kochi Tuskers Kerala",
-      "tilt": -0.0131,
+      "tilt": 0.03552,
       "runs": 27,
       "balls": 15,
+      "not_out": false
+    },
+    {
+      "match_id": "501233",
+      "date": "2011-04-30",
+      "vs": "Kochi Tuskers Kerala",
+      "tilt": 0.0176,
+      "runs": 20,
+      "balls": 13,
       "not_out": false
     },
     {
       "match_id": "501257",
       "date": "2011-05-15",
       "vs": "Punjab Kings",
-      "tilt": -0.02926,
+      "tilt": -0.02448,
       "runs": 16,
       "balls": 11,
       "not_out": false
@@ -196,7 +196,7 @@
       "match_id": "501243",
       "date": "2011-05-05",
       "vs": "Deccan Chargers",
-      "tilt": -0.16987,
+      "tilt": -0.13804,
       "runs": 4,
       "balls": 8,
       "not_out": false
@@ -205,7 +205,7 @@
       "match_id": "501230",
       "date": "2011-04-28",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.24352,
+      "tilt": -0.20602,
       "runs": 8,
       "balls": 11,
       "not_out": false
@@ -216,7 +216,7 @@
       "match_id": "501230",
       "date": "2011-04-28",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.24352,
+      "tilt": -0.20602,
       "runs": 8,
       "balls": 11,
       "not_out": false
@@ -225,7 +225,7 @@
       "match_id": "501243",
       "date": "2011-05-05",
       "vs": "Deccan Chargers",
-      "tilt": -0.16987,
+      "tilt": -0.13804,
       "runs": 4,
       "balls": 8,
       "not_out": false
@@ -234,27 +234,27 @@
       "match_id": "501257",
       "date": "2011-05-15",
       "vs": "Punjab Kings",
-      "tilt": -0.02926,
+      "tilt": -0.02448,
       "runs": 16,
       "balls": 11,
-      "not_out": false
-    },
-    {
-      "match_id": "501238",
-      "date": "2011-05-02",
-      "vs": "Kochi Tuskers Kerala",
-      "tilt": -0.0131,
-      "runs": 27,
-      "balls": 15,
       "not_out": false
     },
     {
       "match_id": "501233",
       "date": "2011-04-30",
       "vs": "Kochi Tuskers Kerala",
-      "tilt": 0.03466,
+      "tilt": 0.0176,
       "runs": 20,
       "balls": 13,
+      "not_out": false
+    },
+    {
+      "match_id": "501238",
+      "date": "2011-05-02",
+      "vs": "Kochi Tuskers Kerala",
+      "tilt": 0.03552,
+      "runs": 27,
+      "balls": 15,
       "not_out": false
     }
   ],
@@ -264,53 +264,53 @@
     {
       "match": 1,
       "date": "2011-04-28",
-      "tilt": -0.24352,
-      "cumulative": -0.24352
+      "tilt": -0.20602,
+      "cumulative": -0.20602
     },
     {
       "match": 2,
       "date": "2011-04-30",
-      "tilt": 0.03466,
-      "cumulative": -0.20887
+      "tilt": 0.0176,
+      "cumulative": -0.18842
     },
     {
       "match": 3,
       "date": "2011-05-02",
-      "tilt": -0.0131,
-      "cumulative": -0.22197
+      "tilt": 0.03552,
+      "cumulative": -0.1529
     },
     {
       "match": 4,
       "date": "2011-05-05",
-      "tilt": -0.16987,
-      "cumulative": -0.39184
+      "tilt": -0.13804,
+      "cumulative": -0.29093
     },
     {
       "match": 5,
       "date": "2011-05-15",
-      "tilt": -0.02926,
-      "cumulative": -0.4211
+      "tilt": -0.02448,
+      "cumulative": -0.31541
     }
   ],
   "team_matchups": [
     {
       "opponent": "Kochi Tuskers Kerala",
-      "tilt_per_match": 0.01078,
+      "tilt_per_match": 0.02656,
       "matches": 2
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.02926,
+      "tilt_per_match": -0.02448,
       "matches": 1
     },
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": -0.16987,
+      "tilt_per_match": -0.13804,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.24352,
+      "tilt_per_match": -0.20602,
       "matches": 1
     }
   ],
@@ -329,10 +329,10 @@
   },
   "bowling_stats": null,
   "match_tilt_distribution": [
-    -0.24352,
-    0.03466,
-    -0.0131,
-    -0.16987,
-    -0.02926
+    -0.20602,
+    0.0176,
+    0.03552,
+    -0.13804,
+    -0.02448
   ]
 }

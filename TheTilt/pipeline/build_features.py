@@ -16,6 +16,11 @@ PRIOR_BALLS = 18
 PRIOR_RPO = 8.4
 PRIOR_RUNS = PRIOR_BALLS * PRIOR_RPO / 6  # 25.2
 
+# Shrinkage prior for the as-of-date opponent_bowler_economy (issue #199):
+# a debut bowler starts at the league-average rpo and earns their own
+# economy as prior legal balls accumulate — ~10 overs of prior weight.
+ECON_PRIOR_BALLS = 60
+
 
 def shrunk_run_rate(runs_scored: float, balls_bowled: float) -> float:
     """Empirical-Bayes shrunk run rate. Mirrors compute_tilt.compute_state_after."""
@@ -44,9 +49,7 @@ def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = Non
     df["wickets_fallen"] = wicket_counts.cumsum().shift(1, fill_value=0)
 
     # Ball number in innings (1-indexed, counts every delivery incl. wides/
-    # no-balls). Switching to a legal-delivery count changes the feature for
-    # every innings with extras and therefore must ship with a retrain —
-    # deferred half of issue #192.
+    # no-balls) — the within-innings ordering key.
     df["ball_number"] = range(1, n + 1)
 
     # Balls remaining. Default T20 = 120 deliveries; DLS-revised innings carry
@@ -59,7 +62,13 @@ def build_innings_features(innings_df: pd.DataFrame, target: Optional[int] = Non
         alloc = df["innings_allocation"].iloc[0]
         if pd.notna(alloc) and alloc > 0:
             total_balls = int(round(float(alloc) * 6))
-    df["balls_bowled"] = df["ball_number"] - 1  # Before this ball
+    # A wide/no-ball doesn't consume one of the innings' deliveries, so
+    # balls_bowled counts only LEGAL deliveries before this ball (the other
+    # half of issue #192 — the old ball_number-based count drifted
+    # balls_remaining low by the innings' running extras count). Mirrored in
+    # compute_tilt.compute_state_after.
+    legal = (~df["is_wide"].astype(bool) & ~df["is_noball"].astype(bool)).astype(int)
+    df["balls_bowled"] = legal.cumsum().shift(1, fill_value=0)
     df["balls_remaining"] = total_balls - df["balls_bowled"]
     df["balls_remaining"] = df["balls_remaining"].clip(lower=1)
 
@@ -178,23 +187,34 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         lambda s: int(s.split("/")[0]) if "/" in str(s) else int(s) if str(s).isdigit() else 2008
     )
 
-    # Opponent quality proxy: career bowling economy per bowler
-    # Computed across all data (career-level, not in-match) as a static lookup.
-    # ACCEPTED APPROXIMATION (#199): this is a full-career lookup, i.e. a mild
-    # temporal lookahead — a 2008 delivery sees the bowler's whole-career
-    # economy including future seasons. Feature importance is low (~32), so the
-    # leakage is tolerated; switching to an expanding as-of-date mean is a
-    # feature change that must ship with a retrain.
-    bowler_stats = (
-        result.groupby("bowler_id")
-        .agg(total_runs=("runs_total", "sum"), total_balls=("runs_total", "count"))
+    # Opponent quality proxy: bowler economy as an expanding as-of-date mean
+    # (issue #199 — replaces the full-career lookup whose temporal lookahead
+    # let a 2008 delivery see the bowler's whole career). Each delivery sees
+    # the bowler's runs conceded per 6 legal balls across PRIOR matches only,
+    # shrunk toward the PRIOR_RPO league prior with ECON_PRIOR_BALLS of
+    # weight so debutants and short histories stay in-distribution. Constant
+    # within a (bowler, match), so post-ball states carry it unchanged.
+    print("  Computing as-of-date opponent bowler economy...")
+    _legal_ball = (~result["is_wide"].astype(bool) & ~result["is_noball"].astype(bool)).astype(int)
+    bowler_match = (
+        result.assign(_legal=_legal_ball)
+        .groupby(["bowler_id", "match_id", "date"])
+        .agg(runs=("runs_total", "sum"), balls=("_legal", "sum"))
         .reset_index()
+        .sort_values(["bowler_id", "date", "match_id"])
     )
-    bowler_stats["career_economy"] = bowler_stats["total_runs"] / (bowler_stats["total_balls"] / 6).clip(lower=1)
-    # Fill missing with league average
-    league_avg_economy = bowler_stats["career_economy"].mean()
-    bowler_economy_map = bowler_stats.set_index("bowler_id")["career_economy"]
-    result["opponent_bowler_economy"] = result["bowler_id"].map(bowler_economy_map).fillna(league_avg_economy)
+    _g = bowler_match.groupby("bowler_id")
+    prior_runs = _g["runs"].cumsum() - bowler_match["runs"]
+    prior_balls = _g["balls"].cumsum() - bowler_match["balls"]
+    bowler_match["econ_asof"] = (prior_runs + ECON_PRIOR_BALLS * PRIOR_RPO / 6) / (
+        (prior_balls + ECON_PRIOR_BALLS) / 6
+    )
+    result = result.merge(
+        bowler_match[["bowler_id", "match_id", "econ_asof"]],
+        on=["bowler_id", "match_id"],
+        how="left",
+    )
+    result["opponent_bowler_economy"] = result.pop("econ_asof")
     print(f"  Opponent bowler economy: mean={result['opponent_bowler_economy'].mean():.2f}, std={result['opponent_bowler_economy'].std():.2f}")
 
     # Team strength proxy: rolling season NRR (net run rate) from prior matches
@@ -253,7 +273,7 @@ def build_all_features(ball_events_path: Optional[str] = None) -> pd.DataFrame:
         "is_wide", "is_noball",
         "is_wicket", "wicket_count", "wicket_kind", "player_dismissed", "player_dismissed_id", "wicket_fielders",
         # Features (state before delivery)
-        "ball_number", "balls_remaining", "wickets_in_hand",
+        "ball_number", "balls_bowled", "balls_remaining", "wickets_in_hand",
         "runs_scored", "wickets_fallen", "run_rate",
         "is_powerplay", "is_middle", "is_death",
         "target", "runs_needed", "required_run_rate",

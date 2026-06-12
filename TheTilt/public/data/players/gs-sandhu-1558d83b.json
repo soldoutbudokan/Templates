@@ -8,18 +8,18 @@
   "teams": [
     "Delhi Capitals"
   ],
-  "total_tilt_per_match": -0.06913,
+  "total_tilt_per_match": -0.00414,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.03606,
+  "shrunk_total_tilt_per_match": -0.01907,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.09337,
-  "tilt_ci_upper": 0.02126,
-  "tilt_ci_lower_90": -0.08416,
-  "tilt_ci_upper_90": 0.01204,
+  "tilt_ci_lower": -0.20262,
+  "tilt_ci_upper": 0.16449,
+  "tilt_ci_lower_90": -0.17312,
+  "tilt_ci_upper_90": 0.13499,
   "confidence": "low",
-  "total_tilt": -0.13826,
+  "total_tilt": -0.00827,
   "total_matches": 2,
   "batting_balls": 0,
   "bowling_balls": 48,
@@ -28,7 +28,7 @@
       "season": "2015",
       "team": "Delhi Capitals",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.06913,
+      "bowling_tilt_per_match": -0.00414,
       "batting_matches": 0,
       "bowling_matches": 2,
       "batting_balls": 0,
@@ -51,8 +51,8 @@
           "bowl_balls": 24,
           "bowl_runs": 49,
           "bowl_econ": 12.25,
-          "bowl_tilt": -0.12499,
-          "total_tilt": -0.12499
+          "bowl_tilt": -0.1769,
+          "total_tilt": -0.1769
         },
         {
           "match_id": "829801",
@@ -71,8 +71,8 @@
           "bowl_balls": 24,
           "bowl_runs": 37,
           "bowl_econ": 9.25,
-          "bowl_tilt": -0.01327,
-          "total_tilt": -0.01327
+          "bowl_tilt": 0.16863,
+          "total_tilt": 0.16863
         }
       ],
       "bowling_stats": {
@@ -90,21 +90,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.0049,
+      "tilt": 0.00122,
       "balls": 6,
-      "avg_delta": -0.000816
+      "avg_delta": 0.000203
     },
     {
       "phase": "middle",
-      "tilt": -0.09095,
+      "tilt": -0.01678,
       "balls": 18,
-      "avg_delta": -0.005053
+      "avg_delta": -0.000932
     },
     {
       "phase": "death",
-      "tilt": -0.04241,
+      "tilt": 0.00729,
       "balls": 24,
-      "avg_delta": -0.001767
+      "avg_delta": 0.000304
     }
   ],
   "best_matches": [],
@@ -114,7 +114,7 @@
       "match_id": "829801",
       "date": "2015-05-12",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01327,
+      "tilt": 0.16863,
       "wickets": 1,
       "balls": 24
     },
@@ -122,7 +122,7 @@
       "match_id": "829777",
       "date": "2015-05-03",
       "vs": "Rajasthan Royals",
-      "tilt": -0.12499,
+      "tilt": -0.1769,
       "wickets": 0,
       "balls": 24
     }
@@ -132,7 +132,7 @@
       "match_id": "829777",
       "date": "2015-05-03",
       "vs": "Rajasthan Royals",
-      "tilt": -0.12499,
+      "tilt": -0.1769,
       "wickets": 0,
       "balls": 24
     },
@@ -140,7 +140,7 @@
       "match_id": "829801",
       "date": "2015-05-12",
       "vs": "Chennai Super Kings",
-      "tilt": -0.01327,
+      "tilt": 0.16863,
       "wickets": 1,
       "balls": 24
     }
@@ -149,26 +149,26 @@
     {
       "match": 1,
       "date": "2015-05-03",
-      "tilt": -0.12499,
-      "cumulative": -0.12499
+      "tilt": -0.1769,
+      "cumulative": -0.1769
     },
     {
       "match": 2,
       "date": "2015-05-12",
-      "tilt": -0.01327,
-      "cumulative": -0.13826
+      "tilt": 0.16863,
+      "cumulative": -0.00827
     }
   ],
   "team_matchups": [],
   "bowling_team_matchups": [
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.01327,
+      "tilt_per_match": 0.16863,
       "matches": 1
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.12499,
+      "tilt_per_match": -0.1769,
       "matches": 1
     }
   ],
@@ -183,7 +183,7 @@
     "best_figures": "1/37"
   },
   "match_tilt_distribution": [
-    -0.12499,
-    -0.01327
+    -0.1769,
+    0.16863
   ]
 }

@@ -29,7 +29,7 @@ What this gets you that classical stats don't:
 
 - **Phase-aware.** A boundary in the death is worth more than a boundary in over 4, because it shifts the model's prediction more.
 - **Wicket-aware.** Losing a set batsman when chasing is more damaging than losing a tail-ender at the end.
-- **Opposition-aware.** Conceding 12 to KKR in 2024 with Narine batting is different from conceding 12 to a weak side. The model knows the opposition's recent form and the bowler's career economy.
+- **Opposition-aware.** Conceding 12 to KKR in 2024 with Narine batting is different from conceding 12 to a weak side. The model knows the opposition's recent form and the bowler's career-to-date economy.
 - **Venue-aware.** A 180 at Chinnaswamy is below par; a 180 at Chepauk is winning. The model learns this.
 - **Era-aware.** A strike rate of 140 in 2010 is elite; in 2025 it is below average. Season is a model feature.
 
@@ -107,7 +107,7 @@ For each delivery the pipeline computes the **state of the match before the ball
 | `venue` | 38 levels | Categorical — handled natively by LightGBM |
 | `batting_team_chose_to_bat` | {0, 1} | Toss winner who chose to bat |
 | `season_numeric` | 2008 — 2026 | Era proxy |
-| `opponent_bowler_economy` | rpo | Career economy of the bowler facing this ball |
+| `opponent_bowler_economy` | rpo | Economy of the bowler facing this ball, over their prior matches only |
 | `batting_team_nrr` | NRR | Batting side's net run rate so far this season (prior matches only) |
 
 A few of these are worth pulling out.
@@ -132,7 +132,7 @@ By over 4 the prior is overwhelmed by real data. This single change removed a cl
 
 ### Opponent quality, without leakage
 
-`opponent_bowler_economy` is the *career-level* economy of the bowler delivering the ball. It's a coarse but useful proxy for opposition quality: bowling a ball at a hitter is different from bowling it at a tailender, and facing a Bumrah delivery is different from facing a part-timer. Career economy is computed across the full dataset, used only as a static lookup at scoring time, and doesn't update mid-match.
+`opponent_bowler_economy` is the **career-to-date** economy of the bowler delivering the ball — an expanding mean over the bowler's *prior matches only* (runs conceded per 6 legal balls, shrunk toward the 8.4-rpo league prior with ~10 overs of prior weight so debutants stay in-distribution). It's a coarse but useful proxy for opposition quality: facing a Bumrah delivery is different from facing a part-timer. The as-of-date construction means a 2008 delivery no longer sees the bowler's whole future career — the mild temporal lookahead the earlier full-career lookup accepted (issue #199). The value is fixed at match start and doesn't update mid-match.
 
 `batting_team_nrr` is the **season-to-date net run rate of the batting side**, computed from prior matches only — never including the current game — so there is no leakage. It encodes "is this a strong team this year" in one number.
 
@@ -175,7 +175,7 @@ The model uses **monotone constraints** on three features whose direction is una
 
 A single LightGBM run on this dataset is fitted enough that adding one or two new matches to Cricsheet can shift career rankings by **5+ positions** in the top 10 — the train/holdout split reshuffles, the boosting trajectory diverges, and the model's prediction on a fully-deterministic ball-0 feature vector swings by up to 4.85 percentage points. The career signal between #1 and #20 (~10 TILT units) is smaller than the noise floor of one retrain (max 5.5 TILT units, p95 1.34). That makes any retrain functionally equivalent to a random reshuffle of the middle of the leaderboard.
 
-The fix: train **K=100 LightGBM members** with random states 42, 43, …, 141 on the same fixed train/holdout split, and average their `predict_proba` outputs at inference. Each member has the same hyperparameters and sees the same data; only the LightGBM trajectory varies. Member-to-member disagreement on the holdout is real (median 1.4pp / p95 3.2pp / max 9.8pp std across the 100 members on the same ball), and that disagreement is exactly what the ensemble averages away. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*, which is the whole point.
+The fix: train **K=100 LightGBM members** with random states 42, 43, …, 141 on the same fixed train/holdout split, and average their `predict_proba` outputs at inference. Each member has the same hyperparameters and sees the same data; only the LightGBM trajectory varies. Member-to-member disagreement on the holdout is real (median 3.4pp / p95 6.4pp / max 9.7pp std across the 100 members on the same ball — wider than under the pre-#193 setup, since each member now also early-stops on its own train-carved fold), and that disagreement is exactly what the ensemble averages away. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*, which is the whole point.
 
 The model artifact (`models/win_prob_lgbm.pkl`) wraps the 100 members in an `EnsembleModel` class exposing the same `predict_proba` interface as a single classifier. Pickle size is ~33 MB (vs 0.4 MB for one member). The data-only refresh workflow loads the same pickle without retraining; full retrains run on March 1 each year and require explicitly setting `RETRAIN=1` in the environment to overwrite the committed pickle. The guardrail exists because two ad-hoc local pipeline runs once silently retrained the committed model and shipped a noisier version — that is the failure mode the K=100 ensemble plus the env-var lock are jointly designed to prevent. (See *Why we ensemble* in the [notes](notes.html?note=ensemble) for the full diagnostic.)
 
@@ -195,15 +195,15 @@ Older iterations applied Platt scaling on top of the raw classifier. The committ
 
 ## 5. Validation
 
-The model is evaluated on the held-out 10% of matches (**119 games, ~28.6K balls**) — the same 119 matches every retrain, locked by `random_state=42` so Brier/AUC numbers are directly comparable across pipeline runs.
+The model is evaluated on the held-out 10% of matches (**122 games, ~29.2K balls**) — the same 122 matches every retrain, locked by the persisted holdout list (`models/holdout_match_ids.json`, issue #193) so Brier/AUC numbers are directly comparable across pipeline runs. (Numbers from before the June 2026 retrain were measured on the older seed-42 split — that switch is the one documented comparability break.)
 
 | Metric | Value | Notes |
 |:--|:--|:--|
 | **Brier score** | 0.191 | Mean squared error between predicted prob and outcome. 0 is perfect; 0.25 is "always predict 0.5". |
-| **Log loss** | 0.560 | Cross-entropy. Lower is better. |
-| **AUC** | 0.780 | Discrimination — given a ball with a winner-side and loser-side, the model orders them correctly 78% of the time. |
-| **Calibration error (max)** | ~5% | Across 10 probability bins, the largest gap between predicted and observed win rate. |
-| **K-member disagreement (std)** | median 1.4pp · p95 3.2pp · max 9.8pp | How much the 100 ensemble members disagree on a typical holdout ball. The ensemble's predict_proba averages this away; individual members live in this distribution. |
+| **Log loss** | 0.555 | Cross-entropy. Lower is better. |
+| **AUC** | 0.774 | Discrimination — given a ball with a winner-side and loser-side, the model orders them correctly 77% of the time. |
+| **Calibration error (max)** | ~7% | Across 10 probability bins, the largest gap between predicted and observed win rate (concentrated in the 0.85+ bins). |
+| **K-member disagreement (std)** | median 3.4pp · p95 6.4pp · max 9.7pp | How much the 100 ensemble members disagree on a typical holdout ball. The ensemble's predict_proba averages this away; individual members live in this distribution. |
 
 Brier under 0.20 is the implicit target for a usable WPA model — much above that and the per-ball deltas become too noisy to produce a meaningful aggregate. The ensemble clears it.
 
@@ -235,30 +235,31 @@ If any of these flips after a retrain, the deploy doesn't ship.
 Mean LightGBM split-count importance across the 100 ensemble members:
 
 ```
-venue                        ████████████████████████████████   654
-target                       █████████████                      278
-batting_team_nrr             █████████████                      269
-wickets_in_hand              ███████████                        224
-run_rate                     ███████████                        224
-runs_needed                  ██████████                         203
-required_run_rate            ██████████                         202
-innings                      █████████                          187
-runs_scored                  █████████                          175
-season_numeric               ██████                             121
-opponent_bowler_economy      █                                   32
-recent_wickets               █                                   25
-over                         █                                   22
-balls_remaining              ▏                                   17
-batting_team_chose_to_bat    ▏                                   17
+venue                        ████████████████████████████████   679
+required_run_rate            ███████████████                    325
+batting_team_nrr             ██████████████                     304
+runs_scored                  ██████████                         221
+wickets_in_hand              ██████████                         203
+target                       █████████                          189
+run_rate                     █████████                          188
+innings                      ███████                            155
+runs_needed                  ███████                            145
+season_numeric               ██████                             135
+balls_remaining              █                                   30
+recent_wickets               █                                   27
+batting_team_chose_to_bat    █                                   19
+opponent_bowler_economy      ▏                                   12
+over                         ▏                                    6
 ```
 
 A few things to read out of this:
 
 - **Venue dominates.** Conditions matter enormously in cricket and the 38-level categorical is doing a lot of work — pitch behaviour at Chepauk vs Chinnaswamy vs Wankhede is real and the model is capturing it.
-- **Chase mechanics dominate the next tier.** `target`, `wickets_in_hand`, `runs_needed`, `required_run_rate`, and `run_rate` cluster tightly together — exactly what you'd expect from a model that spends half its life predicting innings-2 outcomes.
+- **Chase mechanics dominate the next tier.** `required_run_rate` leads it outright, with `runs_scored`, `wickets_in_hand`, `target`, `run_rate`, and `runs_needed` clustered behind — exactly what you'd expect from a model that spends half its life predicting innings-2 outcomes.
 - **Team strength is up there too.** `batting_team_nrr` lets the model down-weight the same scoreline differently for a top-of-table side vs a bottom side.
-- **`balls_remaining` looks tiny — it isn't.** Split count under-weights features that are highly correlated with others (here, `balls_remaining`, `over`, and the chase features all encode similar information). The model uses ball-position information; it just gets it from `over` and the chase-state features more often than from `balls_remaining` itself.
-- **Era effects exist but are modest.** `season_numeric` shows up at 121 — enough to keep modern hitters from being treated as identical to 2010 hitters, not so much that it dominates.
+- **`balls_remaining` looks tiny — it isn't.** Split count under-weights features that are highly correlated with others (here, `balls_remaining`, `over`, and the chase features all encode similar information). The model uses ball-position information; it just gets it from the chase-state features more often than from `balls_remaining` or `over` themselves.
+- **Era effects exist but are modest.** `season_numeric` shows up at 135 — enough to keep modern hitters from being treated as identical to 2010 hitters, not so much that it dominates.
+- **`opponent_bowler_economy` fell after the leakage fix.** The June 2026 retrain switched it from a full-career lookup to an as-of-date mean (issue #199); its importance dropped from 32 to 12. Some of the old signal was the lookahead itself — the honest version carries less, which is the point.
 
 ---
 
@@ -282,7 +283,7 @@ A few details that matter for fair attribution:
 - **Wides and no-balls.** Wides aren't credited to the batsman (they didn't face it); no-balls aren't counted against the bowler's *legal-delivery* count for per-ball stats. Both still produce a `delta_wp` and both still flow into the batting/bowling totals — the legal flags only affect denominators in per-ball reporting.
 - **Wickets are credited to the bowler regardless of wicket-kind.** Run-outs are an exception flagged in the parsing step but credited the same way at the WP layer; a future model could reattribute based on fielder.
 - **The non-striker gets nothing.** TILT only credits the two players directly involved in the delivery.
-- **DLS-revised innings carry their reduced ball allocation through `balls_remaining`.** A 12-over chase is 72 balls, not 120 — feeding the model the default 120 made truncated chases look chaseable late on, which previously inflated the bowler-of-the-final-ball's TILT enormously. (This fix originally shipped in the #111 bundle, was unknowingly reverted with it, and was re-landed in June 2026 — issue #192. It covers every shortened innings: the 23 DLS-revised matches, which are excluded from training anyway, and ~10 rain-shortened matches that were never DLS-revised — e.g. a 16-overs-a-side game — which remain in training and whose features self-correct at the next retrain.)
+- **DLS-revised innings carry their reduced ball allocation through `balls_remaining`.** A 12-over chase is 72 balls, not 120 — feeding the model the default 120 made truncated chases look chaseable late on, which previously inflated the bowler-of-the-final-ball's TILT enormously. (This fix originally shipped in the #111 bundle, was unknowingly reverted with it, and was re-landed in June 2026 — issue #192. It covers every shortened innings: the 23 DLS-revised matches, which are excluded from training anyway, and ~10 rain-shortened matches that were never DLS-revised — e.g. a 16-overs-a-side game — which remain in training and whose training features self-corrected at the June 2026 retrain, issue #201.)
 
 ### What this looks like across a match
 
@@ -326,7 +327,7 @@ The pipeline applies **empirical Bayes / James–Stein shrinkage**, pulling each
 shrunk = (n / (n + k)) * raw + (k / (n + k)) * pop_mean
 ```
 
-`k` is the **within-player variance ÷ between-player variance**, estimated empirically from match-level TILT distributions. For IPL data, **k ≈ 5.3**.
+`k` is the **within-player variance ÷ between-player variance**, estimated empirically from match-level TILT distributions. For IPL data, **k ≈ 4.8** (re-estimated on every pipeline run; it sat at ≈5.3 before the June 2026 retrain).
 
 Shrinkage is applied per column with matching evidence counts: the total-TILT column uses total career matches as `n`, while the batting and bowling columns use **matches in that role** (each with its own role-estimated `k`) — a 150-match specialist bowler who has batted in 40 of them gets 40 matches of batting evidence, not 150 (issue #195).
 
@@ -383,17 +384,17 @@ TILT is honest about what it doesn't see.
 
 ### The second-innings asymmetry
 
-Win probability swings are **structurally larger in the 2nd innings**, because the target is known and every ball directly resolves the chase math. On average, a 2nd-innings ball produces a `|delta_wp|` that is **1.57×** a 1st-innings ball. The gap widens through the innings — **1.23× in the powerplay, 1.69× in the middle overs, and 2.11× in the death (overs 16–20)**.
+Win probability swings are **structurally larger in the 2nd innings**, because the target is known and every ball directly resolves the chase math. On average, a 2nd-innings ball produces a `|delta_wp|` that is **1.65×** a 1st-innings ball. The gap widens through the innings — **1.21× in the powerplay, 1.80× in the middle overs, and 2.35× in the death (overs 16–20)**.
 
 The downstream effect on single-match GOAT-type rankings is large: 100% of the top-50 batting GOAT performances and 100% of the top-50 bowling GOAT performances are from 2nd innings. The GOAT page therefore exposes innings-filtered views so within-innings comparisons are fair.
 
-The effect on **career** rankings is small. The Spearman rank correlation between raw and innings-normalized career TILT is **ρ = 0.98** — careers wash out the per-match asymmetry.
+The effect on **career** rankings is small. The Spearman rank correlation between raw and innings-normalized career TILT is **ρ = 0.99** — careers wash out the per-match asymmetry.
 
 The full diagnostic, including per-phase breakdowns and the qq-plot above, is at: [The Second Innings Problem](notes.html?note=innings-bias).
 
 ### The innings-boundary recalibration
 
-The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **8.7 pp**: the model is systematically **more pessimistic about the batting-first team at the start of the chase** than at the end of its own innings, by a mean signed gap of about **3.6 pp** in the batting-first team's win probability. (These are the *current build's* measurements — `compute_tilt` re-measures and prints them on every data refresh and retrain, and the mean drifts a little as data grows. The original diagnostic that motivated the fix measured **8.4 pp** median and **−5.1 pp** mean signed — those numbers are deliberately frozen as history in the [innings-boundary note](notes.html?note=innings-boundary) and its blog summary, which is why that note and this page differ — issue #198.)
+The win-probability classifier sees the innings boundary as two different feature vectors of the same world state: end of innings 1 has `innings=1`, `target=0`, `runs_needed=0`, `required_run_rate=0`, `balls_remaining≈1`; start of innings 2 has `innings=2`, the actual target, the concrete required run rate, `balls_remaining=120`, `wickets_in_hand=10`. Six features move in one step. The model produces a different probability for each side, and on the current build those two predictions disagree by a median of **7.6 pp**: the model is systematically **more pessimistic about the batting-first team at the start of the chase** than at the end of its own innings, by a mean signed gap of about **4.1 pp** in the batting-first team's win probability. (These are the *current build's* measurements — `compute_tilt` re-measures and prints them on every data refresh and retrain, and the mean drifts a little as data grows. The original diagnostic that motivated the fix measured **8.4 pp** median and **−5.1 pp** mean signed — those numbers are deliberately frozen as history in the [innings-boundary note](notes.html?note=innings-boundary) and its blog summary, which is why that note and this page differ — issue #198.)
 
 We close that gap with a two-step post-processing layer in `compute_tilt.apply_boundary_calibration`, applied only to the two boundary balls per match (~1.4% of all deliveries):
 
@@ -414,7 +415,7 @@ A previous "Step 3" applied a linear-decay damping across the first six balls of
 
 ### Where the model is approximate, not wrong
 
-- **Opponent quality is a single number.** `opponent_bowler_economy` is a career average — it doesn't know if a bowler is in form right now, or if they're matched up well against this batsman type.
+- **Opponent quality is a single number.** `opponent_bowler_economy` is a career-to-date average — it doesn't know if a bowler is in form right now, or if they're matched up well against this batsman type.
 - **Venue captures conditions, not weather.** A 38-level categorical knows nothing about whether the dew arrived in the second innings.
 - **Team strength updates only between matches.** `batting_team_nrr` reflects season-to-date but can lag a recent change in form.
 

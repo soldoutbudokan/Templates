@@ -69,7 +69,7 @@ For each ball, we compute the **match state before the delivery is bowled**:
 | `venue` | Match venue (categorical — LightGBM native handling) |
 | `batting_team_chose_to_bat` | 1 if batting team won toss and chose to bat |
 | `season_numeric` | IPL season year (2008-2026) for era adjustment |
-| `opponent_bowler_economy` | Career bowling economy of the bowler (opponent quality proxy) |
+| `opponent_bowler_economy` | Career-to-date bowling economy of the bowler, prior matches only (opponent quality proxy) |
 | `batting_team_nrr` | Season-to-date net run rate of the batting team (prior matches only — no leakage) |
 
 **Key design decision:** We use a single model for both innings. For innings 1, the target/required run rate features are set to 0. This lets the model learn that innings 1 is about *setting a total* while innings 2 is about *chasing*. The `innings` feature acts as a switch.
@@ -92,13 +92,13 @@ Output: averaged P(batting team wins) ∈ [0, 1]   ← mean of 100 LGBM members
 **Why K=100 ensemble?** A single LightGBM run on this dataset is fitted enough that adding one or two new matches to Cricsheet can flip the career top-10 (issue #111: AB de Villiers fell from #3 to #9 across a single retrain on a +2-match delta). Train/holdout reshuffles, the boosting trajectory diverges, and individual ball predictions can swing by **5+ percentage points** for the same input. K=100 members trained on the same fixed split with random states 42…141 average that variance away. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*.
 
 **Training details:**
-- Train/test split: **90/10 by match**, with the holdout match list persisted in `models/holdout_match_ids.json` — every retrain validates on the same matches (newly added matches go to train), so Brier/AUC numbers stay directly comparable. A locked seed alone does *not* freeze the split — `GroupShuffleSplit` reshuffles as the match set grows (issue #193); the list is written at the next retrain, which is the one documented comparability break
+- Train/test split: **90/10 by match**, with the holdout match list persisted in `models/holdout_match_ids.json` — every retrain validates on the same matches (newly added matches go to train), so Brier/AUC numbers stay directly comparable. A locked seed alone does *not* freeze the split — `GroupShuffleSplit` reshuffles as the match set grows (issue #193); the list was first persisted at the June 2026 retrain (122 matches), which is the one documented comparability break
 - Early stopping per member uses a validation fold carved from *train* (keyed on the member seed) — the reported holdout is never used for iteration selection (issue #193)
 - 100 ensemble members, each: 2000 trees (with early stopping), learning rate 0.03, max depth 4, num_leaves 16
 - Heavy L2 regularization (reg_lambda=5.0, min_child_samples=500) — keeps individual trees smooth so member-to-member disagreement is genuine trajectory variance, not leaf noise
 - Venue names deduplicated (59 raw → 38 canonical) to reduce categorical overfitting
 - DLS-affected matches excluded from training (23 matches as of June 2026); their balls are still scored using the per-innings DLS allocation so revised chases aren't treated as full T20s (this fix was silently reverted with the #111 bundle and re-landed in June 2026 — issue #192)
-- No post-hoc calibration needed — the LightGBM probabilities are well-calibrated (max calibration error ~5%)
+- No post-hoc calibration needed — the LightGBM probabilities are well-calibrated (max calibration error ~7%, concentrated in the 0.85+ bins)
 - `RETRAIN=1` env-var guardrail required to overwrite the committed pickle (prevents ad-hoc local pipeline runs from silently swapping in a noisier model)
 
 **Model performance:**
@@ -106,30 +106,30 @@ Output: averaged P(batting team wins) ∈ [0, 1]   ← mean of 100 LGBM members
 | Metric | Value |
 |--------|-------|
 | Brier Score | 0.191 (lower is better, perfect = 0) |
-| AUC | 0.780 |
-| K-member disagreement (std) | median 1.4pp · p95 3.2pp · max 9.8pp |
+| AUC | 0.774 |
+| K-member disagreement (std) | median 3.4pp · p95 6.4pp · max 9.7pp |
 
 **Feature importances** (mean across 100 ensemble members):
 
 ```
-venue                        ████████████████████████████████   (654)
-target                       █████████████                      (278)
-batting_team_nrr             █████████████                      (269)
-wickets_in_hand              ███████████                        (224)
-run_rate                     ███████████                        (224)
-runs_needed                  ██████████                         (203)
-required_run_rate            ██████████                         (202)
-innings                      █████████                          (187)
-runs_scored                  █████████                          (175)
-season_numeric               ██████                             (121)
-opponent_bowler_economy      █                                   (32)
-recent_wickets               █                                   (25)
-over                         █                                   (22)
-balls_remaining              ▏                                   (17)
-batting_team_chose_to_bat    ▏                                   (17)
+venue                        ████████████████████████████████   (679)
+required_run_rate            ███████████████                    (325)
+batting_team_nrr             ██████████████                     (304)
+runs_scored                  ██████████                         (221)
+wickets_in_hand              ██████████                         (203)
+target                       █████████                          (189)
+run_rate                     █████████                          (188)
+innings                      ███████                            (155)
+runs_needed                  ███████                            (145)
+season_numeric               ██████                             (135)
+balls_remaining              █                                   (30)
+recent_wickets               █                                   (27)
+batting_team_chose_to_bat    █                                   (19)
+opponent_bowler_economy      ▏                                   (12)
+over                         ▏                                    (6)
 ```
 
-Venue dominates — ground conditions significantly affect win probability. Chase mechanics (target, wickets, run rate, required run rate) cluster together in the next tier. Team-strength (batting_team_nrr) is up there as well. Season captures era effects.
+Venue dominates — ground conditions significantly affect win probability. Chase mechanics (required run rate out front, then runs scored, wickets, target, run rate) fill the next tier. Team-strength (batting_team_nrr) is up there as well. Season captures era effects. `opponent_bowler_economy` fell from 32 to 12 when the June 2026 retrain replaced its full-career lookup with an as-of-date mean (issue #199) — part of the old signal was the lookahead itself.
 
 ### Step 4: Computing TILT
 
@@ -162,7 +162,7 @@ Raw per-match averages are noisy for players with few matches. We apply empirica
 shrunk_tilt = (n / (n + k)) * raw_tilt + (k / (n + k)) * population_mean
 ```
 
-Where `k` is estimated from the ratio of within-player to between-player variance (k ≈ 5.3 for IPL data). This means:
+Where `k` is estimated from the ratio of within-player to between-player variance (k ≈ 4.8 for IPL data). This means:
 - A player with 5 matches: 50% raw, 50% population mean
 - A player with 50 matches: 90% raw, 10% population mean
 - A player with 188 matches (Narine): 97% raw, 3% population mean
@@ -189,7 +189,7 @@ The live top-10 by TILT floor is on the **[rankings page](https://thetilt-rust.v
 
 - **Narine** tops both the floor ranking and raw career-total TILT — the most consistent all-round impact player in IPL history.
 - **AB de Villiers** rises near the top of the floor ranking after the May 2026 `recent_wickets` rolling-window fix to `compute_state_after`. The previous logic over-counted recent wickets in the post-ball state, inflating bowling credit and depressing batting wp; the fix redistributed ~1 TILT back to top batters.
-- **Top batters resurface** — Buttler and Rahul sit near the floor cutline, reclaiming space the wicket-window inflation had been giving to bowlers.
+- **Top batters resurface** — Buttler and Rahul climbed well up the floor ranking, reclaiming space the wicket-window inflation had been giving to bowlers.
 - **Bumrah, Malinga, Rashid Khan, Chahal** still anchor the bowler tier — now without inflated wicket-window credit.
 - **Medium- and low-confidence players** posting extreme raw numbers can crack the top tier on floor — shrinkage pulls them hard, but the lower bound still clears most veterans.
 - **Venue matters most**: the venue feature has the highest importance, confirming that ground conditions significantly affect match outcomes.
@@ -262,12 +262,12 @@ TheTilt/
 1. **Fielding is invisible** — The model can't attribute catches, run-outs, or misfields to specific fielders.
 2. **No batting position context** — An opener facing the new ball operates in a different context than a #6 batsman.
 3. **No bowler type classification** — The model doesn't know if a bowler is pace or spin. PaceOrSpin × Venue interactions could improve predictions. This requires external data or manual classification.
-4. **Opponent quality is approximate** — We use career bowling economy as a proxy, but a full iterative system (using TILT-derived quality) would be more accurate.
-5. **Second innings TILT asymmetry** — Win probability swings are inherently larger in the 2nd innings because the target is known and the match resolves ball by ball. On average, 2nd innings balls produce **1.57x** larger |delta_wp| than 1st innings balls. The effect is concentrated in death overs (2.12x) while powerplay overs are nearly equal (1.23x). This inflates single-match TILT for 2nd innings performances — 100% of the top-50 batting and 100% of the top-50 bowling GOAT performances come from the 2nd innings. The GOAT page now provides innings-filtered views to enable fair within-innings comparisons. Career-level rankings are largely unaffected (Spearman ρ = 0.98 between raw and innings-normalized career TILT). See `notebooks/innings_bias_analysis.py` for the full diagnostic.
+4. **Opponent quality is approximate** — We use career-to-date bowling economy (prior matches only) as a proxy, but a full iterative system (using TILT-derived quality) would be more accurate.
+5. **Second innings TILT asymmetry** — Win probability swings are inherently larger in the 2nd innings because the target is known and the match resolves ball by ball. On average, 2nd innings balls produce **1.65x** larger |delta_wp| than 1st innings balls. The effect is concentrated in death overs (2.35x) while powerplay overs are nearly equal (1.21x). This inflates single-match TILT for 2nd innings performances — 100% of the top-50 batting and 100% of the top-50 bowling GOAT performances come from the 2nd innings. The GOAT page now provides innings-filtered views to enable fair within-innings comparisons. Career-level rankings are largely unaffected (Spearman ρ = 0.99 between raw and innings-normalized career TILT). See `notebooks/innings_bias_analysis.py` for the full diagnostic.
 
 ### What's Been Addressed
 
-- ~~Small sample bias~~ → **Bayesian shrinkage** with empirical Bayes (k ≈ 5.3) + posterior CIs
+- ~~Small sample bias~~ → **Bayesian shrinkage** with empirical Bayes (k ≈ 4.8) + posterior CIs
 - ~~Single model for all eras~~ → **Season year** as a continuous feature
 - ~~No venue context~~ → **Venue** as categorical feature (deduplicated, highest importance)
 - ~~No toss context~~ → **Toss** parsed and used as `batting_team_chose_to_bat`

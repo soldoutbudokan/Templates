@@ -8,18 +8,18 @@
   "teams": [
     "Pune Warriors India"
   ],
-  "total_tilt_per_match": 0.00902,
+  "total_tilt_per_match": -0.0232,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.00531,
-  "shrunk_total_tilt_per_match": -0.01179,
+  "bowling_tilt_per_match": -0.02388,
+  "shrunk_total_tilt_per_match": -0.02448,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.00823,
-  "tilt_ci_lower": -0.06146,
-  "tilt_ci_upper": 0.03788,
-  "tilt_ci_lower_90": -0.05347,
-  "tilt_ci_upper_90": 0.0299,
+  "shrunk_bowling_tilt_per_match": -0.01833,
+  "tilt_ci_lower": -0.06039,
+  "tilt_ci_upper": 0.01144,
+  "tilt_ci_lower_90": -0.05462,
+  "tilt_ci_upper_90": 0.00566,
   "confidence": "low",
-  "total_tilt": 0.02707,
+  "total_tilt": -0.0696,
   "total_matches": 3,
   "batting_balls": 9,
   "bowling_balls": 54,
@@ -27,8 +27,8 @@
     {
       "season": "2012",
       "team": "Pune Warriors India",
-      "batting_tilt_per_match": 0.01093,
-      "bowling_tilt_per_match": 0.06255,
+      "batting_tilt_per_match": 0.00202,
+      "bowling_tilt_per_match": 0.03381,
       "batting_matches": 1,
       "bowling_matches": 1,
       "batting_balls": 8,
@@ -45,14 +45,14 @@
           "bat_runs": 11,
           "bat_balls": 8,
           "bat_sr": 137.5,
-          "bat_tilt": 0.01093,
+          "bat_tilt": 0.00202,
           "bat_not_out": true,
           "bowl_wkts": 0,
           "bowl_balls": 24,
           "bowl_runs": 33,
           "bowl_econ": 8.25,
-          "bowl_tilt": 0.06255,
-          "total_tilt": 0.07348
+          "bowl_tilt": 0.03381,
+          "total_tilt": 0.03583
         }
       ],
       "batting_stats": {
@@ -80,8 +80,8 @@
     {
       "season": "2013",
       "team": "Pune Warriors India",
-      "batting_tilt_per_match": 0.00021,
-      "bowling_tilt_per_match": -0.02331,
+      "batting_tilt_per_match": 3e-05,
+      "bowling_tilt_per_match": -0.05272,
       "batting_matches": 1,
       "bowling_matches": 2,
       "batting_balls": 1,
@@ -104,8 +104,8 @@
           "bowl_balls": 18,
           "bowl_runs": 29,
           "bowl_econ": 9.67,
-          "bowl_tilt": 0.02384,
-          "total_tilt": 0.02384
+          "bowl_tilt": -0.05558,
+          "total_tilt": -0.05558
         },
         {
           "match_id": "598053",
@@ -118,14 +118,14 @@
           "bat_runs": 1,
           "bat_balls": 1,
           "bat_sr": 100.0,
-          "bat_tilt": 0.00021,
+          "bat_tilt": 3e-05,
           "bat_not_out": true,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 19,
           "bowl_econ": 9.5,
-          "bowl_tilt": -0.07045,
-          "total_tilt": -0.07024
+          "bowl_tilt": -0.04987,
+          "total_tilt": -0.04984
         }
       ],
       "batting_stats": {
@@ -154,23 +154,23 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": 0.01114,
+      "tilt": 0.00204,
       "balls": 9,
-      "avg_delta": 0.001237
+      "avg_delta": 0.000227
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.04322,
+      "tilt": -0.09855,
       "balls": 36,
-      "avg_delta": -0.001168
+      "avg_delta": -0.002663
     },
     {
       "phase": "middle",
-      "tilt": 0.05916,
+      "tilt": 0.02691,
       "balls": 18,
-      "avg_delta": 0.003114
+      "avg_delta": 0.001416
     }
   ],
   "best_matches": [
@@ -178,7 +178,7 @@
       "match_id": "548362",
       "date": "2012-05-11",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.01093,
+      "tilt": 0.00202,
       "runs": 11,
       "balls": 8,
       "not_out": true
@@ -187,7 +187,7 @@
       "match_id": "598053",
       "date": "2013-05-09",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.00021,
+      "tilt": 3e-05,
       "runs": 1,
       "balls": 1,
       "not_out": true
@@ -198,7 +198,7 @@
       "match_id": "598053",
       "date": "2013-05-09",
       "vs": "Kolkata Knight Riders",
-      "tilt": 0.00021,
+      "tilt": 3e-05,
       "runs": 1,
       "balls": 1,
       "not_out": true
@@ -207,7 +207,7 @@
       "match_id": "548362",
       "date": "2012-05-11",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.01093,
+      "tilt": 0.00202,
       "runs": 11,
       "balls": 8,
       "not_out": true
@@ -218,49 +218,49 @@
       "match_id": "548362",
       "date": "2012-05-11",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.06255,
+      "tilt": 0.03381,
       "wickets": 0,
       "balls": 24
     },
     {
-      "match_id": "598047",
-      "date": "2013-05-05",
-      "vs": "Rajasthan Royals",
-      "tilt": 0.02384,
-      "wickets": 0,
-      "balls": 18
-    },
-    {
       "match_id": "598053",
       "date": "2013-05-09",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.07045,
+      "tilt": -0.04987,
       "wickets": 0,
       "balls": 12
+    },
+    {
+      "match_id": "598047",
+      "date": "2013-05-05",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.05558,
+      "wickets": 0,
+      "balls": 18
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "598053",
-      "date": "2013-05-09",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.07045,
-      "wickets": 0,
-      "balls": 12
-    },
-    {
       "match_id": "598047",
       "date": "2013-05-05",
       "vs": "Rajasthan Royals",
-      "tilt": 0.02384,
+      "tilt": -0.05558,
       "wickets": 0,
       "balls": 18
+    },
+    {
+      "match_id": "598053",
+      "date": "2013-05-09",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.04987,
+      "wickets": 0,
+      "balls": 12
     },
     {
       "match_id": "548362",
       "date": "2012-05-11",
       "vs": "Royal Challengers Bangalore",
-      "tilt": 0.06255,
+      "tilt": 0.03381,
       "wickets": 0,
       "balls": 24
     }
@@ -269,48 +269,48 @@
     {
       "match": 1,
       "date": "2012-05-11",
-      "tilt": 0.07348,
-      "cumulative": 0.07348
+      "tilt": 0.03583,
+      "cumulative": 0.03583
     },
     {
       "match": 2,
       "date": "2013-05-05",
-      "tilt": 0.02384,
-      "cumulative": 0.09732
+      "tilt": -0.05558,
+      "cumulative": -0.01975
     },
     {
       "match": 3,
       "date": "2013-05-09",
-      "tilt": -0.07024,
-      "cumulative": 0.02707
+      "tilt": -0.04985,
+      "cumulative": -0.0696
     }
   ],
   "team_matchups": [
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.01093,
+      "tilt_per_match": 0.00202,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.00021,
+      "tilt_per_match": 3e-05,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": 0.06255,
-      "matches": 1
-    },
-    {
-      "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.02384,
+      "tilt_per_match": 0.03381,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.07045,
+      "tilt_per_match": -0.04987,
+      "matches": 1
+    },
+    {
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.05558,
       "matches": 1
     }
   ],
@@ -336,8 +336,8 @@
     "best_figures": "0/33"
   },
   "match_tilt_distribution": [
-    0.07348,
-    0.02384,
-    -0.07024
+    0.03583,
+    -0.05558,
+    -0.04985
   ]
 }

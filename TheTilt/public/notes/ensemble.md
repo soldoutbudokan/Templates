@@ -64,7 +64,7 @@ Three changes, applied together:
 
 The 90/10 train/holdout split is frozen by **persisting the holdout match list** (`models/holdout_match_ids.json`): every retrain validates on the listed matches, and anything added to Cricsheet since goes to train. Brier, AUC, and log-loss numbers are directly comparable across pipeline runs because they're measured on the same held-out games.
 
-*(June 2026 correction — issue #193: the original version of this section claimed `random_state=42` alone locked the holdout "forever". It doesn't — as the diagnostic above explains, `GroupShuffleSplit` permutes the **current** match set, so a fixed seed reshuffles the 10% every time data grows. The persisted list ships at the next retrain, which is the one documented comparability break; until then the headline Brier 0.191 / AUC 0.780 were measured on a seed-42 split of the then-current data. Early stopping was also moved off the holdout at the same time: each member now early-stops on its own validation fold carved from train, so the reported metrics are no longer selected on the reporting set.)*
+*(June 2026 correction — issue #193: the original version of this section claimed `random_state=42` alone locked the holdout "forever". It doesn't — as the diagnostic above explains, `GroupShuffleSplit` permutes the **current** match set, so a fixed seed reshuffles the 10% every time data grows. The persisted list first shipped at the June 2026 retrain (122 matches), which is the one documented comparability break; numbers from before it — including the original headline Brier 0.191 / AUC 0.780 — were measured on a seed-42 split of the then-current data, while every retrain since validates on the frozen list (current: Brier 0.191 / AUC 0.774). Early stopping was also moved off the holdout at the same time: each member now early-stops on its own validation fold carved from train, so the reported metrics are no longer selected on the reporting set.)*
 
 ```python
 # config/pipeline_config.yaml
@@ -92,12 +92,14 @@ Cost:
 | Pickle size | ~0.4 MB | ~33 MB |
 | Inference (290k balls) | ~1s | ~5s |
 | Holdout Brier | 0.190 | 0.191 |
-| Holdout AUC | 0.781 | 0.780 |
-| Per-ball wp disagreement (std across members) | n/a | median 1.4pp · p95 3.2pp · max 9.8pp |
+| Holdout AUC | 0.781 | 0.774 |
+| Per-ball wp disagreement (std across members) | n/a | median 3.4pp · p95 6.4pp · max 9.7pp |
+
+(The "Single" column is the original pre-ensemble diagnostic, measured on the old seed-42 split; the K=100 column tracks the current build on the frozen holdout, so the two aren't a strictly controlled comparison anymore — see the #193 correction above.)
 
 Brier and AUC barely change — that's expected. Individual members are already well-regularized; ensembling isn't about making any single prediction better. It's about variance reduction across retrains.
 
-The disagreement statistic is the real story: the K members routinely disagree by 1–2pp on the same ball, with worst-case ~10pp. Each individual training run is essentially sampling from this distribution. The ensemble averages it out.
+The disagreement statistic is the real story: the K members routinely disagree by a few pp on the same ball, with worst-case ~10pp — and the spread widened when per-member early stopping moved onto per-member train-carved folds (#193), which is added member diversity, not added ensemble noise. Each individual training run is essentially sampling from this distribution. The ensemble averages it out.
 
 ### 3. RETRAIN=1 env-var guardrail
 

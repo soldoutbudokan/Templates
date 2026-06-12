@@ -8,18 +8,18 @@
   "teams": [
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.03989,
+  "total_tilt_per_match": -0.0654,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.03781,
-  "shrunk_total_tilt_per_match": -0.02947,
+  "bowling_tilt_per_match": -0.07005,
+  "shrunk_total_tilt_per_match": -0.0407,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.02354,
-  "tilt_ci_lower": -0.06129,
-  "tilt_ci_upper": 0.00235,
-  "tilt_ci_lower_90": -0.05618,
-  "tilt_ci_upper_90": -0.00276,
+  "shrunk_bowling_tilt_per_match": -0.03619,
+  "tilt_ci_lower": -0.0753,
+  "tilt_ci_upper": -0.0061,
+  "tilt_ci_lower_90": -0.06974,
+  "tilt_ci_upper_90": -0.01166,
   "confidence": "low",
-  "total_tilt": -0.11967,
+  "total_tilt": -0.19621,
   "total_matches": 3,
   "batting_balls": 5,
   "bowling_balls": 60,
@@ -27,8 +27,8 @@
     {
       "season": "2024",
       "team": "Sunrisers Hyderabad",
-      "batting_tilt_per_match": -0.00624,
-      "bowling_tilt_per_match": -0.03781,
+      "batting_tilt_per_match": 0.01395,
+      "bowling_tilt_per_match": -0.07005,
       "batting_matches": 1,
       "bowling_matches": 3,
       "batting_balls": 5,
@@ -51,8 +51,8 @@
           "bowl_balls": 24,
           "bowl_runs": 27,
           "bowl_econ": 6.75,
-          "bowl_tilt": -0.02223,
-          "total_tilt": -0.02223
+          "bowl_tilt": -0.02719,
+          "total_tilt": -0.02719
         },
         {
           "match_id": "1426307",
@@ -71,8 +71,8 @@
           "bowl_balls": 24,
           "bowl_runs": 41,
           "bowl_econ": 10.25,
-          "bowl_tilt": -0.00452,
-          "total_tilt": -0.00452
+          "bowl_tilt": -0.04794,
+          "total_tilt": -0.04794
         },
         {
           "match_id": "1426309",
@@ -85,14 +85,14 @@
           "bat_runs": 7,
           "bat_balls": 5,
           "bat_sr": 140.0,
-          "bat_tilt": -0.00624,
+          "bat_tilt": 0.01395,
           "bat_not_out": true,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 22,
           "bowl_econ": 11.0,
-          "bowl_tilt": -0.08668,
-          "total_tilt": -0.09292
+          "bowl_tilt": -0.13503,
+          "total_tilt": -0.12108
         }
       ],
       "batting_stats": {
@@ -121,17 +121,17 @@
   "batting_phases": [
     {
       "phase": "death",
-      "tilt": -0.00624,
+      "tilt": 0.01395,
       "balls": 5,
-      "avg_delta": -0.001247
+      "avg_delta": 0.00279
     }
   ],
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": -0.11343,
+      "tilt": -0.21016,
       "balls": 60,
-      "avg_delta": -0.00189
+      "avg_delta": -0.003503
     }
   ],
   "best_matches": [
@@ -139,7 +139,7 @@
       "match_id": "1426309",
       "date": "2024-05-21",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.00624,
+      "tilt": 0.01395,
       "runs": 7,
       "balls": 5,
       "not_out": true
@@ -150,7 +150,7 @@
       "match_id": "1426309",
       "date": "2024-05-21",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.00624,
+      "tilt": 0.01395,
       "runs": 7,
       "balls": 5,
       "not_out": true
@@ -158,26 +158,26 @@
   ],
   "bowling_best_matches": [
     {
-      "match_id": "1426307",
-      "date": "2024-05-19",
-      "vs": "Punjab Kings",
-      "tilt": -0.00452,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "1426295",
       "date": "2024-05-08",
       "vs": "Lucknow Super Giants",
-      "tilt": -0.02223,
+      "tilt": -0.02719,
       "wickets": 0,
+      "balls": 24
+    },
+    {
+      "match_id": "1426307",
+      "date": "2024-05-19",
+      "vs": "Punjab Kings",
+      "tilt": -0.04794,
+      "wickets": 1,
       "balls": 24
     },
     {
       "match_id": "1426309",
       "date": "2024-05-21",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.08668,
+      "tilt": -0.13503,
       "wickets": 0,
       "balls": 12
     }
@@ -187,24 +187,24 @@
       "match_id": "1426309",
       "date": "2024-05-21",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.08668,
+      "tilt": -0.13503,
       "wickets": 0,
       "balls": 12
-    },
-    {
-      "match_id": "1426295",
-      "date": "2024-05-08",
-      "vs": "Lucknow Super Giants",
-      "tilt": -0.02223,
-      "wickets": 0,
-      "balls": 24
     },
     {
       "match_id": "1426307",
       "date": "2024-05-19",
       "vs": "Punjab Kings",
-      "tilt": -0.00452,
+      "tilt": -0.04794,
       "wickets": 1,
+      "balls": 24
+    },
+    {
+      "match_id": "1426295",
+      "date": "2024-05-08",
+      "vs": "Lucknow Super Giants",
+      "tilt": -0.02719,
+      "wickets": 0,
       "balls": 24
     }
   ],
@@ -212,43 +212,43 @@
     {
       "match": 1,
       "date": "2024-05-08",
-      "tilt": -0.02223,
-      "cumulative": -0.02223
+      "tilt": -0.02719,
+      "cumulative": -0.02719
     },
     {
       "match": 2,
       "date": "2024-05-19",
-      "tilt": -0.00452,
-      "cumulative": -0.02675
+      "tilt": -0.04794,
+      "cumulative": -0.07512
     },
     {
       "match": 3,
       "date": "2024-05-21",
-      "tilt": -0.09292,
-      "cumulative": -0.11967
+      "tilt": -0.12109,
+      "cumulative": -0.19621
     }
   ],
   "team_matchups": [
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.00624,
+      "tilt_per_match": 0.01395,
       "matches": 1
     }
   ],
   "bowling_team_matchups": [
     {
-      "opponent": "Punjab Kings",
-      "tilt_per_match": -0.00452,
+      "opponent": "Lucknow Super Giants",
+      "tilt_per_match": -0.02719,
       "matches": 1
     },
     {
-      "opponent": "Lucknow Super Giants",
-      "tilt_per_match": -0.02223,
+      "opponent": "Punjab Kings",
+      "tilt_per_match": -0.04794,
       "matches": 1
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.08668,
+      "tilt_per_match": -0.13503,
       "matches": 1
     }
   ],
@@ -274,8 +274,8 @@
     "best_figures": "1/41"
   },
   "match_tilt_distribution": [
-    -0.02223,
-    -0.00452,
-    -0.09292
+    -0.02719,
+    -0.04794,
+    -0.12109
   ]
 }
