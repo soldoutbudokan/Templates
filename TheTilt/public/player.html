@@ -218,7 +218,7 @@ async function loadPlayer() {
                                         const resultCls = won === 'W' ? 'result-win' : won === 'L' ? 'result-loss' : 'result-nr';
                                         return `<tr>
                                             <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a></td>
-                                            <td>${m.opponent}</td>
+                                            <td>${teamLink(m.opponent, s.season, teamIndex)}</td>
                                             <td><span class="${resultCls}">${won}</span> <span class="match-scores">${m.team_score || ''} v ${m.opponent_score || ''}</span></td>
                                             <td>${m.bat_runs != null ? m.bat_runs + (m.bat_not_out ? '*' : '') : '-'}</td>
                                             <td>${m.bat_balls != null ? m.bat_balls : '-'}</td>

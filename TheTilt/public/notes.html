@@ -170,9 +170,16 @@ async function hydrateNoteAnchors() {
             // ensemble.md — career-match counts + ABD total/floor rank
             const kumar = bySlug('b-kumar-2e81a32d');
             const abd = bySlug('ab-de-villiers-c4487b84');
-            if (kumar) setText('ens-kumar-mt', kumar.total_matches);
+            // The §13 intro spans and the §147-148 "What this fixes" row labels
+            // both carry these identity match-counts; hydrate both so neither
+            // drifts as a player keeps appearing (#208).
+            if (kumar) {
+                setText('ens-kumar-mt', kumar.total_matches);
+                setText('ens-kumar-mt-row', kumar.total_matches);
+            }
             if (abd) {
                 setText('ens-abd-mt', abd.total_matches);
+                setText('ens-abd-mt-row', abd.total_matches);
                 setText('ens-abd-total-rank', rankOf(byTotal, abd.slug));
                 setText('ens-abd-floor-rank', rankOf(byFloor, abd.slug));
             }
@@ -239,6 +246,7 @@ async function hydrateNoteAnchors() {
                 setText('ar-hopes-raw-prose', rankOf(byRaw, 'jr-hopes-2498e163'));
                 setText('ar-hopes-floor-prose', rankOf(byFloor, 'jr-hopes-2498e163'));
                 setText('ar-stokes-raw-prose', rankOf(byRaw, 'ba-stokes-e087956b'));
+                setText('ar-stokes-floor-prose', rankOf(byFloor, 'ba-stokes-e087956b'));
             }
         }
 

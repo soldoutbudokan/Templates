@@ -144,8 +144,8 @@ The original triggering symptom — Bhuvneshwar Kumar above AB de Villiers in th
 
 | | Before (single model) | After (K=100 ensemble) |
 |:--|:--:|:--:|
-| AB de Villiers (total tilt, 168 matches) | +5.35 (#9) | **+6.84 (#6)** |
-| Bhuvneshwar Kumar (total tilt, 199 matches) | +7.86 (#3) | **+6.93 (#4)** |
+| AB de Villiers (total tilt, <span id="ens-abd-mt-row">168</span> matches) | +5.35 (#9) | **+6.84 (#6)** |
+| Bhuvneshwar Kumar (total tilt, <span id="ens-kumar-mt-row">206</span> matches) | +7.86 (#3) | **+6.93 (#4)** |
 | Floor ranking (default site sort) | B Kumar above ABD | **ABD #7, B Kumar #8** |
 
 ABD now ranks above Kumar on the floor view (the leaderboard's default sort), and the gap on raw career total is also right-sized. The fix reaches this without any post-hoc rescaling, manual reshuffle, or threshold-based filtering. Ranks that move under the ensemble are moving because the average of 100 trajectories disagrees with the one we happened to draw.

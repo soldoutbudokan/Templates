@@ -100,7 +100,7 @@ The per-match career TILT is robust because the innings effect washes out over m
 We considered several approaches to correct for the innings asymmetry:
 
 ### Option 1: Normalize deltas by innings
-Scale all 2nd innings deltas down by 1/1.57. This would equalize the mean absolute shift across innings but creates a different problem: a last-ball six to win a match would be worth the same as a six in the 3rd over of a dead rubber. The whole point of TILT is that context matters, and deflating chase situations undermines the metric's reason for existing.
+Scale all 2nd innings deltas down by 1/1.58. This would equalize the mean absolute shift across innings but creates a different problem: a last-ball six to win a match would be worth the same as a six in the 3rd over of a dead rubber. The whole point of TILT is that context matters, and deflating chase situations undermines the metric's reason for existing.
 
 ### Option 2: Separate models per innings
 Train one model for batting-first and one for chasing. This could work in principle but doubles the modeling complexity and makes career TILT harder to aggregate. The current single-model approach with `innings` as a feature already handles the structural difference implicitly.

@@ -231,11 +231,18 @@ function goatCard(g, label, statLine, matchById, teamIndex) {
     const opponent = opponentFor(g, matchById);
     const teamCode = g.team ? teamAbbrev(g.team, teamIndex) : '';
     const oppCode = opponent ? teamAbbrev(opponent, teamIndex) : '';
+    // The slug-derived chip (PBKS/DC/RPS) is season-invariant, but the tooltip
+    // must show the season-correct name — route both through teamLabelForSeason
+    // so a pre-rename season doesn't surface the team's current canonical (#210).
+    const tTeam = g.team && teamIndex ? teamIndex.get(g.team) : null;
+    const tOpp = opponent && teamIndex ? teamIndex.get(opponent) : null;
+    const teamLabel = tTeam ? teamLabelForSeason(tTeam, g.season) : g.team;
+    const oppLabel = tOpp ? teamLabelForSeason(tOpp, g.season) : opponent;
     const teamSpan = teamCode
-        ? ` <span class="goat-team-code" title="${g.team}">${teamCode}</span>`
+        ? ` <span class="goat-team-code" title="${teamLabel}">${teamCode}</span>`
         : '';
     const oppSpan = oppCode
-        ? ` <span class="goat-opp" title="vs ${opponent}">vs ${oppCode}</span>`
+        ? ` <span class="goat-opp" title="vs ${oppLabel}">vs ${oppCode}</span>`
         : '';
     const playerLink = g.slug
         ? `<a href="player.html?player=${g.slug}">${flagSpan(g.country)}${g.player}</a>`
