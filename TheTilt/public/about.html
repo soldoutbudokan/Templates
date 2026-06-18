@@ -66,6 +66,18 @@ async function hydrateAbout() {
     setText('cov-balls', fmt(meta.balls_count));
     if (players) setText('cov-players', fmt(players.length));
 
+    // §9 shrinkage table: the high-matches example row + the "N-match veteran"
+    // prose are pegged to Narine's live career match count so they can't drift
+    // as he keeps playing (issue #212). The 97%/3% weights stay correct across
+    // the drift, so only the match count is hydrated.
+    if (players) {
+        const narine = players.find(p => p.player === 'SP Narine');
+        if (narine && narine.total_matches != null) {
+            setText('shrink-veteran-matches', narine.total_matches);
+            setText('shrink-veteran-matches-prose', narine.total_matches);
+        }
+    }
+
     // §11 "as of" date + top-10-by-floor table
     setText('top10-asof', meta.last_updated);
     const el = document.getElementById('top10-floor');

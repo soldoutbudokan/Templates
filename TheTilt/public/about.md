@@ -338,9 +338,9 @@ What that means in practice:
 | 18 | 77% | 23% |
 | 50 | 90% | 10% |
 | 120 | 96% | 4% |
-| 188 | 97% | 3% |
+| <span id="shrink-veteran-matches">200</span> | 97% | 3% |
 
-A high-raw-TILT player with 18 matches will see their number pulled noticeably toward the league mean; a 188-match veteran will barely move.
+A high-raw-TILT player with 18 matches will see their number pulled noticeably toward the league mean; a <span id="shrink-veteran-matches-prose">200</span>-match veteran will barely move.
 
 ### Posterior confidence intervals
 

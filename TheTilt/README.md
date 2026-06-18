@@ -165,7 +165,7 @@ shrunk_tilt = (n / (n + k)) * raw_tilt + (k / (n + k)) * population_mean
 Where `k` is estimated from the ratio of within-player to between-player variance (k ≈ 5.2 for IPL data). This means:
 - A player with 5 matches: 50% raw, 50% population mean
 - A player with 50 matches: 90% raw, 10% population mean
-- A player with 188 matches (Narine): 97% raw, 3% population mean
+- A player with 200 matches (Narine): 97% raw, 3% population mean
 
 **Bayesian Posterior Confidence Intervals:**
 
