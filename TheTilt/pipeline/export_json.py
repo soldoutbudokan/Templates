@@ -310,7 +310,9 @@ def _build_match_info_cache(deltas_df: pd.DataFrame) -> dict:
             innings_totals[int(inn_num)] = (batting_team, total_r, total_w)
 
         winner = str(first["winner"]) if pd.notna(first["winner"]) else None
-        result_margin = _compute_result_margin(innings_totals, winner)
+        dls_method = first.get("dls_method")
+        dls_method = str(dls_method) if pd.notna(dls_method) else None
+        result_margin = _compute_result_margin(innings_totals, winner, dls_method)
 
         toss_winner = first.get("toss_winner")
         toss_decision = first.get("toss_decision")
@@ -362,19 +364,26 @@ def _build_playoffs_block(season_match_ids: list, match_info: dict) -> list:
 
 
 def _compute_result_margin(
-    innings_totals: dict, winner: Optional[str]
+    innings_totals: dict, winner: Optional[str], dls_method: Optional[str] = None
 ) -> Optional[str]:
     """Format match result as e.g. "won by 7 wickets" or "won by 23 runs".
 
     Innings 1 batting team won → margin in runs (defending). Innings 2 batting
-    team won → margin in wickets (chasing). Returns None when winner is unknown
-    or innings totals are incomplete (e.g. abandoned matches that slipped past
-    parser filters).
+    team won → margin in wickets (chasing). A tied regulation match decided by a
+    Super Over returns "won via Super Over" (issue #215). Returns None when
+    winner is unknown or innings totals are incomplete (e.g. abandoned matches
+    that slipped past parser filters).
     """
     if winner is None or 1 not in innings_totals or 2 not in innings_totals:
         return None
     inn1_team, inn1_runs, _ = innings_totals[1]
     inn2_team, inn2_runs, inn2_wickets = innings_totals[2]
+    # A tied regulation match (equal totals, no DLS adjustment) is decided by a
+    # Super Over, with the eliminator credited as winner (issue #84). The plain
+    # runs/wickets margin would be 0 ("won by 0 runs"/"won by 0 wickets"), which
+    # is not a real cricket result string, so label it explicitly (issue #215).
+    if inn1_runs == inn2_runs and not dls_method:
+        return "won via Super Over"
     if winner == inn1_team:
         margin = inn1_runs - inn2_runs
         return f"won by {margin} run{'s' if margin != 1 else ''}"
@@ -1932,9 +1941,14 @@ def _build_player_season_leaders(
         _bat_row(r, int(r["sixes"]), {"balls": int(r["balls"]), "runs": int(r["runs"])})
         for _, r in bat.nlargest(50, "sixes").iterrows()
     ]
+    # Only batters with at least one fifty qualify — otherwise pandas'
+    # nlargest pads the table to 50 with zero-fifty rows in early seasons
+    # where fewer than 50 batters posted one (issue #218), mirroring the
+    # hundreds filter below.
+    fifties_qual = bat[bat["fifties"] >= 1]
     leaders["fifties"] = [
         _bat_row(r, int(r["fifties"]), {"hundreds": int(r["hundreds"]), "innings": int(r["innings"])})
-        for _, r in bat.nlargest(50, "fifties").iterrows()
+        for _, r in fifties_qual.nlargest(50, "fifties").iterrows()
     ]
     hundreds_qual = bat[bat["hundreds"] >= 1]
     # Tie-break on fifties (more is better), then innings (fewer is better —

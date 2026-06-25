@@ -234,7 +234,7 @@ regenerates everything from the committed YAML anyway.
 ### If you change **TILT computation / shrinkage** (`compute_tilt.py`)
 
 - Every player's TILT changes — full leaderboard, per-player, GOATs all auto-refresh.
-- `public/about.md` §8–§9 (computation, shrinkage table with k value, posterior CI math) — confirm the formulas and the k ≈ 5.3 number still hold.
+- `public/about.md` §8–§9 (computation, shrinkage table with k value, posterior CI math) — confirm the formulas and the k ≈ 5.2 number still hold.
 - `public/notes/*.md` — every blog post implicitly assumes the current shrinkage k. If k changes materially the narrative may need re-checking.
 
 ### If you change **export thresholds** (`config.yaml` `min_matches`, `min_role_balls`)

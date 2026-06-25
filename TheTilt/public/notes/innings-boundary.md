@@ -207,7 +207,7 @@ The boundary calibration above is unchanged in the May 2026 ensemble work, but i
 
 Issue #111 traced career-rank instability (AB de Villiers bouncing between #3 and #9 across daily refreshes; Bhuvneshwar Kumar above ABD on a +2-match dataset growth) to a single-model retrain producing a substantively different model on the same code, same hyperparameters, same data — only the random train/holdout reshuffle drove the change. On a fully-deterministic ball-0 feature vector (`innings=1, balls_remaining=120, wickets_in_hand=10, runs_scored=0`), two consecutive retrains predicted **0.5158 vs 0.5643** for the same input. That 4.85pp drift, compounded over 290k balls × 168 ABD matches, was enough to swing his career total by −2.29 TILT — about 14× the noise floor of seven days of daily refreshes combined.
 
-The fix shipped in [issue #111](https://github.com/soldoutbudokan/Templates/issues/111) is a **K=100 LightGBM ensemble** averaged at inference (random states 42…141 on a fixed 90/10 holdout split locked at seed=42 forever), plus a `RETRAIN=1` env-var guardrail to prevent ad-hoc local pipeline runs from silently overwriting the committed pickle. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*.
+The fix shipped in [issue #111](https://github.com/soldoutbudokan/Templates/issues/111) is a **K=100 LightGBM ensemble** averaged at inference (random states 42…141 on a fixed 90/10 holdout split, persisted as `models/holdout_match_ids.json` since the June 2026 retrain — not locked by seed alone; see [issue #193](https://github.com/soldoutbudokan/Templates/issues/193)), plus a `RETRAIN=1` env-var guardrail to prevent ad-hoc local pipeline runs from silently overwriting the committed pickle. Brier and AUC change by less than 0.01 against a single member; what changes is *stability across retrains*.
 
 **Why this affects the boundary fix:** with retrain variance under control, the deeper telescoping methodology change discussed above (redefining `wp_before(k) := wp_after(k−1)` across all balls, [issue #110](https://github.com/soldoutbudokan/Templates/issues/110)) becomes A/B-testable for the first time. Previously, any "before/after" comparison of a chained-endpoints fix would have been swamped by the model's own retrain variance — the rankings drift from one retrain alone exceeded the residual the deeper fix is supposed to close. Under K=100, that's no longer true. Whether to ship the deeper fix is a separate decision based on how the rankings move; the methodology now permits a clean read on it.
 
@@ -285,21 +285,8 @@ The bug had been systematically over-crediting bowlers — every wicket they too
 
 Top 10 by career total TILT, before vs after the fix:
 
-<div id="ib-top10-table">
-<table><thead><tr><th>Player</th><th>Before</th><th>After</th><th>Δ</th></tr></thead><tbody>
-<tr><td>SP Narine</td><td>11.27</td><td>10.35</td><td>−0.92</td></tr>
-<tr><td>JJ Bumrah</td><td>8.85</td><td>8.18</td><td>−0.67</td></tr>
-<tr><td>AB de Villiers</td><td>6.71</td><td><strong>7.66</strong></td><td><strong>+0.95</strong></td></tr>
-<tr><td>SL Malinga</td><td>6.52</td><td>5.78</td><td>−0.74</td></tr>
-<tr><td>Rashid Khan</td><td>6.45</td><td>5.69</td><td>−0.76</td></tr>
-<tr><td>YS Chahal</td><td>6.94</td><td>5.63</td><td>−1.31</td></tr>
-<tr><td>DA Warner</td><td>4.42</td><td><strong>5.61</strong></td><td><strong>+1.19</strong></td></tr>
-<tr><td>B Kumar</td><td>5.50</td><td>5.27</td><td>−0.23</td></tr>
-<tr><td>KL Rahul</td><td>3.66</td><td><strong>4.70</strong></td><td><strong>+1.04</strong></td></tr>
-<tr><td>JC Buttler</td><td>4.24</td><td><strong>4.66</strong></td><td><strong>+0.42</strong></td></tr>
-</tbody></table>
-</div>
+<div id="ib-top10-table" class="loading">loading…</div>
 
-The top bowlers shed career TILT (the phantom credit removed) and the top batters regain it (wp restored). The rank inversion from issue #111 — ABD vs Bhuvneshwar Kumar — settles even more decisively now: ABD #<span id="ib-abd-total-rank">3</span> by total / #<span id="ib-abd-floor-rank">5</span> by floor, B Kumar #<span id="ib-bkumar-total-rank">8</span> by total and out of the top 10 floor.
+The top bowlers shed career TILT (the phantom credit removed) and the top batters regain it (wp restored). The rank inversion from issue #111 — ABD vs Bhuvneshwar Kumar — settles even more decisively now: ABD #<span id="ib-abd-total-rank">3</span> by total / #<span id="ib-abd-floor-rank">5</span> by floor, B Kumar #<span id="ib-bkumar-total-rank">7</span> by total and out of the top 10 floor.
 
 The fix is reversible (revert the lookup in `compute_ball_deltas`) but the diff is large enough that it shouldn't be reverted casually — the previous numbers had a real bug, and reverting would re-introduce it.

@@ -116,6 +116,20 @@ async function loadNote(id, push = true) {
             }
             return defaultImage({ href, title, text });
         };
+        // Rewrite relative sibling-note links (e.g. `(some-note.md)`) to the
+        // working `notes.html?note=` form. The default renderer passes the href
+        // through verbatim, so a bare `.md` link resolves to a non-existent
+        // top-level path and 404s (issue #219). Absolute/anchor/mail links pass
+        // through untouched.
+        const defaultLink = renderer.link.bind(renderer);
+        renderer.link = function(token) {
+            let h = token.href;
+            if (h && !/^(https?:|\/|#|mailto:)/.test(h)) {
+                const m = h.match(/^([a-z0-9-]+)\.md(#.*)?$/i);
+                if (m) h = `notes.html?note=${m[1]}${m[2] || ''}`;
+            }
+            return defaultLink({ ...token, href: h });
+        };
         const html = marked.parse(md, { renderer });
         document.getElementById('noteContent').innerHTML = html;
         await hydrateNoteAnchors();
@@ -215,6 +229,7 @@ async function hydrateNoteAnchors() {
                     return `<tr><td>${p.player}</td><td>${before == null ? '—' : before.toFixed(2)}</td>`
                         + `<td>${aCell}</td><td>${dCell}</td></tr>`;
                 }).join('');
+                ibTable.classList.remove('loading');
                 ibTable.innerHTML = `<table><thead><tr><th>Player</th><th>Before</th>`
                     + `<th>After</th><th>Δ</th></tr></thead><tbody>${rows}</tbody></table>`;
             }
