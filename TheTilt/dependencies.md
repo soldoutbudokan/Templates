@@ -89,7 +89,13 @@ data/raw/*.json (Cricsheet) ──> pipeline/parse_matches.parse_no_results_from
                                                               standings as NRs). Consumed by
                                                               compute_tilt.aggregate_team_season_tilt to
                                                               inject NR counts into the points table
-                                                              (issue #75).
+                                                              (issue #75), AND by export_json._load_no_results
+                                                              (used in export_seasons + export_meta) so the
+                                                              season page's `matches` count + `matches_list`
+                                                              and meta.json's site-wide matches_count include
+                                                              NRs and stop contradicting the points table
+                                                              (issue #220 — NR rows carry match_id=null /
+                                                              winner=null / result_margin "no result").
                                                               IMPORTANT: cricsheet does not publish a
                                                               JSON at all for matches abandoned without
                                                               a ball bowled, and occasionally records a

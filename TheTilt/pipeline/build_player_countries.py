@@ -223,6 +223,7 @@ ID_OVERRIDES = {
     "33cb3411": "PK",   # Younis Khan (Wikidata=Australia; Pakistani)
     "9ab63e7b": "PK",   # Mohammad Hafeez (Wikidata=Australia; Pakistani)
     "16dfcc19": "PK",   # Umar Gul (Wikidata=Australia; Pakistani)
+    "9a158001": "PK",   # Azhar Mahmood (Wikidata P27 returns NZ; ICC career was Pakistan — issue #221)
     "9f77963a": "AF",   # Gulbadin Naib (Wikidata=Pakistan; Afghan all-rounder/ex-captain — issue #211)
     "bbd41817": "WI",   # AD Russell (Wikidata=Australia; Jamaican/WI)
     "db584dad": "WI",   # CH Gayle (Wikidata=Australia; Jamaican/WI)

@@ -179,9 +179,14 @@ async function loadSeason() {
                             ? `${teamLink(m.winner, data.season, teamIndex)}${m.result_margin ? ` <span class="result-margin">(${m.result_margin})</span>` : ''}`
                             : (m.result_margin || '—');
                         const stageBadge = m.event_stage ? ` <span class="stage-badge">${m.event_stage}</span>` : '';
+                        // No-result matches (#220) carry match_id=null — no per-match
+                        // page exists, so render a plain date rather than a dead link.
+                        const dateCell = m.match_id
+                            ? `<a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a>`
+                            : m.date;
                         return `
                             <tr>
-                                <td><a href="match.html?id=${m.match_id}" class="match-link">${m.date}</a>${stageBadge}</td>
+                                <td>${dateCell}${stageBadge}</td>
                                 <td>${teamsCell}</td>
                                 <td class="hide-mobile">${scoreCell}</td>
                                 <td class="hide-mobile">${tossCell}</td>

@@ -335,6 +335,26 @@ def _build_match_info_cache(deltas_df: pd.DataFrame) -> dict:
     return cache
 
 
+def _load_no_results(processed_dir: Optional[Path] = None) -> pd.DataFrame:
+    """Load the no-result (NR) match table (issue #220).
+
+    Genuine no-result matches have no deltas — no ball produced a countable
+    outcome — so they never appear in deltas_df and were silently dropped from
+    the season match list and the headline `matches` count, even though the
+    standings already credit them as NRs (issue #75/#83, via
+    compute_tilt.aggregate_team_season_tilt). This loads them so the season
+    pages' count + match list stop contradicting the points table on the same
+    page. Returns an empty frame with the expected columns if the parquet is
+    absent (legacy callers / partial checkouts)."""
+    config = load_config()
+    processed_dir = processed_dir or Path(config["data"]["processed_dir"])
+    path = processed_dir / "no_results.parquet"
+    cols = ["match_id", "date", "season", "team1", "team2", "venue", "event_stage"]
+    if not path.exists():
+        return pd.DataFrame(columns=cols)
+    return pd.read_parquet(path)
+
+
 def _build_playoffs_block(season_match_ids: list, match_info: dict) -> list:
     """Return playoff matches for a season as a date-ordered list.
 
@@ -1200,9 +1220,13 @@ def export_meta(
     config = load_config()
     output_dir = Path(output_dir or config["export"]["output_dir"])
 
+    # Site-wide match count includes no-result matches (issue #220) so it agrees
+    # with the season pages' totals; NRs have no deltas so they aren't in
+    # deltas_df. balls_count is unaffected (NRs have no balls).
+    no_results_df = _load_no_results()
     meta = {
         "last_updated": str(date.today()),
-        "matches_count": int(deltas_df["match_id"].nunique()),
+        "matches_count": int(deltas_df["match_id"].nunique()) + len(no_results_df),
         "balls_count": len(deltas_df),
         "seasons": sorted(deltas_df["season"].unique().tolist()),
         "data_source": "cricsheet.org",
@@ -2037,6 +2061,7 @@ def export_seasons(
 
     deltas_df = _add_legal_flags(deltas_df)
     match_info = _build_match_info_cache(deltas_df)
+    no_results_df = _load_no_results()
     completed_seasons = load_completed_seasons()
 
     exported = 0
@@ -2114,12 +2139,35 @@ def export_seasons(
                 "event_stage": mi.get("event_stage"),
             })
 
+        # No-result matches (issue #220): credited in the points table (#75) but
+        # absent from deltas (no ball bowled), so they were missing from both
+        # matches_list and the headline `matches` count below — making the match
+        # list disagree with the standings on the same page. Merge them back in
+        # as winner-less rows ("no result"). They have no per-match JSON, so
+        # match_id is null → not clickable, matching the playoff-placeholder
+        # convention (season.html renders a plain date for null match_id).
+        season_nr = no_results_df[no_results_df["season"] == season]
+        for _, nr in season_nr.iterrows():
+            matches_list.append({
+                "match_id": None,
+                "date": str(nr["date"]),
+                "venue": str(nr["venue"]) if pd.notna(nr.get("venue")) else "",
+                "teams": [nr["team1"], nr["team2"]],
+                "scores": {},
+                "winner": None,
+                "result_margin": "no result",
+                "toss_winner": None,
+                "toss_decision": None,
+                "event_stage": None,
+            })
+        matches_list.sort(key=lambda m: m["date"])
+
         playoffs = _build_playoffs_block(season_match_ids, match_info)
 
         doc = {
             "season": season,
             "season_year": season_year,
-            "matches": int(season_matches_df["match_id"].nunique()),
+            "matches": int(season_matches_df["match_id"].nunique()) + len(season_nr),
             "champion": champion,
             "team_table": team_table,
             "leaders": leaders_top5,
