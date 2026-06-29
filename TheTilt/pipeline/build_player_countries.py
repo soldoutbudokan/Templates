@@ -212,6 +212,9 @@ ID_OVERRIDES = {
     "611926bc": "EN",   # GR Napier (Wikidata=New Zealand; played for EN)
     "e86754b2": "EN",   # TK Curran (Wikidata=South Africa; plays for EN)
     "7f048519": "EN",   # DJ Willey (Wikidata=New Zealand; plays for EN)
+    "92aeac25": "EN",   # AD Hales / Alex Hales (Wikidata P27 returns Australia; English
+                        #   international — the name OVERRIDES "AD Hales": "EN" was being
+                        #   shadowed because P27 outranks name overrides; promote to id tier)
     "1558d83b": "IN",   # GS Sandhu (Wikidata=Australia; Indian)
     "4ba44e19": "LK",   # M Muralitharan (Wikidata=New Zealand; Sri Lankan legend)
     "9868bc75": "LK",   # BMAJ Mendis (Wikidata=Australia; Sri Lankan)
@@ -250,6 +253,27 @@ ID_OVERRIDES = {
     "9061a703": "IE",   # J Little (Joshua Little)
     "cb9b8664": "NZ",   # W O'Rourke (William O'Rourke)
     "75de770f": "ZW",   # T Taibu (Tatenda Taibu)
+
+    # Promoted from the name-keyed OVERRIDES dict to the id tier (issue: AD Hales
+    # regression follow-up). Name overrides rank BELOW Wikidata P27 (resolution
+    # order: id > P27 > name > full_name), so they silently flip the moment
+    # download_people.py fetches a wrong/partial P27 — exactly how AD Hales
+    # (above) went EN->AU. The WI cohort is structurally exposed: West Indies is
+    # a federation, so P27 only ever returns a member nation (Trinidad, Guyana,
+    # Barbados, ...), never "WI". Pinning by id is the only durable fix. (The
+    # name-keyed OVERRIDES entries are left in place as a harmless fallback.)
+    "3241e3fd": "WI",   # N Pooran (Nicholas Pooran)
+    "48a1d7b7": "WI",   # SO Hetmyer (Shimron Hetmyer)
+    "14b14cd8": "WI",   # DM Bravo (Darren Bravo)
+    "97290faf": "WI",   # S Joseph (Shamar Joseph)
+    "89f64c19": "WI",   # LMP Simmons (Lendl Simmons)
+    "1fc6ef83": "WI",   # SD Hope (Shai Hope)
+    "36d33dd0": "WI",   # RR Sarwan (Ramnaresh Sarwan)
+    "4d7f517e": "WI",   # AJ Hosein (Akeal Hosein)
+    "4180d897": "WI",   # JE Taylor (Jerome Taylor)
+    "e342e5fb": "WI",   # CR Brathwaite (Carlos Brathwaite)
+    "f24c6701": "LK",   # M Theekshana (Maheesh Theekshana)
+    "85b3fab2": "ZA",   # T Stubbs (Tristan Stubbs)
 }
 
 
