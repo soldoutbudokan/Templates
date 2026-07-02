@@ -116,6 +116,52 @@ def normalize_team(name: Optional[str]) -> Optional[str]:
     return _ALIAS_TO_CANONICAL.get(name, name)
 
 
+# %% Venue normalization
+# Same ground, different strings (city suffixes, spelling variants, renames).
+# Applied to featured balls in build_features.py and to no-result rows in
+# parse_no_results_from_raw below (issue #222 — NR venues from cricsheet raw
+# and the supplement YAML were bypassing this map, so season pages showed the
+# same stadium twice under two names).
+VENUE_ALIASES: Dict[str, str] = {
+    "Wankhede Stadium, Mumbai": "Wankhede Stadium",
+    "M Chinnaswamy Stadium, Bengaluru": "M Chinnaswamy Stadium",
+    "M.Chinnaswamy Stadium": "M Chinnaswamy Stadium",
+    "Feroz Shah Kotla": "Arun Jaitley Stadium",
+    "Arun Jaitley Stadium, Delhi": "Arun Jaitley Stadium",
+    "MA Chidambaram Stadium, Chepauk, Chennai": "MA Chidambaram Stadium, Chepauk",
+    "MA Chidambaram Stadium": "MA Chidambaram Stadium, Chepauk",
+    "Eden Gardens, Kolkata": "Eden Gardens",
+    "Rajiv Gandhi International Stadium, Uppal, Hyderabad": "Rajiv Gandhi International Stadium, Uppal",
+    "Rajiv Gandhi International Stadium": "Rajiv Gandhi International Stadium, Uppal",
+    "Sawai Mansingh Stadium, Jaipur": "Sawai Mansingh Stadium",
+    "Dr DY Patil Sports Academy, Mumbai": "Dr DY Patil Sports Academy",
+    "Maharashtra Cricket Association Stadium, Pune": "Maharashtra Cricket Association Stadium",
+    "Brabourne Stadium, Mumbai": "Brabourne Stadium",
+    "Punjab Cricket Association Stadium, Mohali": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+    "Punjab Cricket Association IS Bindra Stadium": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+    "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+    "Sardar Patel Stadium, Motera": "Narendra Modi Stadium, Ahmedabad",
+    "Himachal Pradesh Cricket Association Stadium, Dharamsala": "Himachal Pradesh Cricket Association Stadium",
+    "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium, Visakhapatnam": "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium",
+    "Maharaja Yadavindra Singh International Cricket Stadium, New Chandigarh": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+    # Variants seen only on no-result rows (issue #222). None of these strings
+    # occur in ball-by-ball data, so adding them leaves featured_balls' venue
+    # categories — and therefore model input — untouched.
+    "Feroz Shah Kotla, Delhi": "Arun Jaitley Stadium",
+    "Newlands, Cape Town": "Newlands",
+    "Kingsmead, Durban": "Kingsmead",
+    "M Chinnaswamy Stadium, Bangalore": "M Chinnaswamy Stadium",
+    "ACA Cricket Stadium, Guwahati": "Barsapara Cricket Stadium, Guwahati",
+    "Rajiv Gandhi International Stadium, Hyderabad": "Rajiv Gandhi International Stadium, Uppal",
+}
+
+
+def normalize_venue(venue: Optional[str]) -> Optional[str]:
+    if venue is None:
+        return None
+    return VENUE_ALIASES.get(venue, venue)
+
+
 def season_team_label(canonical: Optional[str], season_year: Optional[int]) -> Optional[str]:
     """Return the display label for a canonical team in a given season year.
 
@@ -436,7 +482,7 @@ def _load_no_results_supplement(path: Path = _NO_RESULTS_SUPPLEMENT_PATH) -> tup
             "season": season,
             "team1": teams[0],
             "team2": teams[1],
-            "venue": entry.get("venue"),
+            "venue": normalize_venue(entry.get("venue")),
             "event_stage": entry.get("event_stage"),
         })
     exclude_ids = {str(e.get("match_id")) for e in (cfg.get("exclude", []) or []) if e.get("match_id")}
@@ -487,7 +533,7 @@ def parse_no_results_from_raw(raw_dir: Optional[str] = None) -> pd.DataFrame:
             "season": season,
             "team1": teams[0],
             "team2": teams[1],
-            "venue": info.get("venue"),
+            "venue": normalize_venue(info.get("venue")),
             "event_stage": event.get("stage"),
         })
 

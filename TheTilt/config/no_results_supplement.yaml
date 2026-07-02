@@ -23,80 +23,82 @@
 #
 # Use canonical team names (per config/team_aliases.yaml). If a cricsheet
 # alias is used it is normalized at parse time, but canonical is preferred
-# for readability.
+# for readability. Venue names likewise: use the canonical form (per
+# VENUE_ALIASES in pipeline/parse_matches.py); raw city-suffixed strings are
+# normalized at parse time (issue #222), but canonical is preferred here.
 
 add:
   - season: "2008"
     date: "2008-05-22"
     team1: "Delhi Capitals"
     team2: "Kolkata Knight Riders"
-    venue: "Feroz Shah Kotla, Delhi"
+    venue: "Arun Jaitley Stadium"
 
   - season: "2009"
     date: "2009-04-21"
     team1: "Rajasthan Royals"
     team2: "Mumbai Indians"
-    venue: "Kingsmead, Durban"
+    venue: "Kingsmead"
 
   - season: "2009"
     date: "2009-04-25"
     team1: "Chennai Super Kings"
     team2: "Kolkata Knight Riders"
-    venue: "Newlands, Cape Town"
+    venue: "Newlands"
 
   - season: "2011"
     date: "2011-04-19"
     team1: "Royal Challengers Bangalore"
     team2: "Rajasthan Royals"
-    venue: "M Chinnaswamy Stadium, Bangalore"
+    venue: "M Chinnaswamy Stadium"
 
   - season: "2012"
     date: "2012-04-24"
     team1: "Kolkata Knight Riders"
     team2: "Deccan Chargers"
-    venue: "Eden Gardens, Kolkata"
+    venue: "Eden Gardens"
 
   - season: "2012"
     date: "2012-04-25"
     team1: "Chennai Super Kings"
     team2: "Royal Challengers Bangalore"
-    venue: "M Chinnaswamy Stadium, Bangalore"
+    venue: "M Chinnaswamy Stadium"
 
   - season: "2015"
     date: "2015-04-26"
     team1: "Kolkata Knight Riders"
     team2: "Rajasthan Royals"
-    venue: "Eden Gardens, Kolkata"
+    venue: "Eden Gardens"
 
   - season: "2017"
     date: "2017-04-25"
     team1: "Royal Challengers Bangalore"
     team2: "Sunrisers Hyderabad"
-    venue: "M Chinnaswamy Stadium, Bangalore"
+    venue: "M Chinnaswamy Stadium"
 
   - season: "2024"
     date: "2024-05-18"
     team1: "Kolkata Knight Riders"
     team2: "Gujarat Titans"
-    venue: "ACA Cricket Stadium, Guwahati"
+    venue: "Barsapara Cricket Stadium, Guwahati"
 
   - season: "2024"
     date: "2024-05-19"
     team1: "Sunrisers Hyderabad"
     team2: "Gujarat Titans"
-    venue: "Rajiv Gandhi International Stadium, Hyderabad"
+    venue: "Rajiv Gandhi International Stadium, Uppal"
 
   - season: "2024"
     date: "2024-05-19"
     team1: "Rajasthan Royals"
     team2: "Kolkata Knight Riders"
-    venue: "ACA Cricket Stadium, Guwahati"
+    venue: "Barsapara Cricket Stadium, Guwahati"
 
   - season: "2025"
     date: "2025-05-17"
     team1: "Royal Challengers Bangalore"
     team2: "Kolkata Knight Riders"
-    venue: "M Chinnaswamy Stadium, Bengaluru"
+    venue: "M Chinnaswamy Stadium"
 
 exclude:
   # PBKS vs DC was abandoned mid-game on 2025-05-08 (cricsheet match_id

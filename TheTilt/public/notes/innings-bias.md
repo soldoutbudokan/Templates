@@ -106,7 +106,7 @@ Scale all 2nd innings deltas down by 1/1.58. This would equalize the mean absolu
 Train one model for batting-first and one for chasing. This could work in principle but doubles the modeling complexity and makes career TILT harder to aggregate. The current single-model approach with `innings` as a feature already handles the structural difference implicitly.
 
 ### Option 3: Innings-filtered views (what we did)
-Rather than changing the underlying metric, we added innings filters to the GOAT performances page. You can view the top batting and bowling performances within each innings separately, enabling fair within-innings comparisons (this view isn't publicly released yet).
+Rather than changing the underlying metric, we added innings filters to the GOAT performances page. You can view the top batting and bowling performances within each innings separately, enabling fair within-innings comparisons.
 
 This is the honest approach: the asymmetry is real and meaningful, so we show it rather than hiding it behind a normalization.
 
