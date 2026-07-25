@@ -162,7 +162,7 @@ async function loadNote(id, push = true) {
 async function hydrateNoteAnchors() {
     const has = id => document.getElementById(id);
     const needRankings = has('ens-kumar-mt') || has('ens-abd-mt') || has('ens-abd-total-rank') || has('ens-abd-floor-rank')
-        || has('ib-abd-total-rank') || has('ib-top10-table') || has('ar-floor-top100-count');
+        || has('ib-abd-total-rank') || has('ib-top10-table') || has('ib-rank-total') || has('ar-floor-top100-count');
     const needGoats = has('snap-top5-bowling');
     const needPlayers = has('kp-kohli-2016-tpm');
     if (!needRankings && !needGoats && !needPlayers) return;
@@ -203,6 +203,44 @@ async function hydrateNoteAnchors() {
                 setText('ib-abd-total-rank', rankOf(byTotal, 'ab-de-villiers-c4487b84'));
                 setText('ib-abd-floor-rank', rankOf(byFloor, 'ab-de-villiers-c4487b84'));
                 setText('ib-bkumar-total-rank', rankOf(byTotal, 'b-kumar-2e81a32d'));
+            }
+
+            // innings-boundary.md — the three "What changed in the rankings"
+            // top-10 tables (#231). "Before fix" is the frozen pre-calibration
+            // snapshot (per-list constants below); the live column re-renders
+            // from tilt_rankings.json, so it reflects every change since the
+            // calibration shipped, not just the calibration (the note's intro
+            // paragraph says so). Markers compare live position vs the frozen
+            // list: ⬆/⬇ moved, 🆕 absent from the pre-fix top 10.
+            const IB_RANK_TABLES = {
+                'ib-rank-total': { key: 'total_tilt', before: [
+                    'SP Narine', 'Rashid Khan', 'JJ Bumrah', 'SL Malinga', 'AB de Villiers',
+                    'B Kumar', 'YS Chahal', 'R Ashwin', 'JC Buttler', 'Harbhajan Singh'] },
+                'ib-rank-batting': { key: 'batting_total_tilt', before: [
+                    'AB de Villiers', 'JC Buttler', 'CH Gayle', 'MS Dhoni', 'DA Warner',
+                    'N Pooran', 'V Sehwag', 'Shubman Gill', 'RR Pant', 'GJ Maxwell'] },
+                'ib-rank-bowling': { key: 'bowling_total_tilt', before: [
+                    'SP Narine', 'Rashid Khan', 'JJ Bumrah', 'B Kumar', 'SL Malinga',
+                    'R Ashwin', 'Harbhajan Singh', 'YS Chahal', 'A Mishra', 'DW Steyn'] },
+            };
+            for (const [id, cfg] of Object.entries(IB_RANK_TABLES)) {
+                const el = has(id);
+                if (!el) continue;
+                const live = [...rankings].sort((a, b) => (b[cfg.key] || 0) - (a[cfg.key] || 0)).slice(0, 10);
+                const rows = live.map((p, i) => {
+                    const beforeIdx = cfg.before.indexOf(p.player);
+                    const marker = beforeIdx < 0 ? ' \u{1F195}' : beforeIdx > i ? ' ⬆' : beforeIdx < i ? ' ⬇' : '';
+                    return `<tr><td>${i + 1}</td><td>${cfg.before[i]}</td><td>${p.player}${marker}</td></tr>`;
+                }).join('');
+                el.classList.remove('loading');
+                el.innerHTML = `<table><thead><tr><th>Rank</th><th>Before fix</th>`
+                    + `<th>Now (live)</th></tr></thead><tbody>${rows}</tbody></table>`;
+            }
+            // The prose beside those tables echoes B Kumar's current ranks.
+            if (has('ib-bkumar-total-rank-now')) {
+                const byBow = [...rankings].sort((a, b) => (b.bowling_total_tilt || 0) - (a.bowling_total_tilt || 0));
+                setText('ib-bkumar-total-rank-now', rankOf(byTotal, 'b-kumar-2e81a32d'));
+                setText('ib-bkumar-bowling-rank-now', rankOf(byBow, 'b-kumar-2e81a32d'));
             }
 
             // innings-boundary.md — the top-10 before/after table. Row set +

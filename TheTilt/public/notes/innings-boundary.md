@@ -56,56 +56,25 @@ Step 1 alone is what the original issue called "option 2" and recommended as the
 
 The whole point of doing this carefully was to make sure the fix doesn't violate basic cricketing intuition. Here's the actual top-10 movement.
 
+*(The "Before fix" column in each table is the frozen pre-calibration snapshot. The "Now (live)" column re-renders from the current rankings on every page load — so it also folds in everything that shipped after this fix: the PP-decay experiment and its removal, the K=100 ensemble, the `recent_wickets` fix, and the twice-daily data refreshes. Markers compare against the frozen column: ⬆/⬇ moved, 🆕 wasn't in the pre-fix top 10.)*
+
 ### Top 10 by total career TILT
 
-| Rank | Before fix | After fix (now) |
-|:--|:--|:--|
-| 1 | SP Narine | **SP Narine** |
-| 2 | Rashid Khan | **JJ Bumrah** ⬆ |
-| 3 | JJ Bumrah | Rashid Khan ⬇ |
-| 4 | SL Malinga | **SL Malinga** |
-| 5 | AB de Villiers | **AB de Villiers** |
-| 6 | B Kumar | YS Chahal ⬆ |
-| 7 | YS Chahal | **CH Gayle** 🆕 |
-| 8 | R Ashwin | JC Buttler ⬆ |
-| 9 | JC Buttler | B Kumar ⬇ |
-| 10 | Harbhajan Singh | DW Steyn 🆕 |
+<div id="ib-rank-total" class="loading">loading…</div>
 
-Top 5 essentially stable. The middle of the list reshuffles: Bumrah climbs to #2 (his bowling tilt was slightly suppressed by inn1-end overconfidence — recalibration helps him), Gayle and Steyn enter, R Ashwin and Harbhajan exit. **B Kumar drops from #6 to #9** — see below for why.
+At deploy time the top 5 was essentially stable and the middle of the list reshuffled: Bumrah climbed to #2 (his bowling tilt was slightly suppressed by inn1-end overconfidence — recalibration helps him), Gayle and Steyn entered, R Ashwin and Harbhajan exited. **B Kumar dropped from #6 to #9** (he sits at #<span id="ib-bkumar-total-rank-now">7</span> by total today) — see below for why.
 
 ### Top 10 by batting career TILT
 
-| Rank | Before fix | After fix (now) |
-|:--|:--|:--|
-| 1 | AB de Villiers | **AB de Villiers** |
-| 2 | JC Buttler | CH Gayle ⬆ |
-| 3 | CH Gayle | JC Buttler ⬇ |
-| 4 | MS Dhoni | V Sehwag ⬆ |
-| 5 | DA Warner | RR Pant ⬆ |
-| 6 | N Pooran | **YBK Jaiswal** 🆕 |
-| 7 | V Sehwag | DA Warner ⬇ |
-| 8 | Shubman Gill | N Pooran ⬇ |
-| 9 | RR Pant | **DR Smith** 🆕 |
-| 10 | GJ Maxwell | Shubman Gill ⬇ |
+<div id="ib-rank-batting" class="loading">loading…</div>
 
-Dhoni and Maxwell drop out of the top 10. Jaiswal and DR Smith enter. ABD's #1 spot is unaffected — his career boundary share was only ~2% of his total tilt, so the recalibration barely touches him.
+At deploy time, Dhoni and Maxwell dropped out of the top 10 while Jaiswal and DR Smith entered — later model and data changes have reshuffled the list again since (the live column shows today's order). ABD's #1 spot was unaffected — his career boundary share was only ~2% of his total tilt, so the recalibration barely touches him.
 
 ### Top 10 by bowling career TILT
 
-| Rank | Before fix | After fix (now) |
-|:--|:--|:--|
-| 1 | SP Narine | **SP Narine** |
-| 2 | Rashid Khan | JJ Bumrah ⬆ |
-| 3 | JJ Bumrah | Rashid Khan ⬇ |
-| 4 | B Kumar | **SL Malinga** |
-| 5 | SL Malinga | YS Chahal ⬆ |
-| 6 | R Ashwin | Harbhajan Singh ⬆ |
-| 7 | Harbhajan Singh | B Kumar ⬇ |
-| 8 | YS Chahal | R Ashwin ⬇ |
-| 9 | A Mishra | DW Steyn ⬆ |
-| 10 | DW Steyn | A Mishra ⬇ |
+<div id="ib-rank-bowling" class="loading">loading…</div>
 
-The headline movement: B Kumar drops from #4 to #7. About 13% of his pre-fix career bowling tilt came from the first ball of innings 2 — a place where the model used to be wildly pessimistic about the chase, so any wicket on that ball generated outsized credit. Recalibration removes that artificial credit. He's still a top-10 bowler; he's just no longer over-credited for being the death-knell-deliverer of the model's chase pessimism.
+The headline movement at deploy time: B Kumar dropped from #4 to #7. About 13% of his pre-fix career bowling tilt came from the first ball of innings 2 — a place where the model used to be wildly pessimistic about the chase, so any wicket on that ball generated outsized credit. Recalibration removed that artificial credit. He remained a top-10 bowler; he was just no longer over-credited for being the death-knell-deliverer of the model's chase pessimism. (Changes that shipped later — chiefly the `recent_wickets` fix below — have since moved him to #<span id="ib-bkumar-bowling-rank-now">3</span> by bowling TILT.)
 
 ---
 

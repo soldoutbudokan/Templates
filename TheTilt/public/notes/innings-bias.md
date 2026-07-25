@@ -85,7 +85,7 @@ Here's the good news: **career rankings are barely affected**.
 
 ![Career correlation](plots/innings_career_correlation.png)
 
-Over a career, most batsmen face a roughly similar mix of 1st and 2nd innings balls. The correlation between a player's 2nd-innings ball share and their career TILT is essentially zero (Pearson r = 0.043, p = 0.50; Spearman r = 0.022, p = 0.73 across 249 players with 30+ matches).
+Over a career, most batsmen face a roughly similar mix of 1st and 2nd innings balls. The correlation between a player's 2nd-innings ball share and their career TILT is essentially zero (Pearson r = 0.043, p = 0.50; Spearman r = 0.022, p = 0.73 across 249 players with 30+ matches). That cohort is players with 30+ matches who have *faced at least one ball* — the correlation is against batting TILT, so pure bowlers have no innings-2 batting exposure to correlate and drop out. Counting every ranked player with 30+ matches instead gives 251; the two are not the same number and neither is stale.
 
 When we normalize all deltas to remove the innings effect (scaling each innings' deltas so the mean absolute shift is equal), the career rankings barely move:
 

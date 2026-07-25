@@ -29,7 +29,7 @@
         {
             id: 'last-ball-snap',
             title: 'Snapping the Final Ball — and Why We Reverted It',
-            summary: 'The match-terminal snap looked like a clean fix to wp_after maxing out below 1.0 on chase-winning balls, but it concentrated the entire model-vs-truth gap onto a single bowler per match — Trent Boult\'s 3/26 in a DLS-shortened 2018 chase ballooned to a +0.97 single-game tilt, of which +0.89 was pure snap windfall. The fix: tune the underlying model to push wp toward 0/1 naturally at the boundary, and feed it the correct ball allocation for DLS-revised innings.',
+            summary: 'The match-terminal snap looked like a clean fix to wp_after maxing out below 1.0 on chase-winning balls, but it concentrated the entire model-vs-truth gap onto a single bowler per match — Trent Boult\'s 2/26 in a DLS-shortened 2018 chase ballooned to a +0.97 single-game tilt, of which +0.89 was pure snap windfall. The fix: tune the underlying model to push wp toward 0/1 naturally at the boundary, and feed it the correct ball allocation for DLS-revised innings.',
             tags: ['methodology', 'model'],
             date: '2026-05-06',
         },
@@ -43,7 +43,7 @@
         {
             id: 'innings-boundary',
             title: 'Fixing the Innings-Boundary Jump',
-            summary: 'The chart used to leap by 8.4pp at the median across the innings break — a signed −5.1pp bias favouring the chasing side. A two-step calibration (per-side isotonic + per-match midpoint) drives the cliff to mathematically zero, touches only 1.4% of balls, and reshuffles the top 10 in the directions you would expect. B Kumar drops three bowling spots; ABD stays #1.',
+            summary: 'The chart used to leap by 8.4pp at the median across the innings break — a signed −5.1pp bias favouring the chasing side. A two-step calibration (per-side isotonic + per-match midpoint) drives the cliff to mathematically zero, touches only 1.4% of balls, and reshuffles the top 10 in the directions you would expect — the bowlers the model over-credited at the innings break shed the phantom credit; ABD barely moves.',
             tags: ['methodology', 'model'],
             date: '2026-04-26',
         },

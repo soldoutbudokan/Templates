@@ -76,8 +76,15 @@ async function loadMatch() {
         if (!res.ok) throw new Error('not found');
         const m = await res.json();
 
-        document.title = `The TILT | ${m.teams[0]} vs ${m.teams[1]}`;
-        const refTeam = m.innings && m.innings.length > 0 ? m.innings[0].batting_team : m.teams[0];
+        // Tab title and WP-chart caption must use the season-correct label,
+        // not the raw canonical name, or they drift from the body header on
+        // pre-rename seasons (KXIP/PBKS, DD/DC, RPS 2017) — issue #228.
+        const labelFor = (name) => {
+            const t = teamIndex && name ? teamIndex.get(name) : null;
+            return t ? teamLabelForSeason(t, m.season) : name;
+        };
+        document.title = `The TILT | ${labelFor(m.teams[0])} vs ${labelFor(m.teams[1])}`;
+        const refTeam = labelFor(m.innings && m.innings.length > 0 ? m.innings[0].batting_team : m.teams[0]);
         const teamLnk = (name) => teamLink(name, m.season, teamIndex);
 
         let html = `
@@ -214,6 +221,20 @@ async function loadMatch() {
                 labels.push(`${b.over}.${b.ball}`);
                 // Inn 2 wp_after is from inn 2 batting team's perspective — flip it
                 wpData.push(+((1 - b.wp_after) * 100).toFixed(1));
+            }
+
+            // Pin the final point to the actual result when the chasing side
+            // won. The model's terminal-ball wp on DLS-shortened winning
+            // chases sits in the 0.20-0.45 band (issue #225) — the chart
+            // would show the winner "losing" at the moment of victory.
+            // Display-only: TILT deltas never see this. Regulation ties
+            // (super-over finishes) keep the model value — equal-runs check.
+            const chaseTeam = m.innings && m.innings.length > 1 ? m.innings[1].batting_team : null;
+            if (inn2.length > 0 && m.winner && chaseTeam && m.winner === chaseTeam) {
+                const runsOf = (t) => parseInt(String(t || '0').split('/')[0], 10) || 0;
+                if (runsOf(m.innings[1].total) !== runsOf(m.innings[0].total)) {
+                    wpData[wpData.length - 1] = 0;
+                }
             }
 
             // Innings boundary is now continuous in the underlying data: the

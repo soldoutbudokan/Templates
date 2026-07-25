@@ -115,7 +115,7 @@ Yusuf Pathan and Maxwell lead the all-rounder block on the floor sort, and they'
 
 Note the split personalities in that table. JR Hopes is the most extreme: a 20-match sample (one of them a DLS-shortened match whose re-scoring moved his career average materially) leaves his raw rank at #<span id="ar-hopes-raw-prose">114</span> while the confidence floor — which prices in how *erratic* a sample is, not just how long — drops him to #<span id="ar-hopes-floor-prose">326</span>. Stokes is the mirror image of the veterans: 45 matches, a respectable raw #<span id="ar-stokes-raw-prose">153</span>, but a floor near #<span id="ar-stokes-floor-prose">209</span> because the model doesn't trust the small sample. Sample size, not just role, drives where an all-rounder lands.
 
-By comparison, the top of the leaderboard is full of specialists who concentrate their impact: Sohail Tanvir's bowling, AB Mhatre's and Vaibhav Suryavanshi's batting cameos, Priyansh Arya's small-sample heroics. None of them are diversified across roles. None of them are dragged down by a bad bowling day after a good bat.
+By comparison, the top of the leaderboard is full of specialists who concentrate their impact: Sohail Tanvir's bowling, Ayush Mhatre's and Vaibhav Suryavanshi's batting cameos, Priyansh Arya's small-sample heroics. None of them are diversified across roles. None of them are dragged down by a bad bowling day after a good bat.
 
 ---
 

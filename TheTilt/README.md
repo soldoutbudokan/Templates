@@ -45,7 +45,7 @@ The stat is denominated in **win probability percentage points per match**. A TI
 
 All data comes from [Cricsheet](https://cricsheet.org), an open cricket data project that provides ball-by-ball JSON files for every IPL match ever played.
 
-- **1,234 matches** parsed (2008-2026)
+- **1,254 matches** (2008-2026, including no-result fixtures with no ball-by-ball data)
 - **294,729 individual deliveries** with batsman, bowler, runs, wickets, and match outcome
 - Each delivery becomes a row with full match context
 - Team-name aliases normalized (e.g. "Royal Challengers Bengaluru" → "Royal Challengers Bangalore")
@@ -214,7 +214,8 @@ TheTilt/
 ├── api/
 │   └── index.py               # Flask app for Vercel (serves static files)
 ├── public/
-│   ├── index.html             # Leaderboard (sortable, searchable)
+│   ├── index.html             # Homepage (current season, top-5 preview, GOATs, blog)
+│   ├── rankings.html          # Full leaderboard (sortable, searchable, floor-sorted)
 │   ├── player.html            # Player detail page (stats, charts, career trend)
 │   ├── match.html             # Match replay (win prob chart, key moments, scorecards)
 │   ├── goats.html             # GOAT performances (top match/season rankings)

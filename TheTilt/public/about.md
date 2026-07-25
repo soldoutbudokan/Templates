@@ -4,12 +4,12 @@
 
 TILT is a player-impact metric for the Indian Premier League. For every legal delivery in IPL history we estimate the change in win probability that delivery produced and attribute it to the batsman and bowler involved. Aggregated across a player's career, this is their TILT — a *win probability per match* number that captures **when** they performed, not just **what** they did.
 
-This page is the long-form methodology. The headline numbers and rankings live on the [leaderboard](index.html); the player and match pages drill into individual games. If you only want the one-line version: TILT is Win Probability Added for T20 cricket, with Bayesian shrinkage on top of a LightGBM ball-by-ball win probability model trained on Cricsheet data.
+This page is the long-form methodology. The headline numbers and rankings live on the [rankings page](rankings.html); the player and match pages drill into individual games. If you only want the one-line version: TILT is Win Probability Added for T20 cricket, with Bayesian shrinkage on top of a LightGBM ball-by-ball win probability model trained on Cricsheet data.
 
 | Coverage | Value |
 |:--|:--|
 | Seasons | IPL 2008 — 2026 |
-| Matches parsed | <span id="cov-matches">1,234</span> |
+| Matches | <span id="cov-matches">1,254</span> |
 | Legal-ish deliveries scored | <span id="cov-balls">294,729</span> |
 | Players ranked (≥ 10 matches) | <span id="cov-players">472</span> |
 | Model | K=100 LightGBM ensemble (gradient-boosted classifier) |

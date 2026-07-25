@@ -26,7 +26,7 @@ A few constraints we enforce:
 
 ## Start with the example everyone asks about: ABD, RCB 2016, moved to Chepauk
 
-In IPL 2016, RCB played eight home matches at M Chinnaswamy. AB de Villiers faced 216 legal deliveries across those eight games, scored 379 runs, and produced a raw batting TILT per match of **+11.46%** — a genuinely elite eight-match run.
+In IPL 2016, RCB played nine home matches at M Chinnaswamy; one (18 May, vs Punjab) was DLS-affected and drops out per the filter above, leaving a cohort of eight. AB de Villiers faced 216 legal deliveries across those eight games, scored 379 runs, and produced a raw batting TILT per match of **+11.46%** — a genuinely elite eight-match run.
 
 Relocate those deliveries to Chepauk and re-score. His TILT/match barely moves: **+11.51%**. A shift of **+0.06 percentage points** — a wash.
 
@@ -58,7 +58,7 @@ The venue lever, in other words, is not a uniform multiplier on performance. It'
 
 ## Gayle: the sweep spans 4.0 percentage points
 
-Gayle played 38 home matches for RCB across his career, 2011 to 2017. Real career TILT at Chinnaswamy is **+1.49%/match**. Relocate to Wankhede: **−0.01%** (−1.50pp). Relocate to Chepauk: **+3.59%** (+2.10pp).
+Gayle batted in 40 home matches for RCB across his career, 2011 to 2017; two were DLS-affected, leaving a 38-match cohort. Real career TILT at Chinnaswamy is **+1.49%/match**. Relocate to Wankhede: **−0.01%** (−1.50pp). Relocate to Chepauk: **+3.59%** (+2.10pp).
 
 His full nine-venue sweep:
 
@@ -88,7 +88,7 @@ Essentially, the venue lever doesn't find Dhoni. Whatever TILT he generates, he 
 
 ## Rohit at Wankhede: the home counter-example
 
-Rohit Sharma's 88 career home matches for Mumbai Indians at Wankhede produce a raw TILT/match of **+0.74%**. Swap those matches around and:
+Rohit Sharma batted in 89 career home matches for Mumbai Indians at Wankhede; one was DLS-affected, and the remaining 88 produce a raw TILT/match of **+0.74%**. Swap those matches around and:
 
 | Target venue | Rohit TILT/match |
 |:---|:---:|
