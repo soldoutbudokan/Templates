@@ -144,6 +144,14 @@ VENUE_ALIASES: Dict[str, str] = {
     "Himachal Pradesh Cricket Association Stadium, Dharamsala": "Himachal Pradesh Cricket Association Stadium",
     "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium, Visakhapatnam": "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium",
     "Maharaja Yadavindra Singh International Cricket Stadium, New Chandigarh": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+    # 2026 cricsheet suffixes the city on real ball-by-ball data, unlike the
+    # NR-only variants below — this entry collapses a model venue category
+    # back onto the 2013-2016 unsuffixed form (issue #224).
+    "Shaheed Veer Narayan Singh International Stadium, Raipur": "Shaheed Veer Narayan Singh International Stadium",
+    # 2021's UAE leg ships the Abu Dhabi ground under its formal-short name on
+    # real ball-by-ball data, while 2014/2020 use "Sheikh Zayed Stadium" — same
+    # physical ground, two model categories (issue #238).
+    "Zayed Cricket Stadium, Abu Dhabi": "Sheikh Zayed Stadium",
     # Variants seen only on no-result rows (issue #222). None of these strings
     # occur in ball-by-ball data, so adding them leaves featured_balls' venue
     # categories — and therefore model input — untouched.

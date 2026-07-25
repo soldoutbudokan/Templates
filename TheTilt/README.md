@@ -96,7 +96,7 @@ Output: averaged P(batting team wins) ∈ [0, 1]   ← mean of 100 LGBM members
 - Early stopping per member uses a validation fold carved from *train* (keyed on the member seed) — the reported holdout is never used for iteration selection (issue #193)
 - 100 ensemble members, each: 2000 trees (with early stopping), learning rate 0.03, max depth 4, num_leaves 16
 - Heavy L2 regularization (reg_lambda=5.0, min_child_samples=500) — keeps individual trees smooth so member-to-member disagreement is genuine trajectory variance, not leaf noise
-- Venue names deduplicated (59 raw → 38 canonical) to reduce categorical overfitting
+- Venue names deduplicated (60 raw → 37 canonical) to reduce categorical overfitting
 - DLS-affected matches excluded from training (23 matches as of June 2026); their balls are still scored using the per-innings DLS allocation so revised chases aren't treated as full T20s (this fix was silently reverted with the #111 bundle and re-landed in June 2026 — issue #192)
 - No post-hoc calibration needed — the LightGBM probabilities are well-calibrated (max calibration error ~7%, concentrated in the 0.85+ bins)
 - `RETRAIN=1` env-var guardrail required to overwrite the committed pickle (prevents ad-hoc local pipeline runs from silently swapping in a noisier model)
