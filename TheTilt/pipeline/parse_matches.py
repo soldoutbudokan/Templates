@@ -162,6 +162,23 @@ def normalize_venue(venue: Optional[str]) -> Optional[str]:
     return VENUE_ALIASES.get(venue, venue)
 
 
+# %% Playoff stage normalization
+# Same knockout slot, different strings: the 2011/2012/2016 cricsheet dumps
+# tag the 3rd-vs-4th playoff as "Elimination Final" where every other season
+# uses "Eliminator" (issue #226). 2010's "3rd Place Play-Off" is a genuinely
+# different fixture and stays as-is. Applied wherever event.stage is read
+# (parse_match and parse_no_results_from_raw), mirroring VENUE_ALIASES.
+STAGE_ALIASES: Dict[str, str] = {
+    "Elimination Final": "Eliminator",
+}
+
+
+def normalize_stage(stage: Optional[str]) -> Optional[str]:
+    if stage is None:
+        return None
+    return STAGE_ALIASES.get(stage, stage)
+
+
 def season_team_label(canonical: Optional[str], season_year: Optional[int]) -> Optional[str]:
     """Return the display label for a canonical team in a given season year.
 
@@ -271,7 +288,7 @@ def parse_match(filepath: Path) -> List[BallEvent]:
     # "3rd Place Play-off"). `match_number` is the league-stage seq for
     # tie-break ordering inside a season.
     event = info.get("event", {}) or {}
-    event_stage = event.get("stage")
+    event_stage = normalize_stage(event.get("stage"))
     event_match_number = event.get("match_number")
     if event_match_number is not None:
         try:
@@ -483,7 +500,7 @@ def _load_no_results_supplement(path: Path = _NO_RESULTS_SUPPLEMENT_PATH) -> tup
             "team1": teams[0],
             "team2": teams[1],
             "venue": normalize_venue(entry.get("venue")),
-            "event_stage": entry.get("event_stage"),
+            "event_stage": normalize_stage(entry.get("event_stage")),
         })
     exclude_ids = {str(e.get("match_id")) for e in (cfg.get("exclude", []) or []) if e.get("match_id")}
     return add_rows, exclude_ids
@@ -534,7 +551,7 @@ def parse_no_results_from_raw(raw_dir: Optional[str] = None) -> pd.DataFrame:
             "team1": teams[0],
             "team2": teams[1],
             "venue": normalize_venue(info.get("venue")),
-            "event_stage": event.get("stage"),
+            "event_stage": normalize_stage(event.get("stage")),
         })
 
     df = pd.DataFrame(rows + add_rows)

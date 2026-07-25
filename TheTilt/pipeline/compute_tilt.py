@@ -814,6 +814,11 @@ FULL_NAME_CORRECTIONS = {
     "Akash Mandwaal": "Akash Madhwal",
     "Nicolas Pooran": "Nicholas Pooran",
     "Mahesh Theekshana": "Maheesh Theekshana",
+    # Wikidata resolution for AS Roy (player_id e4cdf230) merges a second
+    # player's name into the string — "Anukul Roy" + "priyansh Kumar", the
+    # lowercase 'p' betraying the concatenation. Anukul Roy is the common form
+    # and matches the site's convention of dropping middle names (issue #234).
+    "Anukul Roy priyansh Kumar": "Anukul Roy",
 }
 
 

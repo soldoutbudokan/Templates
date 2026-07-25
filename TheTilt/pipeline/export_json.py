@@ -361,7 +361,9 @@ def _build_playoffs_block(season_match_ids: list, match_info: dict) -> list:
     Each entry: {stage, match_id, date, teams, scores, winner, result_margin}.
     Stage names come from Cricsheet `info.event.stage` (e.g. "Qualifier 1",
     "Eliminator", "Qualifier 2", "Final", historical "Semi Final 1/2",
-    "3rd Place Play-off"). Empty list when a season has no playoff data
+    "3rd Place Play-off"), normalized at parse time via STAGE_ALIASES in
+    parse_matches.py (issue #226 — 2011/2012/2016 tag the Eliminator slot
+    "Elimination Final"). Empty list when a season has no playoff data
     (in-progress mid-season, or non-playoff format).
     """
     playoffs = []
@@ -2364,7 +2366,11 @@ def export_search_index(
         sub = f"{role_label} · {team_part} · {r['total_matches']} M"
         rows.append({
             "t": "p",
-            "l": r["player"],
+            # Display the resolved full name, matching rankings.html / index.html /
+            # leaders / the player page, which all prefer full_name over the short
+            # registry form. The `x` corpus below still indexes both, so typing
+            # either "v kohli" or "virat kohli" hits the row (issue #237).
+            "l": r.get("full_name") or r["player"],
             "s": r["slug"],
             "c": r.get("country"),
             "sub": sub,
@@ -2398,7 +2404,7 @@ def export_search_index(
             sub = f"{role_label} · {team_part} · {int(row['total_matches'])} M"
             rows.append({
                 "t": "p",
-                "l": row["player"],
+                "l": row.get("full_name") or row["player"],
                 "s": make_slug(row["player"], pid if pid else None),
                 "c": country_for(pid),
                 "sub": sub,
