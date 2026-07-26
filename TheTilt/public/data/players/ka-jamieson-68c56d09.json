@@ -10,18 +10,18 @@
     "Punjab Kings",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": -0.02513,
-  "batting_tilt_per_match": -0.01425,
-  "bowling_tilt_per_match": -0.01563,
-  "shrunk_total_tilt_per_match": -0.0247,
-  "shrunk_batting_tilt_per_match": -0.01459,
-  "shrunk_bowling_tilt_per_match": -0.01568,
-  "tilt_ci_lower": -0.06268,
-  "tilt_ci_upper": 0.01327,
-  "tilt_ci_lower_90": -0.05658,
-  "tilt_ci_upper_90": 0.00717,
+  "total_tilt_per_match": -0.02398,
+  "batting_tilt_per_match": -0.01401,
+  "bowling_tilt_per_match": -0.01464,
+  "shrunk_total_tilt_per_match": -0.02387,
+  "shrunk_batting_tilt_per_match": -0.01443,
+  "shrunk_bowling_tilt_per_match": -0.01498,
+  "tilt_ci_lower": -0.06168,
+  "tilt_ci_upper": 0.01395,
+  "tilt_ci_lower_90": -0.05561,
+  "tilt_ci_upper_90": 0.00787,
   "confidence": "low",
-  "total_tilt": -0.37693,
+  "total_tilt": -0.35971,
   "total_matches": 15,
   "batting_balls": 73,
   "bowling_balls": 300,
@@ -29,8 +29,8 @@
     {
       "season": "2021",
       "team": "Royal Challengers Bangalore",
-      "batting_tilt_per_match": -0.01726,
-      "bowling_tilt_per_match": -0.04,
+      "batting_tilt_per_match": -0.01691,
+      "bowling_tilt_per_match": -0.03836,
       "batting_matches": 7,
       "bowling_matches": 9,
       "batting_balls": 55,
@@ -180,21 +180,21 @@
           "match_id": "1254087",
           "date": "2021-09-20",
           "opponent": "Kolkata Knight Riders",
-          "venue": "Zayed Cricket Stadium, Abu Dhabi",
+          "venue": "Sheikh Zayed Stadium",
           "team_score": "92/10",
           "opponent_score": "94/1",
           "winner": "Kolkata Knight Riders",
           "bat_runs": 4,
           "bat_balls": 12,
           "bat_sr": 33.3,
-          "bat_tilt": -0.00656,
+          "bat_tilt": -0.0028,
           "bat_not_out": true,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 26,
           "bowl_econ": 13.0,
-          "bowl_tilt": -0.04915,
-          "total_tilt": -0.05571
+          "bowl_tilt": -0.0357,
+          "total_tilt": -0.0385
         },
         {
           "match_id": "1254108",
@@ -207,13 +207,13 @@
           "bat_runs": 2,
           "bat_balls": 2,
           "bat_sr": 100.0,
-          "bat_tilt": -0.01284,
+          "bat_tilt": -0.01415,
           "bat_not_out": true,
           "bowl_wkts": 0,
           "bowl_balls": 12,
           "bowl_runs": 22,
           "bowl_econ": 11.0,
-          "bowl_tilt": -0.20644,
+          "bowl_tilt": -0.20513,
           "total_tilt": -0.21928
         }
       ],
@@ -429,23 +429,23 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.02057,
+      "tilt": -0.01686,
       "balls": 35,
-      "avg_delta": -0.000571
+      "avg_delta": -0.000468
     },
     {
       "phase": "death",
-      "tilt": -0.12197,
+      "tilt": -0.12322,
       "balls": 38,
-      "avg_delta": -0.00321
+      "avg_delta": -0.003243
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.00737,
+      "tilt": 0.02213,
       "balls": 186,
-      "avg_delta": 3.8e-05
+      "avg_delta": 0.000114
     },
     {
       "phase": "middle",
@@ -501,7 +501,7 @@
       "match_id": "1254087",
       "date": "2021-09-20",
       "vs": "Kolkata Knight Riders",
-      "tilt": -0.00656,
+      "tilt": -0.0028,
       "runs": 4,
       "balls": 12,
       "not_out": true
@@ -539,7 +539,7 @@
       "match_id": "1254108",
       "date": "2021-09-26",
       "vs": "Mumbai Indians",
-      "tilt": -0.01284,
+      "tilt": -0.01415,
       "runs": 2,
       "balls": 2,
       "not_out": true
@@ -601,7 +601,7 @@
       "match_id": "1254108",
       "date": "2021-09-26",
       "vs": "Mumbai Indians",
-      "tilt": -0.20644,
+      "tilt": -0.20513,
       "wickets": 0,
       "balls": 12
     },
@@ -614,20 +614,20 @@
       "balls": 18
     },
     {
-      "match_id": "1254087",
-      "date": "2021-09-20",
-      "vs": "Kolkata Knight Riders",
-      "tilt": -0.04915,
-      "wickets": 0,
-      "balls": 12
-    },
-    {
       "match_id": "1254063",
       "date": "2021-04-14",
       "vs": "Sunrisers Hyderabad",
       "tilt": -0.03655,
       "wickets": 1,
       "balls": 18
+    },
+    {
+      "match_id": "1254087",
+      "date": "2021-09-20",
+      "vs": "Kolkata Knight Riders",
+      "tilt": -0.0357,
+      "wickets": 0,
+      "balls": 12
     },
     {
       "match_id": "1254076",
@@ -684,50 +684,50 @@
     {
       "match": 8,
       "date": "2021-09-20",
-      "tilt": -0.05572,
-      "cumulative": -0.26153
+      "tilt": -0.0385,
+      "cumulative": -0.24431
     },
     {
       "match": 9,
       "date": "2021-09-26",
       "tilt": -0.21928,
-      "cumulative": -0.48081
+      "cumulative": -0.46359
     },
     {
       "match": 10,
       "date": "2025-05-26",
       "tilt": -0.02108,
-      "cumulative": -0.50189
+      "cumulative": -0.48467
     },
     {
       "match": 11,
       "date": "2025-05-29",
       "tilt": 0.00813,
-      "cumulative": -0.49376
+      "cumulative": -0.47654
     },
     {
       "match": 12,
       "date": "2025-06-01",
       "tilt": 0.07347,
-      "cumulative": -0.42028
+      "cumulative": -0.40306
     },
     {
       "match": 13,
       "date": "2025-06-03",
       "tilt": 0.0123,
-      "cumulative": -0.40799
+      "cumulative": -0.39077
     },
     {
       "match": 14,
       "date": "2026-04-27",
       "tilt": 0.05601,
-      "cumulative": -0.35198
+      "cumulative": -0.33476
     },
     {
       "match": 15,
       "date": "2026-05-01",
       "tilt": -0.02495,
-      "cumulative": -0.37693
+      "cumulative": -0.35971
     }
   ],
   "team_matchups": [
@@ -738,7 +738,7 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.02991,
+      "tilt_per_match": 0.03179,
       "matches": 2
     },
     {
@@ -758,7 +758,7 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.08825,
+      "tilt_per_match": -0.08891,
       "matches": 2
     }
   ],
@@ -790,7 +790,7 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.03423,
+      "tilt_per_match": -0.03391,
       "matches": 4
     },
     {
@@ -800,7 +800,7 @@
     },
     {
       "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": -0.1182,
+      "tilt_per_match": -0.11147,
       "matches": 2
     }
   ],
@@ -833,7 +833,7 @@
     -0.03113,
     0.07773,
     0.02845,
-    -0.05572,
+    -0.0385,
     -0.21928,
     -0.02108,
     0.00813,

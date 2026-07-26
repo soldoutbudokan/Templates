@@ -8,18 +8,18 @@
   "teams": [
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.01933,
-  "batting_tilt_per_match": -0.01933,
+  "total_tilt_per_match": -0.01961,
+  "batting_tilt_per_match": -0.01961,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02125,
-  "shrunk_batting_tilt_per_match": -0.01716,
+  "shrunk_total_tilt_per_match": -0.02143,
+  "shrunk_batting_tilt_per_match": -0.01729,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.057,
-  "tilt_ci_upper": 0.01451,
-  "tilt_ci_lower_90": -0.05126,
-  "tilt_ci_upper_90": 0.00876,
+  "tilt_ci_lower": -0.05709,
+  "tilt_ci_upper": 0.01422,
+  "tilt_ci_lower_90": -0.05136,
+  "tilt_ci_upper_90": 0.00849,
   "confidence": "low",
-  "total_tilt": -0.11598,
+  "total_tilt": -0.11765,
   "total_matches": 6,
   "batting_balls": 78,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2008",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.01933,
+      "batting_tilt_per_match": -0.01961,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 6,
       "bowling_matches": 0,
@@ -65,14 +65,14 @@
           "bat_runs": 12,
           "bat_balls": 9,
           "bat_sr": 133.3,
-          "bat_tilt": 0.00169,
+          "bat_tilt": 0.00354,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.00169
+          "total_tilt": 0.00354
         },
         {
           "match_id": "336033",
@@ -105,14 +105,14 @@
           "bat_runs": 18,
           "bat_balls": 16,
           "bat_sr": 112.5,
-          "bat_tilt": 0.00249,
+          "bat_tilt": -0.00103,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.00249
+          "total_tilt": -0.00103
         },
         {
           "match_id": "336019",
@@ -172,9 +172,9 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.00047,
+      "tilt": -0.00121,
       "balls": 41,
-      "avg_delta": 1.1e-05
+      "avg_delta": -2.9e-05
     },
     {
       "phase": "middle",
@@ -201,22 +201,22 @@
       "not_out": false
     },
     {
-      "match_id": "336036",
-      "date": "2008-05-26",
-      "vs": "Mumbai Indians",
-      "tilt": 0.00249,
-      "runs": 18,
-      "balls": 16,
-      "not_out": true
-    },
-    {
       "match_id": "335990",
       "date": "2008-04-24",
       "vs": "Deccan Chargers",
-      "tilt": 0.00169,
+      "tilt": 0.00354,
       "runs": 12,
       "balls": 9,
       "not_out": false
+    },
+    {
+      "match_id": "336036",
+      "date": "2008-05-26",
+      "vs": "Mumbai Indians",
+      "tilt": -0.00103,
+      "runs": 18,
+      "balls": 16,
+      "not_out": true
     },
     {
       "match_id": "336033",
@@ -266,22 +266,22 @@
       "not_out": true
     },
     {
-      "match_id": "335990",
-      "date": "2008-04-24",
-      "vs": "Deccan Chargers",
-      "tilt": 0.00169,
-      "runs": 12,
-      "balls": 9,
-      "not_out": false
-    },
-    {
       "match_id": "336036",
       "date": "2008-05-26",
       "vs": "Mumbai Indians",
-      "tilt": 0.00249,
+      "tilt": -0.00103,
       "runs": 18,
       "balls": 16,
       "not_out": true
+    },
+    {
+      "match_id": "335990",
+      "date": "2008-04-24",
+      "vs": "Deccan Chargers",
+      "tilt": 0.00354,
+      "runs": 12,
+      "balls": 9,
+      "not_out": false
     }
   ],
   "bowling_best_matches": [],
@@ -296,32 +296,32 @@
     {
       "match": 2,
       "date": "2008-04-24",
-      "tilt": 0.00169,
-      "cumulative": 0.03408
+      "tilt": 0.00354,
+      "cumulative": 0.03593
     },
     {
       "match": 3,
       "date": "2008-05-24",
       "tilt": -0.00433,
-      "cumulative": 0.02975
+      "cumulative": 0.0316
     },
     {
       "match": 4,
       "date": "2008-05-26",
-      "tilt": 0.00249,
-      "cumulative": 0.03224
+      "tilt": -0.00103,
+      "cumulative": 0.03057
     },
     {
       "match": 5,
       "date": "2008-05-28",
       "tilt": -0.00791,
-      "cumulative": 0.02433
+      "cumulative": 0.02266
     },
     {
       "match": 6,
       "date": "2008-06-01",
       "tilt": -0.14031,
-      "cumulative": -0.11598
+      "cumulative": -0.11765
     }
   ],
   "team_matchups": [
@@ -331,13 +331,13 @@
       "matches": 2
     },
     {
-      "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.00249,
+      "opponent": "Deccan Chargers",
+      "tilt_per_match": 0.00354,
       "matches": 1
     },
     {
-      "opponent": "Deccan Chargers",
-      "tilt_per_match": 0.00169,
+      "opponent": "Mumbai Indians",
+      "tilt_per_match": -0.00103,
       "matches": 1
     },
     {
@@ -362,9 +362,9 @@
   "bowling_stats": null,
   "match_tilt_distribution": [
     0.03239,
-    0.00169,
+    0.00354,
     -0.00433,
-    0.00249,
+    -0.00103,
     -0.00791,
     -0.14031
   ]

@@ -9,18 +9,18 @@
     "Delhi Capitals",
     "Royal Challengers Bangalore"
   ],
-  "total_tilt_per_match": 0.00587,
-  "batting_tilt_per_match": 0.00411,
-  "bowling_tilt_per_match": 0.00218,
-  "shrunk_total_tilt_per_match": -0.00413,
-  "shrunk_batting_tilt_per_match": -0.00386,
-  "shrunk_bowling_tilt_per_match": -0.00394,
-  "tilt_ci_lower": -0.07289,
-  "tilt_ci_upper": 0.06464,
-  "tilt_ci_lower_90": -0.06184,
-  "tilt_ci_upper_90": 0.05359,
+  "total_tilt_per_match": 0.00594,
+  "batting_tilt_per_match": 0.0035,
+  "bowling_tilt_per_match": 0.00279,
+  "shrunk_total_tilt_per_match": -0.00414,
+  "shrunk_batting_tilt_per_match": -0.00421,
+  "shrunk_bowling_tilt_per_match": -0.0036,
+  "tilt_ci_lower": -0.0725,
+  "tilt_ci_upper": 0.06421,
+  "tilt_ci_lower_90": -0.06151,
+  "tilt_ci_upper_90": 0.05323,
   "confidence": "low",
-  "total_tilt": 0.05873,
+  "total_tilt": 0.05936,
   "total_matches": 10,
   "batting_balls": 100,
   "bowling_balls": 186,
@@ -81,8 +81,8 @@
     {
       "season": "2010",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": -0.01033,
-      "bowling_tilt_per_match": -0.00962,
+      "batting_tilt_per_match": -0.01216,
+      "bowling_tilt_per_match": -0.00809,
       "batting_matches": 3,
       "bowling_matches": 4,
       "batting_balls": 52,
@@ -99,14 +99,14 @@
           "bat_runs": 18,
           "bat_balls": 12,
           "bat_sr": 150.0,
-          "bat_tilt": 0.02346,
+          "bat_tilt": 0.01796,
           "bat_not_out": true,
           "bowl_wkts": 2,
           "bowl_balls": 24,
           "bowl_runs": 42,
           "bowl_econ": 10.5,
           "bowl_tilt": 0.06288,
-          "total_tilt": 0.08634
+          "total_tilt": 0.08084
         },
         {
           "match_id": "419131",
@@ -165,8 +165,8 @@
           "bowl_balls": 24,
           "bowl_runs": 42,
           "bowl_econ": 10.5,
-          "bowl_tilt": -0.01155,
-          "total_tilt": -0.06938
+          "bowl_tilt": -0.00543,
+          "total_tilt": -0.06326
         }
       ],
       "batting_stats": {
@@ -406,9 +406,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.1116,
+      "tilt": 0.10611,
       "balls": 65,
-      "avg_delta": 0.001641
+      "avg_delta": 0.00156
     }
   ],
   "bowling_phases": [
@@ -426,9 +426,9 @@
     },
     {
       "phase": "death",
-      "tilt": -0.07587,
+      "tilt": -0.06976,
       "balls": 30,
-      "avg_delta": -0.002529
+      "avg_delta": -0.002325
     }
   ],
   "best_matches": [
@@ -442,15 +442,6 @@
       "not_out": true
     },
     {
-      "match_id": "419128",
-      "date": "2010-03-25",
-      "vs": "Royal Challengers Bangalore",
-      "tilt": 0.02346,
-      "runs": 18,
-      "balls": 12,
-      "not_out": true
-    },
-    {
       "match_id": "548310",
       "date": "2012-04-07",
       "vs": "Delhi Capitals",
@@ -458,6 +449,15 @@
       "runs": 30,
       "balls": 19,
       "not_out": false
+    },
+    {
+      "match_id": "419128",
+      "date": "2010-03-25",
+      "vs": "Royal Challengers Bangalore",
+      "tilt": 0.01796,
+      "runs": 18,
+      "balls": 12,
+      "not_out": true
     },
     {
       "match_id": "419134",
@@ -604,7 +604,7 @@
       "match_id": "419152",
       "date": "2010-04-13",
       "vs": "Mumbai Indians",
-      "tilt": -0.01155,
+      "tilt": -0.00543,
       "wickets": 1,
       "balls": 24
     }
@@ -619,56 +619,56 @@
     {
       "match": 2,
       "date": "2010-03-25",
-      "tilt": 0.08634,
-      "cumulative": 0.01784
+      "tilt": 0.08085,
+      "cumulative": 0.01235
     },
     {
       "match": 3,
       "date": "2010-03-29",
       "tilt": -0.09152,
-      "cumulative": -0.07367
+      "cumulative": -0.07916
     },
     {
       "match": 4,
       "date": "2010-03-31",
       "tilt": 0.00506,
-      "cumulative": -0.06861
+      "cumulative": -0.0741
     },
     {
       "match": 5,
       "date": "2010-04-13",
-      "tilt": -0.06937,
-      "cumulative": -0.13798
+      "tilt": -0.06326,
+      "cumulative": -0.13736
     },
     {
       "match": 6,
       "date": "2011-05-12",
       "tilt": -0.12987,
-      "cumulative": -0.26786
+      "cumulative": -0.26723
     },
     {
       "match": 7,
       "date": "2012-04-07",
       "tilt": 0.11404,
-      "cumulative": -0.15382
+      "cumulative": -0.15319
     },
     {
       "match": 8,
       "date": "2012-04-20",
       "tilt": 0.32565,
-      "cumulative": 0.17183
+      "cumulative": 0.17245
     },
     {
       "match": 9,
       "date": "2012-05-02",
       "tilt": -0.07562,
-      "cumulative": 0.09621
+      "cumulative": 0.09683
     },
     {
       "match": 10,
       "date": "2013-04-16",
       "tilt": -0.03748,
-      "cumulative": 0.05873
+      "cumulative": 0.05936
     }
   ],
   "team_matchups": [
@@ -684,7 +684,7 @@
     },
     {
       "opponent": "Royal Challengers Bangalore",
-      "tilt_per_match": -0.00312,
+      "tilt_per_match": -0.00587,
       "matches": 2
     },
     {
@@ -726,7 +726,7 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.01155,
+      "tilt_per_match": -0.00543,
       "matches": 1
     },
     {
@@ -763,10 +763,10 @@
   },
   "match_tilt_distribution": [
     -0.0685,
-    0.08634,
+    0.08085,
     -0.09152,
     0.00506,
-    -0.06937,
+    -0.06326,
     -0.12987,
     0.11404,
     0.32565,
