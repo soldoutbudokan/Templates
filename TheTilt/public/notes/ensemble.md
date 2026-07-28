@@ -50,7 +50,7 @@ We had a clean baseline to compare against: 7 daily snapshots from late April th
 | **Data growth (7 daily snapshots, same pickle)** | 0.226 | 0.566 |
 | **One retrain (e9be8d8e → c6cc83e1, +2 matches)** | 1.343 | **5.55** |
 
-A single retrain produces ~14× the noise of seven days of daily refreshes combined, on the metric that drives rankings. RG Sharma's career total swung **from +3.19 to −2.36** — sign-flipping a 271-match career. That's not signal moving; that's the trained model itself being unstable.
+A single retrain produces ~14× the noise of seven days of daily refreshes combined, on the metric that drives rankings. RG Sharma's career total swung **from +3.19 to −2.36** — sign-flipping a <span id="ens-rohit-mt">275</span>-match career. That's not signal moving; that's the trained model itself being unstable.
 
 The structural problem: **the career signal between #1 and #20 in the top 10 is roughly 10 TILT units; the noise floor of one retrain is 5+ TILT units.** Rankings in the middle of the table are essentially random under retrain.
 

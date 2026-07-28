@@ -161,7 +161,7 @@ async function loadNote(id, push = true) {
 // fails.
 async function hydrateNoteAnchors() {
     const has = id => document.getElementById(id);
-    const needRankings = has('ens-kumar-mt') || has('ens-abd-mt') || has('ens-abd-total-rank') || has('ens-abd-floor-rank')
+    const needRankings = has('ens-kumar-mt') || has('ens-abd-mt') || has('ens-rohit-mt') || has('ens-abd-total-rank') || has('ens-abd-floor-rank')
         || has('ib-abd-total-rank') || has('ib-top10-table') || has('ib-rank-total') || has('ar-floor-top100-count');
     const needGoats = has('snap-top5-bowling');
     const needPlayers = has('kp-kohli-2016-tpm');
@@ -197,6 +197,13 @@ async function hydrateNoteAnchors() {
                 setText('ens-abd-total-rank', rankOf(byTotal, abd.slug));
                 setText('ens-abd-floor-rank', rankOf(byFloor, abd.slug));
             }
+            // §51 retrain-variance prose. The +3.19 → −2.36 swing beside it is
+            // frozen historical evidence from the diagnostic run and stays
+            // hard-coded; only the career match-count is an identity value, and
+            // Rohit is still active so it drifts on every refresh he plays in
+            // (#244 — it was the one match-count in this note #208 missed).
+            const rohit = bySlug('rg-sharma-740742ef');
+            if (rohit) setText('ens-rohit-mt', rohit.total_matches);
 
             // innings-boundary.md — the #111 ABD-vs-Bhuvneshwar rank inversion
             if (has('ib-abd-total-rank')) {

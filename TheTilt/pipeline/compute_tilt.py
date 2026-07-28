@@ -634,11 +634,28 @@ def aggregate_player_season_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
 
 
 # %% Aggregate per team (career)
-def aggregate_team_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
+def aggregate_team_tilt(
+    deltas_df: pd.DataFrame,
+    no_results_df: Optional[pd.DataFrame] = None,
+) -> pd.DataFrame:
     """Aggregate per canonical team (across all seasons).
 
     `team_total_tilt = sum(delta_wp where batting_team == T) + sum(-delta_wp where bowling_team == T)`.
     No shrinkage — teams accumulate hundreds of matches.
+
+    `no_results_df` (optional, from `parse_no_results_from_raw`) injects NR
+    appearances, mirroring `aggregate_team_season_tilt` — this is the career
+    analogue of the season-level fix in #220 (issue #240). NR matches produce
+    no ball events at all, so they never reach `deltas_df` and the career
+    block counted only decided matches: `matches == wins + losses` exactly,
+    for all 15 teams.
+
+    Note the two denominators, which is deliberate and matches the season
+    path: `matches`/`win_pct` are NR-**inclusive** (a no-result is a game the
+    team played, and the season rows on the same page already count it that
+    way), while the `*_tilt_per_match` figures stay NR-**exclusive** — an NR
+    contributes zero balls, so dividing by it would dilute every team's TILT
+    by a number that has nothing to do with performance.
     """
     print("\nAggregating per-team TILT scores...")
     deltas_df = _ensure_legal_flags(deltas_df)
@@ -662,7 +679,7 @@ def aggregate_team_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
         teams_per_match[["match_id", "batting_team"]].rename(columns={"batting_team": "team"}),
         teams_per_match[["match_id", "bowling_team"]].rename(columns={"bowling_team": "team"}),
     ]).dropna().drop_duplicates()
-    matches = appearances.groupby("team").size().reset_index(name="matches")
+    matches = appearances.groupby("team").size().reset_index(name="played_decided")
 
     wins = (
         teams_per_match.dropna(subset=["winner"]).groupby("winner").size().reset_index(name="wins")
@@ -674,12 +691,30 @@ def aggregate_team_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
         if col in out.columns:
             out[col] = out[col].fillna(0)
     out["wins"] = out["wins"].astype(int)
-    out["losses"] = (out["matches"] - out["wins"]).astype(int)
+    out["losses"] = (out["played_decided"] - out["wins"]).astype(int)
+
+    # Inject NR appearances: each NR is one match for each of its two teams.
+    # Cricsheet emits no ball events for them, so they have to come from the
+    # raw JSON scan (issue #240; season analogue #220).
+    if no_results_df is not None and len(no_results_df) > 0:
+        nr = no_results_df.copy()
+        nr_long = pd.concat([
+            nr[["team1"]].rename(columns={"team1": "team"}),
+            nr[["team2"]].rename(columns={"team2": "team"}),
+        ]).dropna()
+        nr_counts = nr_long.groupby("team").size().reset_index(name="no_results")
+        out = out.merge(nr_counts, on="team", how="left")
+    else:
+        out["no_results"] = 0
+    out["no_results"] = out["no_results"].fillna(0).astype(int)
+
+    out["matches"] = (out["played_decided"] + out["no_results"]).astype(int)
     out["win_pct"] = (out["wins"] / out["matches"].replace(0, 1)).round(4)
     out["team_total_tilt"] = out["batting_total_tilt"] + out["bowling_total_tilt"]
-    out["team_tilt_per_match"] = out["team_total_tilt"] / out["matches"].replace(0, 1)
-    out["batting_tilt_per_match"] = out["batting_total_tilt"] / out["matches"].replace(0, 1)
-    out["bowling_tilt_per_match"] = out["bowling_total_tilt"] / out["matches"].replace(0, 1)
+    # Decided-match denominator for the TILT rates — see the docstring.
+    out["team_tilt_per_match"] = out["team_total_tilt"] / out["played_decided"].replace(0, 1)
+    out["batting_tilt_per_match"] = out["batting_total_tilt"] / out["played_decided"].replace(0, 1)
+    out["bowling_tilt_per_match"] = out["bowling_total_tilt"] / out["played_decided"].replace(0, 1)
 
     # First/last active season (in calendar-year terms)
     season_year = deltas_df["season"].apply(_season_year)
@@ -696,11 +731,11 @@ def aggregate_team_tilt(deltas_df: pd.DataFrame) -> pd.DataFrame:
     out = out.merge(bat_seasons, on="team", how="left").merge(bowl_seasons, on="team", how="left")
     out["first_season"] = out[["bat_first", "bowl_first"]].min(axis=1).fillna(0).astype(int)
     out["last_season"] = out[["bat_last", "bowl_last"]].max(axis=1).fillna(0).astype(int)
-    out = out.drop(columns=["bat_first", "bat_last", "bowl_first", "bowl_last"])
+    out = out.drop(columns=["bat_first", "bat_last", "bowl_first", "bowl_last", "played_decided"])
 
     out = out.sort_values("team_tilt_per_match", ascending=False).reset_index(drop=True)
     print(f"  Total teams: {len(out)}")
-    print(out[["team", "matches", "wins", "win_pct", "team_tilt_per_match", "first_season", "last_season"]].to_string(index=False))
+    print(out[["team", "matches", "wins", "losses", "no_results", "win_pct", "team_tilt_per_match", "first_season", "last_season"]].to_string(index=False))
     return out
 
 
@@ -819,6 +854,11 @@ FULL_NAME_CORRECTIONS = {
     # lowercase 'p' betraying the concatenation. Anukul Roy is the common form
     # and matches the site's convention of dropping middle names (issue #234).
     "Anukul Roy priyansh Kumar": "Anukul Roy",
+    # Both are transpositions of the registry name, which is itself correct —
+    # the slug agrees with the registry and only the resolved full_name is
+    # wrong, and full_name is what the pages render (issue #242).
+    "Sahabaz Ahmed": "Shahbaz Ahmed",   # the 'h' migrates: Shah- not Saha-
+    "Brainder Sran": "Barinder Sran",   # Ba-rin-der, not Brain-der
 }
 
 

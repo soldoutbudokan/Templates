@@ -104,7 +104,7 @@ For each delivery the pipeline computes the **state of the match before the ball
 | `required_run_rate` | 0 — 36 | Needed scoring rate (capped, 0 in innings 1) |
 | `over` | 0 — 19 | Over number, kept continuous so trees can split it freely |
 | `recent_wickets` | 0 — ~5 | Wickets fallen in the last 18 balls |
-| `venue` | 38 levels | Categorical — handled natively by LightGBM |
+| `venue` | 37 levels | Categorical — handled natively by LightGBM |
 | `batting_team_chose_to_bat` | {0, 1} | Toss winner who chose to bat |
 | `season_numeric` | 2008 — 2026 | Era proxy |
 | `opponent_bowler_economy` | rpo | Career economy of the bowler facing this ball |
@@ -254,7 +254,7 @@ balls_remaining              ▏                                   12
 
 A few things to read out of this:
 
-- **Venue dominates.** Conditions matter enormously in cricket and the 38-level categorical is doing a lot of work — pitch behaviour at Chepauk vs Chinnaswamy vs Wankhede is real and the model is capturing it.
+- **Venue dominates.** Conditions matter enormously in cricket and the 37-level categorical is doing a lot of work — pitch behaviour at Chepauk vs Chinnaswamy vs Wankhede is real and the model is capturing it.
 - **Chase mechanics dominate the next tier.** `target`, `wickets_in_hand`, `run_rate`, `required_run_rate`, and `runs_needed` cluster tightly together — exactly what you'd expect from a model that spends half its life predicting innings-2 outcomes.
 - **Team strength is up there too.** `batting_team_nrr` lets the model down-weight the same scoreline differently for a top-of-table side vs a bottom side.
 - **`balls_remaining` looks tiny — it isn't.** Split count under-weights features that are highly correlated with others (here, `balls_remaining`, `over`, and the chase features all encode similar information). The model uses ball-position information; it just gets it from the chase-state features more often than from `balls_remaining` or `over` themselves.
@@ -415,7 +415,7 @@ A previous "Step 3" applied a linear-decay damping across the first six balls of
 ### Where the model is approximate, not wrong
 
 - **Opponent quality is a single number.** `opponent_bowler_economy` is a career average — it doesn't know if a bowler is in form right now, or if they're matched up well against this batsman type.
-- **Venue captures conditions, not weather.** A 38-level categorical knows nothing about whether the dew arrived in the second innings.
+- **Venue captures conditions, not weather.** A 37-level categorical knows nothing about whether the dew arrived in the second innings.
 - **Team strength updates only between matches.** `batting_team_nrr` reflects season-to-date but can lag a recent change in form.
 
 These are tractable upgrades that future iterations may chase.

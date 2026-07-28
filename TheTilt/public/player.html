@@ -623,7 +623,7 @@ async function renderPlayerSeason(p, season, slug) {
                                 <td class="hide-mobile">${m.team_score || '—'} vs ${m.opponent_score || '—'}</td>
                                 <td>${m.bat_runs != null ? m.bat_runs + (m.bat_not_out ? '*' : '') : '—'}</td>
                                 <td class="hide-mobile">${m.bat_balls != null ? m.bat_balls : '—'}</td>
-                                <td class="hide-mobile">${m.bat_sr != null ? m.bat_sr.toFixed(1) : '—'}</td>
+                                <td class="hide-mobile">${m.bat_sr != null ? m.bat_sr : '—'}</td>
                                 <td>${m.bowl_wkts != null ? m.bowl_wkts : '—'}</td>
                                 <td class="hide-mobile">${m.bowl_runs != null ? m.bowl_runs : '—'}</td>
                                 <td class="hide-mobile">${m.bowl_econ != null ? m.bowl_econ.toFixed(2) : '—'}</td>

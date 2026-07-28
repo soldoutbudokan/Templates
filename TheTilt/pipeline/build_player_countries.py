@@ -40,7 +40,7 @@ OVERRIDES = {
     "BJ Hodge": "AU", "AC Voges": "AU", "JL Pattinson": "AU", "TM Head": "AU",
     "AJ Tye": "AU", "DJ Christian": "AU", "DR Sams": "AU", "AT Carey": "AU",
     "JR Behrendorff": "AU", "AJ Turner": "AU", "JP Behrendorff": "AU",
-    "BR Dwarshuis": "AU", "DT Christian": "AU", "PSP Handscomb": "AU",
+    "BJ Dwarshuis": "AU", "DT Christian": "AU", "PSP Handscomb": "AU",
     "MP Stoinis": "AU", "AD Russell": "WI",  # Andre Russell — WI
     "JR Hopes": "AU", "MJ Owen": "AU", "MG Neser": "AU", "MJ Henry": "NZ",
     "M Klinger": "AU", "TD Paine": "AU", "PR Stirling": "IE",
@@ -53,7 +53,11 @@ OVERRIDES = {
     "DJ Worrall": "AU", "BR Doggett": "AU", "JD Wildermuth": "AU", "BA Stokes": "EN",
     "JE Burns": "AU", "MJ Henry": "NZ", "PJ Sangwan": "IN", "JC Buttler": "EN",
     "JM Bairstow": "EN", "JE Root": "EN", "ER Dwivedi": "IN", "WA Mota": "IN",
-    "EJG Morgan": "EN", "TS Roy": "EN",  # Jason Roy slug TS Roy? actually JJ Roy
+    # "TS Roy" used to sit here as a guess at Jason Roy's registry name. It
+    # matches nobody — the registry has "JJ Roy" (Jason, below) and "AS Roy"
+    # (Anukul Roy, Indian, #234) — so it was inert, and "correcting" it to the
+    # other Roy would have mis-flagged an Indian player. Deleted (#241).
+    "EJG Morgan": "EN",
     "JJ Roy": "EN", "PR Stirling": "IE", "KP Pietersen": "EN", "JM Vince": "EN",
     "OA Shah": "EN", "RS Bopara": "EN", "DR Smith": "WI", "GR Napier": "EN",
     "Mohammad Asif": "PK", "Sohail Tanvir": "PK", "Younis Khan": "PK",
@@ -274,6 +278,12 @@ ID_OVERRIDES = {
     "e342e5fb": "WI",   # CR Brathwaite (Carlos Brathwaite)
     "f24c6701": "LK",   # M Theekshana (Maheesh Theekshana)
     "85b3fab2": "ZA",   # T Stubbs (Tristan Stubbs)
+
+    # Issue #241 — same class as #211 (Gulbadin Naib) and #221 (Azhar Mahmood).
+    "557153ca": "WI",   # KK Cooper (Kevon Cooper — Trinidadian; Wikidata gave IN)
+    "4c4fa80b": "LK",   # SMSM Senanayake (Sachithra Senanayake — Sri Lankan; Wikidata gave AU)
+    "e1b9f3a9": "AU",   # BJ Dwarshuis (Ben Dwarshuis — Australian; no Wikidata hit, and the
+                        #   name override was typo'd "BR Dwarshuis", so he defaulted to IN)
 }
 
 
@@ -287,6 +297,30 @@ import pandas as pd
 import yaml
 
 from wikidata_country_map import map_to_icc
+
+
+def _report_inert_overrides(df) -> None:
+    """Count name-keyed OVERRIDES entries that match no player in the data.
+
+    Such a key is dead code — it reads as coverage but resolves nobody, which
+    is how `"BR Dwarshuis"` sat in the dict looking like it handled Ben
+    Dwarshuis (issue #241). Most inert keys are harmless, though: they're
+    internationals who simply never played an IPL match, and keeping them
+    costs nothing if those players ever debut. So this is a one-line count to
+    watch, not a warning or a build failure.
+
+    Deliberately *not* a typo detector. Matching inert keys to same-surname
+    players was tried and is unusable — cricket surnames repeat (four
+    unrelated Ahmeds, Jimmy vs Corey Anderson, three Taylors), so it fired 9
+    false positives and zero true ones on the case it was written for.
+    """
+    registry_names = set(df['player'].dropna().astype(str))
+    if 'full_name' in df.columns:
+        registry_names |= set(df['full_name'].dropna().astype(str))
+    inert = sorted(k for k in OVERRIDES if k not in registry_names)
+    if inert:
+        print(f'Note: {len(inert)}/{len(OVERRIDES)} name OVERRIDES keys match no player in the '
+              'data (dead entries; harmless unless one is a typo for a player who IS in it).')
 
 
 def main():
@@ -354,6 +388,7 @@ def main():
         result[spid] = {'name': str(name), 'country': country}
 
     print(f'\nResolution sources: {dict(sources.most_common())}')
+    _report_inert_overrides(df)
     if unmapped_citizenships:
         print(f'Wikidata labels with no ICC mapping (add to wikidata_country_map.py if needed):')
         for label, n in unmapped_citizenships.most_common():

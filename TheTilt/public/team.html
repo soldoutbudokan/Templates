@@ -110,6 +110,12 @@ async function renderTeamCareer(slug) {
         ? `<div class="meta">aka ${team.aliases.filter((a) => a !== team.team).join(', ')}</div>`
         : '';
 
+    // No-results are matches the team played, so they're in `matches` and in
+    // the win% denominator — but they're neither a win nor a loss, so the W–L
+    // card shows them as a third figure rather than folding them in (#240).
+    // Older exports predate the field; `|| 0` keeps them rendering as before.
+    const careerNR = team.career.no_results || 0;
+
     let html = `
         <div class="page-header">
             <h1>${team.team}</h1>
@@ -119,8 +125,8 @@ async function renderTeamCareer(slug) {
 
         <div class="stat-grid">
             <div class="stat-card">
-                <div class="stat-card-label" style="text-transform: uppercase">W–L</div>
-                <div class="stat-card-value">${team.career.wins}–${team.career.losses}</div>
+                <div class="stat-card-label" style="text-transform: uppercase">${careerNR ? 'W–L–NR' : 'W–L'}</div>
+                <div class="stat-card-value">${team.career.wins}–${team.career.losses}${careerNR ? `–${careerNR}` : ''}</div>
             </div>
             <div class="stat-card">
                 <div class="stat-card-label">Team TILT/match</div>
