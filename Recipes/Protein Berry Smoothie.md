@@ -1,63 +1,67 @@
 # Protein Berry Smoothie
 
-High-protein daily smoothie built on whey, skyr, and frozen berries. Written for an immersion blender — the order things go into the cup matters more than it does in a countertop blender.
+High-protein daily smoothie built on whey, skyr, and frozen berries. Sized for a 700 ml immersion blender cup, and written for an immersion blender — the order things go into the cup matters more than it does in a countertop blender.
 
 **Prep Time:** 5 minutes
-**Servings:** 1 large (~3.5 cups / 875 ml), or 2 smaller
-**Equipment:** Immersion blender + a tall narrow cup, at least 1.3 L
+**Servings:** 1 (~500 ml finished)
+**Equipment:** Immersion blender + a 700 ml cup
 
 ## Ingredients
 
-- 2 scoops ON Gold Standard 100% Whey (~61g)
-- 1 cup (~240g) plain 0% Siggi's skyr
-- 1 cup (~145g) frozen jumbleberry blend (strawberry, blueberry, raspberry, blackberry)
-- 1 cup (250 ml) 2% milk
+- 1.5 scoops ON Gold Standard 100% Whey (~46g)
+- 3/4 cup (~180g) plain 0% Siggi's skyr
+- 3/4 cup (~109g) frozen jumbleberry blend (strawberry, blueberry, raspberry, blackberry)
+- 3/4 cup (187 ml) 2% milk
 
 ## Instructions
 
 **Order of addition: liquid → powder → soft → frozen.** Liquid at the bottom, frozen on top, always.
 
-1. **Pick the vessel.** Tall and narrow, only slightly wider than the blender bell — a wide bowl lets the mixture escape the blades. This batch is ~875 ml, so use a cup that holds at least 1.3 L and fill it no more than two-thirds.
+1. **Milk first.** Liquid goes in at the bottom so the blade head is submerged in liquid the moment you switch on. A dry start just cavitates and whips air into the cup.
 
-2. **Milk first.** Liquid goes in at the bottom so the blade head is submerged in liquid the moment you switch on. A dry start just cavitates and whips air into the cup.
+2. **Whey second.** Add both scoops onto the milk and leave them 30 seconds to wet through before touching the blender. Powder added on top of frozen fruit clumps against the walls and never fully dissolves.
 
-3. **Whey second.** Dump both scoops onto the milk and leave them 30 seconds to wet through before touching the blender. Powder added on top of frozen fruit clumps against the walls and never fully dissolves.
+3. **Blend the base.** Seat the bell flat on the bottom of the cup, tilt it a few degrees to let trapped air escape from under the bell, then start on low. 10–15 seconds gets you a smooth, lump-free base.
 
-4. **Blend the base.** Seat the bell flat on the bottom of the cup, tilt it a few degrees to let trapped air escape from under the bell, then start on low. 10–15 seconds gets you a smooth, lump-free base.
+4. **Yogurt third.** Spoon it in on top of the base and blend 5–10 seconds. Working it in now, while everything is still loose, stops the thick skyr from seizing around the blade later.
 
-5. **Yogurt third.** Spoon it in on top of the base and blend 5–10 seconds. Working it in now, while everything is still loose, stops the thick skyr from seizing around the blade later.
+5. **Berries last, on top.** An immersion blender makes no vortex, so gravity is what feeds fruit down onto the blade as it breaks up — frozen chunks have to sit above it. If your blender is under ~600W, let the berries sit out 3–5 minutes to temper first.
 
-6. **Berries last, on top.** An immersion blender makes no vortex, so gravity is what feeds fruit down onto the blade as it breaks up — frozen chunks have to sit above it. If your blender is under ~600W, let the berries sit out 3–5 minutes to temper first.
+6. **Blend 45–60 seconds.** Keep the head fully submerged and work it bottom-to-top in a slow up-and-down pumping motion. Don't swirl it — swirling drags air down the shaft and foams the whole thing. Use bursts of high rather than one continuous run; most immersion blenders are rated for about a minute of continuous use.
 
-7. **Blend 45–60 seconds.** Keep the head fully submerged and work it bottom-to-top in a slow up-and-down pumping motion. Don't swirl it — swirling drags air down the shaft and foams the whole thing. Use bursts of high rather than one continuous run; most immersion blenders are rated for about a minute of continuous use.
+7. **If it stalls,** you've got an air pocket under the bell — the motor pitch rises but nothing moves. Lift the head about a centimetre, tilt the cup, or add a splash of milk to reflood it.
 
-8. **If it stalls,** you've got an air pocket under the bell — the motor pitch rises but nothing moves. Lift the head about a centimetre, tilt the cup, or add a splash of milk to reflood it.
+8. **Switch off before lifting the head out.** Pulling a running blender through the surface sprays the counter and foams what's left.
 
-9. **Switch off before lifting the head out.** Pulling a running blender through the surface sprays the counter and foams what's left.
+### Fitting the 700 ml cup
+
+Loaded, before blending, this sits around 575 ml — the loose frozen berries take up more room than they will once broken down. Pushing the bell in displaces another ~60 ml, so the level spikes close to the rim for the first few seconds and then drops fast as the fruit collapses. If that makes you nervous, hold back a splash of the milk and stir it in once the berries are through.
+
+**Ratio, for scaling to a different cup:** equal volumes of milk, skyr, and frozen berries, with 2 scoops of whey per cup of each. Finished volume lands near the sum of the three measured cups.
 
 ## Nutrition (per serving)
 
-*Based on 1 full batch, using the brands listed above*
+*Based on 1 batch, using the brands listed above*
 
-| Nutrient | Full Batch (1 serving) | Half Batch |
-|----------|:----------------------:|:----------:|
-| Calories | ~595 kcal              | ~300 kcal  |
-| Protein  | 85g                    | 42.5g      |
-| Carbs    | 45g                    | 22.5g      |
-| — Fibre  | 5g                     | 2.5g       |
-| — Sugars | 32g                    | 16g        |
-| Fat      | 7.5g                   | 4g         |
+| Nutrient | Amount |
+|----------|--------|
+| Calories | ~445 kcal |
+| Protein  | 64g |
+| Carbs    | 34g |
+| — Fibre  | 4g |
+| — Sugars | 24g |
+| Fat      | 5.5g |
 
 ### Where it comes from
 
 | Ingredient | Calories | Protein | Carbs | Fibre | Fat |
 |------------|:--------:|:-------:|:-----:|:-----:|:---:|
-| 2 scoops ON Gold Standard (~61g) | 240 | 48g | 6g  | 1g   | 2g   |
-| 1 cup Siggi's 0% skyr (~240g)    | 150 | 27g | 9g  | 0g   | 0g   |
-| 1 cup frozen jumbleberry (~145g) | 75  | 1g  | 18g | 4g   | 0.5g |
-| 1 cup 2% milk (250 ml)           | 130 | 9g  | 12g | 0g   | 5g   |
-| **Total**                        | **~595** | **85g** | **45g** | **5g** | **7.5g** |
+| 1.5 scoops ON Gold Standard (~46g) | 180 | 36g | 4.5g  | 1g   | 1.5g |
+| 3/4 cup Siggi's 0% skyr (~180g)    | 113 | 20g | 7g    | 0g   | 0g   |
+| 3/4 cup frozen jumbleberry (~109g) | 55  | 1g  | 13.5g | 3g   | 0.5g |
+| 3/4 cup 2% milk (187 ml)           | 98  | 7g  | 9g    | 0g   | 3.5g |
+| **Total**                          | **~445** | **64g** | **34g** | **4g** | **5.5g** |
 
-Net carbs ~40g. Nearly all the sugar is lactose and fruit sugar — only ~2g is added, from the whey.
+Net carbs ~30g. Nearly all the sugar is lactose and fruit sugar — only ~1.5g is added, from the whey.
 
-*Note: Estimates generated by Claude. The numbers move most with how generous the "ish" cups are, whey flavour (chocolate variants run a touch higher in carbs), and swapping 2% milk for skim or water (-40 to -130 kcal and most of the fat).*
+*Note: Estimates generated by Claude. The numbers move most with how level the 3/4-cup scoops are, whey flavour (chocolate variants run a touch higher in carbs), and swapping 2% milk for skim or water (-30 to -100 kcal and most of the fat).*
