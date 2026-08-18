@@ -154,3 +154,16 @@ project/
 - **Before changing anything under `TheTilt/`, read `TheTilt/dependencies.md`.** It maps which artifacts auto-refresh from the pipeline (model, JSON exports) and which are hand-maintained content with embedded numbers (`public/about.md`, `public/notes/*.md`, `README.md`) that go stale silently when the model or data changes.
 - The reverse "if you change X, refresh Y" tables in that file tell you which hand-maintained files need their numbers updated in the same commit as a pipeline/model change.
 - When adding a new blog post or any new file with embedded numbers, add a row to the **Hand-maintained content registry** in `TheTilt/dependencies.md`.
+
+## Git identity
+
+All commits are authored as `soldoutbudokan <68517314+soldoutbudokan@users.noreply.github.com>`,
+never as Claude. A SessionStart hook in `.claude/settings.json` sets this, but verify before
+your first commit: if `git config user.name` prints `Claude`, run
+
+    git config --global user.name 'soldoutbudokan'
+    git config --global user.email '68517314+soldoutbudokan@users.noreply.github.com'
+
+and amend any commit you already made (`git commit --amend --reset-author --no-edit`).
+Do not add `Co-Authored-By: Claude`, `Claude-Session:`, or "Generated with Claude Code"
+lines to commit messages or PR bodies.
