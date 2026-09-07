@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Card as CardType, Deck } from '@/lib/deck';
 import { Action, getCorrectAction, formatAction, isPair, getHandTotal } from '@/lib/basicStrategy';
 import Card from './Card';
-import BettingAdvice from './BettingAdvice';
+
 
 interface BasicStrategyTrainerProps {
   deck: Deck;
@@ -21,11 +21,13 @@ export default function BasicStrategyTrainer({ deck, onRoundComplete, showBettin
   const [decksRemainingAtDeal, setDecksRemainingAtDeal] = useState(0);
 
   const dealNewHand = useCallback(() => {
-    if (deck.needsReshuffle()) {
-      deck.shuffle();
-    }
+    deck.prepareRound(3);
 
-    const cards = deck.deal(3);
+    let cards = deck.deal(3);
+    while (getHandTotal(cards.slice(0, 2)).total === 21) {
+      deck.prepareRound(3);
+      cards = deck.deal(3);
+    }
     setPlayerCards([cards[0], cards[1]]);
     setDealerUpcard(cards[2]);
     setSelectedAction(null);
@@ -86,6 +88,7 @@ export default function BasicStrategyTrainer({ deck, onRoundComplete, showBettin
 
   return (
     <div className="flex-1 flex flex-col">
+      <p className="text-sm text-white/70 mb-3">6-deck strategy · dealer hits soft 17 · double after split · late surrender · dealer checked for blackjack</p>
       {/* Table */}
       <div
         key={animationKey}
@@ -94,7 +97,7 @@ export default function BasicStrategyTrainer({ deck, onRoundComplete, showBettin
         {/* Dealer */}
         <div className="text-center">
           <p className="text-sm text-white/60 mb-2">Dealer shows</p>
-          <div className="flex gap-3 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center">
             {dealerUpcard && (
               <Card card={dealerUpcard} index={0} flipped={true} showFlipAnimation={true} />
             )}
@@ -109,7 +112,7 @@ export default function BasicStrategyTrainer({ deck, onRoundComplete, showBettin
           <p className="text-sm text-white/60 mb-2">
             Your hand{handInfo ? ` (${handInfo.soft ? 'Soft ' : ''}${handInfo.total})` : ''}
           </p>
-          <div className="flex gap-3 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center">
             {playerCards.map((card, index) => (
               <Card key={card.id} card={card} index={index} flipped={true} showFlipAnimation={true} />
             ))}
@@ -119,7 +122,7 @@ export default function BasicStrategyTrainer({ deck, onRoundComplete, showBettin
 
       {/* Action Buttons */}
       <div className="mt-4 space-y-4">
-        <div className="flex gap-3 justify-center">
+        <div className="flex flex-wrap gap-3 justify-center">
           <button onClick={() => handleAction('hit')} disabled={selectedAction !== null} className={actionButtonClass('hit')}>
             Hit <kbd className="ml-1 text-xs opacity-60">H</kbd>
           </button>
@@ -163,15 +166,11 @@ export default function BasicStrategyTrainer({ deck, onRoundComplete, showBettin
               </p>
             )}
 
-            {showBettingTips && (
-              <BettingAdvice
-                runningCount={0}
-                decksRemaining={decksRemainingAtDeal}
-              />
-            )}
+
           </div>
         )}
       </div>
     </div>
   );
 }
+

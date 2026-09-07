@@ -1,43 +1,35 @@
 'use client';
 
-import { useState, useEffect, useCallback, SetStateAction } from 'react';
+import { useState, useEffect, useCallback, useRef, SetStateAction } from 'react';
+
+function restore<T>(value: unknown, fallback: T): T {
+  if (typeof fallback === 'number') return (typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : fallback) as T;
+  if (fallback && typeof fallback === 'object' && !Array.isArray(fallback)) {
+    const source = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    return Object.fromEntries(Object.entries(fallback).map(([key, item]) => [key, restore(source[key], item)])) as T;
+  }
+  return (typeof value === typeof fallback ? value : fallback) as T;
+}
 
 export function usePersistedState<T>(key: string, defaultValue: T): [T, (val: SetStateAction<T>) => void] {
-  const [value, setValue] = useState<T>(() => {
-    if (typeof window === 'undefined') return defaultValue;
-    try {
-      const stored = localStorage.getItem(key);
-      return stored !== null ? JSON.parse(stored) : defaultValue;
-    } catch {
-      return defaultValue;
-    }
-  });
+  const defaults = useRef(defaultValue);
+  const [value, setValue] = useState(defaultValue);
+  const [hydrated, setHydrated] = useState(false);
 
-  const setPersisted = useCallback((newValue: SetStateAction<T>) => {
-    setValue(prev => {
-      const resolved = typeof newValue === 'function'
-        ? (newValue as (prev: T) => T)(prev)
-        : newValue;
-      try {
-        localStorage.setItem(key, JSON.stringify(resolved));
-      } catch {
-        // localStorage unavailable
-      }
-      return resolved;
-    });
-  }, [key]);
-
-  // Sync with localStorage on mount (handles SSR hydration mismatch)
   useEffect(() => {
     try {
       const stored = localStorage.getItem(key);
-      if (stored !== null) {
-        setValue(JSON.parse(stored));
-      }
-    } catch {
-      // localStorage unavailable
-    }
+      if (stored !== null) setValue(restore(JSON.parse(stored), defaults.current));
+    } catch { /* Practice remains available without local storage. */ }
+    setHydrated(true);
   }, [key]);
 
+  useEffect(() => {
+    if (!hydrated) return;
+    try { localStorage.setItem(key, JSON.stringify(value)); }
+    catch { /* Device-local streak persistence is optional. */ }
+  }, [key, value, hydrated]);
+
+  const setPersisted = useCallback((next: SetStateAction<T>) => { setValue(next); }, []);
   return [value, setPersisted];
 }

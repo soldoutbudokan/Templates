@@ -25,10 +25,25 @@ export class Deck {
   private dealtCards: Card[] = [];
   private deckCount: number;
   private cutCardPercentage: number;
+  private exposedIds = new Set<string>();
+  private observedCount = 0;
+  private shoeId = 0;
+  private random: () => number;
+  private listeners = new Set<() => void>();
 
-  constructor(deckCount: number = 6, cutCardPercentage: number = 0.75) {
+  subscribe = (listener: () => void): (() => void) => {
+    this.listeners.add(listener);
+    return () => { this.listeners.delete(listener); };
+  };
+  remainingSnapshot = (): number => this.cards.length;
+  totalSnapshot = (): number => this.deckCount * 52;
+
+  constructor(deckCount: number = 6, cutCardPercentage: number = 0.75, random: () => number = Math.random) {
+    if (!Number.isInteger(deckCount) || deckCount < 1 || deckCount > 8) throw new RangeError('Choose 1–8 decks.');
+    if (cutCardPercentage <= 0 || cutCardPercentage >= 1) throw new RangeError('Invalid cut-card position.');
     this.deckCount = deckCount;
     this.cutCardPercentage = cutCardPercentage;
+    this.random = random;
     this.shuffle();
   }
 
@@ -36,7 +51,7 @@ export class Deck {
   private fisherYatesShuffle(array: Card[]): Card[] {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(this.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
@@ -45,6 +60,9 @@ export class Deck {
   shuffle(): void {
     this.cards = [];
     this.dealtCards = [];
+    this.shoeId++;
+    this.exposedIds.clear();
+    this.observedCount = 0;
 
     // Create shoe with multiple decks
     let cardId = 0;
@@ -54,28 +72,59 @@ export class Deck {
           this.cards.push({
             suit,
             value,
-            id: `${d}-${suit}-${value}-${cardId++}`,
+            id: `${this.shoeId}-${d}-${suit}-${value}-${cardId++}`,
           });
         }
       }
     }
 
     this.cards = this.fisherYatesShuffle(this.cards);
+    this.listeners.forEach(listener => listener());
   }
 
   deal(count: number = 1): Card[] {
+    const dealt = this.draw(count);
+    this.expose(dealt);
+    return dealt;
+  }
+
+  /** Drawing and exposing are separate, so a face-down card never leaks into the count. */
+  draw(count: number = 1): Card[] {
+    if (!Number.isInteger(count) || count < 0 || count > this.cards.length) {
+      throw new RangeError('Not enough cards. Shuffle explicitly before starting another round.');
+    }
     const dealt: Card[] = [];
 
     for (let i = 0; i < count; i++) {
-      if (this.cards.length === 0) {
-        this.shuffle();
-      }
       const card = this.cards.pop()!;
       dealt.push(card);
       this.dealtCards.push(card);
     }
 
+    this.listeners.forEach(listener => listener());
     return dealt;
+  }
+
+  expose(cards: Card[]): void {
+    for (const card of cards) {
+      if (!this.dealtCards.some(dealt => dealt.id === card.id)) throw new Error('Only drawn cards can be exposed.');
+      if (!this.exposedIds.has(card.id)) {
+        this.exposedIds.add(card.id);
+        this.observedCount += getCardValue(card);
+      }
+    }
+  }
+
+  runningCount(): number { return this.observedCount; }
+
+  /** Called at a round boundary; returns whether a new shoe began. */
+  prepareRound(cardCount: number): boolean {
+    if (cardCount > this.totalCards()) throw new RangeError('An exercise cannot exceed one shoe.');
+    if (this.needsReshuffle() || this.remaining() < cardCount) {
+      this.shuffle();
+      return true;
+    }
+    return false;
   }
 
   remaining(): number {

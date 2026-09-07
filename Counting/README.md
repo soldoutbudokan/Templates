@@ -1,130 +1,83 @@
 # Card Counting Trainer
 
-A web app to practice Hi-Lo card counting for blackjack. Features four training modes, realistic multi-deck shoe simulation, streak tracking, and betting strategy tips.
-
-**Live Demo:** https://counting-trainer-sob.vercel.app
+A Next.js app for learning a steady Hi-Lo count. Guided practice carries one running count across successive groups of cards, checks it at unpredictable points, and turns mistakes into a replay and a concrete next exercise.
 
 ## Quick Start
 
+Requires Node.js 20 or later.
+
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open http://localhost:3000 in your browser.
-
-## Features
-
-### Classic Mode
-- Displays 15-30 cards at once
-- Submit your running count and check your answer
-- Cards animate in with a flip effect
-
-### Speed Drill Mode
-- Cards flash one at a time at configurable speeds (1s, 0.75s, 0.5s, 0.25s, 0.15s, 0.1s)
-- **Hard Mode**: 40-60 card sequences with casino visual distractions (floating chips, background pulses, scrolling ticker)
-- Enter your count after the sequence completes
-
-### True Count Trainer
-- Two-step challenge: first enter the running count, then convert to true count
-- Shows decks remaining to help calculate (true count = running count ÷ decks remaining)
-- Accepts answers within ±1 of exact value for rounding tolerance
-- Detailed breakdown shown after each round
-
-### Multi-Hand Simulation
-- Simulates a real blackjack table with 2-4 player hands plus a dealer
-- Cards dealt in realistic casino order (one round left-to-right, then second round)
-- Count all visible cards across all hands
-
-### Betting Strategy Tips
-- Toggle on/off in the sidebar
-- Shows recommended bet sizing based on true count after each round
-- Visual indicator bar from minimum bet to maximum spread
-
-### Streak Tracking
-- Current streak of consecutive correct answers
-- Best streak persisted across sessions (localStorage)
-- Visual indicators at 5+ and 10+ streaks
-
-### Realistic Deck Simulation
-- Choose from 1, 2, 6, or 8 deck shoes
-- No duplicate cards until reshuffle
-- Automatic reshuffle when ~75% of shoe is dealt (cut card)
-- Visual progress bar showing cards remaining
-
-## Hi-Lo Counting System
-
-| Cards | Count Value |
-|-------|-------------|
-| 2-6   | +1          |
-| 7-9   | 0           |
-| 10-A  | -1          |
-
-## Keyboard Shortcuts
-
-| Key   | Action      |
-|-------|-------------|
-| Enter | Submit guess |
-| Space | New hand / Start drill |
-| Esc   | Stop drill (speed mode) |
-
-## Tech Stack
-
-- Next.js 14 (App Router)
-- TypeScript
-- Tailwind CSS
-- Deployed on Vercel
-
-## Development
+Open http://localhost:3000.
 
 ```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
+npm test
+npm run typecheck
 npm run build
-
-# Start production server
-npm start
 ```
 
-## Deployment
+## Guided training
 
-Deployed to Vercel. To redeploy:
+- **Practice:** a 78-card segment from a six-deck shoe. Cards appear in pairs and disappear before each checkpoint. Feedback supplies the corrected count before the next round.
+- **Assessment:** 234 cards, reaching a 75% cut card in the same six-deck shoe. Answers and replays stay hidden until the attempt ends. Dealing pauses at checkpoints; this is a counting assessment, not a complete blackjack table simulation.
+- **Focus:** running count alone, or running count plus true-count conversion. The conversion task supplies a half-deck estimate; it does not assess visual deck estimation.
+- **Pace:** 1.2, 0.9, 0.65, or 0.45 seconds per card. Pair exposure lasts twice the per-card interval.
+- **Lost count:** record the loss honestly. Practice offers reconstruction and a corrected count; assessment records the response without revealing an answer.
+- **Replay:** step through an already completed segment from its known starting count. Replay never advances the shoe or changes the first submitted answer.
+- **Interruptions:** pausing or hiding the browser tab covers the cards and stops dealing. An interrupted assessment can continue as practice but cannot regain assessment eligibility. Paused response time is excluded. The same pair reappears after a dealing pause and must not be counted twice.
+- **Progress:** the latest 24 ended attempts, including partial attempts, are stored on this device. History preserves rules, pace, answers, and replayable checkpoints. Active attempts are held in memory until ended; reloading the page discards an active attempt.
+- **Next exercise:** recommendations inspect the last three completed, uninterrupted sessions. Fewer than eight observations, running-count accuracy below 90%, or a reported loss of count recommends retention practice. Otherwise the recommendation adds conversion. These are transparent product heuristics, not validated mastery criteria.
 
-```bash
-vercel --prod
-```
+The results count exact **checkpoints**, not supposedly correct individual cards. Running and true-count accuracy stay separate. A complete balanced deck's final zero is never the only assessment target. Profit and simulated winnings do not enter the score.
 
-Or push to the connected GitHub repository for automatic deployments.
+## Counting and strategy conventions
 
-## Project Structure
+Hi-Lo values: 2–6 = +1; 7–9 = 0; 10/J/Q/K/A = −1. The running count includes every card first exposed since the current shuffle.
 
-```
-Counting/
-├── app/
-│   ├── layout.tsx          # Root layout with metadata
-│   ├── page.tsx            # Main game page (state hub)
-│   └── globals.css         # Tailwind + custom animations
-├── components/
-│   ├── BettingAdvice.tsx   # Betting strategy display
-│   ├── Card.tsx            # Card with flip animation
-│   ├── CasinoNoise.tsx     # Hard mode visual distractions
-│   ├── Controls.tsx        # Settings panel (4-mode selector)
-│   ├── GameBoard.tsx       # Classic mode
-│   ├── MultiHandBoard.tsx  # Multi-hand table simulation
-│   ├── SpeedDrill.tsx      # Speed drill mode
-│   └── TrueCountTrainer.tsx # True count practice
-├── lib/
-│   ├── betting.ts          # Betting strategy logic
-│   ├── deck.ts             # Deck class with shuffle logic
-│   ├── types.ts            # Shared TypeScript types
-│   └── usePersistedState.ts # localStorage persistence hook
-├── package.json
-├── next.config.js
-├── tailwind.config.js
-└── tsconfig.json
-```
+True-count exercises use remaining decks rounded to the nearest half deck, with a minimum divisor of 0.5. Divide the running count by that estimate, then **floor toward negative infinity**: +1.75 becomes +1 and −1.5 becomes −2. Inputs must be whole numbers; no ±1 grading tolerance applies.
+
+Basic-strategy practice uses one explicit total-dependent profile:
+
+- Six decks; dealer hits soft 17.
+- Double on any initial two cards; double after split allowed.
+- Late surrender after a negative dealer blackjack check.
+- A natural blackjack is resolved, rather than presented as a strategy question.
+- The evaluator includes unavailable-action fallbacks. It is not a complete round or split-hand engine.
+
+The example 1–2–4–8–10 betting schedule is for execution practice only. It is not calibrated to a bankroll, risk tolerance, table limits, or game profitability.
+
+References: [QFIT true-count conventions](https://www.qfit.com/CalculatingTrueCounts.htm), [Shackleford's 4–8 deck strategy and H17 amendments](https://wizardofodds.com/games/blackjack/strategy/4-decks/), [QFIT integrated practice](https://www.qfit.com/book/ModernBlackjackPage94.htm).
+
+## Isolated practice drills
+
+The original five drills remain available under **Practice drills**:
+
+- **Spread:** independent card-batch arithmetic; explicitly starts a fresh shoe for each batch.
+- **Speed drill:** independent flashes; single-deck sequences stop at 51 cards, avoiding a forced-zero endpoint and implicit second shoe. Hiding the tab abandons the drill.
+- **True count:** cumulative counting across rounds with strict half-deck/floor conversion and explicit new-shoe notice.
+- **Table spread:** an independent layout with both dealer cards exposed. It is labeled as arithmetic practice, not realistic table play.
+- **Basic strategy:** the fixed six-deck profile above, without decorative zero-count betting advice.
+
+Free-practice streaks are separate from guided-session history. Layouts adapt to narrow screens, count inputs have accessible labels, and guided inputs include a sign button for mobile keyboards. Reduced-motion preferences disable decorative animation.
+
+## Implementation
+
+- `lib/deck.ts`: one shoe model, seeded random source support, distinct physical IDs across shuffles, separate drawing/exposure, idempotent exposure, cumulative count, atomic exhaustion rejection, and explicit round-boundary shuffling.
+- `lib/countPolicy.ts`: strict number parsing, half-deck estimation, and the shared true-count convention.
+- `lib/training.ts`: reproducible checkpoint plans, frozen targets, independent counting/conversion grades, replay counts, validated bounded history, and recommendations.
+- `components/TrainingSession.tsx`: coached/assessment lifecycle, pause behavior, first-attempt submission guard, replay and review.
+- `components/FreePractice.tsx`: retained isolated drills.
+- `app/page.tsx`: training, practice, learning references, and device-local progress.
+
+No new runtime dependencies, account system, or remote storage are required. History is versioned; loading it reconstructs targets from the seed and recomputes grades instead of trusting stored correctness flags.
+
+## Verification
+
+`npm test` uses Node's test runner and the existing TypeScript compiler. It covers independent H17 strategy fixtures, exposure and shuffle invariants, strict conversion boundaries, reproducible checkpoints, error attribution, corrupt history, assessment eligibility, and recommendations. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs all three verification commands, including the production build.
+
+## Later stages
+
+The first release focuses on correct continuous counting, useful feedback and valid checkpoint assessment. Full blackjack rounds with playing decisions, visual discard-tray estimation, deviation drills, spaced scheduling, and bankroll/variance simulations remain future work. They should reuse the same count model and keep assisted practice separate from assessment.

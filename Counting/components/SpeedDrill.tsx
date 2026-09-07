@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Card as CardType, getCardValue, Deck } from '@/lib/deck';
 import { SpeedSetting } from '@/lib/types';
 import { LargeCard } from './Card';
+import { parseCount } from '@/lib/countPolicy';
 import BettingAdvice from './BettingAdvice';
 import CasinoNoise from './CasinoNoise';
 
@@ -46,7 +47,7 @@ export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, sho
     const cardCount = hardMode
       ? Math.floor(Math.random() * 21) + 40
       : Math.floor(Math.random() * 16) + 15;
-    const newCards = deck.deal(cardCount);
+    const newCards = deck.deal(Math.min(cardCount, deck.totalCards() - 1));
     const count = newCards.reduce((sum, card) => sum + getCardValue(card), 0);
 
     setCards(newCards);
@@ -81,9 +82,9 @@ export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, sho
   }, [cleanup]);
 
   const handleSubmitGuess = useCallback(() => {
-    if (state !== 'input' || userGuess === '') return;
+    if (state !== 'input' || parseCount(userGuess) === null) return;
     setState('result');
-    const isCorrect = parseInt(userGuess, 10) === correctCount;
+    const isCorrect = parseCount(userGuess) === correctCount;
     onRoundComplete(isCorrect);
   }, [state, userGuess, correctCount, onRoundComplete]);
 
@@ -121,6 +122,13 @@ export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, sho
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [state, startDrill, stopDrill, handleSubmitGuess]);
 
+  // Abort a hidden-tab drill; unseen cards must not become a scored attempt.
+  useEffect(() => {
+    const hide = () => { if (document.hidden) stopDrill(); };
+    document.addEventListener("visibilitychange", hide);
+    return () => document.removeEventListener("visibilitychange", hide);
+  }, [stopDrill]);
+
   // Cleanup on unmount
   useEffect(() => {
     return cleanup;
@@ -132,7 +140,7 @@ export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, sho
     return `${seconds}.${tenths}s`;
   };
 
-  const isCorrect = parseInt(userGuess, 10) === correctCount;
+  const isCorrect = parseCount(userGuess) === correctCount;
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center relative">
@@ -148,7 +156,7 @@ export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, sho
           <div className="space-y-2">
             <p className="text-lg text-white/70">Cards will flash at {speed}s each</p>
             {hardMode && (
-              <p className="text-sm text-red-400">Hard Mode: 40-60 cards with distractions</p>
+              <p className="text-sm text-red-400">Hard Mode: 40–60 cards with distractions (up to 51 for one deck)</p>
             )}
             <button
               onClick={startDrill}
@@ -194,13 +202,13 @@ export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, sho
               type="number"
               value={userGuess}
               onChange={(e) => setUserGuess(e.target.value)}
-              placeholder="Enter your count"
+              aria-label="Running count" placeholder="Enter your count"
               className="w-48 text-center text-2xl p-4 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <div>
               <button
                 onClick={handleSubmitGuess}
-                disabled={userGuess === ''}
+                disabled={parseCount(userGuess) === null}
                 className="btn-secondary text-lg px-8 py-3"
               >
                 Submit (Enter)
@@ -242,3 +250,4 @@ export default function SpeedDrill({ deck, speed, hardMode, onRoundComplete, sho
     </div>
   );
 }
+

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card as CardType, getCardValue, Deck } from '@/lib/deck';
 import Card from './Card';
+import { parseCount, toTrueCount } from '@/lib/countPolicy';
 import BettingAdvice from './BettingAdvice';
 
 interface GameBoardProps {
@@ -20,12 +21,8 @@ export default function GameBoard({ deck, onRoundComplete, showBettingTips }: Ga
   const [animationKey, setAnimationKey] = useState(0);
 
   const generateNewHand = useCallback(() => {
-    // Check if we need to reshuffle
-    if (deck.needsReshuffle()) {
-      deck.shuffle();
-    }
-
     const cardCount = Math.floor(Math.random() * 16) + 15; // 15 to 30 cards
+    deck.shuffle(); // A spread is an explicitly independent batch.
     const newCards = deck.deal(cardCount);
     setCards(newCards);
     setShowAnswer(false);
@@ -36,9 +33,9 @@ export default function GameBoard({ deck, onRoundComplete, showBettingTips }: Ga
   }, [deck]);
 
   const handleSubmitGuess = useCallback(() => {
-    if (showAnswer || userGuess === '') return;
+    if (showAnswer || parseCount(userGuess) === null) return;
     setShowAnswer(true);
-    const isCorrect = parseInt(userGuess, 10) === correctCount;
+    const isCorrect = parseCount(userGuess) === correctCount;
     onRoundComplete(isCorrect);
   }, [showAnswer, userGuess, correctCount, onRoundComplete]);
 
@@ -60,7 +57,7 @@ export default function GameBoard({ deck, onRoundComplete, showBettingTips }: Ga
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [showAnswer, handleSubmitGuess, generateNewHand]);
 
-  const isCorrect = parseInt(userGuess, 10) === correctCount;
+  const isCorrect = parseCount(userGuess) === correctCount;
 
   return (
     <div className="flex-1 flex flex-col">
@@ -87,7 +84,7 @@ export default function GameBoard({ deck, onRoundComplete, showBettingTips }: Ga
             type="number"
             value={userGuess}
             onChange={(e) => setUserGuess(e.target.value)}
-            placeholder="Enter your count"
+            aria-label="Batch count" placeholder="Count this spread"
             disabled={showAnswer}
             className="w-1/3 min-w-[200px] text-center text-lg p-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -96,7 +93,7 @@ export default function GameBoard({ deck, onRoundComplete, showBettingTips }: Ga
         <div className="flex gap-4 justify-center">
           <button
             onClick={handleSubmitGuess}
-            disabled={showAnswer || userGuess === ''}
+            disabled={showAnswer || parseCount(userGuess) === null}
             className="btn-secondary"
           >
             Submit Guess (Enter)
@@ -112,7 +109,7 @@ export default function GameBoard({ deck, onRoundComplete, showBettingTips }: Ga
         {/* Answer Display */}
         {showAnswer && (
           <div className="text-center animate-slide-in space-y-3">
-            <p className="text-xl">Correct count: <span className="font-bold">{correctCount}</span></p>
+            <p className="text-xl">Batch count: <span className="font-bold">{correctCount}</span></p>
             <p className="text-xl">Your guess: <span className="font-bold">{userGuess}</span></p>
             <p className={`text-2xl font-bold mt-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
               {isCorrect ? 'Correct!' : 'Incorrect. Try again!'}
@@ -130,3 +127,4 @@ export default function GameBoard({ deck, onRoundComplete, showBettingTips }: Ga
     </div>
   );
 }
+

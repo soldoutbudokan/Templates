@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Card as CardType, getCardValue, Deck } from '@/lib/deck';
 import Card from './Card';
+import { parseCount, toTrueCount } from '@/lib/countPolicy';
 import BettingAdvice from './BettingAdvice';
 
 interface MultiHandBoardProps {
@@ -23,9 +24,7 @@ export default function MultiHandBoard({ deck, handCount, onRoundComplete, showB
   const inputRef = useRef<HTMLInputElement>(null);
 
   const dealHands = useCallback(() => {
-    if (deck.needsReshuffle()) {
-      deck.shuffle();
-    }
+    deck.shuffle(); // Independent exposed-table arithmetic exercise.
 
     const newHands: CardType[][] = Array.from({ length: handCount }, () => []);
     const newDealerHand: CardType[] = [];
@@ -56,9 +55,9 @@ export default function MultiHandBoard({ deck, handCount, onRoundComplete, showB
   }, [deck, handCount]);
 
   const handleSubmitGuess = useCallback(() => {
-    if (showAnswer || userGuess === '') return;
+    if (showAnswer || parseCount(userGuess) === null) return;
     setShowAnswer(true);
-    const isCorrect = parseInt(userGuess, 10) === correctCount;
+    const isCorrect = parseCount(userGuess) === correctCount;
     onRoundComplete(isCorrect);
   }, [showAnswer, userGuess, correctCount, onRoundComplete]);
 
@@ -87,7 +86,7 @@ export default function MultiHandBoard({ deck, handCount, onRoundComplete, showB
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [showAnswer, handleSubmitGuess, dealHands]);
 
-  const isCorrect = parseInt(userGuess, 10) === correctCount;
+  const isCorrect = parseCount(userGuess) === correctCount;
   const totalCards = hands.flat().length + dealerHand.length;
 
   return (
@@ -140,7 +139,7 @@ export default function MultiHandBoard({ deck, handCount, onRoundComplete, showB
       {/* Input Section */}
       <div className="mt-4 space-y-4">
         <p className="text-center text-sm text-white/50">
-          {totalCards} cards visible across {handCount} hands + dealer
+          Independent table spread · {totalCards} exposed cards · both dealer cards shown
         </p>
         <div className="flex justify-center">
           <input
@@ -148,7 +147,7 @@ export default function MultiHandBoard({ deck, handCount, onRoundComplete, showB
             type="number"
             value={userGuess}
             onChange={(e) => setUserGuess(e.target.value)}
-            placeholder="Running count"
+            aria-label="Visible table count" placeholder="Count this table"
             disabled={showAnswer}
             className="w-1/3 min-w-[200px] text-center text-lg p-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -157,7 +156,7 @@ export default function MultiHandBoard({ deck, handCount, onRoundComplete, showB
         <div className="flex gap-4 justify-center">
           <button
             onClick={handleSubmitGuess}
-            disabled={showAnswer || userGuess === ''}
+            disabled={showAnswer || parseCount(userGuess) === null}
             className="btn-secondary"
           >
             Submit Guess (Enter)
@@ -191,3 +190,4 @@ export default function MultiHandBoard({ deck, handCount, onRoundComplete, showB
     </div>
   );
 }
+
