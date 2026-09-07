@@ -22,10 +22,10 @@ interface ControlsProps {
 }
 
 const MODE_INFO: { mode: GameMode; label: string; subtitle: string }[] = [
-  { mode: 'classic', label: 'Classic', subtitle: 'Count a spread' },
+  { mode: 'classic', label: 'Spread', subtitle: 'Independent batch' },
   { mode: 'speed-drill', label: 'Speed Drill', subtitle: 'Cards flash by' },
   { mode: 'true-count', label: 'True Count', subtitle: 'Running → true' },
-  { mode: 'multi-hand', label: 'Multi-Hand', subtitle: 'Table simulation' },
+  { mode: 'multi-hand', label: 'Table Spread', subtitle: 'Exposed-card exercise' },
   { mode: 'basic-strategy', label: 'Basic Strategy', subtitle: 'Hit, stand, double' },
 ];
 
@@ -84,7 +84,7 @@ export default function Controls({
       </div>
 
       {/* Deck Count */}
-      <div>
+      {mode !== 'basic-strategy' && <div>
         <label className="block text-sm font-medium mb-2 text-white/70">Decks in Shoe</label>
         <div className="flex gap-2">
           {[1, 2, 6, 8].map((count) => (
@@ -103,6 +103,7 @@ export default function Controls({
         </div>
       </div>
 
+      }
       {/* Speed Setting (only in speed drill mode) */}
       {mode === 'speed-drill' && (
         <div>
@@ -165,16 +166,17 @@ export default function Controls({
       )}
 
       {/* Betting Tips Toggle */}
-      <label className="flex items-center gap-2 cursor-pointer">
+      {mode !== 'basic-strategy' && <label className="flex items-center gap-2 cursor-pointer">
         <input
           type="checkbox"
           checked={showBettingTips}
           onChange={(e) => onShowBettingTipsChange(e.target.checked)}
           className="w-4 h-4 rounded accent-green-500"
         />
-        <span className="text-sm text-white/70">Show Betting Tips</span>
+        <span className="text-sm text-white/70">Show Example Betting Schedule</span>
       </label>
 
+      }
       {/* Deck Progress (hidden in basic-strategy mode) */}
       {mode !== 'basic-strategy' && mode !== 'speed-drill' && (
         <div>
@@ -240,3 +242,4 @@ export default function Controls({
     </div>
   );
 }
+

@@ -86,32 +86,52 @@ const PAIRS: Action[][] = [
   /* A,A */ ['split', 'split', 'split', 'split', 'split', 'split', 'split', 'split', 'split', 'split'],
 ];
 
-export function getCorrectAction(playerCards: Card[], dealerUpcard: Card): Action {
+export interface ActionOptions {
+  canDouble?: boolean;
+  canSplit?: boolean;
+  canSurrender?: boolean;
+}
+
+/** Total-dependent 6-deck H17 / DAS / late surrender, after a negative dealer peek.
+ * Source: https://wizardofodds.com/games/blackjack/strategy/4-decks/
+ * H17 amendments include surrender 15/17 vs A and double soft 18 vs 2, soft 19 vs 6.
+ */
+export function getCorrectAction(playerCards: Card[], dealerUpcard: Card, options: ActionOptions = {}): Action {
+  if (playerCards.length < 2) throw new RangeError('A playing decision requires at least two cards.');
   const col = dealerIndex(dealerUpcard);
-
-  // Check pairs first
-  if (isPair(playerCards)) {
-    const pairVal = cardNumericValue(playerCards[0].value);
-    // Map pair value to row: 2=0, 3=1, ..., 9=7, 10=8, A(11)=9
-    const row = pairVal <= 10 ? pairVal - 2 : 9;
-    const action = PAIRS[row][col];
-    if (action !== 'split') return action; // e.g. 5,5 => double
-    return 'split';
-  }
-
   const { total, soft } = getHandTotal(playerCards);
+  const initial = playerCards.length === 2;
+  const pair = isPair(playerCards);
+  const canDouble = initial && options.canDouble !== false;
+  const canSurrender = initial && options.canSurrender !== false;
+  const canSplit = pair && options.canSplit !== false;
 
-  // Soft hands
-  if (soft && total >= 13 && total <= 20) {
-    const row = total - 13;
-    return SOFT[row][col];
+  if (canSurrender && !soft && (
+    (total === 15 && col >= 8) ||
+    (total === 16 && (pair ? col === 9 : col >= 7)) ||
+    (total === 17 && col === 9)
+  )) return 'surrender';
+
+  let action: Action;
+  if (canSplit) {
+    const pairVal = cardNumericValue(playerCards[0].value);
+    action = PAIRS[pairVal <= 10 ? pairVal - 2 : 9][col];
+    if (action === 'surrender') return 'split'; // 8,8 vs A without surrender.
+    if (action === 'split') return action;
+  } else if (soft && total <= 12) {
+    return 'hit';
+  } else if (soft && total >= 13 && total <= 20) {
+    action = SOFT[total - 13][col];
+  } else if (total >= 17) {
+    return 'stand';
+  } else if (total <= 4) {
+    return 'hit';
+  } else {
+    action = HARD[total - 5][col];
   }
-
-  // Hard hands
-  if (total <= 4) return 'hit';
-  if (total >= 17) return 'stand';
-  const row = total - 5; // total 5 = row 0
-  return HARD[row][col];
+  if (action === 'surrender') return 'hit';
+  if (action === 'double' && !canDouble) return soft && total >= 18 ? 'stand' : 'hit';
+  return action;
 }
 
 export function formatAction(action: Action): string {

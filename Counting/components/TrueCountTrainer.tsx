@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Card as CardType, getCardValue, Deck } from '@/lib/deck';
 import Card from './Card';
+import { parseCount, toTrueCount } from '@/lib/countPolicy';
 import BettingAdvice from './BettingAdvice';
 
 interface TrueCountTrainerProps {
@@ -22,23 +23,23 @@ export default function TrueCountTrainer({ deck, onRoundComplete, showBettingTip
   const [decksRemainingAtDeal, setDecksRemainingAtDeal] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
   const [runningCorrect, setRunningCorrect] = useState(false);
+  const [newShoe, setNewShoe] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
+  const initializedDeck = useRef<Deck | null>(null);
 
   const exactTrueCount = decksRemainingAtDeal > 0
     ? correctRunningCount / decksRemainingAtDeal
     : 0;
-  const roundedTrueCount = Math.round(exactTrueCount);
+  const roundedTrueCount = decksRemainingAtDeal > 0 ? toTrueCount(correctRunningCount, decksRemainingAtDeal) : 0;
 
   const generateNewHand = useCallback(() => {
-    if (deck.needsReshuffle()) {
-      deck.shuffle();
-    }
-
     const cardCount = Math.floor(Math.random() * 16) + 15;
+    const shuffled = deck.prepareRound(cardCount);
+    setNewShoe(shuffled || deck.remaining() === deck.totalCards());
     const newCards = deck.deal(cardCount);
     setCards(newCards);
-    setCorrectRunningCount(newCards.reduce((sum, card) => sum + getCardValue(card), 0));
-    setDecksRemainingAtDeal(deck.decksRemaining());
+    setCorrectRunningCount(deck.runningCount());
+    setDecksRemainingAtDeal(Math.max(0.5, Math.round(deck.decksRemaining() * 2) / 2));
     setState('running-input');
     setRunningGuess('');
     setTrueCountGuess('');
@@ -47,8 +48,8 @@ export default function TrueCountTrainer({ deck, onRoundComplete, showBettingTip
   }, [deck]);
 
   const handleSubmitRunning = useCallback(() => {
-    if (state !== 'running-input' || runningGuess === '') return;
-    const isCorrect = parseInt(runningGuess, 10) === correctRunningCount;
+    if (state !== 'running-input' || parseCount(runningGuess) === null) return;
+    const isCorrect = parseCount(runningGuess) === correctRunningCount;
     setRunningCorrect(isCorrect);
 
     if (isCorrect) {
@@ -61,18 +62,19 @@ export default function TrueCountTrainer({ deck, onRoundComplete, showBettingTip
   }, [state, runningGuess, correctRunningCount, onRoundComplete]);
 
   const handleSubmitTrueCount = useCallback(() => {
-    if (state !== 'true-count-input' || trueCountGuess === '') return;
-    const guess = parseInt(trueCountGuess, 10);
-    // Accept within +/- 1 of the exact true count
-    const isCorrect = Math.abs(guess - exactTrueCount) <= 1;
+    if (state !== 'true-count-input' || parseCount(trueCountGuess) === null) return;
+    const guess = parseCount(trueCountGuess);
+    const isCorrect = guess === roundedTrueCount;
     setState('result');
     onRoundComplete(isCorrect);
-  }, [state, trueCountGuess, exactTrueCount, onRoundComplete]);
+  }, [state, trueCountGuess, roundedTrueCount, onRoundComplete]);
 
   // Initial hand
   useEffect(() => {
+    if (initializedDeck.current === deck) return;
+    initializedDeck.current = deck;
     generateNewHand();
-  }, [generateNewHand]);
+  }, [deck, generateNewHand]);
 
   // Focus input on state change
   useEffect(() => {
@@ -102,7 +104,7 @@ export default function TrueCountTrainer({ deck, onRoundComplete, showBettingTip
   }, [state, handleSubmitRunning, handleSubmitTrueCount, generateNewHand]);
 
   const trueCountIsCorrect = state === 'result' && runningCorrect &&
-    Math.abs(parseInt(trueCountGuess, 10) - exactTrueCount) <= 1;
+    parseCount(trueCountGuess) === roundedTrueCount;
 
   return (
     <div className="flex-1 flex flex-col">
@@ -127,20 +129,20 @@ export default function TrueCountTrainer({ deck, onRoundComplete, showBettingTip
         {/* Step 1: Running Count */}
         {state === 'running-input' && (
           <div className="text-center space-y-3 animate-slide-in">
-            <p className="text-lg text-white/70">Step 1: What is the running count?</p>
+            <p className="text-lg text-white/70">{newShoe ? 'New shoe: count starts at zero.' : 'Continue your count from the previous round.'} What is the running count?</p>
             <div className="flex justify-center">
               <input
                 ref={inputRef}
                 type="number"
                 value={runningGuess}
                 onChange={(e) => setRunningGuess(e.target.value)}
-                placeholder="Running count"
+                aria-label="Running count" placeholder="Running count"
                 className="w-1/3 min-w-[200px] text-center text-lg p-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <button
               onClick={handleSubmitRunning}
-              disabled={runningGuess === ''}
+              disabled={parseCount(runningGuess) === null}
               className="btn-secondary"
             >
               Submit Running Count (Enter)
@@ -161,14 +163,14 @@ export default function TrueCountTrainer({ deck, onRoundComplete, showBettingTip
                 type="number"
                 value={trueCountGuess}
                 onChange={(e) => setTrueCountGuess(e.target.value)}
-                placeholder="True count"
+                aria-label="True count" placeholder="True count"
                 className="w-1/3 min-w-[200px] text-center text-lg p-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <p className="text-xs text-white/40">True count = running count ÷ decks remaining (round to nearest integer)</p>
+            <p className="text-xs text-white/40">True count = running count ÷ decks remaining (round down: −1.5 becomes −2)</p>
             <button
               onClick={handleSubmitTrueCount}
-              disabled={trueCountGuess === ''}
+              disabled={parseCount(trueCountGuess) === null}
               className="btn-secondary"
             >
               Submit True Count (Enter)
@@ -190,7 +192,7 @@ export default function TrueCountTrainer({ deck, onRoundComplete, showBettingTip
               {runningCorrect && (
                 <>
                   <p className="text-white/70 text-sm">
-                    {correctRunningCount >= 0 ? '+' : ''}{correctRunningCount} ÷ {decksRemainingAtDeal.toFixed(1)} decks = {exactTrueCount >= 0 ? '+' : ''}{exactTrueCount.toFixed(1)} → Rounded: {roundedTrueCount >= 0 ? '+' : ''}{roundedTrueCount}
+                    {correctRunningCount >= 0 ? '+' : ''}{correctRunningCount} ÷ {decksRemainingAtDeal.toFixed(1)} decks = {exactTrueCount >= 0 ? '+' : ''}{exactTrueCount.toFixed(1)} → Round down: {roundedTrueCount >= 0 ? '+' : ''}{roundedTrueCount}
                   </p>
                   <p className="text-xl">
                     True Count: <span className="font-bold">{roundedTrueCount}</span>
@@ -227,3 +229,4 @@ export default function TrueCountTrainer({ deck, onRoundComplete, showBettingTip
     </div>
   );
 }
+
