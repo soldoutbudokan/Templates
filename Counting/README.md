@@ -2,6 +2,8 @@
 
 A Next.js app for learning a steady Hi-Lo count. Guided practice carries one running count across successive groups of cards, checks it at unpredictable points, and turns mistakes into a replay and a concrete next exercise.
 
+**Live:** [counting-trainer-sob.vercel.app](https://counting-trainer-sob.vercel.app/)
+
 ## Quick Start
 
 Requires Node.js 20 or later.
