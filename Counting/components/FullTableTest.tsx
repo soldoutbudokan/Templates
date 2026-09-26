@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import CountInput from './CountInput';
+import PlayingCard from './PlayingCard';
 import { Card, getCardValue } from '@/lib/deck';
 import { getHandTotal, isPair } from '@/lib/basicStrategy';
 import { estimateDecks, parseCount, signed } from '@/lib/countPolicy';
@@ -15,8 +16,7 @@ const cardText = (cards: Card[]) => cards.map(card => `${card.value}${card.suit}
 const guessText = (value: number | null) => value === null ? 'Lost / skipped' : signed(value);
 
 function Face({ card }: { card: Card | null }) {
-  return card ? <span className={`table-card ${card.suit === '♥' || card.suit === '♦' ? 'red' : ''}`} aria-label={`${card.value} ${card.suit}`}><b>{card.value}</b><span aria-hidden>{card.suit}</span></span>
-    : <span className="table-card hole-card" aria-label="Dealer hole card, face down"><span aria-hidden>♠</span></span>;
+  return <PlayingCard key={card?.id ?? 'hole'} card={card} size="sm" dealt />;
 }
 
 export function FullTableReview({ result }: { result: TableSessionResult }) {
