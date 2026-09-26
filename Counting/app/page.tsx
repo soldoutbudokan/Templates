@@ -78,7 +78,7 @@ export default function Home() {
     <div className="app-shell">
       <header className="app-header"><a className="wordmark" href="#main-content" aria-label="Card Counting Trainer"><span aria-hidden>♠</span><div>Counting<span className="wordmark-detail">HI-LO TRAINER</span></div></a><span className="header-note">A steady count takes practice.</span></header>
       <nav className="main-tabs" aria-label="Training sections">{([['train', 'Train'], ['table', 'Full test'], ['strategy', 'Perfect strategy'], ['practice', 'Practice drills'], ['progress', 'Progress'], ['learn', 'Learn']] as const).map(([key, label]) => <button key={key} className={tab === key ? 'active' : ''} aria-current={tab === key ? 'page' : undefined} disabled={active && key !== tab} onClick={() => setTab(key)}>{label}</button>)}</nav>
-      {active && <p className="active-note">End this session to switch sections. Pausing keeps your place.</p>}
+      {active && <p className="active-note">End this session to switch sections.</p>}
       {storageMessage && <p className="storage-message" role="status">{storageMessage}</p>}
       {tableStorageMessage && <p className="storage-message" role="status">{tableStorageMessage}</p>}
       <div id="main-content">

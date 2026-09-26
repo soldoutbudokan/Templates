@@ -104,7 +104,7 @@ export default function StrategyPractice({ onActiveChange }: { onActiveChange?: 
 
   useEffect(() => {
     activeTest.current = active && mode === 'test';
-    onActiveChange?.(activeTest.current);
+    onActiveChange?.(active);
   }, [active, mode, onActiveChange]);
   useEffect(() => () => { onActiveChange?.(false); }, [onActiveChange]);
   useEffect(() => {
