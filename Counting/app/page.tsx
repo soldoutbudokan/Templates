@@ -1,18 +1,18 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import TrainingSession, { SessionReview } from '@/components/TrainingSession';
 import FreePractice from '@/components/FreePractice';
 import FullTableTest, { FullTableReview } from '@/components/FullTableTest';
 import StrategyPractice from '@/components/StrategyPractice';
 import QuickPlay from '@/components/QuickPlay';
-import { TableSessionResult } from '@/lib/blackjack';
-import { readTableHistory, tableResultLabel } from '@/lib/tableHistory';
-import { assessmentEligible, readHistory, recommendation, sessionLabel, SessionResult } from '@/lib/training';
+import { ProgressProvider, useProgress } from '@/components/ProgressProvider';
+import SyncPanel from '@/components/SyncPanel';
+import GameIcon from '@/components/GameIcon';
+import { tableResultLabel } from '@/lib/tableHistory';
+import { assessmentEligible, recommendation, sessionLabel } from '@/lib/training';
 
 type Tab = 'play' | 'train' | 'table' | 'strategy' | 'practice' | 'progress' | 'learn';
-const STORAGE_KEY = 'counting-coach-history-v1';
-const TABLE_STORAGE_KEY = 'counting-table-history-v1';
 
 function Learn() {
   return <section className="learn-grid">
@@ -25,50 +25,19 @@ function Learn() {
 }
 
 export default function Home() {
+  return <ProgressProvider><HomeContent /></ProgressProvider>;
+}
+
+function HomeContent() {
+  const { progress, loaded, saveGuided: save, saveTable, clearHistory, localWarning, linked, status } = useProgress();
+  const results = progress.guided;
+  const tableResults = progress.table;
   const [tab, setTab] = useState<Tab>('play');
   const [active, setActive] = useState(false);
-  const [results, setResults] = useState<SessionResult[]>([]);
-  const [tableResults, setTableResults] = useState<TableSessionResult[]>([]);
   const [selectedTable, setSelectedTable] = useState<string | null>(null);
-  const [tableStorageMessage, setTableStorageMessage] = useState('');
   const [confirmTableClear, setConfirmTableClear] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const [storageMessage, setStorageMessage] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
   const [confirmClear, setConfirmClear] = useState(false);
-  const dirty = useRef(false);
-  const tableDirty = useRef(false);
-
-  useEffect(() => {
-    try { setResults(readHistory(localStorage.getItem(STORAGE_KEY))); }
-    catch { setStorageMessage('Saved progress could not be read. You can still practice; new results will start a new history on this device.'); }
-    try { setTableResults(readTableHistory(localStorage.getItem(TABLE_STORAGE_KEY))); }
-    catch { setTableStorageMessage('Saved table results could not be read. New table results will start a new history on this device.'); }
-    setLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (!loaded || !dirty.current) return;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, sessions: results })); setStorageMessage(''); }
-    catch { setStorageMessage('Progress could not be saved on this device. Your results remain available until you close or reload this page.'); }
-    dirty.current = false;
-  }, [results, loaded]);
-
-  useEffect(() => {
-    if (!loaded || !tableDirty.current) return;
-    try { localStorage.setItem(TABLE_STORAGE_KEY, JSON.stringify({ version: 1, sessions: tableResults })); setTableStorageMessage(''); }
-    catch { setTableStorageMessage('Table results could not be saved on this device. They remain available until you close or reload this page.'); }
-    tableDirty.current = false;
-  }, [tableResults, loaded]);
-
-  const save = useCallback((result: SessionResult) => {
-    dirty.current = true;
-    setResults(previous => [...previous.filter(item => item.id !== result.id), result].slice(-24));
-  }, []);
-  const saveTable = useCallback((result: TableSessionResult) => {
-    tableDirty.current = true;
-    setTableResults(previous => [...previous.filter(item => item.id !== result.id), result].slice(-24));
-  }, []);
   const next = recommendation(results);
   const completed = results.filter(result => result.completed);
   const assessments = results.filter(assessmentEligible);
@@ -77,11 +46,10 @@ export default function Home() {
 
   return <main className={`training-app ${active ? 'session-active' : ''}`}>
     <div className="app-shell">
-      <header className="app-header"><a className="wordmark" href="#main-content" aria-label="Card Counting Trainer"><span aria-hidden>♠</span><div>Counting<span className="wordmark-detail">HI-LO TRAINER</span></div></a><span className="header-note">A little sharper, every day.</span></header>
+      <header className="app-header"><a className="wordmark" href="#main-content" aria-label="Card Counting Trainer"><span aria-hidden>♠</span><div>Counting<span className="wordmark-detail">HI-LO TRAINER</span></div></a><button className="sync-shortcut" disabled={active} onClick={() => setTab('progress')} aria-label="Open device sync"><GameIcon name={linked && status === 'synced' ? 'check' : 'cloud'} /><span>Sync<span className="sync-long"> devices</span></span></button></header>
       <nav className="main-tabs" aria-label="Training sections">{([['play', 'Quick play'], ['train', 'Train'], ['table', 'Full test'], ['strategy', 'Perfect strategy'], ['practice', 'Practice drills'], ['progress', 'Progress'], ['learn', 'Learn']] as const).map(([key, label]) => <button key={key} className={tab === key ? 'active' : ''} aria-current={tab === key ? 'page' : undefined} disabled={active && key !== tab} onClick={() => setTab(key)}>{label}</button>)}</nav>
       {active && <p className="active-note">End this session to switch sections.</p>}
-      {storageMessage && <p className="storage-message" role="status">{storageMessage}</p>}
-      {tableStorageMessage && <p className="storage-message" role="status">{tableStorageMessage}</p>}
+      {localWarning && <p className="storage-message" role="status">{localWarning}</p>}
       <div id="main-content">
         {tab === 'play' && <QuickPlay onActiveChange={setActive} onOpenTraining={setTab} />}
         {tab === 'train' && <>
@@ -92,12 +60,13 @@ export default function Home() {
         {tab === 'strategy' && <StrategyPractice onActiveChange={setActive} />}
         {tab === 'practice' && <section className="practice-section"><div className="page-heading"><span className="eyebrow">Isolate a skill</span><h1>Practice drills</h1><p>Use these for focused repetition. Guided sessions add checkpoints, replay, and a saved review.</p></div><FreePractice /></section>}
         {tab === 'learn' && <><div className="page-heading"><span className="eyebrow">The essentials</span><h1>Build the right habits.</h1></div><Learn /></>}
-        {tab === 'progress' && <section className="progress-section"><div className="page-heading"><span className="eyebrow">Your recent practice</span><h1>Progress you can inspect.</h1><p>The latest 24 guided sessions and 24 table attempts are saved on this device. Strategy tests include their own review; isolated practice-drill streaks are tracked separately.</p></div>
+        {tab === 'progress' && <section className="progress-section"><div className="page-heading"><span className="eyebrow">Your recent practice</span><h1>Progress you can inspect.</h1><p>Your latest 24 guided sessions and 24 table attempts appear here. Connect device sync to keep this history and your Quick Play streak together.</p></div>
+          <SyncPanel />
           <div className="paper-card"><h2>Full table results</h2><p>Playing decisions, running counts, and true counts stay separate. Partial and interrupted attempts are included.</p>
             {!tableResults.length ? <div><p>No table attempts yet. Test both skills together in a continuous shoe.</p><button className="primary-button" onClick={() => setTab('table')}>Open full test →</button></div> : <>
               <div className="history-list">{[...tableResults].reverse().map(result => <button key={result.id} className={`history-row ${selectedTable === result.id ? 'selected' : ''}`} onClick={() => setSelectedTable(selectedTable === result.id ? null : result.id)} aria-expanded={selectedTable === result.id}><div><strong>{tableResultLabel(result)}</strong><span>{new Date(result.endedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} · {result.checkpoints.length} checked rounds · {(result.config.speedMs / 1000).toFixed(2)}s per card</span></div><div><strong>{result.decisions.filter(d => d.correct).length}/{result.decisions.length} plays</strong><span>Running {result.checkpoints.filter(c => c.runningCorrect).length}/{result.checkpoints.length} · True {result.checkpoints.filter(c => c.trueCorrect).length}/{result.checkpoints.length}</span></div></button>)}</div>
               {selectedTableResult && <FullTableReview key={selectedTableResult.id} result={selectedTableResult} />}
-              <div className="clear-progress">{confirmTableClear ? <><p>Clear saved table results on this device?</p><button className="quiet-button" onClick={() => { tableDirty.current = true; setTableResults([]); setSelectedTable(null); setConfirmTableClear(false); }}>Clear table history</button><button className="quiet-button" onClick={() => setConfirmTableClear(false)}>Keep table history</button></> : <button className="text-button" onClick={() => setConfirmTableClear(true)}>Clear table history</button>}</div>
+              <div className="clear-progress">{confirmTableClear ? <><p>Clear saved table results from this profile? Linked devices will also clear them after syncing.</p><button className="quiet-button" onClick={() => { clearHistory('table'); setSelectedTable(null); setConfirmTableClear(false); }}>Clear table history</button><button className="quiet-button" onClick={() => setConfirmTableClear(false)}>Keep table history</button></> : <button className="text-button" onClick={() => setConfirmTableClear(true)}>Clear table history</button>}</div>
             </>}
           </div>
           <h2 className="review-subheading">Guided counting sessions</h2>
@@ -105,11 +74,11 @@ export default function Home() {
           {!results.length ? <div className="empty-progress"><h2>Your first session sets a baseline.</h2><p>Complete a guided practice to see your checkpoint accuracy and the next recommended focus.</p><button className="primary-button" onClick={() => setTab('train')}>Start practicing →</button></div>
             : <><div className="history-list">{[...results].reverse().map(result => <button key={result.id} className={`history-row ${selected === result.id ? 'selected' : ''}`} onClick={() => setSelected(selected === result.id ? null : result.id)} aria-expanded={selected === result.id}><div><strong>{result.focus === 'running' ? 'Running count' : 'Running + true count'}</strong><span>{new Date(result.endedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} · {(result.speedMs / 1000).toFixed(2)}s per card · {sessionLabel(result)}{!result.completed ? ' · partial' : ''}{result.assisted ? ' · replay / assistance' : ''}</span></div><div><strong>{result.answers.filter(answer => answer.runningCorrect).length}/{result.answers.length}</strong><span>exact running counts</span></div></button>)}</div>
               {selectedResult && <div className="paper-card"><SessionReview key={selectedResult.id} result={selectedResult} /></div>}
-              <div className="clear-progress">{confirmClear ? <><p>Clear the saved guided-session history on this device?</p><button className="quiet-button" onClick={() => { dirty.current = true; setResults([]); setSelected(null); setConfirmClear(false); }}>Clear saved history</button><button className="quiet-button" onClick={() => setConfirmClear(false)}>Keep it</button></> : <button className="text-button" onClick={() => setConfirmClear(true)}>Clear saved history</button>}</div>
+              <div className="clear-progress">{confirmClear ? <><p>Clear saved guided sessions from this profile? Linked devices will also clear them after syncing.</p><button className="quiet-button" onClick={() => { clearHistory('guided'); setSelected(null); setConfirmClear(false); }}>Clear saved history</button><button className="quiet-button" onClick={() => setConfirmClear(false)}>Keep it</button></> : <button className="text-button" onClick={() => setConfirmClear(true)}>Clear saved history</button>}</div>
             </>}
         </section>}
       </div>
-      <footer className="app-footer"><span>Hi-Lo · count accurately, then add speed</span><span>Practice results stay on this device</span></footer>
+      <footer className="app-footer"><span>Hi-Lo · count accurately, then add speed</span><span>{localWarning ? 'Local storage needs attention' : linked ? status === 'synced' ? 'Progress synced across your devices' : 'Device linked · sync pending' : 'Progress saved on this device'}</span></footer>
     </div>
   </main>;
 }

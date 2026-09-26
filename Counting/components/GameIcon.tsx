@@ -1,6 +1,7 @@
-type IconName = 'cards' | 'spark' | 'target' | 'flame' | 'trophy' | 'check' | 'arrow' | 'pause' | 'clock';
+type IconName = 'cards' | 'spark' | 'target' | 'flame' | 'trophy' | 'check' | 'arrow' | 'pause' | 'clock' | 'cloud';
 
 const paths: Record<IconName, string> = {
+  cloud: 'M7 18a5 5 0 1 1 0-10 6 6 0 0 1 11.5 1.5A4.3 4.3 0 0 1 18 18H7Zm2-4 3-3 3 3M12 11v9',
   cards: 'M8 3h11a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2ZM3 6l-1 12a2 2 0 0 0 2 2M13.5 8l3 4-3 4-3-4 3-4Z',
   spark: 'm12 2 2.7 7.3L22 12l-7.3 2.7L12 22l-2.7-7.3L2 12l7.3-2.7L12 2Z',
   target: 'M21 12a9 9 0 1 1-9-9M17 12a5 5 0 1 1-5-5M12 12l8-8M16 4h4v4',
