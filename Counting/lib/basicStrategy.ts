@@ -108,7 +108,7 @@ export function getCorrectAction(playerCards: Card[], dealerUpcard: Card, option
 
   if (canSurrender && !soft && (
     (total === 15 && col >= 8) ||
-    (total === 16 && (pair ? col === 9 : col >= 7)) ||
+    (total === 16 && (canSplit ? col === 9 : col >= 7)) ||
     (total === 17 && col === 9)
   )) return 'surrender';
 
@@ -119,7 +119,9 @@ export function getCorrectAction(playerCards: Card[], dealerUpcard: Card, option
     if (action === 'surrender') return 'split'; // 8,8 vs A without surrender.
     if (action === 'split') return action;
   } else if (soft && total <= 12) {
-    return 'hit';
+    // If drawing to unsplittable aces is permitted, treat A,A as soft 12.
+    // The table engine auto-finishes one-card split-ace hands before evaluation.
+    return total === 12 && col === 4 && canDouble ? 'double' : 'hit';
   } else if (soft && total >= 13 && total <= 20) {
     action = SOFT[total - 13][col];
   } else if (total >= 17) {

@@ -35,6 +35,25 @@ npm run build
 
 The results count exact **checkpoints**, not supposedly correct individual cards. Running and true-count accuracy stay separate. A complete balanced deck's final zero is never the only assessment target. Profit and simulated winnings do not enter the score.
 
+## Full table test
+
+**Full test** combines playing decisions with continuous Hi-Lo counting. Choose a 10-round sample or a six-deck shoe ending after the round that reaches the 75% cut card. Add two other players or play heads-up; set automatic card pace from 0.45 to 1.2 seconds. A new session explicitly starts a new shoe at zero; no mid-round shuffle occurs.
+
+- Play hit, stand, double, split, and surrender, plus an explicit insurance decision before an ace-up peek. Wrong but legal choices are played as chosen.
+- Six decks, H17, DAS, US peek, late surrender, 3:2 natural blackjack. Maximum four hands, no resplitting aces, one card to split aces; split 21 is not a natural.
+- Cards appear one at a time. The hidden dealer card contributes nothing until revealed. This trainer always reveals the dealer hole card at round end, including when every player has busted or surrendered. If no hand remains to contest the dealer, no extra dealer draws occur.
+- The table clears after settlement. Running and true counts are submitted together against frozen targets; the supplied half-deck estimate tests conversion, not physical deck estimation.
+- Test mode withholds correctness until the session ends. Coached mode explains each choice and gives the corrected cumulative count after each round. Winnings never affect grades.
+- Strategy, exact running-count, and exact true-count scores use separate fractions. Review includes decision snapshots, category coverage, count checkpoints, and an ordered replay of every exposed card.
+- Pausing or hiding the browser tab covers the table, stops automatic play, and permanently marks the attempt interrupted. Resuming shows the same cards; they must not be counted again. Ending at an unanswered checkpoint records it as skipped.
+- The latest 24 ended table attempts, including partial and interrupted attempts, appear in Progress. Loading saved history replays inputs from the seed and recalculates targets and scores. Active sessions are held in memory and are discarded on reload.
+
+“Perfect” here means exact **basic strategy** for the displayed rules and legal actions. It does not mean count-dependent optimal play. Betting, deviations, and bankroll management are outside this test. A clean result requires a completed, uninterrupted test with at least one playing decision and every strategy/count answer correct; it describes the situations actually observed, not unobserved skills.
+
+## Perfect strategy
+
+The dedicated **Perfect strategy** section provides Hard / Soft / Pairs / Mixed sessions, 20- or 30-decision tests, immediate explanations in practice, and reference charts. Questions balance chart situations rather than natural shoe frequency. Tests preserve first answers, hide the chart and feedback until completion, and mark hidden-tab interruptions. Results show category sample sizes and missed situations; missed hands can become a coached repair drill. Strategy-only reviews last until you leave the section; table results persist in Progress.
+
 ## Counting and strategy conventions
 
 Hi-Lo values: 2–6 = +1; 7–9 = 0; 10/J/Q/K/A = −1. The running count includes every card first exposed since the current shuffle.
@@ -47,7 +66,7 @@ Basic-strategy practice uses one explicit total-dependent profile:
 - Double on any initial two cards; double after split allowed.
 - Late surrender after a negative dealer blackjack check.
 - A natural blackjack is resolved, rather than presented as a strategy question.
-- The evaluator includes unavailable-action fallbacks. It is not a complete round or split-hand engine.
+- The evaluator includes unavailable-action fallbacks. The table engine supplies the current hand’s actual legal actions before grading.
 
 The example 1–2–4–8–10 betting schedule is for execution practice only. It is not calibrated to a bankroll, risk tolerance, table limits, or game profitability.
 
@@ -71,6 +90,10 @@ Free-practice streaks are separate from guided-session history. Layouts adapt to
 - `lib/countPolicy.ts`: strict number parsing, half-deck estimation, and the shared true-count convention.
 - `lib/training.ts`: reproducible checkpoint plans, frozen targets, independent counting/conversion grades, replay counts, validated bounded history, and recommendations.
 - `components/TrainingSession.tsx`: coached/assessment lifecycle, pause behavior, first-attempt submission guard, replay and review.
+- `lib/blackjack.ts`: immutable, seeded full-round engine and separate strategy/count records.
+- `lib/tableHistory.ts`: bounded table history rebuilt from learner inputs.
+- `components/FullTableTest.tsx`: table lifecycle, concealed test answers, interruption handling, and review.
+- `lib/strategyPractice.ts` and `components/StrategyPractice.tsx`: balanced strategy questions, reference charts, test and repair flow.
 - `components/FreePractice.tsx`: retained isolated drills.
 - `app/page.tsx`: training, practice, learning references, and device-local progress.
 
@@ -78,8 +101,8 @@ No new runtime dependencies, account system, or remote storage are required. His
 
 ## Verification
 
-`npm test` uses Node's test runner and the existing TypeScript compiler. It covers independent H17 strategy fixtures, exposure and shuffle invariants, strict conversion boundaries, reproducible checkpoints, error attribution, corrupt history, assessment eligibility, and recommendations. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs all three verification commands, including the production build.
+`npm test` uses Node's test runner and the existing TypeScript compiler. It covers 340 independently transcribed strategy chart cells and legal-action fallbacks; insurance, hole-card exposure, naturals, splits, surrender, H17, deterministic full shoes, partial sessions, and replayed table history; plus guided counting, strict conversion, corrupt history, assessment eligibility, and recommendations. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs all three verification commands, including the production build.
 
 ## Later stages
 
-The first release focuses on correct continuous counting, useful feedback and valid checkpoint assessment. Full blackjack rounds with playing decisions, visual discard-tray estimation, deviation drills, spaced scheduling, and bankroll/variance simulations remain future work. They should reuse the same count model and keep assisted practice separate from assessment.
+Full blackjack rounds and dedicated strategy testing are implemented. Visual discard-tray estimation, count-based deviation drills, spaced scheduling, and bankroll/variance simulations remain future work. They should reuse the same count model and keep assisted practice separate from assessment.
