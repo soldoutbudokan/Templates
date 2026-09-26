@@ -6,10 +6,12 @@ import { parseCount, signed } from '@/lib/countPolicy';
 import { getCardValue } from '@/lib/deck';
 import PlayingCard from './PlayingCard';
 import GameIcon from './GameIcon';
+import { useProgress } from './ProgressProvider';
+import { progressDateKey } from '@/lib/progressSync';
 import { explainStrategyCase, STRATEGY_PROFILE } from '@/lib/strategyPractice';
 import {
-  addQuickResult, createQuickQuestions, createQuickResult, EMPTY_QUICK_HISTORY, localDateKey,
-  QUICK_DURATION_MS, quickHistoryStats, quickRunCreditsDay, readQuickHistory, recordQuickAnswer,
+  createQuickQuestions, createQuickResult,
+  QUICK_DURATION_MS, quickHistoryStats, quickRunCreditsDay, recordQuickAnswer,
   summarizeQuickAnswers, QuickAnswer, QuickHistory, QuickMode, QuickQuestion, QuickSessionResult,
 } from '@/lib/quickPlay';
 
@@ -19,7 +21,6 @@ interface Props {
   onActiveChange: (active: boolean) => void;
   onOpenTraining: (target: Destination) => void;
 }
-const STORAGE_KEY = 'counting-quick-play-v1';
 const LANES: { mode: QuickMode; title: string; description: string }[] = [
   { mode: 'counting', title: 'Count', description: 'Quick pairs. Keep the tally.' },
   { mode: 'strategy', title: 'Strategy', description: 'See a hand. Choose your play.' },
@@ -28,6 +29,8 @@ const LANES: { mode: QuickMode; title: string; description: string }[] = [
 const SHORTCUTS: Record<Action, string> = { hit: 'H', stand: 'S', double: 'D', split: 'P', surrender: 'R' };
 
 export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
+  const { progress, loaded, today, saveQuick } = useProgress();
+  const history = progress.quick;
   const [mode, setMode] = useState<QuickMode>('mixed');
   const [phase, setPhase] = useState<Phase>('idle');
   const [questions, setQuestions] = useState<QuickQuestion[]>([]);
@@ -36,9 +39,6 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
   const [remaining, setRemaining] = useState(QUICK_DURATION_MS);
   const [numericGuess, setNumericGuess] = useState('');
   const [held, setHeld] = useState(false);
-  const [history, setHistory] = useState<QuickHistory>(EMPTY_QUICK_HISTORY);
-  const [loaded, setLoaded] = useState(false);
-  const [storageMessage, setStorageMessage] = useState('');
   const [inputMessage, setInputMessage] = useState('');
   const [result, setResult] = useState<QuickSessionResult | null>(null);
   const [personalBest, setPersonalBest] = useState(false);
@@ -47,7 +47,8 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
   const questionsRef = useRef<QuickQuestion[]>([]);
   const indexRef = useRef(0);
   const answersRef = useRef<QuickAnswer[]>([]);
-  const historyRef = useRef<QuickHistory>(EMPTY_QUICK_HISTORY);
+  const historyRef = useRef<QuickHistory>(history);
+  historyRef.current = history;
   const seedRef = useRef(0);
   const runModeRef = useRef<QuickMode>('mixed');
   const startedAt = useRef('');
@@ -60,15 +61,6 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
   const finished = useRef(false);
   const interrupted = useRef(false);
   const pauseHandler = useRef<() => void>(() => {});
-
-  useEffect(() => {
-    try {
-      const saved = readQuickHistory(localStorage.getItem(STORAGE_KEY));
-      historyRef.current = saved.history; setHistory(saved.history);
-      if (saved.reset) setStorageMessage('Some saved practice data could not be read. You can keep playing.');
-    } catch { setStorageMessage('Progress is unavailable on this device. You can still play.'); }
-    setLoaded(true);
-  }, []);
 
   useEffect(() => { onActiveChange(['question', 'feedback', 'paused'].includes(phase)); }, [phase, onActiveChange]);
 
@@ -90,12 +82,10 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
       startedAt: startedAt.current, endedAt: new Date().toISOString(),
       elapsedMs: endReason === 'timer' ? QUICK_DURATION_MS : used, endReason,
       interrupted: interrupted.current, answers: answersRef.current });
+    nextResult.localDate = progressDateKey(nextResult.endedAt, progress.timeZone);
     setPersonalBest(summarizeQuickAnswers(nextResult.answers).xp > historyRef.current.bestXp);
-    const nextHistory = addQuickResult(historyRef.current, nextResult);
-    historyRef.current = nextHistory; setHistory(nextHistory); setResult(nextResult);
+    saveQuick(nextResult); setResult(nextResult);
     feedbackDeadline.current = null; changePhase('done');
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(nextHistory)); setStorageMessage(''); }
-    catch { setStorageMessage('This round is available here, but could not be saved on this device.'); }
   }
 
   function start(nextMode = mode) {
@@ -205,8 +195,7 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, question, numericGuess]);
 
-  const stats = quickHistoryStats(history);
-  const today = localDateKey();
+  const stats = quickHistoryStats(history, today || progressDateKey(new Date(), progress.timeZone));
   const todayComplete = history.activityDays.includes(today);
   const score = summarizeQuickAnswers(answers);
   const lastAnswer = answers[answers.length - 1];
@@ -219,7 +208,6 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
   const improvement: Destination = weak?.kind === 'counting' ? 'train' : weak?.kind === 'strategy' ? 'strategy' : 'table';
 
   return <section className={`quick-play quick-phase-${phase}`} aria-label="Quick practice">
-    {storageMessage && <p className="storage-message" role="status">{storageMessage}</p>}
     {phase === 'idle' ? <>
       <div className="quick-hero">
         <div className="quick-hero-copy"><span className="eyebrow"><span className="live-dot" /> The daily deal</span><h1>Make your next<br />minute <em>count.</em></h1>

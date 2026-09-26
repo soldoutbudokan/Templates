@@ -27,7 +27,40 @@ The opening screen offers one-tap **Count**, **Strategy**, or **Mixed** practice
 
 Correct first answers earn 10 XP, plus a combo bonus that rises by 2 XP every three consecutive correct answers, capped at 10 bonus XP. Mistakes earn no XP and reset the combo. Incorrect answers hold the explanation until the next question is requested; correct answers advance after a short reward beat unless held for review. Runs finish on a results screen with separate skill accuracy, a personal best, and an optional rematch; they never restart automatically. Pausing or hiding the tab covers the cards and freezes the clock.
 
-Daily practice streaks use the browser’s local calendar date. A completed run needs at least five answers to earn daily credit; a run that reaches the 200-question cap also counts as complete. Early exits retain first-answer records but do not earn daily credit. Streaks and XP measure practice activity, not mastery; uninterrupted full tests remain separate. Quick-play progress is stored on this device, alongside the other training histories.
+Daily practice streaks use the profile’s fixed calendar timezone (America/Toronto by default), so phones and computers agree on the day. Existing earned dates are preserved during migration. A completed run needs at least five answers to earn daily credit; a run that reaches the 200-question cap also counts as complete. Early exits retain first-answer records but do not earn daily credit. Streaks and XP measure practice activity, not mastery; uninterrupted full tests remain separate. Progress is saved locally first and can sync to the same private profile across devices.
+
+## Private device sync
+
+This app is designed for one person. It uses one private sync key and a persistent Upstash Redis database; no email account, OAuth provider, or authentication SDK is needed. The database credentials stay on the server. A device receives only its profile's data through `/api/progress` after presenting the private key.
+
+### One-time hosting setup
+
+1. In the existing Vercel **card-counting-trainer** project, connect an account-owned **Upstash Redis** database through Storage / Marketplace. Keep database eviction disabled. Do not use an unclaimed temporary agent database.
+2. The integration supplies `KV_REST_API_URL` and `KV_REST_API_TOKEN`. Direct Upstash credentials named `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` work too.
+3. Generate a private device key locally:
+
+   ```bash
+   node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('hex'))"
+   ```
+
+   Save it in your password manager, and add it to Vercel as the server-only `COUNTING_SYNC_KEY` environment variable. Never commit the key or use a `NEXT_PUBLIC_` prefix. `.env.example` lists the complete configuration.
+4. Leave `COUNTING_SYNC_TIME_ZONE=America/Toronto` unless you deliberately want another IANA timezone. An existing cloud profile keeps its original timezone; changing the environment variable only affects a new profile.
+5. Redeploy. In the app, choose **Sync devices**, paste the private key, and connect. Repeat once on each browser/device. Existing local progress merges automatically. The app remembers the key; **Copy sync key** helps link another device.
+
+Without configured storage and a private key, the app remains usable with local progress and clearly reports **Setup needed**. Connecting a device is not successful until the server accepts the key. Never share a device key publicly; anyone holding it can read and merge that single profile. Rotate `COUNTING_SYNC_KEY` in Vercel and redeploy to revoke old device keys without deleting history.
+
+The free database plan can be archived after at least 30 days of inactivity; Upstash retains a restorable backup. Use an appropriate paid plan if the endpoint must remain active through long periods without practice. See the provider's [inactivity policy](https://upstash.com/docs/redis/help/faq) and [durable-storage documentation](https://upstash.com/docs/redis/features/durability).
+
+### What persists
+
+- Daily Quick Play streaks and personal bests, the latest 20 Quick Play runs, 24 guided counting sessions, and 24 full-table attempts.
+- New sessions save locally before upload. While the app is open, temporary connection failures leave changes queued for retry on reconnection, focus, or a later visit. This is not an offline-installable app; loading the site itself still needs a connection.
+- Sync merges immutable session IDs rather than replacing one device's history with another. Redis compare-and-swap retries prevent two simultaneous uploads from losing each other's results. Repeated uploads do not duplicate sessions or streak credit.
+- Clearing guided or table history records a deletion cutoff and propagates it to linked devices, so an old offline copy cannot restore deleted sessions.
+- **Backup & restore** downloads a progress-only JSON file (no key) and merges a selected backup. Original pre-sync browser keys remain untouched during migration.
+- Standalone strategy reviews and active sessions are still held in memory; they are not transferred mid-game. Only qualifying completed Quick Play runs earn daily streak credit.
+
+Production, preview, and local-development profiles use separate database keys. The app never falls back to server memory or temporary files when storage fails, and never reports **Up to date** for a failed upload. Keep the database's profile key without a TTL.
 
 ## Guided training
 
@@ -38,7 +71,7 @@ Daily practice streaks use the browser’s local calendar date. A completed run 
 - **Lost count:** record the loss honestly. Practice offers reconstruction and a corrected count; assessment records the response without revealing an answer.
 - **Replay:** step through an already completed segment from its known starting count. Replay never advances the shoe or changes the first submitted answer.
 - **Interruptions:** pausing or hiding the browser tab covers the cards and stops dealing. An interrupted assessment can continue as practice but cannot regain assessment eligibility. Paused response time is excluded. The same pair reappears after a dealing pause and must not be counted twice.
-- **Progress:** the latest 24 ended attempts, including partial attempts, are stored on this device. History preserves rules, pace, answers, and replayable checkpoints. Active attempts are held in memory until ended; reloading the page discards an active attempt.
+- **Progress:** the latest 24 ended attempts, including partial attempts, are saved locally and synced when connected. History preserves rules, pace, answers, and replayable checkpoints. Active attempts are held in memory until ended; reloading the page discards an active attempt.
 - **Next exercise:** recommendations inspect the last three completed, uninterrupted sessions. Fewer than eight observations, running-count accuracy below 90%, or a reported loss of count recommends retention practice. Otherwise the recommendation adds conversion. These are transparent product heuristics, not validated mastery criteria.
 
 The results count exact **checkpoints**, not supposedly correct individual cards. Running and true-count accuracy stay separate. A complete balanced deck's final zero is never the only assessment target. Profit and simulated winnings do not enter the score.
@@ -102,19 +135,23 @@ The interface uses a midnight-teal card-club theme, ivory SVG playing cards, a s
 - `lib/countPolicy.ts`: strict number parsing, half-deck estimation, and the shared true-count convention.
 - `lib/training.ts`: reproducible checkpoint plans, frozen targets, independent counting/conversion grades, replay counts, validated bounded history, and recommendations.
 - `components/TrainingSession.tsx`: coached/assessment lifecycle, pause behavior, first-attempt submission guard, replay and review.
-- `lib/quickPlay.ts` and `components/QuickPlay.tsx`: finite practice runs, first-answer combos, local-calendar activity, and bounded history.
+- `lib/quickPlay.ts` and `components/QuickPlay.tsx`: finite practice runs, first-answer combos, profile-calendar activity, and bounded history.
 - `lib/blackjack.ts`: immutable, seeded full-round engine and separate strategy/count records.
 - `lib/tableHistory.ts`: bounded table history rebuilt from learner inputs.
 - `components/FullTableTest.tsx`: table lifecycle, concealed test answers, interruption handling, and review.
 - `lib/strategyPractice.ts` and `components/StrategyPractice.tsx`: balanced strategy questions, reference charts, test and repair flow.
 - `components/FreePractice.tsx`: retained isolated drills.
-- `app/page.tsx`: training, practice, learning references, and device-local progress.
+- `lib/progressSync.ts`: validated merging, fixed calendar days, bounded histories, and deletion cutoffs.
+- `lib/progressClient.ts` and `components/ProgressProvider.tsx`: migration, local persistence, queued sync, and cross-tab updates.
+- `lib/progressServer.ts` and `app/api/progress/route.ts`: private-key authorization and atomic durable storage.
+- `components/SyncPanel.tsx`: device linking, sync status, and backup/restore.
+- `app/page.tsx`: training, practice, learning references, and saved progress.
 
-No new runtime dependencies, account system, or remote storage are required. History is versioned; loading it reconstructs targets from the seed and recomputes grades instead of trusting stored correctness flags.
+No new runtime dependencies or account system are required. Remote storage is optional and must be configured for device sync. History is versioned; loading it reconstructs targets from the seed and recomputes grades instead of trusting stored correctness flags.
 
 ## Verification
 
-`npm test` uses Node's test runner and the existing TypeScript compiler. It covers 340 independently transcribed strategy chart cells and legal-action fallbacks; insurance, hole-card exposure, naturals, splits, surrender, H17, deterministic full shoes, partial sessions, and replayed table history; plus guided counting, strict conversion, corrupt history, assessment eligibility, and recommendations. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs all three verification commands, including the production build.
+`npm test` uses Node's test runner and the existing TypeScript compiler. It covers 340 independently transcribed strategy chart cells and legal-action fallbacks; insurance, hole-card exposure, naturals, splits, surrender, H17, deterministic full shoes, partial sessions, and replayed table history; plus guided counting, strict conversion, corrupt history, assessment eligibility, and recommendations. Sync tests cover concurrent uploads, duplicate sessions, offline retry, migration, deletion cutoffs, storage failures, authentication, payload limits, and timezone/DST boundaries. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs all three verification commands, including the production build.
 
 ## Later stages
 

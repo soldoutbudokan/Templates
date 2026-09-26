@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import './game.css'
+import './sync.css'
 
 export const metadata: Metadata = {
   title: 'Card Counting Trainer',
