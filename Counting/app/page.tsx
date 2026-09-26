@@ -75,9 +75,9 @@ export default function Home() {
   const selectedResult = results.find(result => result.id === selected);
   const selectedTableResult = tableResults.find(result => result.id === selectedTable);
 
-  return <main className="training-app">
+  return <main className={`training-app ${active ? 'session-active' : ''}`}>
     <div className="app-shell">
-      <header className="app-header"><a className="wordmark" href="#main-content" aria-label="Card Counting Trainer"><span aria-hidden>♠</span><div>Counting<span className="wordmark-detail">HI-LO TRAINER</span></div></a><span className="header-note">A steady count takes practice.</span></header>
+      <header className="app-header"><a className="wordmark" href="#main-content" aria-label="Card Counting Trainer"><span aria-hidden>♠</span><div>Counting<span className="wordmark-detail">HI-LO TRAINER</span></div></a><span className="header-note">A little sharper, every day.</span></header>
       <nav className="main-tabs" aria-label="Training sections">{([['play', 'Quick play'], ['train', 'Train'], ['table', 'Full test'], ['strategy', 'Perfect strategy'], ['practice', 'Practice drills'], ['progress', 'Progress'], ['learn', 'Learn']] as const).map(([key, label]) => <button key={key} className={tab === key ? 'active' : ''} aria-current={tab === key ? 'page' : undefined} disabled={active && key !== tab} onClick={() => setTab(key)}>{label}</button>)}</nav>
       {active && <p className="active-note">End this session to switch sections.</p>}
       {storageMessage && <p className="storage-message" role="status">{storageMessage}</p>}

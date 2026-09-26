@@ -92,6 +92,10 @@ The original five drills remain available under **Practice drills**:
 
 Free-practice streaks are separate from guided-session history. Layouts adapt to narrow screens, count inputs have accessible labels, and guided inputs include a sign button for mobile keyboards. Reduced-motion preferences disable decorative animation.
 
+## Visual design
+
+The interface uses a midnight-teal card-club theme, ivory SVG playing cards, a stitched table surface, and brief deal/reward motion. The same accessible deck appears in quick play, strategy, full-table play, and the original drills. Decorative cards are hidden from screen readers; face-down cards contain no face data. Reduced-motion preferences disable animation. On narrow screens, the full table gives the learner a wider seat, and quick play reserves space for its hand and controls.
+
 ## Implementation
 
 - `lib/deck.ts`: one shoe model, seeded random source support, distinct physical IDs across shuffles, separate drawing/exposure, idempotent exposure, cumulative count, atomic exhaustion rejection, and explicit round-boundary shuffling.

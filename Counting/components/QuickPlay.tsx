@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Action, formatAction } from '@/lib/basicStrategy';
 import { parseCount, signed } from '@/lib/countPolicy';
-import { Card, getCardValue, isRedSuit } from '@/lib/deck';
+import { getCardValue } from '@/lib/deck';
+import PlayingCard from './PlayingCard';
+import GameIcon from './GameIcon';
 import { explainStrategyCase, STRATEGY_PROFILE } from '@/lib/strategyPractice';
 import {
   addQuickResult, createQuickQuestions, createQuickResult, EMPTY_QUICK_HISTORY, localDateKey,
@@ -24,12 +26,6 @@ const LANES: { mode: QuickMode; title: string; description: string }[] = [
   { mode: 'mixed', title: 'Mixed', description: 'Switch between both skills.' },
 ];
 const SHORTCUTS: Record<Action, string> = { hit: 'H', stand: 'S', double: 'D', split: 'P', surrender: 'R' };
-
-function PlayingCard({ card }: { card: Card }) {
-  return <div className={`quick-card ${isRedSuit(card.suit) ? 'is-red' : ''}`} aria-label={`${card.value} ${card.suit}`}>
-    <span>{card.value}</span><span aria-hidden>{card.suit}</span>
-  </div>;
-}
 
 export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
   const [mode, setMode] = useState<QuickMode>('mixed');
@@ -225,20 +221,32 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
   return <section className={`quick-play quick-phase-${phase}`} aria-label="Quick practice">
     {storageMessage && <p className="storage-message" role="status">{storageMessage}</p>}
     {phase === 'idle' ? <>
-      <div className="quick-hero"><span className="eyebrow">A better daily habit</span><h1>One quick round.</h1>
-        <p>Count cards. Make the right play. Get a little sharper with each round.</p></div>
-      <div className="quick-stats"><div><strong>{stats.streak}</strong><span>day streak</span></div>
-        <div><strong>{stats.bestXp}</strong><span>Best practice XP · any lane</span></div>
-        <div><strong>{todayComplete ? 'Done' : 'Ready'}</strong><span>Today’s practice</span></div></div>
+      <div className="quick-hero">
+        <div className="quick-hero-copy"><span className="eyebrow"><span className="live-dot" /> The daily deal</span><h1>Make your next<br />minute <em>count.</em></h1>
+          <p>A sharper mind. A steadier hand.<br />Your next little win starts here.</p>
+          <button className="primary-button quick-start" disabled={!loaded} onClick={() => start()}><span>{loaded ? 'Play 60 seconds' : 'Loading…'}</span><GameIcon name="arrow" /></button>
+          <span className="hero-session-note"><GameIcon name="clock" /> {LANES.find(lane => lane.mode === mode)?.title} · one minute of focus</span>
+        </div>
+        <div className="hero-card-scene" aria-hidden="true"><span className="hero-orbit orbit-one" /><span className="hero-orbit orbit-two" /><span className="hero-spark spark-one">✦</span><span className="hero-spark spark-two">✧</span>
+          <div className="hero-fan-card fan-back"><PlayingCard card={null} size="lg" /></div>
+          <div className="hero-fan-card fan-middle"><PlayingCard card={{value:'K',suit:'♥',id:'hero-king'}} size="lg" /></div>
+          <div className="hero-fan-card fan-front"><PlayingCard card={{value:'A',suit:'♠',id:'hero-ace'}} size="lg" /></div>
+          <div className="hero-chip"><span>HI</span><span>LO</span></div><span className="hero-table-label">A LITTLE PRACTICE. EVERY DAY.</span>
+        </div>
+      </div>
+      <div className="quick-stats"><div><span className="stat-emblem amber"><GameIcon name="flame" /></span><div><strong>{stats.streak}<small> {stats.streak === 1 ? 'day' : 'days'}</small></strong><span>Practice streak</span></div></div>
+        <div><span className="stat-emblem mint"><GameIcon name="trophy" /></span><div><strong>{stats.bestXp}<small> XP</small></strong><span>Personal best · all lanes</span></div></div>
+        <div><span className="stat-emblem lilac"><GameIcon name={todayComplete ? 'check' : 'target'} /></span><div><strong>{todayComplete ? 'Complete' : 'Your turn'}</strong><span>Today’s practice</span></div></div></div>
+      <div className="lane-heading"><span className="eyebrow">Find your flow</span><span>Choose a lane, then press play</span></div>
       <div className="quick-lanes" role="group" aria-label="Practice lane">{LANES.map(lane => <button key={lane.mode}
-        className={`quick-lane ${mode === lane.mode ? 'active' : ''}`} aria-pressed={mode === lane.mode} onClick={() => setMode(lane.mode)}>
-        <strong>{lane.title}</strong><span>{lane.description}</span></button>)}</div>
-      <button className="primary-button quick-start" disabled={!loaded} onClick={() => start()}>{loaded ? 'Play 60 seconds →' : 'Loading your progress…'}</button>
-      <p className="quick-help">60 seconds of answering time. Feedback and pauses don’t use your clock. Correct first answers earn XP.</p>
-      {mode === 'mixed' && <p className="quick-help">Mixed alternates separate drills. Only Count cards change your running count. The full table combines every exposed card with playing decisions.</p>}
+        className={`quick-lane lane-${lane.mode} ${mode === lane.mode ? 'active' : ''}`} aria-pressed={mode === lane.mode} onClick={() => setMode(lane.mode)}>
+        <span className="lane-emblem"><GameIcon name={lane.mode === 'counting' ? 'cards' : lane.mode === 'strategy' ? 'target' : 'spark'} /></span><div><strong>{lane.title}</strong><span>{lane.description}</span></div><span className="lane-check"><GameIcon name="check" /></span></button>)}</div>
+      <details className="quick-how"><summary>How the round works</summary><p className="quick-help">60 seconds of answering time. Feedback and pauses don’t use your clock. Correct first answers earn XP.</p>
+        {mode === 'mixed' && <p className="quick-help">Mixed alternates separate drills. Only Count cards change your running count. The full table combines every exposed card with playing decisions.</p>}</details>
       <div className="quick-training-links"><span>Go deeper</span><button className="text-button" onClick={() => onOpenTraining('train')}>Guided counting</button>
         <button className="text-button" onClick={() => onOpenTraining('table')}>Full table</button><button className="text-button" onClick={() => onOpenTraining('strategy')}>Strategy practice</button></div>
     </> : phase === 'done' && result ? <div className="quick-results">
+      <div className="result-medallion" aria-hidden="true"><GameIcon name={personalBest ? 'trophy' : 'spark'} /></div>
       <span className="eyebrow">{result.endReason === 'timer' ? 'Round complete' : result.endReason === 'question-limit' ? '200 decisions completed' : 'Round ended early'}</span>
       <h2>+{score.xp} <span>practice XP</span></h2>
       {personalBest && <p className="quick-personal-best">New best practice XP · all lanes</p>}
@@ -256,25 +264,25 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
         <button className="quiet-button" onClick={() => changePhase('idle')}>Change lane</button></div>
       <button className="text-button" onClick={() => onOpenTraining(improvement)}>{improvement === 'train' ? 'Practice counting with a coach' : improvement === 'strategy' ? 'Review strategy' : 'Try a full table session'} →</button>
       <p className="fine-print">XP and streaks track practice, not mastery. This round gave feedback after each answer.</p>
-    </div> : <div className="quick-session">
+    </div> : <div className={`quick-session ${phase === 'feedback' && lastAnswer?.correct ? 'answer-success' : ''}`}>
       <div className="section-top"><div><span className="eyebrow">{LANES.find(lane => lane.mode === runModeRef.current)?.title} · quick practice</span>
         <h2><span className="quick-seconds">{Math.ceil(remaining / 1000)}</span><span className="meta"> seconds of answering time</span></h2></div>
-        <button className="quiet-button" disabled={phase === 'paused'} onClick={pause}>Pause</button></div>
+        <button className="quiet-button pause-button" disabled={phase === 'paused'} onClick={pause}><GameIcon name="pause" /><span>Pause</span></button></div>
       <div className="quick-timer-track" role="progressbar" aria-label="Answering time remaining" aria-valuemin={0} aria-valuemax={60} aria-valuenow={Math.ceil(remaining / 1000)}>
         <div className="quick-timer-fill" style={{ width: `${remaining / QUICK_DURATION_MS * 100}%` }} /></div>
-      <div className="quick-live-stats"><span><strong>{score.xp}</strong> XP</span><span className={lastAnswer?.combo ? 'quick-combo' : ''}><strong>{lastAnswer?.combo ?? 0}</strong> combo</span>
-        <span>{score.correct}/{score.attempts} correct</span></div>
+      <div className="quick-live-stats"><span><GameIcon name="spark" /><strong key={`xp-${answers.length}`}>{score.xp}</strong><small>XP</small></span><span className={lastAnswer?.combo ? 'quick-combo' : ''}><GameIcon name="flame" /><strong key={`combo-${answers.length}`}>{lastAnswer?.combo ?? 0}</strong><small>combo</small></span>
+        <span><GameIcon name="target" /><strong>{score.correct}<small>/{score.attempts}</small></strong><small>correct</small></span></div>
       {phase === 'paused' ? <div className="quick-pause"><span className="eyebrow">Cards covered · clock stopped</span><h2>Take your time.</h2>
         <p>Your place is held on this page. Resume when you’re ready.</p><button className="primary-button" onClick={() => { if (!document.hidden) changePhase(pausedPhase.current); }}>Resume round →</button>
         <button className="quiet-button" onClick={() => finish('interrupted')}>End this round</button></div>
         : question && <>
-          <div className="quick-question">
+          <div className={`quick-question question-${question.kind}`} key={question.id}>
             {question.kind === 'counting' ? <><div className="quick-challenge-header"><span className="eyebrow">Count</span><h3>What’s the new running count?</h3>
               <p>{questions.slice(0, index).some(item => item.kind === 'counting') ? 'Carry your count forward from the last pair.' : <>Start from <strong>{signed(question.countBefore)}</strong></>}</p></div>
-              <div className="quick-cards">{question.cards.map(card => <PlayingCard key={card.id} card={card} />)}</div></>
+              <div className="quick-cards">{question.cards.map(card => <PlayingCard key={card.id} card={card} size="lg" dealt />)}</div></>
               : <><div className="quick-challenge-header"><span className="eyebrow">Basic strategy</span><h3>What’s your play?</h3></div>
-                <div className="quick-table"><div><span className="meta">Dealer shows</span><div className="quick-cards"><PlayingCard card={question.situation.dealer} /></div></div>
-                  <div><span className="meta">Your hand</span><div className="quick-cards">{question.situation.player.map(card => <PlayingCard key={card.id} card={card} />)}</div></div></div>
+                <div className="quick-table"><div><span className="meta">Dealer shows</span><div className="quick-cards"><PlayingCard card={question.situation.dealer} size="lg" dealt /></div></div>
+                  <div><span className="meta">Your hand</span><div className="quick-cards">{question.situation.player.map(card => <PlayingCard key={card.id} card={card} size="lg" dealt />)}</div></div></div>
                 <p className="quick-rule">6 decks · H17 · DAS · late surrender · dealer checked for blackjack</p>
                 {runModeRef.current === 'mixed' && <p className="quick-help">Separate strategy drill: keep your Count total in mind. These cards do not change it.</p>}</>}
           </div>
@@ -283,14 +291,14 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
               disabled={phase !== 'question'} onClick={() => submit(value, question.index)}>
               {typeof value === 'number' ? signed(value) : <>{formatAction(value)} <kbd className="quick-key">{SHORTCUTS[value]}</kbd></>}</button>)}
           </div>
-          {phase === 'question' && question.kind === 'counting' && <form className="quick-count-form" onSubmit={event => {
+          <div className="quick-input-slot">{phase === 'question' && question.kind === 'counting' && <form className="quick-count-form" onSubmit={event => {
             event.preventDefault(); const value = parseCount(numericGuess); if (value !== null) submit(value, question.index);
           }}><label htmlFor="quick-count-input">Or type a count</label><input id="quick-count-input" value={numericGuess} onChange={event => setNumericGuess(event.target.value)}
             inputMode="text" autoComplete="off" maxLength={5} placeholder="±0" aria-label="Type a signed running count" />
-            <button type="submit" className="quiet-button" disabled={parseCount(numericGuess) === null}>Enter ↵</button></form>}
+            <button type="submit" className="quiet-button" disabled={parseCount(numericGuess) === null}>Enter ↵</button></form>}</div>
           {inputMessage && <p role="status">{inputMessage}</p>}
           {phase === 'feedback' && lastAnswer && <div className={`quick-feedback ${lastAnswer.correct ? 'is-correct' : 'is-wrong'}`} role="status">
-            <div><strong>{lastAnswer.correct ? `Correct · +${lastAnswer.xp} XP` : question.kind === 'counting' ? `Correct count: ${signed(question.target)}` : `Correct play: ${formatAction(question.target)}`}</strong>
+            <div><span className="feedback-symbol" aria-hidden="true"><GameIcon name={lastAnswer.correct ? 'check' : 'target'} /></span><strong>{lastAnswer.correct ? `Nice · +${lastAnswer.xp} XP` : question.kind === 'counting' ? `Correct count: ${signed(question.target)}` : `Correct play: ${formatAction(question.target)}`}</strong>
               <p>{question.kind === 'counting' ? `${signed(question.countBefore)} + (${signed(question.cards.reduce((sum, card) => sum + getCardValue(card), 0))}) = ${signed(question.target)}. Carry ${signed(question.target)} forward.`
                 : explainStrategyCase(question.situation)}</p></div>
             <div className="button-row">{!held && <button className="quiet-button" onClick={() => { feedbackHeld.current = true; setHeld(true); feedbackDeadline.current = null; }}>Hold to review</button>}
