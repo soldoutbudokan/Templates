@@ -5,11 +5,12 @@ import TrainingSession, { SessionReview } from '@/components/TrainingSession';
 import FreePractice from '@/components/FreePractice';
 import FullTableTest, { FullTableReview } from '@/components/FullTableTest';
 import StrategyPractice from '@/components/StrategyPractice';
+import QuickPlay from '@/components/QuickPlay';
 import { TableSessionResult } from '@/lib/blackjack';
 import { readTableHistory, tableResultLabel } from '@/lib/tableHistory';
 import { assessmentEligible, readHistory, recommendation, sessionLabel, SessionResult } from '@/lib/training';
 
-type Tab = 'train' | 'table' | 'strategy' | 'practice' | 'progress' | 'learn';
+type Tab = 'play' | 'train' | 'table' | 'strategy' | 'practice' | 'progress' | 'learn';
 const STORAGE_KEY = 'counting-coach-history-v1';
 const TABLE_STORAGE_KEY = 'counting-table-history-v1';
 
@@ -24,7 +25,7 @@ function Learn() {
 }
 
 export default function Home() {
-  const [tab, setTab] = useState<Tab>('train');
+  const [tab, setTab] = useState<Tab>('play');
   const [active, setActive] = useState(false);
   const [results, setResults] = useState<SessionResult[]>([]);
   const [tableResults, setTableResults] = useState<TableSessionResult[]>([]);
@@ -77,11 +78,12 @@ export default function Home() {
   return <main className="training-app">
     <div className="app-shell">
       <header className="app-header"><a className="wordmark" href="#main-content" aria-label="Card Counting Trainer"><span aria-hidden>♠</span><div>Counting<span className="wordmark-detail">HI-LO TRAINER</span></div></a><span className="header-note">A steady count takes practice.</span></header>
-      <nav className="main-tabs" aria-label="Training sections">{([['train', 'Train'], ['table', 'Full test'], ['strategy', 'Perfect strategy'], ['practice', 'Practice drills'], ['progress', 'Progress'], ['learn', 'Learn']] as const).map(([key, label]) => <button key={key} className={tab === key ? 'active' : ''} aria-current={tab === key ? 'page' : undefined} disabled={active && key !== tab} onClick={() => setTab(key)}>{label}</button>)}</nav>
+      <nav className="main-tabs" aria-label="Training sections">{([['play', 'Quick play'], ['train', 'Train'], ['table', 'Full test'], ['strategy', 'Perfect strategy'], ['practice', 'Practice drills'], ['progress', 'Progress'], ['learn', 'Learn']] as const).map(([key, label]) => <button key={key} className={tab === key ? 'active' : ''} aria-current={tab === key ? 'page' : undefined} disabled={active && key !== tab} onClick={() => setTab(key)}>{label}</button>)}</nav>
       {active && <p className="active-note">End this session to switch sections.</p>}
       {storageMessage && <p className="storage-message" role="status">{storageMessage}</p>}
       {tableStorageMessage && <p className="storage-message" role="status">{tableStorageMessage}</p>}
       <div id="main-content">
+        {tab === 'play' && <QuickPlay onActiveChange={setActive} onOpenTraining={setTab} />}
         {tab === 'train' && <>
           {!active && <div className="next-session-note"><span className="eyebrow">Suggested focus</span><strong>{next.title}</strong><p>{next.reason}</p></div>}
           {loaded ? <TrainingSession suggestedFocus={next.focus} onSave={save} onActiveChange={setActive} /> : <p className="paper-card" role="status">Loading your progress…</p>}

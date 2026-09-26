@@ -1,6 +1,6 @@
 # Card Counting Trainer
 
-A Next.js app for learning a steady Hi-Lo count. Guided practice carries one running count across successive groups of cards, checks it at unpredictable points, and turns mistakes into a replay and a concrete next exercise.
+A Next.js app for learning a steady Hi-Lo count and accurate blackjack basic strategy. Quick play makes short practice easy to start; guided sessions and full-table tests provide deeper, inspectable feedback.
 
 **Live:** [counting-trainer-sob.vercel.app](https://counting-trainer-sob.vercel.app/)
 
@@ -20,6 +20,14 @@ npm test
 npm run typecheck
 npm run build
 ```
+
+## Quick play
+
+The opening screen offers one-tap **Count**, **Strategy**, or **Mixed** practice runs. Each run provides 60 seconds of answering time; coaching feedback and pauses do not consume that time. Mixed runs alternate cumulative pair counting and basic-strategy choices. Counting carries a running total across Count questions, with the corrected total supplied after each first answer. Strategy cards belong to a separate drill and do not enter that total; the full-table test integrates every visible card.
+
+Correct first answers earn 10 XP, plus a combo bonus that rises by 2 XP every three consecutive correct answers, capped at 10 bonus XP. Mistakes earn no XP and reset the combo. Incorrect answers hold the explanation until the next question is requested; correct answers advance after a short reward beat unless held for review. Runs finish on a results screen with separate skill accuracy, a personal best, and an optional rematch; they never restart automatically. Pausing or hiding the tab covers the cards and freezes the clock.
+
+Daily practice streaks use the browser’s local calendar date. A completed run needs at least five answers to earn daily credit; a run that reaches the 200-question cap also counts as complete. Early exits retain first-answer records but do not earn daily credit. Streaks and XP measure practice activity, not mastery; uninterrupted full tests remain separate. Quick-play progress is stored on this device, alongside the other training histories.
 
 ## Guided training
 
@@ -90,6 +98,7 @@ Free-practice streaks are separate from guided-session history. Layouts adapt to
 - `lib/countPolicy.ts`: strict number parsing, half-deck estimation, and the shared true-count convention.
 - `lib/training.ts`: reproducible checkpoint plans, frozen targets, independent counting/conversion grades, replay counts, validated bounded history, and recommendations.
 - `components/TrainingSession.tsx`: coached/assessment lifecycle, pause behavior, first-attempt submission guard, replay and review.
+- `lib/quickPlay.ts` and `components/QuickPlay.tsx`: finite practice runs, first-answer combos, local-calendar activity, and bounded history.
 - `lib/blackjack.ts`: immutable, seeded full-round engine and separate strategy/count records.
 - `lib/tableHistory.ts`: bounded table history rebuilt from learner inputs.
 - `components/FullTableTest.tsx`: table lifecycle, concealed test answers, interruption handling, and review.
