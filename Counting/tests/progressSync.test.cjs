@@ -10,6 +10,10 @@ const {
 } = require('../lib/quickPlay.ts');
 const { createTrainingPlan, gradeCheckpoint } = require('../lib/training.ts');
 const { createTableSession, finishTableSession } = require('../lib/blackjack.ts');
+const {
+  createChallenge, advanceChallenge, submitChallengeBet, submitChallengeCount,
+  continueChallenge, finishChallenge,
+} = require('../lib/challenge.ts');
 
 const dayAt = offset => new Date(Date.UTC(2025, 0, 1 + offset)).toISOString().slice(0, 10);
 const instantAt = offset => `${dayAt(offset)}T12:01:00.000Z`;
@@ -39,6 +43,98 @@ function withSessions(seed, day = '2026-09-26') {
   data.table = [table(seed, `${day}T12:00:00.000Z`)];
   return data;
 }
+
+function challenge(seed, endedAt = '2026-09-26T12:00:00.000Z', complete = false) {
+  let state = createChallenge('rhythm', seed, {
+    startedAt: new Date(Date.parse(endedAt) - 60_000).toISOString(), id: `challenge-test-${seed}`,
+  });
+  if (complete) {
+    let steps = 0;
+    while (state.phase !== 'complete') {
+      assert.ok(steps++ < 1000, 'challenge completes within the replay bound');
+      if (state.phase === 'bet') state = submitChallengeBet(state, 1);
+      else if (state.phase === 'count-checkpoint') state = submitChallengeCount(state, 0, 0);
+      else if (state.phase === 'feedback') state = continueChallenge(state);
+      else state = advanceChallenge(state);
+    }
+  }
+  return finishChallenge(state, endedAt);
+}
+
+test('version-one profiles migrate missing challenge fields without changing existing progress', () => {
+  const legacy = withSessions(1);
+  delete legacy.challenge;
+  delete legacy.clearedBefore.challenge;
+  const migrated = readProgress(JSON.stringify(legacy));
+  assert.deepEqual(migrated, { ...legacy, challenge: [], clearedBefore: { ...legacy.clearedBefore, challenge: null } });
+  assert.deepEqual(readProgress(JSON.stringify(migrated)), migrated, 'migration is idempotent');
+});
+
+test('concurrent challenge records merge immutably and survive uploads from old devices', () => {
+  const common = withSessions(1);
+  common.challenge = [challenge(1)];
+  const laptop = { ...emptyProgress(), challenge: [challenge(2)] };
+  const phone = { ...emptyProgress(), challenge: [challenge(3)] };
+  const merged = mergeProgress(mergeProgress(common, laptop), phone);
+  assert.deepEqual(merged, mergeProgress(mergeProgress(common, phone), laptop));
+  assert.deepEqual(merged.challenge.map(session => session.seed), [1, 2, 3]);
+  assert.deepEqual(mergeProgress(merged, common), merged);
+  const oldDevice = structuredClone(common);
+  delete oldDevice.challenge;
+  delete oldDevice.clearedBefore.challenge;
+  assert.deepEqual(mergeProgress(merged, oldDevice), merged);
+  const completed = { ...emptyProgress(), challenge: [challenge(1, undefined, true)] };
+  const updated = mergeProgress(common, completed);
+  assert.equal(updated.challenge.length, 1);
+  assert.equal(updated.challenge[0].completed, true);
+  assert.deepEqual(updated, mergeProgress(completed, common));
+  assert.deepEqual(updated.guided, common.guided);
+  assert.deepEqual(updated.table, common.table);
+  assert.deepEqual(updated.quick, common.quick);
+});
+
+test('challenge history retains the newest 24 attempts and rejects overfull sync documents', () => {
+  const first = { ...emptyProgress(), challenge: Array.from({ length: 20 }, (_, i) => challenge(i, instantAt(i))) };
+  const second = { ...emptyProgress(), challenge: Array.from({ length: 20 }, (_, i) => challenge(i + 10, instantAt(i + 10))) };
+  const merged = mergeProgress(first, second);
+  assert.deepEqual(merged.challenge.map(session => session.seed), Array.from({ length: 24 }, (_, i) => i + 6));
+  assert.deepEqual(merged, mergeProgress(second, first));
+  assert.deepEqual(mergeProgress(merged, first), merged);
+  assert.throws(() => readProgress(JSON.stringify({ ...emptyProgress(), challenge: [...first.challenge, ...second.challenge] })));
+});
+
+test('challenge clear watermarks survive backups and stale device uploads', () => {
+  const original = { ...withSessions(5), challenge: [challenge(5, '2026-09-24T12:00:00.000Z')] };
+  const cleared = clearProgressHistory(original, 'challenge', '2026-09-24T12:00:00.000Z');
+  assert.deepEqual(cleared.challenge, []);
+  assert.deepEqual(cleared.quick, original.quick);
+  assert.deepEqual(cleared.guided, original.guided);
+  assert.deepEqual(cleared.table, original.table);
+  const backup = readProgress(JSON.stringify(cleared));
+  const newAttempt = { ...emptyProgress(), challenge: [challenge(6, '2026-09-25T12:00:00.000Z')] };
+  const restored = mergeProgress(backup, mergeProgress(original, newAttempt));
+  assert.deepEqual(restored.challenge.map(session => session.seed), [6]);
+  assert.deepEqual(mergeProgress(restored, original), restored);
+  assert.deepEqual(clearProgressHistory(restored, 'challenge', '2026-09-23T12:00:00.000Z'), restored);
+});
+
+test('challenge scores are verified by replay and malformed scores or inputs reject the entire profile', () => {
+  const data = { ...withSessions(8), challenge: [challenge(8, undefined, true)] };
+  assert.deepEqual(readProgress(JSON.stringify(data)), data);
+  const inflated = structuredClone(data);
+  inflated.challenge[0].summary = { score: 999999, countAccuracy: 100, betAccuracy: 100 };
+  assert.throws(() => readProgress(JSON.stringify(inflated)), /Invalid challenge progress/);
+  const corruptions = [
+    { ...data, challenge: null }, { ...data, challenge: {} },
+    { ...data, challenge: [null] },
+    { ...data, challenge: [data.challenge[0], data.challenge[0]] },
+    { ...data, challenge: [{ ...data.challenge[0], seed: -1 }] },
+    { ...data, challenge: [{ ...data.challenge[0], endedAt: 'yesterday' }] },
+    { ...data, challenge: [{ ...data.challenge[0], inputs: [{ type: 'invented-action' }] }] },
+    { ...data, clearedBefore: { ...data.clearedBefore, challenge: 'yesterday' } },
+  ];
+  for (const corruption of corruptions) assert.throws(() => readProgress(JSON.stringify(corruption)));
+});
 
 test('two devices retain concurrent sessions, daily credit and best scores without duplicate uploads', () => {
   const common = withSessions(1, '2026-09-24');
