@@ -201,7 +201,7 @@ export default function TableChallenge({ onActiveChange, onOpenTraining }: Props
       || !['player-turn', 'insurance'].includes(state.phase)) return;
     const handler = (event: KeyboardEvent) => {
       if (event.altKey || event.ctrlKey || event.metaKey || event.repeat
-        || (event.target as HTMLElement)?.closest('input, select, textarea, button, [contenteditable="true"]')) return;
+        || (event.target as HTMLElement)?.closest('input, select, textarea, [contenteditable="true"]')) return;
       const action = (Object.keys(KEYS) as TableAction[]).find(value => KEYS[value] === event.key.toLowerCase());
       if (action && legalActions(stateRef.current!.table).includes(action)) { event.preventDefault(); chooseAction(action); }
     };

@@ -8,6 +8,7 @@ import {
 } from '../lib/challenge';
 
 const actionLabels = { hit: /^Hit(?: H)?$/, stand: /^Stand(?: S)?$/, double: /^Double(?: D)?$/, split: /^Split(?: P)?$/, surrender: /^Surrender(?: R)?$/, insure: /^Take insurance(?: I)?$/, 'decline-insurance': /^Decline insurance(?: N)?$/ };
+const actionKeys = { hit: 'h', stand: 's', double: 'd', split: 'p', surrender: 'r', insure: 'i', 'decline-insurance': 'n' };
 
 test.beforeEach(async ({ page }) => {
   // Deterministic fresh shoe and short visual deal delays; actual React UI and persistence run unchanged.
@@ -59,12 +60,17 @@ async function playSixHands(page: Page, preset: ChallengePresetId) {
         { canDouble: legal.includes('double'), canSplit: legal.includes('split'), canSurrender: legal.includes('surrender') },
       );
       await page.getByRole('button', { name: actionLabels[action], exact: true }).waitFor();
-      if (!captured) {
+      const firstAction = !captured;
+      if (firstAction) {
         await noOverflow(page);
         await page.screenshot({ path: `test-results/${preset}-table.png`, fullPage: true }); captured = true;
       }
       await page.waitForTimeout(280);
-      await page.getByRole('button', { name: actionLabels[action], exact: true }).click();
+      const button = page.getByRole('button', { name: actionLabels[action], exact: true });
+      if (firstAction) {
+        await button.focus();
+        await page.keyboard.press(actionKeys[action]);
+      } else await button.click();
       state = applyChallengeAction(state, action);
     } else state = advanceChallenge(state);
   }

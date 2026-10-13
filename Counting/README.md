@@ -19,6 +19,8 @@ Open http://localhost:3000.
 npm test
 npm run typecheck
 npm run build
+npx playwright install chromium
+npx playwright test
 ```
 
 ## Six-hand table challenge
@@ -185,7 +187,7 @@ No new runtime dependencies or account system are required. Remote storage is op
 
 ## Verification
 
-`npm test` uses Node's test runner and the existing TypeScript compiler. It covers 340 independently transcribed strategy chart cells and legal-action fallbacks; insurance, hole-card exposure, naturals, splits, surrender, H17, deterministic full shoes, partial sessions, and replayed table history; plus guided counting, strict conversion, corrupt history, assessment eligibility, and recommendations. Challenge tests cover all three checkpoint schedules, six-round termination, hidden dealer cards, delayed bet feedback, first answers, lost-count correction, settlement, score independence from chip outcomes, record eligibility, seed selection, recommendations, and tampered history. Sync tests cover concurrent uploads, duplicate sessions, offline retry, migration, deletion cutoffs, storage failures, authentication, payload limits, and timezone/DST boundaries. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs all three verification commands, including the production build.
+`npm test` uses Node's test runner and the existing TypeScript compiler. It covers 340 independently transcribed strategy chart cells and legal-action fallbacks; insurance, hole-card exposure, naturals, splits, surrender, H17, deterministic full shoes, partial sessions, and replayed table history; plus guided counting, strict conversion, corrupt history, assessment eligibility, and recommendations. Challenge tests cover all three checkpoint schedules, six-round termination, hidden dealer cards, delayed bet feedback, first answers, lost-count correction, settlement, score independence from chip outcomes, record eligibility, seed selection, recommendations, and tampered history. Sync tests cover concurrent uploads, duplicate sessions, offline retry, migration, deletion cutoffs, storage failures, authentication, payload limits, and timezone/DST boundaries. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs the logic tests, typecheck, production build, and Playwright browser checks. Browser checks complete six-hand runs on desktop and at a 360-pixel phone width, verify manual actions and keyboard shortcuts, check for horizontal overflow, reload saved records, inspect card replay, and exercise pause/resume and lost-count practice. Test shoes and visual delays are deterministic; application state, scoring, rendering, and local persistence run through the real UI. Screenshots and failure traces are retained as workflow artifacts for seven days.
 
 ## Later stages
 
