@@ -63,7 +63,7 @@ function HomeContent() {
         {tab === 'strategy' && <StrategyPractice onActiveChange={setActive} />}
         {tab === 'practice' && <section className="practice-section"><div className="page-heading"><span className="eyebrow">Isolate a skill</span><h1>Practice drills</h1><p>Use these for focused repetition. Guided sessions add checkpoints, replay, and a saved review.</p></div><FreePractice /></section>}
         {tab === 'learn' && <><div className="page-heading"><span className="eyebrow">The essentials</span><h1>Build the right habits.</h1></div><Learn /></>}
-        {tab === 'progress' && <section className="progress-section"><div className="page-heading"><span className="eyebrow">Your recent practice</span><h1>Progress you can inspect.</h1><p>Your latest 24 guided sessions and 24 table attempts appear here. Connect device sync to keep this history and your Quick Play streak together.</p></div>
+        {tab === 'progress' && <section className="progress-section"><div className="page-heading"><span className="eyebrow">Your recent practice</span><h1>Progress you can inspect.</h1><p>Your latest 24 challenges, 24 guided sessions, and 24 full-table attempts appear here. Connect device sync to keep this history and your Quick Play streak together.</p></div>
           <SyncPanel />
           <ChallengeHistory />
           <div className="paper-card"><h2>Full table results</h2><p>Playing decisions, running counts, and true counts stay separate. Partial and interrupted attempts are included.</p>

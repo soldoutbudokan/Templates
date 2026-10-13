@@ -147,6 +147,7 @@ export default function TableChallenge({ onActiveChange, onOpenTraining }: Props
     const completed = finishChallenge(current);
     saveChallenge(completed); setResult(completed); stateRef.current = null; setState(null);
     pausedRef.current = false; setPaused(false);
+    window.scrollTo(0, 0);
   }, [saveChallenge]);
 
   const pause = useCallback(() => {
@@ -185,6 +186,7 @@ export default function TableChallenge({ onActiveChange, onOpenTraining }: Props
     const next = createChallenge(nextPreset, seed, { replay: !!replayResult });
     saved.current = false; pausedRef.current = false; lastInput.current = 0; lastExposure.current = 0;
     setPaused(false); setResult(null); setRunning(''); setTrueCount(''); setError(''); setSelection(nextPreset); replace(next);
+    window.scrollTo(0, 0);
   }
   function canInput() {
     if (document.hidden || pausedRef.current || !stateRef.current || performance.now() - lastInput.current < 250) return false;

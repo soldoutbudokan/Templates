@@ -63,6 +63,12 @@ async function playSixHands(page: Page, preset: ChallengePresetId) {
       const firstAction = !captured;
       if (firstAction) {
         await noOverflow(page);
+        if (page.viewportSize()!.width === 360) {
+          const dealer = await page.locator('.challenge-dealer').boundingBox();
+          const choices = await page.locator('.challenge-actions .button-row').boundingBox();
+          expect(dealer!.y).toBeGreaterThanOrEqual(0);
+          expect(choices!.y + choices!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+        }
         await page.screenshot({ path: `test-results/${preset}-table.png`, fullPage: true }); captured = true;
       }
       await page.waitForTimeout(280);
