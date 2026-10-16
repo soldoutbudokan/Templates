@@ -205,7 +205,8 @@ export default function QuickPlay({ onActiveChange, onOpenTraining }: Props) {
   });
   const weak = [...skillScores].filter(skill => skill.attempted > 0)
     .sort((a, b) => a.correct / a.attempted - b.correct / b.attempted)[0];
-  const improvement: Destination = weak?.kind === 'counting' ? 'train' : weak?.kind === 'strategy' ? 'strategy' : 'table';
+  const improvement: Destination = weak && weak.correct < weak.attempted
+    ? weak.kind === 'counting' ? 'train' : 'strategy' : 'table';
 
   return <section className={`quick-play quick-phase-${phase}`} aria-label="Quick practice">
     {phase === 'idle' ? <>
