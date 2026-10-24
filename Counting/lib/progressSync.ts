@@ -1,4 +1,5 @@
 import { TableSessionResult } from './blackjack';
+import { ChallengeResult, validateChallengeHistory } from './challenge';
 import { EMPTY_QUICK_HISTORY, QUICK_DAY_LIMIT, QUICK_HISTORY_LIMIT, QuickHistory, QuickSessionResult, readQuickHistory } from './quickPlay';
 import { readTableHistory } from './tableHistory';
 import { readHistory, SessionResult } from './training';
@@ -14,8 +15,9 @@ export interface ProgressData {
   quick: QuickHistory;
   guided: SessionResult[];
   table: TableSessionResult[];
+  challenge: ChallengeResult[];
   /** Clearing a history must also remove old copies arriving from another device. */
-  clearedBefore: { guided: string | null; table: string | null };
+  clearedBefore: { guided: string | null; table: string | null; challenge: string | null };
 }
 
 function object(value: unknown): value is Record<string, unknown> {
@@ -42,8 +44,8 @@ export function progressDateKey(date: Date | string = new Date(), timeZone = DEF
 export function emptyProgress(timeZone = DEFAULT_PROGRESS_TIME_ZONE): ProgressData {
   return {
     version: 1, timeZone: normalizeProgressTimeZone(timeZone),
-    quick: { ...EMPTY_QUICK_HISTORY, sessions: [], activityDays: [] }, guided: [], table: [],
-    clearedBefore: { guided: null, table: null },
+    quick: { ...EMPTY_QUICK_HISTORY, sessions: [], activityDays: [] }, guided: [], table: [], challenge: [],
+    clearedBefore: { guided: null, table: null, challenge: null },
   };
 }
 
@@ -72,13 +74,17 @@ export function readProgress(raw: string | null): ProgressData {
   const data: unknown = JSON.parse(raw);
   if (!object(data) || data.version !== 1 || typeof data.timeZone !== 'string' || !object(data.quick)
     || !Array.isArray(data.guided) || data.guided.length > PROGRESS_HISTORY_LIMIT
-    || !Array.isArray(data.table) || data.table.length > PROGRESS_HISTORY_LIMIT || !object(data.clearedBefore)) {
+    || !Array.isArray(data.table) || data.table.length > PROGRESS_HISTORY_LIMIT
+    || (data.challenge !== undefined && (!Array.isArray(data.challenge) || data.challenge.length > PROGRESS_HISTORY_LIMIT))
+    || !object(data.clearedBefore)) {
     throw new Error('Unrecognized progress format.');
   }
   const timeZone = normalizeProgressTimeZone(data.timeZone);
   const clearedBefore = {
     guided: data.clearedBefore.guided === null ? null : timestamp(data.clearedBefore.guided),
     table: data.clearedBefore.table === null ? null : timestamp(data.clearedBefore.table),
+    challenge: data.clearedBefore.challenge === undefined || data.clearedBefore.challenge === null
+      ? null : timestamp(data.clearedBefore.challenge),
   };
   const parsedQuick = readQuickHistory(JSON.stringify(data.quick));
   if (parsedQuick.reset) throw new Error('Invalid quick-play progress.');
@@ -91,8 +97,13 @@ export function readProgress(raw: string | null): ProgressData {
   }
   const table = readTableHistory(JSON.stringify({ version: 1, sessions: data.table }));
   if (table.length !== data.table.length) throw new Error('Invalid table progress.');
+  // Version-one profiles predating table challenges have no challenge field.
+  const challengeEntries = (data.challenge as unknown[] | undefined) ?? [];
+  const challenge = validateChallengeHistory(challengeEntries);
+  if (challenge.length !== challengeEntries.length) throw new Error('Invalid challenge progress.');
   uniqueIds(guided);
   uniqueIds(table);
+  uniqueIds(challenge);
   return {
     version: 1, timeZone,
     quick: { ...parsedQuick.history, sessions: [...parsedQuick.history.sessions].sort(bySession) },
@@ -100,12 +111,15 @@ export function readProgress(raw: string | null): ProgressData {
       .filter(entry => !clearedBefore.guided || entry.endedAt > clearedBefore.guided).sort(bySession),
     table: table.map(entry => ({ ...entry, endedAt: timestamp(entry.endedAt) }))
       .filter(entry => !clearedBefore.table || entry.endedAt > clearedBefore.table).sort(bySession),
+    challenge: challenge.map(entry => ({ ...entry, endedAt: timestamp(entry.endedAt) }))
+      .filter(entry => !clearedBefore.challenge || entry.endedAt > clearedBefore.challenge).sort(bySession),
     clearedBefore,
   };
 }
 
-type SavedSession = QuickSessionResult | SessionResult | TableSessionResult;
+type SavedSession = QuickSessionResult | SessionResult | TableSessionResult | ChallengeResult;
 function completeness(session: SavedSession): number {
+  if ('inputs' in session) return session.inputs.length;
   if ('decisions' in session) return session.decisions.length + session.checkpoints.length + session.exposures.length;
   return session.answers.length;
 }
@@ -176,6 +190,7 @@ export function mergeProgress(current: ProgressData, incoming: ProgressData): Pr
   const clearedBefore = {
     guided: later(left.clearedBefore.guided, right.clearedBefore.guided),
     table: later(left.clearedBefore.table, right.clearedBefore.table),
+    challenge: later(left.clearedBefore.challenge, right.clearedBefore.challenge),
   };
   return {
     version: 1, timeZone: left.timeZone,
@@ -187,16 +202,18 @@ export function mergeProgress(current: ProgressData, incoming: ProgressData): Pr
     },
     guided: mergeSessions(left.guided, right.guided, PROGRESS_HISTORY_LIMIT, clearedBefore.guided),
     table: mergeSessions(left.table, right.table, PROGRESS_HISTORY_LIMIT, clearedBefore.table),
+    challenge: mergeSessions(left.challenge, right.challenge, PROGRESS_HISTORY_LIMIT, clearedBefore.challenge),
     clearedBefore,
   };
 }
 
-export function clearProgressHistory(data: ProgressData, kind: 'guided' | 'table', date: Date | string = new Date()): ProgressData {
-  if (kind !== 'guided' && kind !== 'table') throw new Error('Unknown progress history.');
+export function clearProgressHistory(data: ProgressData, kind: 'guided' | 'table' | 'challenge', date: Date | string = new Date()): ProgressData {
+  if (kind !== 'guided' && kind !== 'table' && kind !== 'challenge') throw new Error('Unknown progress history.');
   const cleared = readProgress(JSON.stringify(data));
   const instant = timestamp(date instanceof Date ? date.toISOString() : date);
   cleared.clearedBefore[kind] = later(cleared.clearedBefore[kind], instant);
   if (kind === 'guided') cleared.guided = cleared.guided.filter(session => session.endedAt > cleared.clearedBefore.guided!);
-  else cleared.table = cleared.table.filter(session => session.endedAt > cleared.clearedBefore.table!);
+  else if (kind === 'table') cleared.table = cleared.table.filter(session => session.endedAt > cleared.clearedBefore.table!);
+  else cleared.challenge = cleared.challenge.filter(session => session.endedAt > cleared.clearedBefore.challenge!);
   return cleared;
 }

@@ -1,6 +1,6 @@
 # Card Counting Trainer
 
-A Next.js app for learning a steady Hi-Lo count and accurate blackjack basic strategy. Quick play makes short practice easy to start; guided sessions and full-table tests provide deeper, inspectable feedback.
+A Next.js app for learning a steady Hi-Lo count and accurate blackjack basic strategy. The default six-hand table challenge connects counting to playing and practice betting decisions. Quick drills, guided sessions, and unassisted full-table tests provide focused practice and inspectable feedback.
 
 **Live:** [counting-trainer-sob.vercel.app](https://counting-trainer-sob.vercel.app/)
 
@@ -19,11 +19,43 @@ Open http://localhost:3000.
 npm test
 npm run typecheck
 npm run build
+npx playwright install chromium
+npx playwright test
 ```
 
-## Quick play
+## Six-hand table challenge
 
-The opening screen offers one-tap **Count**, **Strategy**, or **Mixed** practice runs. Each run provides 60 seconds of answering time; coaching feedback and pauses do not consume that time. Mixed runs alternate cumulative pair counting and basic-strategy choices. Counting carries a running total across Count questions, with the corrected total supplied after each first answer. Strategy cards belong to a separate drill and do not enter that total; the full-table test integrates every visible card.
+**Play a table** is the opening screen and default mode. One tap starts a new six-deck shoe at zero with two other players and six rounds, intended for roughly three minutes of practice. Cards appear one at a time. Carry the same running count across every exposed card, including other players' hands and the dealer's hole card when revealed. The challenge ends after the sixth round and offers a fresh shoe, a repair replay, or a separate full test; it never restarts automatically.
+
+All three challenges remain selectable:
+
+| Challenge | Automatic card pace | Playing decisions | Count checkpoints |
+| --- | --- | --- | --- |
+| Find your rhythm | 0.9 seconds | Basic strategy plays for you | After every round |
+| Read the table | 0.9 seconds | You play your hands | After rounds 2, 4, and 6 |
+| Hold the pace | 0.65 seconds | You play your hands | After rounds 3 and 6 |
+
+The first hand uses one practice unit. Before each later hand, convert the count using the supplied half-deck estimate and choose a bet from this explicit schedule:
+
+| True count | Practice bet |
+| --- | --- |
+| 0 or less | 1 unit |
+| +1 | 2 units |
+| +2 or more | 4 units |
+
+Bet correctness stays hidden until the next scheduled count checkpoint. The cards clear before that check; submit running and true counts together, or record that you lost the count. Feedback preserves the first answer, supplies the corrected cumulative count to carry forward, and reviews the bets since the previous check. These are coached challenges, with assistance stated in the selected preset, rather than unassisted assessments.
+
+Practice shoes are selected to offer at least one raised-bet opportunity under baseline basic-strategy play. Selection tries up to 32 consecutive seeds, with at most 450 engine steps per candidate, then falls back to the original seed. This bounded search keeps starting a run finite; different manual plays can change subsequent exposures and opportunities. **Full test** uses unselected shoes for a separate assessment.
+
+Results show exact running-count checks, true-count checks, practice bets, and manual basic-strategy accuracy separately. The headline skill score gives each observed skill equal weight and rounds the average percentage; automatic strategy decisions earn no manual score. Simulated chip results account for the chosen stake and hand outcomes, but never contribute to that score. The rules remain the six-deck H17 profile below; manual decisions are graded against basic strategy, with no count-dependent deviations.
+
+The home screen compares the selected preset only. Its best is the highest eligible score among the latest **24 saved challenge runs**, not a lifetime record. Partial runs, paused or hidden-tab runs, and same-shoe repair replays remain saved practice but cannot set records. Pausing covers the cards and stops dealing; resuming shows the same cards, which must not be counted twice. Active runs live in memory until ended and are discarded on reload. Optional card and chip sounds default to off, with the preference saved on the device.
+
+The next-challenge recommendation advances after the latest two eligible runs of the same preset use different seeds and both have every running and true count correct, at least 80% correct bets, and at least 90% correct manual decisions where observed. This is a transparent practice heuristic, not a mastery certification. Results give a specific repair suggestion and let you step through each round's exposed cards from its known starting count; same-shoe replays cannot replace first answers or establish a fresh-shoe record.
+
+## Quick drills
+
+**Quick drills** offers **Count**, **Strategy**, or **Mixed** practice runs. Each run provides 60 seconds of answering time; coaching feedback and pauses do not consume that time. Mixed runs alternate cumulative pair counting and basic-strategy choices. Counting carries a running total across Count questions, with the corrected total supplied after each first answer. Strategy cards belong to a separate drill and do not enter that total; table challenges and full-table tests integrate every visible card.
 
 Correct first answers earn 10 XP, plus a combo bonus that rises by 2 XP every three consecutive correct answers, capped at 10 bonus XP. Mistakes earn no XP and reset the combo. Incorrect answers hold the explanation until the next question is requested; correct answers advance after a short reward beat unless held for review. Runs finish on a results screen with separate skill accuracy, a personal best, and an optional rematch; they never restart automatically. Pausing or hiding the tab covers the cards and freezes the clock.
 
@@ -53,12 +85,14 @@ The free database plan can be archived after at least 30 days of inactivity; Ups
 
 ### What persists
 
-- Daily Quick Play streaks and personal bests, the latest 20 Quick Play runs, 24 guided counting sessions, and 24 full-table attempts.
+- Daily Quick Play streaks and personal bests, the latest 20 Quick Play runs, 24 guided counting sessions, 24 full-table attempts, and 24 table challenges.
 - New sessions save locally before upload. While the app is open, temporary connection failures leave changes queued for retry on reconnection, focus, or a later visit. This is not an offline-installable app; loading the site itself still needs a connection.
 - Sync merges immutable session IDs rather than replacing one device's history with another. Redis compare-and-swap retries prevent two simultaneous uploads from losing each other's results. Repeated uploads do not duplicate sessions or streak credit.
-- Clearing guided or table history records a deletion cutoff and propagates it to linked devices, so an old offline copy cannot restore deleted sessions.
+- Clearing guided, full-table, or challenge history records a separate deletion cutoff and propagates it to linked devices, so an old offline copy cannot restore deleted sessions. Clearing challenge history also removes the records and recommendations derived from those runs.
 - **Backup & restore** downloads a progress-only JSON file (no key) and merges a selected backup. Original pre-sync browser keys remain untouched during migration.
 - Standalone strategy reviews and active sessions are still held in memory; they are not transferred mid-game. Only qualifying completed Quick Play runs earn daily streak credit.
+
+Existing version-one profiles migrate without losing their earlier practice: a missing challenge history becomes an empty list, and its missing deletion cutoff becomes `null`. Challenge history is rebuilt from the original seed and recorded transitions before import or sync. The reader verifies the resulting cards, targets, scores, outcomes, and completion state; malformed or inconsistent challenge data rejects the sync document rather than trusting cached grades. Session IDs deduplicate uploads, and challenge history uses the same bounded merge and deletion rules as the existing histories.
 
 Production, preview, and local-development profiles use separate database keys. The app never falls back to server memory or temporary files when storage fails, and never reports **Up to date** for a failed upload. Keep the database's profile key without a TTL.
 
@@ -109,13 +143,13 @@ Basic-strategy practice uses one explicit total-dependent profile:
 - A natural blackjack is resolved, rather than presented as a strategy question.
 - The evaluator includes unavailable-action fallbacks. The table engine supplies the current hand’s actual legal actions before grading.
 
-The example 1–2–4–8–10 betting schedule is for execution practice only. It is not calibrated to a bankroll, risk tolerance, table limits, or game profitability.
+The table challenge uses the 1–2–4 schedule above. The separate legacy true-count drill retains its example 1–2–4–8–10 schedule. Both are execution exercises; neither is calibrated to a bankroll, risk tolerance, table limits, or game profitability.
 
 References: [QFIT true-count conventions](https://www.qfit.com/CalculatingTrueCounts.htm), [Shackleford's 4–8 deck strategy and H17 amendments](https://wizardofodds.com/games/blackjack/strategy/4-decks/), [QFIT integrated practice](https://www.qfit.com/book/ModernBlackjackPage94.htm).
 
 ## Isolated practice drills
 
-The original five drills remain available under **Practice drills**:
+The original five drills remain available under **Isolated drills**:
 
 - **Spread:** independent card-batch arithmetic; explicitly starts a fresh shoe for each batch.
 - **Speed drill:** independent flashes; single-deck sequences stop at 51 cards, avoiding a forced-zero endpoint and implicit second shoe. Hiding the tab abandons the drill.
@@ -127,7 +161,7 @@ Free-practice streaks are separate from guided-session history. Layouts adapt to
 
 ## Visual design
 
-The interface uses a midnight-teal card-club theme, ivory SVG playing cards, a stitched table surface, and brief deal/reward motion. The same accessible deck appears in quick play, strategy, full-table play, and the original drills. Decorative cards are hidden from screen readers; face-down cards contain no face data. Reduced-motion preferences disable animation. On narrow screens, the full table gives the learner a wider seat, and quick play reserves space for its hand and controls.
+The interface uses a midnight-teal card-club theme, ivory SVG playing cards, a stitched table surface, and brief deal/reward motion. The same accessible deck appears in table challenges, quick drills, strategy, full-table play, and the original drills. Decorative cards are hidden from screen readers; face-down cards contain no face data. Reduced-motion preferences disable animation. On narrow screens, table play gives the learner a wider seat, and counting inputs include accessible sign buttons. Table challenges reserve space for cards and controls, with visible keyboard focus and 44-pixel control targets.
 
 ## Implementation
 
@@ -136,6 +170,8 @@ The interface uses a midnight-teal card-club theme, ivory SVG playing cards, a s
 - `lib/training.ts`: reproducible checkpoint plans, frozen targets, independent counting/conversion grades, replay counts, validated bounded history, and recommendations.
 - `components/TrainingSession.tsx`: coached/assessment lifecycle, pause behavior, first-attempt submission guard, replay and review.
 - `lib/quickPlay.ts` and `components/QuickPlay.tsx`: finite practice runs, first-answer combos, profile-calendar activity, and bounded history.
+- `lib/challenge.ts`: six-round wrapper around the table engine, three presets, delayed bet feedback, bounded seed selection, equal-weight skill scoring, recommendations, and replay-validated history.
+- `components/TableChallenge.tsx` and `app/challenge.css`: default challenge screen, paced table, count and bet controls, pause handling, optional audio, results, and saved exposure replay.
 - `lib/blackjack.ts`: immutable, seeded full-round engine and separate strategy/count records.
 - `lib/tableHistory.ts`: bounded table history rebuilt from learner inputs.
 - `components/FullTableTest.tsx`: table lifecycle, concealed test answers, interruption handling, and review.
@@ -151,7 +187,7 @@ No new runtime dependencies or account system are required. Remote storage is op
 
 ## Verification
 
-`npm test` uses Node's test runner and the existing TypeScript compiler. It covers 340 independently transcribed strategy chart cells and legal-action fallbacks; insurance, hole-card exposure, naturals, splits, surrender, H17, deterministic full shoes, partial sessions, and replayed table history; plus guided counting, strict conversion, corrupt history, assessment eligibility, and recommendations. Sync tests cover concurrent uploads, duplicate sessions, offline retry, migration, deletion cutoffs, storage failures, authentication, payload limits, and timezone/DST boundaries. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs all three verification commands, including the production build.
+`npm test` uses Node's test runner and the existing TypeScript compiler. It covers 340 independently transcribed strategy chart cells and legal-action fallbacks; insurance, hole-card exposure, naturals, splits, surrender, H17, deterministic full shoes, partial sessions, and replayed table history; plus guided counting, strict conversion, corrupt history, assessment eligibility, and recommendations. Challenge tests cover all three checkpoint schedules, six-round termination, hidden dealer cards, delayed bet feedback, first answers, lost-count correction, settlement, score independence from chip outcomes, record eligibility, seed selection, recommendations, and tampered history. Sync tests cover concurrent uploads, duplicate sessions, offline retry, migration, deletion cutoffs, storage failures, authentication, payload limits, and timezone/DST boundaries. `npm run typecheck` checks the application. The Counting GitHub Actions workflow runs the logic tests, typecheck, production build, and Playwright browser checks. Browser checks complete six-hand runs on desktop and at a 360-pixel phone width, verify manual actions and keyboard shortcuts, check for horizontal overflow, reload saved records, inspect card replay, and exercise pause/resume and lost-count practice. Test shoes and visual delays are deterministic; application state, scoring, rendering, and local persistence run through the real UI. Screenshots and failure traces are retained as workflow artifacts for seven days.
 
 ## Later stages
 
