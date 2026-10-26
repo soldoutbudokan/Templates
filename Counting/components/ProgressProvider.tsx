@@ -6,6 +6,7 @@ import { clearProgressHistory, emptyProgress, mergeProgress, progressDateKey, Pr
 import { addQuickResult, QuickSessionResult } from '@/lib/quickPlay';
 import { SessionResult } from '@/lib/training';
 import { TableSessionResult } from '@/lib/blackjack';
+import { ChallengeResult } from '@/lib/challenge';
 
 interface ProgressContextValue extends ProgressSnapshot {
   loaded: boolean;
@@ -17,7 +18,8 @@ interface ProgressContextValue extends ProgressSnapshot {
   saveQuick: (result: QuickSessionResult) => void;
   saveGuided: (result: SessionResult) => void;
   saveTable: (result: TableSessionResult) => void;
-  clearHistory: (kind: 'guided' | 'table') => void;
+  saveChallenge: (result: ChallengeResult) => void;
+  clearHistory: (kind: 'guided' | 'table' | 'challenge') => void;
   importProgress: (data: ProgressData) => void;
 }
 
@@ -86,12 +88,15 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const saveTable = useCallback((result: TableSessionResult) => client.current?.update(data => mergeProgress(data, {
     ...emptyProgress(data.timeZone), table: [result],
   })), []);
-  const clearHistory = useCallback((kind: 'guided' | 'table') => client.current?.update(data => clearProgressHistory(data, kind)), []);
+  const saveChallenge = useCallback((result: ChallengeResult) => client.current?.update(data => mergeProgress(data, {
+    ...emptyProgress(data.timeZone), challenge: [result],
+  })), []);
+  const clearHistory = useCallback((kind: 'guided' | 'table' | 'challenge') => client.current?.update(data => clearProgressHistory(data, kind)), []);
   const importProgress = useCallback((data: ProgressData) => client.current?.update(current => mergeProgress(current, data)), []);
 
   return <ProgressContext.Provider value={{ ...snapshot, loaded,
     today: clock ? progressDateKey(clock, snapshot.progress.timeZone) : '',
-    connect, disconnect, sync, getKey, saveQuick, saveGuided, saveTable, clearHistory, importProgress,
+    connect, disconnect, sync, getKey, saveQuick, saveGuided, saveTable, saveChallenge, clearHistory, importProgress,
   }}>{children}</ProgressContext.Provider>;
 }
 

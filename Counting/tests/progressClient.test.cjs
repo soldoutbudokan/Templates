@@ -5,6 +5,7 @@ const { emptyProgress, mergeProgress, readProgress, clearProgressHistory } = req
 const { addQuickResult, createQuickQuestions, createQuickResult, recordQuickAnswer } = require('../lib/quickPlay.ts');
 const { createTrainingPlan } = require('../lib/training.ts');
 const { createTableSession, finishTableSession } = require('../lib/blackjack.ts');
+const { createChallenge, finishChallenge } = require('../lib/challenge.ts');
 
 const KEY = 'private-counting-key-'.repeat(3);
 const NOW = '2026-09-26T18:00:00.000Z';
@@ -33,6 +34,12 @@ function result(seed = 1, day = '2026-09-26') {
 }
 function add(client, seed, day) {
   client.update(progress => ({ ...progress, quick: addQuickResult(progress.quick, result(seed, day)) }));
+}
+function addChallenge(client, seed, endedAt = NOW) {
+  const attempt = finishChallenge(createChallenge('rhythm', seed, {
+    id: `challenge-client-${seed}`, startedAt: '2026-09-26T12:00:00.000Z',
+  }), endedAt);
+  client.update(progress => mergeProgress(progress, { ...emptyProgress(), challenge: [attempt] }));
 }
 function backend(initial = emptyProgress()) {
   const server = {
@@ -90,6 +97,54 @@ test('first load migrates all three legacy histories once and leaves their backu
   assert.deepEqual(seeds(second.getSnapshot().progress), [], 'a new empty cache must not resurrect legacy history');
   assert.deepEqual(second.getSnapshot().progress.guided, []);
   second.dispose();
+});
+
+test('an older version-one cache accepts new challenges without losing prior records', async () => {
+  const oldProfile = { ...emptyProgress(), quick: addQuickResult(emptyProgress().quick, result(4)) };
+  delete oldProfile.challenge;
+  delete oldProfile.clearedBefore.challenge;
+  const saved = storage({ [PROGRESS_STORAGE_KEY]: JSON.stringify(oldProfile) });
+  const client = clientFor(saved, backend(), { online: false });
+  await client.initialize();
+  assert.deepEqual(client.getSnapshot().progress.challenge, []);
+  assert.deepEqual(seeds(client.getSnapshot().progress), [4]);
+  addChallenge(client, 5);
+  const backup = readProgress(saved.getItem(PROGRESS_STORAGE_KEY));
+  assert.equal(backup.challenge[0].seed, 5);
+  assert.deepEqual(seeds(backup), [4]);
+  client.dispose();
+  const reopened = clientFor(saved, backend(), { online: false });
+  await reopened.initialize();
+  assert.deepEqual(reopened.getSnapshot().progress, backup);
+  reopened.dispose();
+});
+
+test('offline challenges sync across devices and an old backup cannot resurrect cleared attempts', async () => {
+  const server = backend();
+  const connection = { online: true };
+  const saved = storage();
+  const first = clientFor(saved, server, connection);
+  const second = clientFor(storage(), server);
+  await first.initialize(); await first.connect(KEY);
+  await second.initialize(); await second.connect(KEY);
+  connection.online = false;
+  addChallenge(first, 1);
+  const backup = readProgress(saved.getItem(PROGRESS_STORAGE_KEY));
+  assert.equal(backup.challenge[0].seed, 1);
+  addChallenge(second, 2);
+  await second.sync();
+  connection.online = true;
+  await first.sync(); await second.sync();
+  assert.deepEqual(first.getSnapshot().progress.challenge.map(attempt => attempt.seed), [1, 2]);
+  assert.deepEqual(first.getSnapshot().progress, second.getSnapshot().progress);
+  first.update(progress => clearProgressHistory(progress, 'challenge', NOW));
+  await first.sync();
+  second.update(progress => mergeProgress(progress, backup));
+  await second.sync();
+  assert.deepEqual(second.getSnapshot().progress.challenge, []);
+  assert.deepEqual(server.progress.challenge, []);
+  assert.equal(server.progress.clearedBefore.challenge, NOW);
+  first.dispose(); second.dispose();
 });
 
 test('only missing server configuration changes an unlinked device to unavailable', async () => {
