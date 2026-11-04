@@ -8,18 +8,18 @@
   "teams": [
     "Lucknow Super Giants"
   ],
-  "total_tilt_per_match": 0.00649,
+  "total_tilt_per_match": -0.0035,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.00574,
-  "shrunk_total_tilt_per_match": -0.00377,
+  "bowling_tilt_per_match": -0.00425,
+  "shrunk_total_tilt_per_match": -0.01031,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.00165,
-  "tilt_ci_lower": -0.09631,
-  "tilt_ci_upper": 0.08876,
-  "tilt_ci_lower_90": -0.08144,
-  "tilt_ci_upper_90": 0.07389,
+  "shrunk_bowling_tilt_per_match": -0.00834,
+  "tilt_ci_lower": -0.105,
+  "tilt_ci_upper": 0.08437,
+  "tilt_ci_lower_90": -0.08978,
+  "tilt_ci_upper_90": 0.06915,
   "confidence": "low",
-  "total_tilt": 0.06493,
+  "total_tilt": -0.03497,
   "total_matches": 10,
   "batting_balls": 5,
   "bowling_balls": 217,
@@ -190,7 +190,7 @@
       "season": "2026",
       "team": "Lucknow Super Giants",
       "batting_tilt_per_match": 0.00753,
-      "bowling_tilt_per_match": -0.03966,
+      "bowling_tilt_per_match": -0.06463,
       "batting_matches": 1,
       "bowling_matches": 4,
       "batting_balls": 5,
@@ -213,8 +213,8 @@
           "bowl_balls": 24,
           "bowl_runs": 56,
           "bowl_econ": 14.0,
-          "bowl_tilt": -0.01135,
-          "total_tilt": -0.00382
+          "bowl_tilt": -0.11125,
+          "total_tilt": -0.10372
         },
         {
           "match_id": "1529293",
@@ -323,9 +323,9 @@
     },
     {
       "phase": "death",
-      "tilt": 0.3192,
+      "tilt": 0.2193,
       "balls": 37,
-      "avg_delta": 0.008185
+      "avg_delta": 0.005623
     }
   ],
   "best_matches": [
@@ -384,12 +384,12 @@
       "balls": 24
     },
     {
-      "match_id": "1529275",
-      "date": "2026-04-22",
-      "vs": "Rajasthan Royals",
-      "tilt": -0.01135,
-      "wickets": 0,
-      "balls": 24
+      "match_id": "1426286",
+      "date": "2024-04-30",
+      "vs": "Mumbai Indians",
+      "tilt": -0.02807,
+      "wickets": 1,
+      "balls": 19
     }
   ],
   "bowling_worst_matches": [
@@ -410,6 +410,14 @@
       "balls": 24
     },
     {
+      "match_id": "1529275",
+      "date": "2026-04-22",
+      "vs": "Rajasthan Royals",
+      "tilt": -0.11125,
+      "wickets": 0,
+      "balls": 24
+    },
+    {
       "match_id": "1422139",
       "date": "2024-04-07",
       "vs": "Gujarat Titans",
@@ -424,14 +432,6 @@
       "tilt": -0.03343,
       "wickets": 0,
       "balls": 24
-    },
-    {
-      "match_id": "1426286",
-      "date": "2024-04-30",
-      "vs": "Mumbai Indians",
-      "tilt": -0.02807,
-      "wickets": 1,
-      "balls": 19
     }
   ],
   "career_trend": [
@@ -474,26 +474,26 @@
     {
       "match": 7,
       "date": "2026-04-22",
-      "tilt": -0.00382,
-      "cumulative": 0.21222
+      "tilt": -0.10372,
+      "cumulative": 0.11233
     },
     {
       "match": 8,
       "date": "2026-05-07",
       "tilt": -0.13146,
-      "cumulative": 0.08076
+      "cumulative": -0.01914
     },
     {
       "match": 9,
       "date": "2026-05-15",
       "tilt": 0.01759,
-      "cumulative": 0.09836
+      "cumulative": -0.00154
     },
     {
       "match": 10,
       "date": "2026-05-19",
       "tilt": -0.03343,
-      "cumulative": 0.06493
+      "cumulative": -0.03497
     }
   ],
   "team_matchups": [
@@ -520,11 +520,6 @@
       "matches": 2
     },
     {
-      "opponent": "Rajasthan Royals",
-      "tilt_per_match": -0.02239,
-      "matches": 2
-    },
-    {
       "opponent": "Punjab Kings",
       "tilt_per_match": -0.04508,
       "matches": 2
@@ -533,6 +528,11 @@
       "opponent": "Gujarat Titans",
       "tilt_per_match": -0.05709,
       "matches": 1
+    },
+    {
+      "opponent": "Rajasthan Royals",
+      "tilt_per_match": -0.07234,
+      "matches": 2
     }
   ],
   "batting_stats": {
@@ -563,7 +563,7 @@
     -0.02807,
     0.01548,
     -0.30666,
-    -0.00382,
+    -0.10372,
     -0.13146,
     0.01759,
     -0.03343

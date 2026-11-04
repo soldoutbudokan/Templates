@@ -8,18 +8,18 @@
   "teams": [
     "Delhi Capitals"
   ],
-  "total_tilt_per_match": -0.01466,
-  "batting_tilt_per_match": -0.01725,
+  "total_tilt_per_match": -0.01604,
+  "batting_tilt_per_match": -0.01863,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.01844,
-  "shrunk_batting_tilt_per_match": -0.01623,
+  "shrunk_total_tilt_per_match": -0.01931,
+  "shrunk_batting_tilt_per_match": -0.01695,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.03457,
-  "tilt_ci_upper": -0.00231,
-  "tilt_ci_lower_90": -0.03198,
-  "tilt_ci_upper_90": -0.0049,
+  "tilt_ci_lower": -0.03558,
+  "tilt_ci_upper": -0.00303,
+  "tilt_ci_lower_90": -0.03297,
+  "tilt_ci_upper_90": -0.00564,
   "confidence": "low",
-  "total_tilt": -0.10259,
+  "total_tilt": -0.11225,
   "total_matches": 7,
   "batting_balls": 73,
   "bowling_balls": 18,
@@ -100,7 +100,7 @@
     {
       "season": "2022",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": -0.01185,
+      "batting_tilt_per_match": -0.0215,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 1,
       "bowling_matches": 0,
@@ -111,21 +111,21 @@
           "match_id": "1304101",
           "date": "2022-05-08",
           "opponent": "Chennai Super Kings",
-          "venue": "Dr DY Patil Sports Academy",
+          "venue": "Dr DY Patil Sports Academy, Navi Mumbai",
           "team_score": "117/10",
           "opponent_score": "208/6",
           "winner": "Chennai Super Kings",
           "bat_runs": 6,
           "bat_balls": 3,
           "bat_sr": 200.0,
-          "bat_tilt": -0.01185,
+          "bat_tilt": -0.0215,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.01185
+          "total_tilt": -0.0215
         }
       ],
       "batting_stats": {
@@ -249,9 +249,9 @@
   "batting_phases": [
     {
       "phase": "middle",
-      "tilt": -0.03751,
+      "tilt": -0.04716,
       "balls": 31,
-      "avg_delta": -0.001172
+      "avg_delta": -0.001474
     },
     {
       "phase": "death",
@@ -303,21 +303,21 @@
       "not_out": false
     },
     {
-      "match_id": "1304101",
-      "date": "2022-05-08",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.01185,
-      "runs": 6,
-      "balls": 3,
-      "not_out": false
-    },
-    {
       "match_id": "1359518",
       "date": "2023-05-02",
       "vs": "Gujarat Titans",
       "tilt": -0.01833,
       "runs": 23,
       "balls": 13,
+      "not_out": false
+    },
+    {
+      "match_id": "1304101",
+      "date": "2022-05-08",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.0215,
+      "runs": 6,
+      "balls": 3,
       "not_out": false
     }
   ],
@@ -341,21 +341,21 @@
       "not_out": false
     },
     {
+      "match_id": "1304101",
+      "date": "2022-05-08",
+      "vs": "Chennai Super Kings",
+      "tilt": -0.0215,
+      "runs": 6,
+      "balls": 3,
+      "not_out": false
+    },
+    {
       "match_id": "1359518",
       "date": "2023-05-02",
       "vs": "Gujarat Titans",
       "tilt": -0.01833,
       "runs": 23,
       "balls": 13,
-      "not_out": false
-    },
-    {
-      "match_id": "1304101",
-      "date": "2022-05-08",
-      "vs": "Chennai Super Kings",
-      "tilt": -0.01185,
-      "runs": 6,
-      "balls": 3,
       "not_out": false
     },
     {
@@ -404,32 +404,32 @@
     {
       "match": 3,
       "date": "2022-05-08",
-      "tilt": -0.01185,
-      "cumulative": -0.00719
+      "tilt": -0.0215,
+      "cumulative": -0.01685
     },
     {
       "match": 4,
       "date": "2023-04-24",
       "tilt": -0.05982,
-      "cumulative": -0.06702
+      "cumulative": -0.07667
     },
     {
       "match": 5,
       "date": "2023-04-29",
       "tilt": 0.0223,
-      "cumulative": -0.04472
+      "cumulative": -0.05437
     },
     {
       "match": 6,
       "date": "2023-05-02",
       "tilt": -0.01833,
-      "cumulative": -0.06304
+      "cumulative": -0.0727
     },
     {
       "match": 7,
       "date": "2023-05-10",
       "tilt": -0.03955,
-      "cumulative": -0.10259
+      "cumulative": -0.11225
     }
   ],
   "team_matchups": [
@@ -450,7 +450,7 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.02065,
+      "tilt_per_match": -0.02387,
       "matches": 3
     }
   ],
@@ -485,7 +485,7 @@
   "match_tilt_distribution": [
     -0.01056,
     0.01522,
-    -0.01185,
+    -0.0215,
     -0.05982,
     0.0223,
     -0.01833,

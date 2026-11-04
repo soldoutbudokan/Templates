@@ -9,18 +9,18 @@
     "Royal Challengers Bangalore",
     "Sunrisers Hyderabad"
   ],
-  "total_tilt_per_match": -0.00043,
+  "total_tilt_per_match": -0.00953,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.02531,
-  "shrunk_total_tilt_per_match": -0.01115,
+  "bowling_tilt_per_match": 0.0162,
+  "shrunk_total_tilt_per_match": -0.01607,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.00621,
-  "tilt_ci_lower": -0.09298,
-  "tilt_ci_upper": 0.07067,
-  "tilt_ci_lower_90": -0.07983,
-  "tilt_ci_upper_90": 0.05752,
+  "shrunk_bowling_tilt_per_match": 0.00107,
+  "tilt_ci_lower": -0.09392,
+  "tilt_ci_upper": 0.06179,
+  "tilt_ci_lower_90": -0.08141,
+  "tilt_ci_upper_90": 0.04928,
   "confidence": "low",
-  "total_tilt": -0.00258,
+  "total_tilt": -0.05719,
   "total_matches": 6,
   "batting_balls": 2,
   "bowling_balls": 144,
@@ -29,7 +29,7 @@
       "season": "2017",
       "team": "Royal Challengers Bangalore",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.07528,
+      "bowling_tilt_per_match": 0.02847,
       "batting_matches": 0,
       "bowling_matches": 2,
       "batting_balls": 0,
@@ -52,14 +52,14 @@
           "bowl_balls": 24,
           "bowl_runs": 29,
           "bowl_econ": 7.25,
-          "bowl_tilt": 0.14078,
-          "total_tilt": 0.14078
+          "bowl_tilt": 0.11485,
+          "total_tilt": 0.11485
         },
         {
           "match_id": "1082598",
           "date": "2017-04-10",
           "opponent": "Punjab Kings",
-          "venue": "Holkar Cricket Stadium",
+          "venue": "Holkar Cricket Stadium, Indore",
           "team_score": "148/4",
           "opponent_score": "150/2",
           "winner": "Punjab Kings",
@@ -72,8 +72,8 @@
           "bowl_balls": 24,
           "bowl_runs": 41,
           "bowl_econ": 10.25,
-          "bowl_tilt": 0.00979,
-          "total_tilt": 0.00979
+          "bowl_tilt": -0.05792,
+          "total_tilt": -0.05792
         }
       ],
       "bowling_stats": {
@@ -90,7 +90,7 @@
       "season": "2018",
       "team": "Sunrisers Hyderabad",
       "batting_tilt_per_match": -0.15442,
-      "bowling_tilt_per_match": 0.00032,
+      "bowling_tilt_per_match": 0.01007,
       "batting_matches": 1,
       "bowling_matches": 4,
       "batting_balls": 2,
@@ -173,8 +173,8 @@
           "bowl_balls": 24,
           "bowl_runs": 38,
           "bowl_econ": 9.5,
-          "bowl_tilt": -0.10358,
-          "total_tilt": -0.10358
+          "bowl_tilt": -0.06456,
+          "total_tilt": -0.06456
         }
       ],
       "batting_stats": {
@@ -211,21 +211,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.04988,
+      "tilt": -0.044,
       "balls": 84,
-      "avg_delta": 0.00056
+      "avg_delta": -0.000494
     },
     {
       "phase": "middle",
-      "tilt": 0.17018,
+      "tilt": 0.17044,
       "balls": 54,
-      "avg_delta": 0.003094
+      "avg_delta": 0.003099
     },
     {
       "phase": "death",
-      "tilt": -0.06823,
+      "tilt": -0.02921,
       "balls": 6,
-      "avg_delta": -0.011371
+      "avg_delta": -0.004869
     }
   ],
   "best_matches": [
@@ -252,18 +252,18 @@
   ],
   "bowling_best_matches": [
     {
-      "match_id": "1082595",
-      "date": "2017-04-08",
-      "vs": "Delhi Capitals",
-      "tilt": 0.14078,
-      "wickets": 2,
-      "balls": 24
-    },
-    {
       "match_id": "1136570",
       "date": "2018-04-14",
       "vs": "Kolkata Knight Riders",
       "tilt": 0.1342,
+      "wickets": 2,
+      "balls": 24
+    },
+    {
+      "match_id": "1082595",
+      "date": "2017-04-08",
+      "vs": "Delhi Capitals",
+      "tilt": 0.11485,
       "wickets": 2,
       "balls": 24
     },
@@ -279,7 +279,7 @@
       "match_id": "1082598",
       "date": "2017-04-10",
       "vs": "Punjab Kings",
-      "tilt": 0.00979,
+      "tilt": -0.05792,
       "wickets": 0,
       "balls": 24
     },
@@ -297,7 +297,7 @@
       "match_id": "1136580",
       "date": "2018-04-22",
       "vs": "Chennai Super Kings",
-      "tilt": -0.10358,
+      "tilt": -0.06456,
       "wickets": 0,
       "balls": 24
     },
@@ -313,7 +313,7 @@
       "match_id": "1082598",
       "date": "2017-04-10",
       "vs": "Punjab Kings",
-      "tilt": 0.00979,
+      "tilt": -0.05792,
       "wickets": 0,
       "balls": 24
     },
@@ -326,10 +326,10 @@
       "balls": 24
     },
     {
-      "match_id": "1136570",
-      "date": "2018-04-14",
-      "vs": "Kolkata Knight Riders",
-      "tilt": 0.1342,
+      "match_id": "1082595",
+      "date": "2017-04-08",
+      "vs": "Delhi Capitals",
+      "tilt": 0.11485,
       "wickets": 2,
       "balls": 24
     }
@@ -338,38 +338,38 @@
     {
       "match": 1,
       "date": "2017-04-08",
-      "tilt": 0.14078,
-      "cumulative": 0.14078
+      "tilt": 0.11485,
+      "cumulative": 0.11485
     },
     {
       "match": 2,
       "date": "2017-04-10",
-      "tilt": 0.00979,
-      "cumulative": 0.15056
+      "tilt": -0.05792,
+      "cumulative": 0.05693
     },
     {
       "match": 3,
       "date": "2018-04-09",
       "tilt": 0.03464,
-      "cumulative": 0.1852
+      "cumulative": 0.09157
     },
     {
       "match": 4,
       "date": "2018-04-12",
       "tilt": -0.2184,
-      "cumulative": -0.0332
+      "cumulative": -0.12683
     },
     {
       "match": 5,
       "date": "2018-04-14",
       "tilt": 0.1342,
-      "cumulative": 0.101
+      "cumulative": 0.00737
     },
     {
       "match": 6,
       "date": "2018-04-22",
-      "tilt": -0.10358,
-      "cumulative": -0.00258
+      "tilt": -0.06456,
+      "cumulative": -0.05719
     }
   ],
   "team_matchups": [
@@ -381,13 +381,13 @@
   ],
   "bowling_team_matchups": [
     {
-      "opponent": "Delhi Capitals",
-      "tilt_per_match": 0.14078,
+      "opponent": "Kolkata Knight Riders",
+      "tilt_per_match": 0.1342,
       "matches": 1
     },
     {
-      "opponent": "Kolkata Knight Riders",
-      "tilt_per_match": 0.1342,
+      "opponent": "Delhi Capitals",
+      "tilt_per_match": 0.11485,
       "matches": 1
     },
     {
@@ -397,7 +397,7 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": 0.00979,
+      "tilt_per_match": -0.05792,
       "matches": 1
     },
     {
@@ -407,7 +407,7 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.10358,
+      "tilt_per_match": -0.06456,
       "matches": 1
     }
   ],
@@ -433,11 +433,11 @@
     "best_figures": "2/29"
   },
   "match_tilt_distribution": [
-    0.14078,
-    0.00979,
+    0.11485,
+    -0.05792,
     0.03464,
     -0.2184,
     0.1342,
-    -0.10358
+    -0.06456
   ]
 }

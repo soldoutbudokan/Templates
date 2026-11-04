@@ -8,18 +8,18 @@
   "teams": [
     "Deccan Chargers"
   ],
-  "total_tilt_per_match": 0.04738,
+  "total_tilt_per_match": 0.04261,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.04826,
-  "shrunk_total_tilt_per_match": 0.02313,
+  "bowling_tilt_per_match": 0.04349,
+  "shrunk_total_tilt_per_match": 0.02035,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.02637,
-  "tilt_ci_lower": -0.07271,
-  "tilt_ci_upper": 0.11898,
-  "tilt_ci_lower_90": -0.05731,
-  "tilt_ci_upper_90": 0.10357,
+  "shrunk_bowling_tilt_per_match": 0.02286,
+  "tilt_ci_lower": -0.07514,
+  "tilt_ci_upper": 0.11584,
+  "tilt_ci_lower_90": -0.0598,
+  "tilt_ci_upper_90": 0.10049,
   "confidence": "low",
-  "total_tilt": 0.47378,
+  "total_tilt": 0.42607,
   "total_matches": 10,
   "batting_balls": 46,
   "bowling_balls": 180,
@@ -28,7 +28,7 @@
       "season": "2008",
       "team": "Deccan Chargers",
       "batting_tilt_per_match": -0.00098,
-      "bowling_tilt_per_match": 0.04826,
+      "bowling_tilt_per_match": 0.04349,
       "batting_matches": 9,
       "bowling_matches": 10,
       "batting_balls": 46,
@@ -78,7 +78,7 @@
           "match_id": "335994",
           "date": "2008-04-27",
           "opponent": "Mumbai Indians",
-          "venue": "Dr DY Patil Sports Academy",
+          "venue": "Dr DY Patil Sports Academy, Navi Mumbai",
           "team_score": "155/0",
           "opponent_score": "154/7",
           "winner": "Deccan Chargers",
@@ -91,8 +91,8 @@
           "bowl_balls": 24,
           "bowl_runs": 33,
           "bowl_econ": 8.25,
-          "bowl_tilt": 0.1296,
-          "total_tilt": 0.1296
+          "bowl_tilt": 0.0819,
+          "total_tilt": 0.0819
         },
         {
           "match_id": "335999",
@@ -281,21 +281,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.04662,
+      "tilt": 0.03097,
       "balls": 24,
-      "avg_delta": 0.001865
+      "avg_delta": 0.001239
     },
     {
       "phase": "middle",
-      "tilt": 0.3804,
+      "tilt": 0.33718,
       "balls": 120,
-      "avg_delta": 0.003093
+      "avg_delta": 0.002741
     },
     {
       "phase": "death",
-      "tilt": 0.05555,
+      "tilt": 0.06672,
       "balls": 36,
-      "avg_delta": 0.001501
+      "avg_delta": 0.001803
     }
   ],
   "best_matches": [
@@ -402,18 +402,18 @@
       "balls": 24
     },
     {
-      "match_id": "335994",
-      "date": "2008-04-27",
-      "vs": "Mumbai Indians",
-      "tilt": 0.1296,
-      "wickets": 2,
-      "balls": 24
-    },
-    {
       "match_id": "336024",
       "date": "2008-05-18",
       "vs": "Mumbai Indians",
       "tilt": 0.10718,
+      "wickets": 2,
+      "balls": 24
+    },
+    {
+      "match_id": "335994",
+      "date": "2008-04-27",
+      "vs": "Mumbai Indians",
+      "tilt": 0.0819,
       "wickets": 2,
       "balls": 24
     },
@@ -492,50 +492,50 @@
     {
       "match": 3,
       "date": "2008-04-27",
-      "tilt": 0.1296,
-      "cumulative": 0.58353
+      "tilt": 0.0819,
+      "cumulative": 0.53583
     },
     {
       "match": 4,
       "date": "2008-05-01",
       "tilt": -0.11592,
-      "cumulative": 0.46761
+      "cumulative": 0.41991
     },
     {
       "match": 5,
       "date": "2008-05-03",
       "tilt": -0.08108,
-      "cumulative": 0.38653
+      "cumulative": 0.33883
     },
     {
       "match": 6,
       "date": "2008-05-06",
       "tilt": 0.12607,
-      "cumulative": 0.5126
+      "cumulative": 0.4649
     },
     {
       "match": 7,
       "date": "2008-05-09",
       "tilt": -0.04846,
-      "cumulative": 0.46414
+      "cumulative": 0.41644
     },
     {
       "match": 8,
       "date": "2008-05-15",
       "tilt": 0.08939,
-      "cumulative": 0.55353
+      "cumulative": 0.50583
     },
     {
       "match": 9,
       "date": "2008-05-18",
       "tilt": 0.04967,
-      "cumulative": 0.6032
+      "cumulative": 0.5555
     },
     {
       "match": 10,
       "date": "2008-05-27",
       "tilt": -0.12942,
-      "cumulative": 0.47378
+      "cumulative": 0.42607
     }
   ],
   "team_matchups": [
@@ -578,7 +578,7 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.11839,
+      "tilt_per_match": 0.09454,
       "matches": 2
     },
     {
@@ -626,7 +626,7 @@
   "match_tilt_distribution": [
     -0.05954,
     0.51346,
-    0.1296,
+    0.0819,
     -0.11592,
     -0.08108,
     0.12607,

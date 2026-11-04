@@ -8,18 +8,18 @@
   "teams": [
     "Kolkata Knight Riders"
   ],
-  "total_tilt_per_match": 0.00617,
+  "total_tilt_per_match": 0.01757,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.00621,
-  "shrunk_total_tilt_per_match": -0.00552,
+  "bowling_tilt_per_match": 0.01761,
+  "shrunk_total_tilt_per_match": 0.00157,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.00249,
-  "tilt_ci_lower": -0.06265,
-  "tilt_ci_upper": 0.0516,
-  "tilt_ci_lower_90": -0.05347,
-  "tilt_ci_upper_90": 0.04242,
+  "shrunk_bowling_tilt_per_match": 0.00419,
+  "tilt_ci_lower": -0.05522,
+  "tilt_ci_upper": 0.05836,
+  "tilt_ci_lower_90": -0.0461,
+  "tilt_ci_upper_90": 0.04924,
   "confidence": "low",
-  "total_tilt": 0.04939,
+  "total_tilt": 0.14059,
   "total_matches": 8,
   "batting_balls": 2,
   "bowling_balls": 186,
@@ -28,7 +28,7 @@
       "season": "2010",
       "team": "Kolkata Knight Riders",
       "batting_tilt_per_match": -0.00026,
-      "bowling_tilt_per_match": 0.00621,
+      "bowling_tilt_per_match": 0.01761,
       "batting_matches": 1,
       "bowling_matches": 8,
       "batting_balls": 2,
@@ -58,7 +58,7 @@
           "match_id": "419118",
           "date": "2010-03-20",
           "opponent": "Rajasthan Royals",
-          "venue": "Narendra Modi Stadium, Ahmedabad",
+          "venue": "Sardar Patel Stadium, Motera, Ahmedabad",
           "team_score": "134/5",
           "opponent_score": "168/7",
           "winner": "Rajasthan Royals",
@@ -71,8 +71,8 @@
           "bowl_balls": 24,
           "bowl_runs": 32,
           "bowl_econ": 8.0,
-          "bowl_tilt": 0.01043,
-          "total_tilt": 0.01043
+          "bowl_tilt": 0.01122,
+          "total_tilt": 0.01122
         },
         {
           "match_id": "419122",
@@ -91,14 +91,14 @@
           "bowl_balls": 18,
           "bowl_runs": 31,
           "bowl_econ": 10.33,
-          "bowl_tilt": -0.14697,
-          "total_tilt": -0.14697
+          "bowl_tilt": -0.13592,
+          "total_tilt": -0.13592
         },
         {
           "match_id": "419127",
           "date": "2010-03-27",
           "opponent": "Punjab Kings",
-          "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+          "venue": "Punjab Cricket Association Stadium, Mohali, Chandigarh",
           "team_score": "183/5",
           "opponent_score": "144/6",
           "winner": "Kolkata Knight Riders",
@@ -111,8 +111,8 @@
           "bowl_balls": 24,
           "bowl_runs": 24,
           "bowl_econ": 6.0,
-          "bowl_tilt": 0.13897,
-          "total_tilt": 0.13897
+          "bowl_tilt": 0.1806,
+          "total_tilt": 0.1806
         },
         {
           "match_id": "419135",
@@ -151,8 +151,8 @@
           "bowl_balls": 24,
           "bowl_runs": 33,
           "bowl_econ": 8.25,
-          "bowl_tilt": -0.14974,
-          "total_tilt": -0.14974
+          "bowl_tilt": -0.112,
+          "total_tilt": -0.112
         },
         {
           "match_id": "419158",
@@ -229,21 +229,21 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.07634,
+      "tilt": 0.14051,
       "balls": 90,
-      "avg_delta": 0.00083
+      "avg_delta": 0.001527
     },
     {
       "phase": "middle",
-      "tilt": 0.05593,
+      "tilt": 0.08718,
       "balls": 42,
-      "avg_delta": 0.001301
+      "avg_delta": 0.002027
     },
     {
       "phase": "death",
-      "tilt": -0.08263,
+      "tilt": -0.08684,
       "balls": 54,
-      "avg_delta": -0.001475
+      "avg_delta": -0.001551
     }
   ],
   "best_matches": [
@@ -273,7 +273,7 @@
       "match_id": "419127",
       "date": "2010-03-27",
       "vs": "Punjab Kings",
-      "tilt": 0.13897,
+      "tilt": 0.1806,
       "wickets": 2,
       "balls": 24
     },
@@ -305,27 +305,27 @@
       "match_id": "419118",
       "date": "2010-03-20",
       "vs": "Rajasthan Royals",
-      "tilt": 0.01043,
+      "tilt": 0.01122,
       "wickets": 2,
       "balls": 24
     }
   ],
   "bowling_worst_matches": [
     {
-      "match_id": "419139",
-      "date": "2010-04-04",
-      "vs": "Punjab Kings",
-      "tilt": -0.14974,
-      "wickets": 1,
-      "balls": 24
-    },
-    {
       "match_id": "419122",
       "date": "2010-03-22",
       "vs": "Mumbai Indians",
-      "tilt": -0.14697,
+      "tilt": -0.13592,
       "wickets": 0,
       "balls": 18
+    },
+    {
+      "match_id": "419139",
+      "date": "2010-04-04",
+      "vs": "Punjab Kings",
+      "tilt": -0.112,
+      "wickets": 1,
+      "balls": 24
     },
     {
       "match_id": "419113",
@@ -339,7 +339,7 @@
       "match_id": "419118",
       "date": "2010-03-20",
       "vs": "Rajasthan Royals",
-      "tilt": 0.01043,
+      "tilt": 0.01122,
       "wickets": 2,
       "balls": 24
     },
@@ -362,44 +362,44 @@
     {
       "match": 2,
       "date": "2010-03-20",
-      "tilt": 0.01043,
-      "cumulative": -0.00462
+      "tilt": 0.01122,
+      "cumulative": -0.00383
     },
     {
       "match": 3,
       "date": "2010-03-22",
-      "tilt": -0.14697,
-      "cumulative": -0.15158
+      "tilt": -0.13592,
+      "cumulative": -0.13975
     },
     {
       "match": 4,
       "date": "2010-03-27",
-      "tilt": 0.13897,
-      "cumulative": -0.01261
+      "tilt": 0.1806,
+      "cumulative": 0.04086
     },
     {
       "match": 5,
       "date": "2010-04-01",
       "tilt": 0.06614,
-      "cumulative": 0.05353
+      "cumulative": 0.10699
     },
     {
       "match": 6,
       "date": "2010-04-04",
-      "tilt": -0.14974,
-      "cumulative": -0.09621
+      "tilt": -0.112,
+      "cumulative": -0.00501
     },
     {
       "match": 7,
       "date": "2010-04-17",
       "tilt": 0.0808,
-      "cumulative": -0.01541
+      "cumulative": 0.07579
     },
     {
       "match": 8,
       "date": "2010-04-19",
       "tilt": 0.0648,
-      "cumulative": 0.04939
+      "cumulative": 0.14059
     }
   ],
   "team_matchups": [
@@ -417,12 +417,12 @@
     },
     {
       "opponent": "Rajasthan Royals",
-      "tilt_per_match": 0.04562,
+      "tilt_per_match": 0.04601,
       "matches": 2
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.00538,
+      "tilt_per_match": 0.0343,
       "matches": 2
     },
     {
@@ -432,7 +432,7 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.04108,
+      "tilt_per_match": -0.03556,
       "matches": 2
     }
   ],
@@ -459,11 +459,11 @@
   },
   "match_tilt_distribution": [
     -0.01505,
-    0.01043,
-    -0.14697,
-    0.13897,
+    0.01122,
+    -0.13592,
+    0.1806,
     0.06614,
-    -0.14974,
+    -0.112,
     0.0808,
     0.0648
   ]

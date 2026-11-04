@@ -8,18 +8,18 @@
   "teams": [
     "Punjab Kings"
   ],
-  "total_tilt_per_match": -0.03658,
+  "total_tilt_per_match": -0.03519,
   "batting_tilt_per_match": null,
   "bowling_tilt_per_match": null,
-  "shrunk_total_tilt_per_match": -0.02831,
+  "shrunk_total_tilt_per_match": -0.02809,
   "shrunk_batting_tilt_per_match": null,
   "shrunk_bowling_tilt_per_match": null,
-  "tilt_ci_lower": -0.04384,
-  "tilt_ci_upper": -0.01279,
-  "tilt_ci_lower_90": -0.04134,
-  "tilt_ci_upper_90": -0.01528,
+  "tilt_ci_lower": -0.0446,
+  "tilt_ci_upper": -0.01158,
+  "tilt_ci_lower_90": -0.04194,
+  "tilt_ci_upper_90": -0.01423,
   "confidence": "low",
-  "total_tilt": -0.10974,
+  "total_tilt": -0.10558,
   "total_matches": 3,
   "batting_balls": 13,
   "bowling_balls": 0,
@@ -27,7 +27,7 @@
     {
       "season": "2016",
       "team": "Punjab Kings",
-      "batting_tilt_per_match": -0.03658,
+      "batting_tilt_per_match": -0.03519,
       "bowling_tilt_per_match": 0.0,
       "batting_matches": 3,
       "bowling_matches": 0,
@@ -78,21 +78,21 @@
           "match_id": "981005",
           "date": "2016-05-21",
           "opponent": "Rising Pune Supergiants",
-          "venue": "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium",
+          "venue": "Andhra Cricket Association-Visakhapatnam District Cricket Association Stadium, Visakhapatnam",
           "team_score": "172/7",
           "opponent_score": "173/6",
           "winner": "Rising Pune Supergiants",
           "bat_runs": 5,
           "bat_balls": 5,
           "bat_sr": 100.0,
-          "bat_tilt": -0.02446,
+          "bat_tilt": -0.0203,
           "bat_not_out": false,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": -0.02446
+          "total_tilt": -0.0203
         }
       ],
       "batting_stats": {
@@ -118,13 +118,22 @@
     },
     {
       "phase": "death",
-      "tilt": -0.0872,
+      "tilt": -0.08304,
       "balls": 12,
-      "avg_delta": -0.007266
+      "avg_delta": -0.00692
     }
   ],
   "bowling_phases": [],
   "best_matches": [
+    {
+      "match_id": "981005",
+      "date": "2016-05-21",
+      "vs": "Rising Pune Supergiants",
+      "tilt": -0.0203,
+      "runs": 5,
+      "balls": 5,
+      "not_out": false
+    },
     {
       "match_id": "980999",
       "date": "2016-05-18",
@@ -132,15 +141,6 @@
       "tilt": -0.02254,
       "runs": 0,
       "balls": 1,
-      "not_out": false
-    },
-    {
-      "match_id": "981005",
-      "date": "2016-05-21",
-      "vs": "Rising Pune Supergiants",
-      "tilt": -0.02446,
-      "runs": 5,
-      "balls": 5,
       "not_out": false
     },
     {
@@ -164,21 +164,21 @@
       "not_out": true
     },
     {
-      "match_id": "981005",
-      "date": "2016-05-21",
-      "vs": "Rising Pune Supergiants",
-      "tilt": -0.02446,
-      "runs": 5,
-      "balls": 5,
-      "not_out": false
-    },
-    {
       "match_id": "980999",
       "date": "2016-05-18",
       "vs": "Royal Challengers Bangalore",
       "tilt": -0.02254,
       "runs": 0,
       "balls": 1,
+      "not_out": false
+    },
+    {
+      "match_id": "981005",
+      "date": "2016-05-21",
+      "vs": "Rising Pune Supergiants",
+      "tilt": -0.0203,
+      "runs": 5,
+      "balls": 5,
       "not_out": false
     }
   ],
@@ -200,14 +200,14 @@
     {
       "match": 3,
       "date": "2016-05-21",
-      "tilt": -0.02446,
-      "cumulative": -0.10974
+      "tilt": -0.0203,
+      "cumulative": -0.10558
     }
   ],
   "team_matchups": [
     {
       "opponent": "Rising Pune Supergiants",
-      "tilt_per_match": -0.02446,
+      "tilt_per_match": -0.0203,
       "matches": 1
     },
     {
@@ -233,6 +233,6 @@
   "match_tilt_distribution": [
     -0.06274,
     -0.02254,
-    -0.02446
+    -0.0203
   ]
 }

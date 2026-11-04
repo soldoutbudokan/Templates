@@ -9,18 +9,18 @@
     "Kolkata Knight Riders",
     "Rajasthan Royals"
   ],
-  "total_tilt_per_match": -0.02746,
+  "total_tilt_per_match": -0.02419,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.01512,
-  "shrunk_total_tilt_per_match": -0.02579,
+  "bowling_tilt_per_match": -0.01877,
+  "shrunk_total_tilt_per_match": -0.02405,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.0155,
-  "tilt_ci_lower": -0.14755,
-  "tilt_ci_upper": 0.09597,
-  "tilt_ci_lower_90": -0.12798,
-  "tilt_ci_upper_90": 0.0764,
+  "shrunk_bowling_tilt_per_match": -0.01749,
+  "tilt_ci_lower": -0.13705,
+  "tilt_ci_upper": 0.08895,
+  "tilt_ci_lower_90": -0.11889,
+  "tilt_ci_upper_90": 0.07079,
   "confidence": "low",
-  "total_tilt": -0.19222,
+  "total_tilt": -0.16936,
   "total_matches": 7,
   "batting_balls": 27,
   "bowling_balls": 106,
@@ -28,8 +28,8 @@
     {
       "season": "2010",
       "team": "Rajasthan Royals",
-      "batting_tilt_per_match": -0.03906,
-      "bowling_tilt_per_match": -0.02394,
+      "batting_tilt_per_match": -0.02414,
+      "bowling_tilt_per_match": -0.02831,
       "batting_matches": 3,
       "bowling_matches": 5,
       "batting_balls": 12,
@@ -59,7 +59,7 @@
           "match_id": "419126",
           "date": "2010-03-26",
           "opponent": "Deccan Chargers",
-          "venue": "Narendra Modi Stadium, Ahmedabad",
+          "venue": "Sardar Patel Stadium, Motera, Ahmedabad",
           "team_score": "151/2",
           "opponent_score": "148/9",
           "winner": "Rajasthan Royals",
@@ -72,28 +72,28 @@
           "bowl_balls": 24,
           "bowl_runs": 36,
           "bowl_econ": 9.0,
-          "bowl_tilt": 0.13445,
-          "total_tilt": 0.13445
+          "bowl_tilt": 0.10848,
+          "total_tilt": 0.10848
         },
         {
           "match_id": "419129",
           "date": "2010-03-28",
           "opponent": "Chennai Super Kings",
-          "venue": "Narendra Modi Stadium, Ahmedabad",
+          "venue": "Sardar Patel Stadium, Motera, Ahmedabad",
           "team_score": "177/8",
           "opponent_score": "160/6",
           "winner": "Rajasthan Royals",
           "bat_runs": 2,
           "bat_balls": 2,
           "bat_sr": 100.0,
-          "bat_tilt": -0.08258,
+          "bat_tilt": -0.03784,
           "bat_not_out": true,
           "bowl_wkts": 0,
           "bowl_balls": 18,
           "bowl_runs": 49,
           "bowl_econ": 16.33,
-          "bowl_tilt": -0.32257,
-          "total_tilt": -0.40515
+          "bowl_tilt": -0.31848,
+          "total_tilt": -0.35632
         },
         {
           "match_id": "419134",
@@ -241,29 +241,29 @@
     },
     {
       "phase": "death",
-      "tilt": -0.0888,
+      "tilt": -0.04406,
       "balls": 18,
-      "avg_delta": -0.004674
+      "avg_delta": -0.002319
     }
   ],
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.0489,
+      "tilt": -0.04595,
       "balls": 66,
-      "avg_delta": -0.000709
+      "avg_delta": -0.000666
     },
     {
       "phase": "middle",
-      "tilt": -0.08155,
+      "tilt": -0.08405,
       "balls": 22,
-      "avg_delta": -0.003136
+      "avg_delta": -0.003233
     },
     {
       "phase": "death",
-      "tilt": 0.03972,
+      "tilt": 0.01738,
       "balls": 18,
-      "avg_delta": 0.002207
+      "avg_delta": 0.000966
     }
   ],
   "best_matches": [
@@ -298,7 +298,7 @@
       "match_id": "419129",
       "date": "2010-03-28",
       "vs": "Chennai Super Kings",
-      "tilt": -0.08258,
+      "tilt": -0.03784,
       "runs": 2,
       "balls": 2,
       "not_out": true
@@ -309,7 +309,7 @@
       "match_id": "419129",
       "date": "2010-03-28",
       "vs": "Chennai Super Kings",
-      "tilt": -0.08258,
+      "tilt": -0.03784,
       "runs": 2,
       "balls": 2,
       "not_out": true
@@ -355,7 +355,7 @@
       "match_id": "419126",
       "date": "2010-03-26",
       "vs": "Deccan Chargers",
-      "tilt": 0.13445,
+      "tilt": 0.10848,
       "wickets": 2,
       "balls": 24
     },
@@ -389,7 +389,7 @@
       "match_id": "419129",
       "date": "2010-03-28",
       "vs": "Chennai Super Kings",
-      "tilt": -0.32257,
+      "tilt": -0.31848,
       "wickets": 0,
       "balls": 18
     },
@@ -421,7 +421,7 @@
       "match_id": "419126",
       "date": "2010-03-26",
       "vs": "Deccan Chargers",
-      "tilt": 0.13445,
+      "tilt": 0.10848,
       "wickets": 2,
       "balls": 24
     }
@@ -436,38 +436,38 @@
     {
       "match": 2,
       "date": "2010-03-26",
-      "tilt": 0.13445,
-      "cumulative": 0.09408
+      "tilt": 0.10848,
+      "cumulative": 0.06811
     },
     {
       "match": 3,
       "date": "2010-03-28",
-      "tilt": -0.40514,
-      "cumulative": -0.31106
+      "tilt": -0.35631,
+      "cumulative": -0.28821
     },
     {
       "match": 4,
       "date": "2010-03-31",
       "tilt": 0.26067,
-      "cumulative": -0.05039
+      "cumulative": -0.02753
     },
     {
       "match": 5,
       "date": "2010-04-03",
       "tilt": -0.18647,
-      "cumulative": -0.23686
+      "cumulative": -0.21401
     },
     {
       "match": 6,
       "date": "2013-05-01",
       "tilt": 0.01568,
-      "cumulative": -0.22118
+      "cumulative": -0.19833
     },
     {
       "match": 7,
       "date": "2013-05-03",
       "tilt": 0.02896,
-      "cumulative": -0.19222
+      "cumulative": -0.16936
     }
   ],
   "team_matchups": [
@@ -483,7 +483,7 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.08258,
+      "tilt_per_match": -0.03784,
       "matches": 1
     }
   ],
@@ -495,7 +495,7 @@
     },
     {
       "opponent": "Deccan Chargers",
-      "tilt_per_match": 0.13445,
+      "tilt_per_match": 0.10848,
       "matches": 1
     },
     {
@@ -510,7 +510,7 @@
     },
     {
       "opponent": "Chennai Super Kings",
-      "tilt_per_match": -0.25452,
+      "tilt_per_match": -0.25247,
       "matches": 2
     }
   ],
@@ -537,8 +537,8 @@
   },
   "match_tilt_distribution": [
     -0.04037,
-    0.13445,
-    -0.40514,
+    0.10848,
+    -0.35631,
     0.26067,
     -0.18647,
     0.01568,

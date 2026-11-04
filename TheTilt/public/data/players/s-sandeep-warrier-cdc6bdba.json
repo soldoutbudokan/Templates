@@ -9,18 +9,18 @@
     "Gujarat Titans",
     "Kolkata Knight Riders"
   ],
-  "total_tilt_per_match": 0.01009,
+  "total_tilt_per_match": 0.00613,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": 0.01009,
-  "shrunk_total_tilt_per_match": -0.00141,
+  "bowling_tilt_per_match": 0.00613,
+  "shrunk_total_tilt_per_match": -0.00391,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": 0.00122,
-  "tilt_ci_lower": -0.06528,
-  "tilt_ci_upper": 0.06247,
-  "tilt_ci_lower_90": -0.05502,
-  "tilt_ci_upper_90": 0.0522,
+  "shrunk_bowling_tilt_per_match": -0.00156,
+  "tilt_ci_lower": -0.06786,
+  "tilt_ci_upper": 0.06003,
+  "tilt_ci_lower_90": -0.05758,
+  "tilt_ci_upper_90": 0.04975,
   "confidence": "low",
-  "total_tilt": 0.10091,
+  "total_tilt": 0.06128,
   "total_matches": 10,
   "batting_balls": 0,
   "bowling_balls": 168,
@@ -29,7 +29,7 @@
       "season": "2019",
       "team": "Kolkata Knight Riders",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": 0.01017,
+      "bowling_tilt_per_match": -0.00196,
       "batting_matches": 0,
       "bowling_matches": 3,
       "batting_balls": 0,
@@ -52,8 +52,8 @@
           "bowl_balls": 24,
           "bowl_runs": 30,
           "bowl_econ": 7.5,
-          "bowl_tilt": 0.00222,
-          "total_tilt": 0.00222
+          "bowl_tilt": 0.00157,
+          "total_tilt": 0.00157
         },
         {
           "match_id": "1178427",
@@ -92,8 +92,8 @@
           "bowl_balls": 24,
           "bowl_runs": 25,
           "bowl_econ": 6.25,
-          "bowl_tilt": 0.04916,
-          "total_tilt": 0.04916
+          "bowl_tilt": 0.01343,
+          "total_tilt": 0.01343
         }
       ],
       "bowling_stats": {
@@ -110,7 +110,7 @@
       "season": "2020",
       "team": "Kolkata Knight Riders",
       "batting_tilt_per_match": 0.0,
-      "bowling_tilt_per_match": -0.06035,
+      "bowling_tilt_per_match": -0.06359,
       "batting_matches": 0,
       "bowling_matches": 1,
       "batting_balls": 0,
@@ -120,7 +120,7 @@
           "match_id": "1216508",
           "date": "2020-09-23",
           "opponent": "Mumbai Indians",
-          "venue": "Sheikh Zayed Stadium",
+          "venue": "Sheikh Zayed Stadium, Abu Dhabi",
           "team_score": "146/9",
           "opponent_score": "195/5",
           "winner": "Mumbai Indians",
@@ -133,8 +133,8 @@
           "bowl_balls": 18,
           "bowl_runs": 34,
           "bowl_econ": 11.33,
-          "bowl_tilt": -0.06035,
-          "total_tilt": -0.06035
+          "bowl_tilt": -0.06359,
+          "total_tilt": -0.06359
         }
       ],
       "bowling_stats": {
@@ -314,15 +314,15 @@
   "bowling_phases": [
     {
       "phase": "powerplay",
-      "tilt": 0.11351,
+      "tilt": 0.07302,
       "balls": 138,
-      "avg_delta": 0.000788
+      "avg_delta": 0.000507
     },
     {
       "phase": "middle",
-      "tilt": -0.0126,
+      "tilt": -0.01173,
       "balls": 30,
-      "avg_delta": -0.000394
+      "avg_delta": -0.000367
     }
   ],
   "best_matches": [],
@@ -345,14 +345,6 @@
       "balls": 18
     },
     {
-      "match_id": "1178431",
-      "date": "2019-05-05",
-      "vs": "Mumbai Indians",
-      "tilt": 0.04916,
-      "wickets": 0,
-      "balls": 24
-    },
-    {
       "match_id": "1426297",
       "date": "2024-05-10",
       "vs": "Chennai Super Kings",
@@ -367,6 +359,14 @@
       "tilt": 0.02091,
       "wickets": 0,
       "balls": 12
+    },
+    {
+      "match_id": "1178431",
+      "date": "2019-05-05",
+      "vs": "Mumbai Indians",
+      "tilt": 0.01343,
+      "wickets": 0,
+      "balls": 24
     }
   ],
   "bowling_worst_matches": [
@@ -390,7 +390,7 @@
       "match_id": "1216508",
       "date": "2020-09-23",
       "vs": "Mumbai Indians",
-      "tilt": -0.06035,
+      "tilt": -0.06359,
       "wickets": 0,
       "balls": 18
     },
@@ -406,7 +406,7 @@
       "match_id": "1178422",
       "date": "2019-04-28",
       "vs": "Mumbai Indians",
-      "tilt": 0.00222,
+      "tilt": 0.00157,
       "wickets": 0,
       "balls": 24
     }
@@ -415,62 +415,62 @@
     {
       "match": 1,
       "date": "2019-04-28",
-      "tilt": 0.00222,
-      "cumulative": 0.00222
+      "tilt": 0.00157,
+      "cumulative": 0.00157
     },
     {
       "match": 2,
       "date": "2019-05-03",
       "tilt": -0.02087,
-      "cumulative": -0.01866
+      "cumulative": -0.01931
     },
     {
       "match": 3,
       "date": "2019-05-05",
-      "tilt": 0.04916,
-      "cumulative": 0.03051
+      "tilt": 0.01343,
+      "cumulative": -0.00587
     },
     {
       "match": 4,
       "date": "2020-09-23",
-      "tilt": -0.06035,
-      "cumulative": -0.02984
+      "tilt": -0.06359,
+      "cumulative": -0.06947
     },
     {
       "match": 5,
       "date": "2021-09-28",
       "tilt": 0.02091,
-      "cumulative": -0.00893
+      "cumulative": -0.04855
     },
     {
       "match": 6,
       "date": "2024-04-17",
       "tilt": 0.05416,
-      "cumulative": 0.04524
+      "cumulative": 0.00561
     },
     {
       "match": 7,
       "date": "2024-04-21",
       "tilt": -0.1816,
-      "cumulative": -0.13636
+      "cumulative": -0.17599
     },
     {
       "match": 8,
       "date": "2024-04-24",
       "tilt": 0.30637,
-      "cumulative": 0.17001
+      "cumulative": 0.13038
     },
     {
       "match": 9,
       "date": "2024-04-28",
       "tilt": -0.09436,
-      "cumulative": 0.07565
+      "cumulative": 0.03602
     },
     {
       "match": 10,
       "date": "2024-05-10",
       "tilt": 0.02526,
-      "cumulative": 0.10091
+      "cumulative": 0.06128
     }
   ],
   "team_matchups": [],
@@ -487,7 +487,7 @@
     },
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": -0.00299,
+      "tilt_per_match": -0.0162,
       "matches": 3
     },
     {
@@ -512,10 +512,10 @@
     "best_figures": "3/15"
   },
   "match_tilt_distribution": [
-    0.00222,
+    0.00157,
     -0.02087,
-    0.04916,
-    -0.06035,
+    0.01343,
+    -0.06359,
     0.02091,
     0.05416,
     -0.1816,

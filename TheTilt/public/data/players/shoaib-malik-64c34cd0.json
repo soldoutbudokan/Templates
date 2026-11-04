@@ -8,18 +8,18 @@
   "teams": [
     "Delhi Capitals"
   ],
-  "total_tilt_per_match": -0.14136,
+  "total_tilt_per_match": -0.13998,
   "batting_tilt_per_match": null,
-  "bowling_tilt_per_match": -0.14647,
-  "shrunk_total_tilt_per_match": -0.08669,
+  "bowling_tilt_per_match": -0.144,
+  "shrunk_total_tilt_per_match": -0.08699,
   "shrunk_batting_tilt_per_match": null,
-  "shrunk_bowling_tilt_per_match": -0.0801,
-  "tilt_ci_lower": -0.25397,
-  "tilt_ci_upper": 0.08059,
-  "tilt_ci_lower_90": -0.22709,
-  "tilt_ci_upper_90": 0.05371,
+  "shrunk_bowling_tilt_per_match": -0.07814,
+  "tilt_ci_lower": -0.25493,
+  "tilt_ci_upper": 0.08096,
+  "tilt_ci_lower_90": -0.22794,
+  "tilt_ci_upper_90": 0.05397,
   "confidence": "low",
-  "total_tilt": -0.84816,
+  "total_tilt": -0.83991,
   "total_matches": 6,
   "batting_balls": 47,
   "bowling_balls": 51,
@@ -27,8 +27,8 @@
     {
       "season": "2008",
       "team": "Delhi Capitals",
-      "batting_tilt_per_match": -0.02316,
-      "bowling_tilt_per_match": -0.14647,
+      "batting_tilt_per_match": -0.02398,
+      "bowling_tilt_per_match": -0.144,
       "batting_matches": 5,
       "bowling_matches": 5,
       "batting_balls": 47,
@@ -38,21 +38,21 @@
           "match_id": "335995",
           "date": "2008-04-27",
           "opponent": "Punjab Kings",
-          "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali",
+          "venue": "Punjab Cricket Association Stadium, Mohali, Chandigarh",
           "team_score": "158/8",
           "opponent_score": "162/6",
           "winner": "Punjab Kings",
           "bat_runs": 19,
           "bat_balls": 17,
           "bat_sr": 111.76,
-          "bat_tilt": -0.08202,
+          "bat_tilt": -0.06753,
           "bat_not_out": false,
           "bowl_wkts": 1,
           "bowl_balls": 21,
           "bowl_runs": 32,
           "bowl_econ": 9.14,
-          "bowl_tilt": -0.03336,
-          "total_tilt": -0.11538
+          "bowl_tilt": -0.02629,
+          "total_tilt": -0.09382
         },
         {
           "match_id": "335998",
@@ -98,21 +98,21 @@
           "match_id": "336004",
           "date": "2008-05-04",
           "opponent": "Mumbai Indians",
-          "venue": "Dr DY Patil Sports Academy",
+          "venue": "Dr DY Patil Sports Academy, Navi Mumbai",
           "team_score": "133/10",
           "opponent_score": "162/8",
           "winner": "Mumbai Indians",
           "bat_runs": 24,
           "bat_balls": 22,
           "bat_sr": 109.09,
-          "bat_tilt": 0.01705,
+          "bat_tilt": 0.0137,
           "bat_not_out": false,
           "bowl_wkts": 1,
           "bowl_balls": 6,
           "bowl_runs": 6,
           "bowl_econ": 6.0,
-          "bowl_tilt": 0.01004,
-          "total_tilt": 0.02709
+          "bowl_tilt": 0.01535,
+          "total_tilt": 0.02905
         },
         {
           "match_id": "336009",
@@ -145,14 +145,14 @@
           "bat_runs": 1,
           "bat_balls": 1,
           "bat_sr": 100.0,
-          "bat_tilt": 0.02358,
+          "bat_tilt": 0.00832,
           "bat_not_out": true,
           "bowl_wkts": null,
           "bowl_balls": null,
           "bowl_runs": null,
           "bowl_econ": null,
           "bowl_tilt": null,
-          "total_tilt": 0.02358
+          "total_tilt": 0.00832
         }
       ],
       "batting_stats": {
@@ -181,15 +181,15 @@
   "batting_phases": [
     {
       "phase": "powerplay",
-      "tilt": -0.01241,
+      "tilt": -0.00231,
       "balls": 13,
-      "avg_delta": -0.000887
+      "avg_delta": -0.000165
     },
     {
       "phase": "middle",
-      "tilt": -0.02898,
+      "tilt": -0.04321,
       "balls": 27,
-      "avg_delta": -0.001035
+      "avg_delta": -0.001543
     },
     {
       "phase": "death",
@@ -201,35 +201,35 @@
   "bowling_phases": [
     {
       "phase": "middle",
-      "tilt": -0.17232,
+      "tilt": -0.16545,
       "balls": 36,
-      "avg_delta": -0.004103
+      "avg_delta": -0.003939
     },
     {
       "phase": "death",
-      "tilt": -0.56005,
+      "tilt": -0.55455,
       "balls": 15,
-      "avg_delta": -0.035003
+      "avg_delta": -0.03466
     }
   ],
   "best_matches": [
     {
-      "match_id": "336022",
-      "date": "2008-05-17",
-      "vs": "Punjab Kings",
-      "tilt": 0.02358,
-      "runs": 1,
-      "balls": 1,
-      "not_out": true
-    },
-    {
       "match_id": "336004",
       "date": "2008-05-04",
       "vs": "Mumbai Indians",
-      "tilt": 0.01705,
+      "tilt": 0.0137,
       "runs": 24,
       "balls": 22,
       "not_out": false
+    },
+    {
+      "match_id": "336022",
+      "date": "2008-05-17",
+      "vs": "Punjab Kings",
+      "tilt": 0.00832,
+      "runs": 1,
+      "balls": 1,
+      "not_out": true
     },
     {
       "match_id": "335998",
@@ -244,7 +244,7 @@
       "match_id": "335995",
       "date": "2008-04-27",
       "vs": "Punjab Kings",
-      "tilt": -0.08202,
+      "tilt": -0.06753,
       "runs": 19,
       "balls": 17,
       "not_out": false
@@ -273,7 +273,7 @@
       "match_id": "335995",
       "date": "2008-04-27",
       "vs": "Punjab Kings",
-      "tilt": -0.08202,
+      "tilt": -0.06753,
       "runs": 19,
       "balls": 17,
       "not_out": false
@@ -288,22 +288,22 @@
       "not_out": false
     },
     {
-      "match_id": "336004",
-      "date": "2008-05-04",
-      "vs": "Mumbai Indians",
-      "tilt": 0.01705,
-      "runs": 24,
-      "balls": 22,
-      "not_out": false
-    },
-    {
       "match_id": "336022",
       "date": "2008-05-17",
       "vs": "Punjab Kings",
-      "tilt": 0.02358,
+      "tilt": 0.00832,
       "runs": 1,
       "balls": 1,
       "not_out": true
+    },
+    {
+      "match_id": "336004",
+      "date": "2008-05-04",
+      "vs": "Mumbai Indians",
+      "tilt": 0.0137,
+      "runs": 24,
+      "balls": 22,
+      "not_out": false
     }
   ],
   "bowling_best_matches": [
@@ -311,9 +311,17 @@
       "match_id": "336004",
       "date": "2008-05-04",
       "vs": "Mumbai Indians",
-      "tilt": 0.01004,
+      "tilt": 0.01535,
       "wickets": 1,
       "balls": 6
+    },
+    {
+      "match_id": "335995",
+      "date": "2008-04-27",
+      "vs": "Punjab Kings",
+      "tilt": -0.02629,
+      "wickets": 1,
+      "balls": 21
     },
     {
       "match_id": "336001",
@@ -322,14 +330,6 @@
       "tilt": -0.03067,
       "wickets": 0,
       "balls": 6
-    },
-    {
-      "match_id": "335995",
-      "date": "2008-04-27",
-      "vs": "Punjab Kings",
-      "tilt": -0.03336,
-      "wickets": 1,
-      "balls": 21
     },
     {
       "match_id": "335998",
@@ -366,14 +366,6 @@
       "balls": 6
     },
     {
-      "match_id": "335995",
-      "date": "2008-04-27",
-      "vs": "Punjab Kings",
-      "tilt": -0.03336,
-      "wickets": 1,
-      "balls": 21
-    },
-    {
       "match_id": "336001",
       "date": "2008-05-02",
       "vs": "Chennai Super Kings",
@@ -382,10 +374,18 @@
       "balls": 6
     },
     {
+      "match_id": "335995",
+      "date": "2008-04-27",
+      "vs": "Punjab Kings",
+      "tilt": -0.02629,
+      "wickets": 1,
+      "balls": 21
+    },
+    {
       "match_id": "336004",
       "date": "2008-05-04",
       "vs": "Mumbai Indians",
-      "tilt": 0.01004,
+      "tilt": 0.01535,
       "wickets": 1,
       "balls": 6
     }
@@ -394,44 +394,44 @@
     {
       "match": 1,
       "date": "2008-04-27",
-      "tilt": -0.11538,
-      "cumulative": -0.11538
+      "tilt": -0.09382,
+      "cumulative": -0.09382
     },
     {
       "match": 2,
       "date": "2008-04-30",
       "tilt": -0.03819,
-      "cumulative": -0.15358
+      "cumulative": -0.13201
     },
     {
       "match": 3,
       "date": "2008-05-02",
       "tilt": -0.03067,
-      "cumulative": -0.18425
+      "cumulative": -0.16269
     },
     {
       "match": 4,
       "date": "2008-05-04",
-      "tilt": 0.02709,
-      "cumulative": -0.15717
+      "tilt": 0.02904,
+      "cumulative": -0.13365
     },
     {
       "match": 5,
       "date": "2008-05-08",
       "tilt": -0.71458,
-      "cumulative": -0.87175
+      "cumulative": -0.84823
     },
     {
       "match": 6,
       "date": "2008-05-17",
-      "tilt": 0.02358,
-      "cumulative": -0.84816
+      "tilt": 0.00832,
+      "cumulative": -0.83991
     }
   ],
   "team_matchups": [
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.01705,
+      "tilt_per_match": 0.0137,
       "matches": 1
     },
     {
@@ -441,7 +441,7 @@
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.02922,
+      "tilt_per_match": -0.0296,
       "matches": 2
     },
     {
@@ -453,12 +453,12 @@
   "bowling_team_matchups": [
     {
       "opponent": "Mumbai Indians",
-      "tilt_per_match": 0.01004,
+      "tilt_per_match": 0.01535,
       "matches": 1
     },
     {
       "opponent": "Punjab Kings",
-      "tilt_per_match": -0.03336,
+      "tilt_per_match": -0.02629,
       "matches": 1
     },
     {
@@ -494,11 +494,11 @@
     "best_figures": "1/32"
   },
   "match_tilt_distribution": [
-    -0.11538,
+    -0.09382,
     -0.03819,
     -0.03067,
-    0.02709,
+    0.02904,
     -0.71458,
-    0.02358
+    0.00832
   ]
 }
